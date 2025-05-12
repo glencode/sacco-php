@@ -128,4 +128,204 @@
         }
     });
     
+    // Performance optimizations
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize lazy loading
+        initLazyLoading();
+        
+        // Initialize scroll performance optimizations
+        initScrollOptimizations();
+        
+        // Initialize intersection observer for animations
+        initAnimationObserver();
+        
+        // Initialize preloader
+        initPreloader();
+    });
+
+    function initLazyLoading() {
+        if ('loading' in HTMLImageElement.prototype) {
+            // Use native lazy loading
+            const images = document.querySelectorAll('img[data-src]');
+            images.forEach(img => {
+                img.src = img.dataset.src;
+                img.loading = 'lazy';
+            });
+        } else {
+            // Fallback to Intersection Observer
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+    }
+
+    function initScrollOptimizations() {
+        let ticking = false;
+        let lastKnownScrollPosition = 0;
+        let scrollTimeout;
+
+        // Throttle scroll events
+        window.addEventListener('scroll', () => {
+            lastKnownScrollPosition = window.scrollY;
+
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    handleScroll(lastKnownScrollPosition);
+                    ticking = false;
+                });
+
+                ticking = true;
+            }
+
+            // Debounce intensive operations
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                handleScrollEnd(lastKnownScrollPosition);
+            }, 150);
+        });
+    }
+
+    function handleScroll(scrollPos) {
+        // Handle scroll-based animations efficiently
+        const header = document.querySelector('.site-header');
+        if (header) {
+            if (scrollPos > 100) {
+                header.classList.add('fixed-header');
+            } else {
+                header.classList.remove('fixed-header');
+            }
+        }
+    }
+
+    function handleScrollEnd(scrollPos) {
+        // Handle operations that should happen after scrolling stops
+        const backToTop = document.querySelector('.back-to-top');
+        if (backToTop) {
+            if (scrollPos > 500) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        }
+    }
+
+    function initAnimationObserver() {
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        
+        if ('IntersectionObserver' in window) {
+            const animationObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                        animationObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            animatedElements.forEach(element => {
+                animationObserver.observe(element);
+            });
+        } else {
+            // Fallback for browsers that don't support IntersectionObserver
+            animatedElements.forEach(element => {
+                element.classList.add('animated');
+            });
+        }
+    }
+
+    function initPreloader() {
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            // Add loading state
+            document.body.classList.add('loading');
+            
+            window.addEventListener('load', () => {
+                // Remove preloader after all content is loaded
+                setTimeout(() => {
+                    preloader.classList.add('preloader-hidden');
+                    document.body.classList.remove('loading');
+                    
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                    }, 500);
+                }, 500);
+            });
+        }
+    }
+
+    // Debounce utility function
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Throttle utility function
+    function throttle(func, limit) {
+        let inThrottle;
+        return function(...args) {
+            if (!inThrottle) {
+                func.apply(this, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+
+    // Resource hint preloading
+    function preloadResources() {
+        const resources = [
+            { type: 'style', url: '/wp-content/themes/sacco-php/style.css' },
+            { type: 'script', url: '/wp-content/themes/sacco-php/js/navigation.js' },
+            // Add other critical resources
+        ];
+
+        resources.forEach(resource => {
+            const link = document.createElement('link');
+            link.rel = resource.type === 'style' ? 'preload' : 'prefetch';
+            link.as = resource.type === 'style' ? 'style' : 'script';
+            link.href = resource.url;
+            document.head.appendChild(link);
+        });
+    }
+
+    // Initialize performance monitoring
+    if ('performance' in window && 'PerformanceObserver' in window) {
+        const observer = new PerformanceObserver((list) => {
+            list.getEntries().forEach((entry) => {
+                // Log performance metrics
+                console.debug('Performance metric:', {
+                    name: entry.name,
+                    duration: entry.duration,
+                    type: entry.entryType
+                });
+            });
+        });
+
+        // Observe various performance metrics
+        observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] });
+    }
+
+    // Initialize on page load
+    preloadResources();
+
 })(jQuery);
