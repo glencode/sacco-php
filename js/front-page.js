@@ -288,6 +288,129 @@ function initializePage() {
                 }
             });
         });
+
+        // Initialize preloader
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            window.addEventListener('load', function() {
+                preloader.classList.add('fade-out');
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            });
+        }
+
+        // Lazy load images
+        const lazyImages = document.querySelectorAll('img[data-src]');
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.add('fade-in');
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        lazyImages.forEach(img => imageObserver.observe(img));
+
+        // Header scroll behavior
+        let lastScroll = 0;
+        const header = document.querySelector('.site-header');
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                header.classList.remove('scroll-up');
+                return;
+            }
+            
+            if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
+                // Scrolling down
+                header.classList.remove('scroll-up');
+                header.classList.add('scroll-down');
+            } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
+                // Scrolling up
+                header.classList.remove('scroll-down');
+                header.classList.add('scroll-up');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Performance optimizations
+        // Debounce scroll and resize events
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Efficient scroll handler
+        const debouncedScroll = debounce(() => {
+            const scrolled = window.pageYOffset;
+            
+            // Update floating nav opacity
+            const floatingNav = document.querySelector('.floating-quick-nav');
+            if (floatingNav) {
+                floatingNav.style.opacity = scrolled > 100 ? '0.9' : '1';
+            }
+            
+            // Update parallax elements
+            document.querySelectorAll('.parallax').forEach(element => {
+                const speed = element.dataset.speed || 0.5;
+                element.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        }, 10);
+
+        window.addEventListener('scroll', debouncedScroll);
+
+        // Dynamic content loading for infinite scroll sections
+        const loadMoreContent = async (container, page) => {
+            try {
+                const response = await fetch(`/wp-json/wp/v2/posts?page=${page}&per_page=6`);
+                const posts = await response.json();
+                
+                posts.forEach(post => {
+                    const postElement = createPostElement(post);
+                    container.appendChild(postElement);
+                });
+                
+                return posts.length > 0;
+            } catch (error) {
+                console.error('Error loading more content:', error);
+                return false;
+            }
+        };
+
+        // Initialize infinite scroll if container exists
+        const contentContainer = document.querySelector('.infinite-scroll-container');
+        if (contentContainer) {
+            let currentPage = 1;
+            let isLoading = false;
+            
+            const infiniteScrollObserver = new IntersectionObserver(async (entries) => {
+                if (entries[0].isIntersecting && !isLoading) {
+                    isLoading = true;
+                    const hasMore = await loadMoreContent(contentContainer, ++currentPage);
+                    isLoading = false;
+                    
+                    if (!hasMore) {
+                        infiniteScrollObserver.disconnect();
+                    }
+                }
+            });
+            
+            infiniteScrollObserver.observe(document.querySelector('.infinite-scroll-trigger'));
+        }
     });
 }
 
