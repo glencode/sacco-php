@@ -15,31 +15,31 @@ get_header();
 		<!-- Hero Slider Section -->
 		<section class="hero-section">
 			<div class="hero-slider swiper">
-				<div class="floating-quick-nav">
+				<div class="floating-quick-nav bg-white rounded-3 shadow-lg py-3">
 					<div class="container">
-						<div class="row g-2">
+						<div class="row g-3">
 							<div class="col-6 col-md-3">
 								<a href="<?php echo esc_url(home_url('/loan-application/')); ?>" class="quick-nav-item">
-									<i class="fas fa-hand-holding-usd"></i>
-									<span><?php esc_html_e('Apply for Loan', 'sacco-php'); ?></span>
+									<i class="fas fa-hand-holding-usd fa-lg"></i>
+									<span><?php esc_html_e('Quick Loan', 'sacco-php'); ?></span>
 								</a>
 							</div>
 							<div class="col-6 col-md-3">
-								<a href="<?php echo esc_url(home_url('/savings-calculator/')); ?>" class="quick-nav-item">
-									<i class="fas fa-calculator"></i>
-									<span><?php esc_html_e('Calculate Savings', 'sacco-php'); ?></span>
+								<a href="<?php echo esc_url(home_url('/loan-calculator/')); ?>" class="quick-nav-item">
+									<i class="fas fa-calculator fa-lg"></i>
+									<span><?php esc_html_e('Loan Calculator', 'sacco-php'); ?></span>
+								</a>
+							</div>
+							<div class="col-6 col-md-3">
+								<a href="<?php echo esc_url(home_url('/online-banking/')); ?>" class="quick-nav-item">
+									<i class="fas fa-laptop fa-lg"></i>
+									<span><?php esc_html_e('Online Banking', 'sacco-php'); ?></span>
 								</a>
 							</div>
 							<div class="col-6 col-md-3">
 								<a href="<?php echo esc_url(home_url('/how-to-join/')); ?>" class="quick-nav-item">
-									<i class="fas fa-user-plus"></i>
+									<i class="fas fa-user-plus fa-lg"></i>
 									<span><?php esc_html_e('Join Now', 'sacco-php'); ?></span>
-								</a>
-							</div>
-							<div class="col-6 col-md-3">
-								<a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="quick-nav-item">
-									<i class="fas fa-headset"></i>
-									<span><?php esc_html_e('Get Help', 'sacco-php'); ?></span>
 								</a>
 							</div>
 						</div>
