@@ -4,249 +4,123 @@
  * Handles toggling the navigation menu for small screens and enables TAB key
  * navigation support for dropdown menus.
  */
-( function() {
-	const siteNavigation = document.getElementById( 'site-navigation' );
 
-	// Return early if the navigation doesn't exist.
-	if ( ! siteNavigation ) {
-		return;
-	}
+// Enhanced navigation functionality
+(function() {
+    const siteNavigation = document.getElementById('site-navigation');
+    const button = siteNavigation?.querySelector('.menu-toggle');
+    const menu = siteNavigation?.querySelector('ul');
+    const header = document.querySelector('.site-header');
+    let lastScroll = 0;
 
-	const button = siteNavigation.querySelector( '.menu-toggle' );
+    if (!siteNavigation || !button || !menu || !header) {
+        return;
+    }
 
-	// Return early if the button doesn't exist.
-	if ( ! button ) {
-		return;
-	}
+    // Initialize mobile menu
+    function initMobileMenu() {
+        button.addEventListener('click', toggleMenu);
+        document.addEventListener('click', closeMenuOnClickOutside);
+        window.addEventListener('resize', handleResize);
+    }
 
-	const menu = siteNavigation.querySelector( 'ul' );
+    // Toggle mobile menu
+    function toggleMenu() {
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        siteNavigation.classList.toggle('toggled');
+        button.setAttribute('aria-expanded', !isExpanded);
+        
+        // Prevent body scroll when menu is open
+        document.body.style.overflow = isExpanded ? '' : 'hidden';
+    }
 
-	// Hide menu toggle button if menu is empty and return early.
-	if ( ! menu ) {
-		button.style.display = 'none';
-		return;
-	}
+    // Close menu when clicking outside
+    function closeMenuOnClickOutside(event) {
+        if (siteNavigation.classList.contains('toggled') && 
+            !event.target.closest('.main-navigation') && 
+            !event.target.closest('.menu-toggle')) {
+            toggleMenu();
+        }
+    }
 
-	if ( ! menu.classList.contains( 'nav-menu' ) ) {
-		menu.classList.add( 'nav-menu' );
-	}
+    // Handle window resize
+    function handleResize() {
+        if (window.innerWidth > 991 && siteNavigation.classList.contains('toggled')) {
+            siteNavigation.classList.remove('toggled');
+            button.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+    }
 
-	// Toggle the .toggled class and the aria-expanded value each time the button is clicked.
-	button.addEventListener( 'click', function() {
-		siteNavigation.classList.toggle( 'toggled' );
+    // Enhanced scroll behavior
+    function handleScroll() {
+        const currentScroll = window.pageYOffset;
+        const scrollDelta = 10;
+        const scrollThreshold = 100;
 
-		if ( button.getAttribute( 'aria-expanded' ) === 'true' ) {
-			button.setAttribute( 'aria-expanded', 'false' );
-		} else {
-			button.setAttribute( 'aria-expanded', 'true' );
-		}
-	});
+        // Add or remove scrolled class based on scroll position
+        if (currentScroll > scrollThreshold) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
 
-	// Remove the .toggled class and set aria-expanded to false when the user clicks outside the navigation.
-	document.addEventListener( 'click', function( event ) {
-		const isClickInside = siteNavigation.contains( event.target );
+        // Hide/show header based on scroll direction
+        if (currentScroll > lastScroll && currentScroll > scrollThreshold) {
+            // Scrolling down
+            header.classList.add('header-hidden');
+        } else {
+            // Scrolling up
+            header.classList.remove('header-hidden');
+        }
 
-		if ( ! isClickInside ) {
-			siteNavigation.classList.remove( 'toggled' );
-			button.setAttribute( 'aria-expanded', 'false' );
-		}
-	});
+        lastScroll = currentScroll;
+    }
 
-	// Get all the link elements within the menu.
-	const links = menu.getElementsByTagName( 'a' );
+    // Initialize dropdown menus
+    function initDropdowns() {
+        const dropdownLinks = menu.querySelectorAll('.menu-item-has-children > a');
+        
+        dropdownLinks.forEach(link => {
+            // Add dropdown toggle button
+            const toggleBtn = document.createElement('button');
+            toggleBtn.classList.add('dropdown-toggle');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            toggleBtn.innerHTML = '<span class="screen-reader-text">Toggle Dropdown</span>';
+            link.parentNode.insertBefore(toggleBtn, link.nextSibling);
 
-	// Get all the link elements with children within the menu.
-	const linksWithChildren = menu.querySelectorAll( '.menu-item-has-children > a, .page_item_has_children > a' );
+            // Handle dropdown toggle
+            toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+                toggleBtn.setAttribute('aria-expanded', !isExpanded);
+                toggleBtn.closest('.menu-item-has-children').classList.toggle('sub-menu-active');
+            });
+        });
+    }
 
-	// Toggle focus each time a menu link is focused or blurred.
-	for ( const link of links ) {
-		link.addEventListener( 'focus', toggleFocus, true );
-		link.addEventListener( 'blur', toggleFocus, true );
-	}
+    // Initialize everything
+    function init() {
+        initMobileMenu();
+        initDropdowns();
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Set initial states
+        menu.classList.add('nav-menu');
+        button.setAttribute('aria-expanded', 'false');
+        
+        // Add keyboard navigation support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && siteNavigation.classList.contains('toggled')) {
+                toggleMenu();
+            }
+        });
+    }
 
-	// Toggle focus each time a menu link with children receive a touch event.
-	for ( const link of linksWithChildren ) {
-		link.addEventListener( 'touchstart', toggleFocus, false );
-	}
-
-	/**
-	 * Sets or removes .focus class on an element.
-	 */
-	function toggleFocus() {
-		if ( event.type === 'focus' || event.type === 'blur' ) {
-			let self = this;
-			// Move up through the ancestors of the current link until we hit .nav-menu.
-			while ( ! self.classList.contains( 'nav-menu' ) ) {
-				// On li elements toggle the class .focus.
-				if ( 'li' === self.tagName.toLowerCase() ) {
-					self.classList.toggle( 'focus' );
-				}
-				self = self.parentNode;
-			}
-		}
-
-		if ( event.type === 'touchstart' ) {
-			const menuItem = this.parentNode;
-			event.preventDefault();
-			for ( const link of menuItem.parentNode.children ) {
-				if ( menuItem !== link ) {
-					link.classList.remove( 'focus' );
-				}
-			}
-			menuItem.classList.toggle( 'focus' );
-		}
-	}
-
-	// Mega Menu Functionality
-	setupMegaMenu();
-
-	function setupMegaMenu() {
-		const menuItems = document.querySelectorAll('#primary-menu > li.menu-item-has-children');
-		const megaMenuContainer = document.querySelector('.mega-menu-container');
-		
-		if (!menuItems.length || !megaMenuContainer) {
-			return;
-		}
-
-		// Setup hovering on menu items
-		menuItems.forEach(item => {
-			// Check if the menu item has many children (indicating it could be a mega menu)
-			const subMenu = item.querySelector('ul.sub-menu');
-			
-			if (subMenu && subMenu.children.length > 5) {
-				// This should likely be a mega menu
-				item.classList.add('has-mega-menu');
-				
-				// Store HTML for megamenu content
-				item.megaMenuContent = createMegaMenuHTML(subMenu);
-				
-				// Add event listeners
-				item.addEventListener('mouseenter', showMegaMenu);
-				item.addEventListener('mouseleave', hideMegaMenu);
-			}
-		});
-
-		// Add event listener to mega menu container 
-		megaMenuContainer.addEventListener('mouseenter', () => {
-			megaMenuContainer.classList.add('active');
-		});
-		megaMenuContainer.addEventListener('mouseleave', () => {
-			megaMenuContainer.classList.remove('active');
-			document.querySelector('.menu-item-has-children.active')?.classList.remove('active');
-		});
-	}
-
-	function showMegaMenu() {
-		// Set active class on menu item
-		this.classList.add('active');
-		
-		// Add content to the mega menu container
-		const megaMenuContainer = document.querySelector('.mega-menu-container');
-		megaMenuContainer.innerHTML = this.megaMenuContent;
-		
-		// Show the mega menu
-		megaMenuContainer.classList.add('active');
-	}
-
-	function hideMegaMenu() {
-		// Check if the mouse is over the mega menu container
-		const megaMenuContainer = document.querySelector('.mega-menu-container');
-		
-		if (!megaMenuContainer.matches(':hover')) {
-			// If not hovering over mega menu, hide it
-			this.classList.remove('active');
-			megaMenuContainer.classList.remove('active');
-		}
-	}
-
-	function createMegaMenuHTML(subMenu) {
-		// Get all submenu items
-		const items = Array.from(subMenu.children);
-		const columns = Math.min(4, Math.ceil(items.length / 4)); // Max 4 columns
-		
-		let html = '<div class="row mega-menu-row">';
-		
-		// Create columns
-		for (let i = 0; i < columns; i++) {
-			html += '<div class="col-md-' + (12 / columns) + ' mega-menu-column">';
-			html += '<ul class="mega-menu-items">';
-			
-			// Add items to this column
-			const columnItems = items.slice(i * Math.ceil(items.length / columns), (i + 1) * Math.ceil(items.length / columns));
-			
-			for (const item of columnItems) {
-				html += item.outerHTML;
-			}
-			
-			html += '</ul>';
-			html += '</div>';
-		}
-		
-		html += '</div>';
-		return html;
-	}
-
-	// Add scroll behavior for glassmorphic navbar
-	function handleNavbarScroll() {
-		const header = document.querySelector('.site-header');
-		const scrollTrigger = 100; // Adjust this value as needed
-
-		window.addEventListener('scroll', () => {
-			if (window.scrollY > scrollTrigger) {
-				header.classList.add('scrolled');
-			} else {
-				header.classList.remove('scrolled');
-			}
-		});
-	}
-
-	// Initialize scroll behavior
-	document.addEventListener('DOMContentLoaded', () => {
-		handleNavbarScroll();
-	});
-
-	// Navbar scroll effect
-	document.addEventListener('DOMContentLoaded', function() {
-		const header = document.querySelector('.site-header');
-		const scrollThreshold = 50;
-
-		function handleScroll() {
-			if (window.scrollY > scrollThreshold) {
-				header.classList.add('scrolled');
-			} else {
-				header.classList.remove('scrolled');
-			}
-		}
-
-		window.addEventListener('scroll', handleScroll);
-		// Initial check
-		handleScroll();
-	});
-
-	// Add scroll effect for glassmorphic navbar
-	document.addEventListener('DOMContentLoaded', function() {
-		const header = document.querySelector('.site-header');
-		let lastScroll = 0;
-
-		window.addEventListener('scroll', () => {
-			const currentScroll = window.pageYOffset;
-
-			if (currentScroll <= 0) {
-				header.classList.remove('scrolled');
-				header.classList.remove('scroll-up');
-			}
-
-			if (currentScroll > lastScroll && currentScroll > 50) {
-				header.classList.remove('scroll-up');
-				header.classList.add('scrolled');
-			}
-
-			if (currentScroll < lastScroll) {
-				header.classList.add('scroll-up');
-				header.classList.add('scrolled');
-			}
-
-			lastScroll = currentScroll;
-		});
-	});
-}() );
+    // Start when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
