@@ -273,54 +273,71 @@ get_header();
 		</section>
 
 		<!-- Quick Links/Actions Section -->
-		<?php 
-		$quick_actions_title = get_field('home_quick_actions_title') ?: esc_html__('How Can We Help You?', 'sacco-php');
-		$quick_actions_subtitle = get_field('home_quick_actions_subtitle') ?: esc_html__('Quick access to our most popular services and information.', 'sacco-php');
-		$quick_action_cards = get_field('home_quick_action_cards');
-		?>
-		<section class="quick-actions-section py-5 bg-light">
+		<section class="quick-actions-section py-5">
 			<div class="container">
 				<div class="row mb-5">
 					<div class="col-md-12 text-center">
-						<h2 class="section-title"><?php echo esc_html($quick_actions_title); ?></h2>
-						<p class="section-subtitle"><?php echo esc_html($quick_actions_subtitle); ?></p>
+						<h2 class="section-title" data-aos="fade-up">How Can We Help You Today?</h2>
+						<p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Quick access to our most popular services and resources</p>
 					</div>
 				</div>
-				<div class="row justify-content-center">
-					<?php 
-					if ($quick_action_cards && is_array($quick_action_cards)) :
-						foreach ($quick_action_cards as $card) :
-							$icon = !empty($card['icon_class']) ? $card['icon_class'] : 'fa-info-circle';
-							$title = !empty($card['title']) ? $card['title'] : esc_html__('Action Title', 'sacco-php');
-							$text = !empty($card['text']) ? $card['text'] : esc_html__('Brief description of the action or link.', 'sacco-php');
-							$button_text = !empty($card['button_text']) ? $card['button_text'] : esc_html__('Learn More', 'sacco-php');
-							$button_url = !empty($card['button_url']) ? $card['button_url'] : '#';
-					?>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="quick-action-card card h-100 text-center p-4 shadow-sm">
-							<div class="quick-action-icon mb-3 text-primary">
-								<i class="fas <?php echo esc_attr($icon); ?> fa-3x"></i>
+				<div class="row justify-content-center g-4">
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
+						<div class="quick-action-card">
+							<div class="quick-action-icon">
+								<i class="fas fa-hand-holding-usd"></i>
 							</div>
-							<h3 class="quick-action-title h5"><?php echo esc_html($title); ?></h3>
-							<p class="quick-action-text small text-muted"><?php echo esc_html($text); ?></p>
-							<a href="<?php echo esc_url($button_url); ?>" class="btn btn-primary btn-sm mt-auto"><?php echo esc_html($button_text); ?></a>
+							<h3>Apply for a Loan</h3>
+							<p>Get quick access to flexible loan options with competitive rates</p>
+							<div class="quick-action-features">
+								<ul class="list-unstyled">
+									<li><i class="fas fa-check-circle text-success"></i> Fast approval process</li>
+									<li><i class="fas fa-check-circle text-success"></i> Competitive interest rates</li>
+									<li><i class="fas fa-check-circle text-success"></i> Flexible repayment terms</li>
+								</ul>
+							</div>
+							<a href="<?php echo esc_url(home_url('/loan-application/')); ?>" class="btn btn-primary mt-3">Apply Now</a>
 						</div>
 					</div>
-					<?php 
-						endforeach;
-					else : // Fallback static content if ACF fields are not set or empty
-					?>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="quick-action-card card h-100 text-center p-4 shadow-sm">
-							<div class="quick-action-icon mb-3 text-primary">
-								<i class="fas fa-user-plus fa-3x"></i>
+					
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+						<div class="quick-action-card">
+							<div class="quick-action-icon">
+								<i class="fas fa-piggy-bank"></i>
 							</div>
-							<h3 class="quick-action-title h5"><?php esc_html_e('Become a Member', 'sacco-php'); ?></h3>
-							<p class="quick-action-text small text-muted"><?php esc_html_e('Join our Sacco community and enjoy exclusive benefits.', 'sacco-php'); ?></p>
-							<a href="<?php echo esc_url(home_url('/membership/')); ?>" class="btn btn-primary btn-sm mt-auto"><?php esc_html_e('Join Now', 'sacco-php'); ?></a>
+							<h3>Start Saving</h3>
+							<p>Explore our range of savings products designed for your goals</p>
+							<div class="quick-action-features">
+								<ul class="list-unstyled">
+									<li><i class="fas fa-check-circle text-success"></i> High interest returns</li>
+									<li><i class="fas fa-check-circle text-success"></i> Multiple savings options</li>
+									<li><i class="fas fa-check-circle text-success"></i> Easy account management</li>
+								</ul>
+							</div>
+							<a href="<?php echo esc_url(home_url('/savings-accounts/')); ?>" class="btn btn-primary mt-3">Learn More</a>
 						</div>
 					</div>
-					<?php endif; ?>
+					
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+						<div class="quick-action-card">
+							<div class="quick-action-icon">
+								<i class="fas fa-calculator"></i>
+							</div>
+							<h3>Financial Calculators</h3>
+							<p>Plan your finances with our easy-to-use calculators</p>
+							<div class="quick-action-features">
+								<ul class="list-unstyled">
+									<li><i class="fas fa-check-circle text-success"></i> Loan calculator</li>
+									<li><i class="fas fa-check-circle text-success"></i> Savings calculator</li>
+									<li><i class="fas fa-check-circle text-success"></i> Retirement planning</li>
+								</ul>
+							</div>
+							<div class="btn-group w-100" role="group">
+								<a href="<?php echo esc_url(home_url('/loan-calculator/')); ?>" class="btn btn-outline-primary mt-3">Loan Calculator</a>
+								<a href="<?php echo esc_url(home_url('/savings-calculator/')); ?>" class="btn btn-outline-primary mt-3">Savings Calculator</a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
