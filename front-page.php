@@ -410,6 +410,11 @@ get_header();
 		</section>
 		
 		<!-- Products Section -->
+		<?php
+		$products_title = get_field('home_products_title') ?: esc_html__('Our Financial Products', 'sacco-php');
+		$products_subtitle = get_field('home_products_subtitle') ?: esc_html__('Explore our range of savings and loan products designed for your needs', 'sacco-php');
+		$featured_products = get_field('home_featured_products');
+		?>
 		<section class="products-section py-5">
 			<div class="container">
 				<div class="row mb-5">
