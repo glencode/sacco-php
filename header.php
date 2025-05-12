@@ -28,6 +28,19 @@
     <div class="spinner"></div>
 </div>
 
+<script>
+// Backup timeout to ensure preloader is removed
+setTimeout(function() {
+    const preloader = document.querySelector('.preloader');
+    if (preloader && !preloader.classList.contains('fade-out')) {
+        preloader.classList.add('fade-out');
+        setTimeout(() => {
+            preloader.style.display = 'none';
+        }, 500);
+    }
+}, 3000); // Fallback after 3 seconds
+</script>
+
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'sacco-php' ); ?></a>
 
