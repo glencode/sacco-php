@@ -25,7 +25,9 @@
 
 <!-- Preloader -->
 <div class="preloader">
-    <div class="spinner"></div>
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="spinner"></div>
+    </div>
 </div>
 
 <script>
