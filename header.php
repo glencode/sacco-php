@@ -26,16 +26,24 @@
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'sacco-php' ); ?></a>
 
 	<header id="masthead" class="site-header">
-		<div class="top-bar bg-dark text-white py-2">
+		<div class="top-bar bg-dark text-white">
 			<div class="container">
-				<div class="row align-items-center">
+				<div class="row align-items-center py-2">
 					<div class="col-md-6">
 						<div class="contact-info d-flex flex-wrap">
+							<?php 
+							$header_phone = get_theme_mod('header_phone', '+254 700 123 456');
+							$header_email = get_theme_mod('header_email', 'info@sacco.com');
+							?>
 							<div class="phone me-4">
-								<i class="fas fa-phone-alt me-2"></i><span>+254 700 123 456</span>
+								<a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', $header_phone)); ?>" class="text-white">
+									<i class="fas fa-phone-alt me-2"></i><span><?php echo esc_html($header_phone); ?></span>
+								</a>
 							</div>
 							<div class="email">
-								<i class="fas fa-envelope me-2"></i><span>info@sacco.com</span>
+								<a href="mailto:<?php echo esc_attr($header_email); ?>" class="text-white">
+									<i class="fas fa-envelope me-2"></i><span><?php echo esc_html($header_email); ?></span>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -420,6 +428,57 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.sub-menu.toggled-on').forEach(submenu => {
                 submenu.classList.remove('toggled-on');
             });
+        }
+    });
+
+    // Header scroll effect
+    let lastScroll = 0;
+    const header = document.querySelector('.site-header');
+    const topBar = document.querySelector('.top-bar');
+    const mainHeader = document.querySelector('.main-header');
+    
+    function handleHeaderScroll() {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 100) {
+            header.classList.add('fixed-header');
+            if (currentScroll > lastScroll) {
+                // Scrolling down
+                header.classList.add('header-hidden');
+                topBar.style.height = '0';
+                topBar.style.overflow = 'hidden';
+                mainHeader.style.paddingTop = '10px';
+                mainHeader.style.paddingBottom = '10px';
+            } else {
+                // Scrolling up
+                header.classList.remove('header-hidden');
+                if (currentScroll > 200) {
+                    topBar.style.height = '0';
+                    topBar.style.overflow = 'hidden';
+                } else {
+                    topBar.style.height = '';
+                    topBar.style.overflow = '';
+                }
+            }
+        } else {
+            header.classList.remove('fixed-header', 'header-hidden');
+            topBar.style.height = '';
+            topBar.style.overflow = '';
+            mainHeader.style.paddingTop = '';
+            mainHeader.style.paddingBottom = '';
+        }
+        
+        lastScroll = currentScroll;
+    }
+    
+    // Throttle the scroll handler for better performance
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        if (!scrollTimeout) {
+            scrollTimeout = setTimeout(function() {
+                handleHeaderScroll();
+                scrollTimeout = null;
+            }, 10);
         }
     });
 });
