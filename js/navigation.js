@@ -222,4 +222,31 @@
 		// Initial check
 		handleScroll();
 	});
+
+	// Add scroll effect for glassmorphic navbar
+	document.addEventListener('DOMContentLoaded', function() {
+		const header = document.querySelector('.site-header');
+		let lastScroll = 0;
+
+		window.addEventListener('scroll', () => {
+			const currentScroll = window.pageYOffset;
+
+			if (currentScroll <= 0) {
+				header.classList.remove('scrolled');
+				header.classList.remove('scroll-up');
+			}
+
+			if (currentScroll > lastScroll && currentScroll > 50) {
+				header.classList.remove('scroll-up');
+				header.classList.add('scrolled');
+			}
+
+			if (currentScroll < lastScroll) {
+				header.classList.add('scroll-up');
+				header.classList.add('scrolled');
+			}
+
+			lastScroll = currentScroll;
+		});
+	});
 }() );
