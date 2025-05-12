@@ -17,11 +17,23 @@
         return;
     }
 
-    // Initialize mobile menu
-    function initMobileMenu() {
+    // Initialize menu
+    function initMenu() {
+        // Setup mobile menu
         button.addEventListener('click', toggleMenu);
-        document.addEventListener('click', closeMenuOnClickOutside);
+        document.addEventListener('click', handleClickOutside);
         window.addEventListener('resize', handleResize);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // Initialize dropdowns
+        initDropdowns();
+
+        // Set initial states
+        menu.classList.add('nav-menu');
+        button.setAttribute('aria-expanded', 'false');
+
+        // Add keyboard navigation support
+        setupKeyboardNav();
     }
 
     // Toggle mobile menu
@@ -30,12 +42,12 @@
         siteNavigation.classList.toggle('toggled');
         button.setAttribute('aria-expanded', !isExpanded);
         
-        // Prevent body scroll when menu is open
+        // Handle body scroll lock
         document.body.style.overflow = isExpanded ? '' : 'hidden';
     }
 
-    // Close menu when clicking outside
-    function closeMenuOnClickOutside(event) {
+    // Handle click outside menu
+    function handleClickOutside(event) {
         if (siteNavigation.classList.contains('toggled') && 
             !event.target.closest('.main-navigation') && 
             !event.target.closest('.menu-toggle')) {
@@ -50,6 +62,13 @@
             button.setAttribute('aria-expanded', 'false');
             document.body.style.overflow = '';
         }
+
+        // Reset any inline styles on submenus
+        const submenus = menu.querySelectorAll('.sub-menu');
+        submenus.forEach(submenu => {
+            submenu.style.display = '';
+            submenu.style.maxHeight = '';
+        });
     }
 
     // Enhanced scroll behavior
@@ -58,19 +77,22 @@
         const scrollDelta = 10;
         const scrollThreshold = 100;
 
-        // Add or remove scrolled class based on scroll position
+        // Toggle header classes based on scroll position
         if (currentScroll > scrollThreshold) {
             header.classList.add('scrolled');
+            // Add glass effect class when not at top
+            header.classList.add('glass-effect');
         } else {
             header.classList.remove('scrolled');
+            header.classList.remove('glass-effect');
         }
 
         // Hide/show header based on scroll direction
         if (currentScroll > lastScroll && currentScroll > scrollThreshold) {
-            // Scrolling down
+            // Scrolling down - hide header
             header.classList.add('header-hidden');
         } else {
-            // Scrolling up
+            // Scrolling up - show header
             header.classList.remove('header-hidden');
         }
 
@@ -82,6 +104,9 @@
         const dropdownLinks = menu.querySelectorAll('.menu-item-has-children > a');
         
         dropdownLinks.forEach(link => {
+            const menuItem = link.parentElement;
+            const submenu = menuItem.querySelector('.sub-menu');
+            
             // Add dropdown toggle button
             const toggleBtn = document.createElement('button');
             toggleBtn.classList.add('dropdown-toggle');
@@ -94,33 +119,75 @@
                 e.preventDefault();
                 const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
                 toggleBtn.setAttribute('aria-expanded', !isExpanded);
-                toggleBtn.closest('.menu-item-has-children').classList.toggle('sub-menu-active');
+                
+                if (submenu) {
+                    if (!isExpanded) {
+                        // Opening submenu
+                        submenu.style.display = 'block';
+                        setTimeout(() => {
+                            submenu.style.opacity = '1';
+                            submenu.style.transform = 'translateY(0)';
+                        }, 10);
+                    } else {
+                        // Closing submenu
+                        submenu.style.opacity = '0';
+                        submenu.style.transform = 'translateY(-10px)';
+                        setTimeout(() => {
+                            submenu.style.display = 'none';
+                        }, 300);
+                    }
+                }
             });
-        });
-    }
 
-    // Initialize everything
-    function init() {
-        initMobileMenu();
-        initDropdowns();
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        
-        // Set initial states
-        menu.classList.add('nav-menu');
-        button.setAttribute('aria-expanded', 'false');
-        
-        // Add keyboard navigation support
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && siteNavigation.classList.contains('toggled')) {
-                toggleMenu();
+            // Handle hover on desktop
+            if (window.innerWidth > 991) {
+                menuItem.addEventListener('mouseenter', () => {
+                    if (submenu) {
+                        submenu.style.display = 'block';
+                        setTimeout(() => {
+                            submenu.style.opacity = '1';
+                            submenu.style.transform = 'translateY(0)';
+                        }, 10);
+                    }
+                });
+
+                menuItem.addEventListener('mouseleave', () => {
+                    if (submenu) {
+                        submenu.style.opacity = '0';
+                        submenu.style.transform = 'translateY(-10px)';
+                        setTimeout(() => {
+                            submenu.style.display = 'none';
+                        }, 300);
+                    }
+                });
             }
         });
     }
 
-    // Start when DOM is ready
+    // Setup keyboard navigation
+    function setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            // Close menu on Escape
+            if (e.key === 'Escape' && siteNavigation.classList.contains('toggled')) {
+                toggleMenu();
+            }
+
+            // Add visible focus indicators when using keyboard
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-nav-active');
+            }
+        });
+
+        // Remove keyboard focus indicators when using mouse
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('keyboard-nav-active');
+        });
+    }
+
+    // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', initMenu);
     } else {
-        init();
+        initMenu();
     }
 })();
