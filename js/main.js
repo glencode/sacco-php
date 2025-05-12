@@ -419,4 +419,34 @@
     // Initialize on page load
     preloadResources();
 
+    // Scroll behavior and mobile menu functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        const header = document.querySelector('.site-header');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mainNav = document.querySelector('.main-navigation');
+        
+        // Handle scroll events
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Handle mobile menu toggle
+        menuToggle?.addEventListener('click', () => {
+            mainNav.classList.toggle('toggled');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (mainNav.classList.contains('toggled') && 
+                !e.target.closest('.main-navigation') && 
+                !e.target.closest('.menu-toggle')) {
+                mainNav.classList.remove('toggled');
+            }
+        });
+    });
+
 })(jQuery);
