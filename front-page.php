@@ -343,6 +343,33 @@ get_header();
 		</section>
 
 		<!-- Why Choose Us Section -->
+		<?php
+		// Get Why Choose Us section content from ACF or fall back to defaults
+		$why_choose_us_title = get_field('why_choose_us_title') ?: esc_html__('Why Choose Us', 'sacco-php');
+		$why_choose_us_subtitle = get_field('why_choose_us_subtitle') ?: esc_html__('Discover the advantages of banking with us', 'sacco-php');
+		$why_choose_us_cards = get_field('why_choose_us_cards');
+
+		// Fallback cards if none are set in ACF
+		if (!$why_choose_us_cards || !is_array($why_choose_us_cards)) {
+			$why_choose_us_cards = array(
+				array(
+					'icon' => 'fa-shield-alt',
+					'title' => esc_html__('Secure & Licensed', 'sacco-php'),
+					'description' => esc_html__('We are fully licensed and regulated, ensuring your finances are in safe hands.', 'sacco-php')
+				),
+				array(
+					'icon' => 'fa-percentage',
+					'title' => esc_html__('Competitive Rates', 'sacco-php'),
+					'description' => esc_html__('Enjoy attractive interest rates on savings and favorable loan terms.', 'sacco-php')
+				),
+				array(
+					'icon' => 'fa-handshake',
+					'title' => esc_html__('Member-Focused', 'sacco-php'),
+					'description' => esc_html__('Your success is our priority. We\'re committed to helping you achieve your financial goals.', 'sacco-php')
+				)
+			);
+		}
+		?>
 		<section class="why-choose-us-section philosophy-section py-5">
 			<div class="container">
 				<div class="row mb-5">
