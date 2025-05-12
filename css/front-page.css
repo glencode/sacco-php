@@ -8,7 +8,7 @@
     overflow: hidden;
     height: 100vh; /* Full screen height */
     min-height: 600px;
-    margin-top: -50px; /* Offset for navbar */
+    margin-top: -10px; /* Offset for navbar */
 }
 
 /* Slide overlay for better text readability */
