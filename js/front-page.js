@@ -1,5 +1,12 @@
 // Initialize when document is ready
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50
+    });
+
     // Hero Slider
     const heroSwiper = new Swiper('.hero-slider', {
         slidesPerView: 1,
@@ -13,13 +20,37 @@ document.addEventListener('DOMContentLoaded', function() {
         fadeEffect: {
             crossFade: true
         },
+        speed: 1000,
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
+            renderBullet: function (index, className) {
+                return '<span class="' + className + '"><span class="bullet-inner"></span></span>';
+            },
         },
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
+        },
+        on: {
+            slideChangeTransitionStart: function () {
+                const activeSlide = this.slides[this.activeIndex];
+                const elements = activeSlide.querySelectorAll('.animate-in');
+                elements.forEach(el => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                });
+            },
+            slideChangeTransitionEnd: function () {
+                const activeSlide = this.slides[this.activeIndex];
+                const elements = activeSlide.querySelectorAll('.animate-in');
+                elements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }, index * 200);
+                });
+            }
         }
     });
 
@@ -31,10 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
         autoplay: {
             delay: 3000,
             disableOnInteraction: false,
-        },
-        pagination: {
-            el: '.partners-pagination',
-            clickable: true,
         },
         breakpoints: {
             640: {
@@ -73,47 +100,45 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Stats Counter Animation
-    function animateStats() {
-        const stats = document.querySelectorAll('.stat-number');
-        stats.forEach(stat => {
-            const target = parseInt(stat.getAttribute('data-count'));
-            let current = 0;
-            const increment = target / 50; // Adjust speed by changing divisor
-            const updateCount = () => {
-                if (current < target) {
-                    current += increment;
-                    stat.textContent = Math.ceil(current).toLocaleString();
-                    requestAnimationFrame(updateCount);
-                } else {
-                    stat.textContent = target.toLocaleString();
-                }
-            };
-            updateCount();
-        });
+    function animateNumber(element, final, duration = 2000) {
+        let start = 0;
+        const increment = final > 1000 ? 10 : 1;
+        const stepTime = Math.abs(Math.floor(duration / (final / increment)));
+        
+        const timer = setInterval(() => {
+            start += increment;
+            element.textContent = start.toLocaleString();
+            
+            if (start >= final) {
+                element.textContent = final.toLocaleString();
+                clearInterval(timer);
+            }
+        }, stepTime);
     }
 
-    // Intersection Observer for triggering animations
+    // Initialize counters when they come into view
     const observerOptions = {
         root: null,
         rootMargin: '0px',
         threshold: 0.1
     };
 
-    const observer = new IntersectionObserver((entries) => {
+    const statsObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                if (entry.target.classList.contains('stats-section')) {
-                    animateStats();
+                if (entry.target.classList.contains('stat-number')) {
+                    const finalValue = parseInt(entry.target.dataset.value, 10);
+                    animateNumber(entry.target, finalValue);
                 }
                 entry.target.classList.add('animated');
-                observer.unobserve(entry.target);
+                statsObserver.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
     // Observe elements
-    document.querySelectorAll('.stats-section, .feature-card, .stat-card').forEach(
-        element => observer.observe(element)
+    document.querySelectorAll('.stat-number').forEach(
+        stat => statsObserver.observe(stat)
     );
 
     // Progress bar animation
@@ -137,16 +162,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Feature Cards hover effect
+    // Feature Cards hover effect with enhanced interaction
     document.querySelectorAll('.feature-card').forEach(card => {
         card.addEventListener('mouseenter', function() {
             this.querySelector('.feature-hover').style.opacity = '1';
             this.querySelector('.feature-hover').style.transform = 'translateY(0)';
+            
+            const icon = this.querySelector('.feature-icon');
+            icon.style.transform = 'rotateY(360deg)';
         });
 
         card.addEventListener('mouseleave', function() {
             this.querySelector('.feature-hover').style.opacity = '0';
             this.querySelector('.feature-hover').style.transform = 'translateY(20px)';
+            
+            const icon = this.querySelector('.feature-icon');
+            icon.style.transform = 'rotateY(0deg)';
+        });
+    });
+
+    // Parallax effect for hero section
+    const heroSection = document.querySelector('.hero-section');
+    if (heroSection) {
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            heroSection.style.transform = `translateY(${scrolled * 0.4}px)`;
+        });
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
         });
     });
 });
