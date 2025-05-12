@@ -342,12 +342,7 @@ get_header();
 			</div>
 		</section>
 
-		<!-- Why Choose Us Section (formerly Philosophy) -->
-		<?php
-		$why_choose_us_title = get_field('home_why_choose_us_title') ?: (get_field('home_philosophy_title') ?: esc_html__('Why Choose Us?', 'sacco-php'));
-		$why_choose_us_subtitle = get_field('home_why_choose_us_subtitle') ?: (get_field('home_philosophy_subtitle') ?: esc_html__('Dedicated to your financial success and well-being.', 'sacco-php'));
-		$why_choose_us_cards = get_field('home_why_choose_us_cards') ?: get_field('home_philosophy_cards');
-		?>
+		<!-- Why Choose Us Section -->
 		<section class="why-choose-us-section philosophy-section py-5">
 			<div class="container">
 				<div class="row mb-5">
@@ -356,55 +351,27 @@ get_header();
 						<p class="section-subtitle"><?php echo esc_html($why_choose_us_subtitle); ?></p>
 					</div>
 				</div>
-				<div class="row justify-content-center">
+				<div class="row justify-content-center g-4">
 					<?php 
 					if ($why_choose_us_cards && is_array($why_choose_us_cards)) :
-						foreach ($why_choose_us_cards as $card) :
+						foreach ($why_choose_us_cards as $index => $card) :
 							$icon = !empty($card['icon']) ? $card['icon'] : 'fa-check-circle';
 							$title = !empty($card['title']) ? $card['title'] : esc_html__('Our Value', 'sacco-php');
 							$description = !empty($card['description']) ? $card['description'] : esc_html__('Description of our value.', 'sacco-php');
 					?>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="philosophy-card card h-100 text-center p-4 shadow-sm">
-							<div class="philosophy-icon mb-3 text-primary">
-								<i class="fas <?php echo esc_attr($icon); ?> fa-3x"></i>
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $index * 100; ?>">
+						<div class="philosophy-card text-center h-100">
+							<div class="philosophy-icon">
+								<i class="fas <?php echo esc_attr($icon); ?>"></i>
 							</div>
-							<h3 class="philosophy-title h5"><?php echo esc_html($title); ?></h3>
-							<p class="philosophy-desc small text-muted"><?php echo esc_html($description); ?></p>
+							<h3 class="philosophy-title"><?php echo esc_html($title); ?></h3>
+							<p class="philosophy-desc"><?php echo esc_html($description); ?></p>
 						</div>
 					</div>
 					<?php 
 						endforeach;
-					else : // Fallback static content if ACF fields are not set or empty
+					endif; 
 					?>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="philosophy-card card h-100 text-center p-4 shadow-sm">
-							<div class="philosophy-icon mb-3 text-primary">
-								<i class="fas fa-handshake fa-3x"></i>
-							</div>
-							<h3 class="philosophy-title h5"><?php esc_html_e('Member-Centric Approach', 'sacco-php'); ?></h3>
-							<p class="philosophy-desc small text-muted"><?php esc_html_e('We prioritize your needs, offering personalized financial solutions and excellent customer service.', 'sacco-php'); ?></p>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="philosophy-card card h-100 text-center p-4 shadow-sm">
-							<div class="philosophy-icon mb-3 text-primary">
-								<i class="fas fa-piggy-bank fa-3x"></i>
-							</div>
-							<h3 class="philosophy-title h5"><?php esc_html_e('Competitive Products', 'sacco-php'); ?></h3>
-							<p class="philosophy-desc small text-muted"><?php esc_html_e('Access a wide range of savings and loan products with attractive rates and flexible terms.', 'sacco-php'); ?></p>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="philosophy-card card h-100 text-center p-4 shadow-sm">
-							<div class="philosophy-icon mb-3 text-primary">
-								<i class="fas fa-shield-alt fa-3x"></i>
-							</div>
-							<h3 class="philosophy-title h5"><?php esc_html_e('Secure & Trusted', 'sacco-php'); ?></h3>
-							<p class="philosophy-desc small text-muted"><?php esc_html_e('Your finances are safe with us. We are a regulated institution committed to transparency.', 'sacco-php'); ?></p>
-						</div>
-					</div>
-					<?php endif; ?>
 				</div>
 			</div>
 		</section>
