@@ -1,0 +1,102 @@
+// ---------------------------------------------------------------------------
+// Statistics Band Section Styles
+// ---------------------------------------------------------------------------
+
+.statistics-band-section {
+  padding-top: $spacing-unit-xl; // Adjust padding as needed
+  padding-bottom: $spacing-unit-xl;
+  background-color: lighten($color-primary, 35%); // Light shade of primary green, or choose another bg color
+  // Or for a dark band: 
+  // background-color: $color-text-dark;
+  // color: $color-white; // If dark bg, text should be light
+
+  .container {
+    // Container might not be strictly needed if the band is full-width
+    // but good for consistency if there's a section title within it.
+  }
+
+  .section-title {
+    margin-bottom: $spacing-unit-xl;
+    font-size: $font-size-h2;
+    color: $color-text-dark; // Adjust if dark bg
+    &.text-align-center {
+        text-align: center;
+    }
+  }
+
+  .statistics-band-items {
+    display: flex;
+    flex-wrap: wrap; // Allow items to wrap on smaller screens
+    justify-content: space-around; // Distribute items evenly
+    align-items: flex-start;
+    gap: $spacing-unit-lg;
+  }
+
+  .statistic-item {
+    text-align: center;
+    padding: $spacing-unit-sm $spacing-unit-md; // Padding for each item
+    flex-basis: 200px; // Base width for each item, allowing flex-grow
+    flex-grow: 1;
+    min-width: 150px; // Ensure items don't get too squished
+
+    // If dark bg for section, stat numbers/labels need to be light
+    // Example if .statistics-band-section has dark background:
+    // .stat-number, .stat-label { color: $color-white; }
+  }
+
+  .stat-number {
+    font-size: 3rem; // Prominent numbers
+    font-weight: 700;
+    color: $color-primary; // Or $color-white if on dark bg
+    line-height: 1.1;
+    margin-bottom: $spacing-unit-xs;
+    display: block; // Ensure it takes its own line
+  }
+
+  .stat-label {
+    font-size: $font-size-base;
+    color: $color-text-dark; // Or lighten($color-white, 20%) if on dark bg
+    line-height: 1.4;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+  .statistics-band-section {
+    .section-title {
+      font-size: $font-size-h3;
+    }
+    .statistics-band-items {
+        justify-content: center; // Center items if they wrap to fewer lines
+    }
+    .statistic-item {
+        flex-basis: 180px; // Adjust basis for medium screens
+    }
+    .stat-number {
+      font-size: 2.5rem;
+    }
+    .stat-label {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .statistics-band-section {
+    padding-top: $spacing-unit-lg;
+    padding-bottom: $spacing-unit-lg;
+    .statistics-band-items {
+        flex-direction: column; // Stack items vertically on very small screens
+        align-items: center;
+        gap: $spacing-unit-md;
+    }
+    .statistic-item {
+        flex-basis: auto; // Let them take full width when stacked
+        width: 100%;
+        max-width: 250px; // But not too wide
+    }
+    .stat-number {
+      font-size: 2.2rem;
+    }
+  }
+} 

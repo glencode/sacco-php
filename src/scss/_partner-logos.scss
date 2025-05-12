@@ -1,0 +1,49 @@
+// ---------------------------------------------------------------------------
+// Partner Logos Section Styles
+// ---------------------------------------------------------------------------
+
+.partners-section {
+  padding-top: $spacing-unit-xxl;
+  padding-bottom: $spacing-unit-xxl;
+  background-color: $color-white; // Or another suitable background
+
+  .section-title {
+    margin-bottom: $spacing-unit-xl;
+    // Assuming .text-align-center class or add text-align: center here
+  }
+
+  .partners-logo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); // Responsive grid, adjust minmax as needed
+    gap: $spacing-unit-lg;
+    align-items: center; // Vertically align logos if they have different heights
+    justify-items: center; // Horizontally center logos within their grid cells
+
+    @media (max-width: $breakpoint-sm) {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: $spacing-unit-md;
+    }
+  }
+
+  .partner-logo-item {
+    a {
+      display: block; // Ensure link covers the image area
+      transition: opacity 0.3s ease;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    img {
+      max-width: 100%; // Ensure logo scales down
+      height: auto; // Maintain aspect ratio
+      max-height: 60px; // Limit max height for consistency, adjust as needed
+      filter: grayscale(100%); // Optional: Make logos grayscale initially
+      transition: filter 0.3s ease;
+      
+      a:hover & { // Optional: Colorize on hover if grayscale is used
+         filter: grayscale(0%);
+      }
+    }
+  }
+} 

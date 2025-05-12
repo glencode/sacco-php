@@ -1,0 +1,127 @@
+// ---------------------------------------------------------------------------
+// Contact Form 7 Styles (Homepage Section)
+// ---------------------------------------------------------------------------
+
+.homepage-contact-form-section {
+  padding-top: $spacing-unit-xxl;
+  padding-bottom: $spacing-unit-xxl;
+  background-color: $color-background-light; // Or another preferred background
+
+  .section-title {
+    margin-bottom: $spacing-unit-xl;
+    // Assuming .text-align-center class is globally defined or add text-align: center here
+  }
+
+  .contact-form-wrapper {
+    max-width: 700px; // Constrain form width for better readability
+    margin: 0 auto;
+    background-color: $color-white;
+    padding: $spacing-unit-xl;
+    border-radius: $border-radius-base * 2;
+    box-shadow: 0 5px 25px rgba($color-black, 0.08);
+  }
+
+  // CF7 Specific Styling
+  // Note: CF7 generates <p> tags around form fields by default. 
+  // You can disable this in CF7 settings (add define('WPCF7_AUTOP', false); to wp-config.php)
+  // or style around them. These styles assume default <p> tags.
+
+  .wpcf7-form {
+    p {
+      margin-bottom: $spacing-unit-lg; // Space between form rows
+      &:last-of-type {
+        margin-bottom: 0; // No extra space after the submit button's paragraph
+      }
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: $spacing-unit-xs;
+      color: $color-text-dark;
+    }
+
+    // Input fields (text, email, tel, etc.) & Textarea
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="password"],
+    input[type="search"],
+    input[type="number"],
+    input[type="date"],
+    textarea {
+      display: block;
+      width: 100%;
+      padding: $spacing-unit-sm $spacing-unit-md;
+      font-family: $font-family-body;
+      font-size: $font-size-base;
+      color: $color-text-dark;
+      background-color: $color-white;
+      border: 1px solid lighten($color-medium-gray, 10%);
+      border-radius: $border-radius-base;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      line-height: $line-height-base;
+
+      &:focus {
+        border-color: $color-primary;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba($color-primary, 0.25);
+      }
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    // Placeholder text styling
+    ::placeholder {
+      color: $color-medium-gray;
+      opacity: 1; 
+    }
+
+    // CF7 Response Output (messages like "Thank you for your message.")
+    .wpcf7-response-output {
+      margin: $spacing-unit-lg 0 0 0;
+      padding: $spacing-unit-md;
+      border-radius: $border-radius-base;
+      text-align: center;
+    }
+    // Example: Styling for a success message
+    // .wpcf7-mail-sent-ok {
+    //   background-color: lighten($color-primary, 40%);
+    //   border: 1px solid $color-primary;
+    //   color: $color-text-dark;
+    // }
+
+    // Submit Button
+    .wpcf7-submit {
+      @extend .btn; // Inherit base button styles
+      @extend .btn-primary; // Inherit primary button styles
+      width: 100%; // Make button full width of its container
+      // Or display: inline-block; width: auto; if you prefer not full-width
+      margin-top: $spacing-unit-sm; // Add some space above submit if <p> tags are removed
+    }
+
+    // Acceptance Checkbox (if used for GDPR etc.)
+    .wpcf7-acceptance {
+      .wpcf7-list-item {
+        margin-left: 0; // Override default CF7 list item margin
+      }
+      input[type="checkbox"] {
+        margin-right: $spacing-unit-xs;
+        vertical-align: middle;
+      }
+      span {
+        vertical-align: middle;
+      }
+    }
+
+    // Spinner / Loading icon
+    .ajax-loader {
+      // CF7 default spinner is an image. Can be styled or replaced.
+      // Example: margin-left: $spacing-unit-sm;
+    }
+  }
+} 

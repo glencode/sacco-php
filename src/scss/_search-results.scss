@@ -1,0 +1,95 @@
+// Styles for the Search Results page (search.php)
+
+.search-results-page {
+    // Wrapper class to be added to the <main> element in search.php
+
+    .page-header {
+        margin-bottom: $spacing-unit-xl;
+        border-bottom: 1px solid $color-border;
+        padding-bottom: $spacing-unit-lg;
+
+        .page-title {
+            font-family: $font-family-headings;
+            font-size: $font-size-h2;
+            color: $color-text-dark;
+            margin-bottom: $spacing-unit-sm;
+
+            span { // The search query itself
+                color: $color-primary;
+                font-style: italic;
+            }
+        }
+    }
+
+    .search-again-form {
+        margin-bottom: $spacing-unit-xl;
+        padding: $spacing-unit-lg;
+        background-color: $color-background-alt;
+        border-radius: $border-radius-md;
+        border: 1px solid $color-border;
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: $spacing-unit-md;
+            color: $color-text-dark;
+        }
+
+        .search-form {
+            display: flex;
+            border: 1px solid $color-border;
+            border-radius: $border-radius-base;
+            overflow: hidden;
+
+            .search-field {
+                flex-grow: 1;
+                padding: $spacing-unit-sm $spacing-unit-md;
+                border: none;
+                font-size: $font-size-base;
+                &:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+                }
+            }
+            .search-submit {
+                background-color: $color-primary;
+                color: $color-white;
+                border: none;
+                padding: $spacing-unit-sm $spacing-unit-lg;
+                cursor: pointer;
+                font-size: $font-size-base;
+                font-weight: 600;
+                transition: background-color 0.2s ease-in-out;
+                &:hover,
+                &:focus {
+                    background-color: darken($color-primary, 10%);
+                }
+            }
+        }
+    }
+
+
+    .no-results {
+        // Styles for the "Nothing Found" section (content-none.php usually)
+        padding: $spacing-unit-xl;
+        text-align: center;
+        background-color: $color-background-alt;
+        border: 1px dashed $color-border;
+        border-radius: $border-radius-md;
+
+        .page-title {
+            font-size: $font-size-h3;
+            color: $color-text-dark;
+            margin-bottom: $spacing-unit-md;
+        }
+
+        p {
+            font-size: $font-size-lg;
+            color: $color-text-secondary;
+            margin-bottom: $spacing-unit-lg;
+        }
+    }
+
+    // Individual search result items will typically use .post-item styles
+    // from _archive.scss, so no specific styles needed here unless overriding.
+} 

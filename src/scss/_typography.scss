@@ -1,0 +1,50 @@
+// ---------------------------------------------------------------------------
+// Typography
+// ---------------------------------------------------------------------------
+
+body {
+  font-family: $font-family-body;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-text-dark;
+  background-color: $color-background-light;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family-headings;
+  font-weight: 700; // Assuming Poppins bold for headings, can be adjusted
+  line-height: 1.2;
+  margin-top: $spacing-unit-lg;
+  margin-bottom: $spacing-unit-md;
+  color: $color-text-dark; // Or a specific heading color if different
+}
+
+h1 { font-size: $font-size-h1; }
+
+h2 { font-size: $font-size-h2; }
+
+h3 { font-size: $font-size-h3; }
+
+h4 { font-size: $font-size-h4; }
+
+h5 { font-size: $font-size-h5; }
+
+h6 { font-size: $font-size-h6; }
+
+p {
+  margin-top: 0;
+  margin-bottom: $spacing-unit-md;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: darken($color-primary, 10%);
+    text-decoration: underline;
+  }
+} 

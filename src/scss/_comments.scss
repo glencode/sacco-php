@@ -1,0 +1,218 @@
+// Styles for the Comments section (comments.php)
+
+.comments-area {
+    margin-top: $spacing-unit-xl * 1.5;
+    padding-top: $spacing-unit-xl;
+    border-top: 2px solid $color-border;
+
+    .comments-title {
+        font-family: $font-family-headings;
+        font-size: $font-size-h3;
+        color: $color-text-dark;
+        margin-bottom: $spacing-unit-lg;
+    }
+
+    .comment-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 $spacing-unit-xl 0;
+
+        .comment-body {
+            padding: $spacing-unit-lg;
+            margin-bottom: $spacing-unit-lg;
+            background-color: $color-background-alt;
+            border: 1px solid $color-border;
+            border-radius: $border-radius-md;
+            position: relative;
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: $spacing-unit-md;
+
+            .avatar {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                margin-right: $spacing-unit-md;
+                border: 2px solid $color-primary;
+            }
+
+            .fn {
+                font-family: $font-family-headings;
+                font-size: $font-size-lg;
+                color: $color-text-dark;
+                font-style: normal;
+                font-weight: 600;
+                a {
+                    color: $color-text-dark;
+                    text-decoration: none;
+                    &:hover { color: $color-primary; }
+                }
+            }
+
+            .says {
+                display: none; // Often redundant
+            }
+        }
+
+        .comment-metadata {
+            font-size: $font-size-sm;
+            color: $color-text-secondary;
+            margin-bottom: $spacing-unit-md;
+
+            a {
+                color: $color-text-secondary;
+                text-decoration: none;
+                &:hover { color: $color-primary; }
+            }
+        }
+
+        .comment-content {
+            font-size: $font-size-base;
+            line-height: $line-height-base;
+            color: $color-text-main;
+
+            p:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .reply {
+            margin-top: $spacing-unit-md;
+            .comment-reply-link {
+                @extend .btn;
+                @extend .btn-secondary !optional; // Or a new .btn-outline-primary style
+                font-size: $font-size-sm;
+                padding: $spacing-unit-xs $spacing-unit-sm;
+            }
+        }
+
+        // Nested comments
+        .children {
+            list-style: none;
+            padding-left: $spacing-unit-lg; // Indent replies
+            margin-top: $spacing-unit-lg;
+            border-left: 2px solid $color-primary;
+            margin-left: $spacing-unit-md; // Align with avatar area roughly
+        }
+    }
+
+    // "Comments are closed" message
+    .no-comments {
+        font-style: italic;
+        color: $color-text-secondary;
+        padding: $spacing-unit-lg;
+        background-color: $color-background-alt;
+        border: 1px dashed $color-border;
+        border-radius: $border-radius-md;
+        text-align: center;
+    }
+}
+
+// Comment Form Styling
+.comment-respond {
+    margin-top: $spacing-unit-xl;
+    padding: $spacing-unit-lg;
+    background-color: lighten($color-background-alt, 2%);
+    border: 1px solid $color-border;
+    border-radius: $border-radius-md;
+
+    .comment-reply-title {
+        font-family: $font-family-headings;
+        font-size: $font-size-h4;
+        color: $color-text-dark;
+        margin-bottom: $spacing-unit-lg;
+
+        small {
+            margin-left: $spacing-unit-sm;
+            #cancel-comment-reply-link {
+                font-size: $font-size-sm;
+                color: $color-accent;
+                text-decoration: none;
+                font-weight: normal;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .comment-form {
+        p {
+            margin-bottom: $spacing-unit-md;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: $spacing-unit-xs;
+            color: $color-text-dark;
+            font-size: $font-size-sm;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: $spacing-unit-sm $spacing-unit-md;
+            border: 1px solid $color-border;
+            border-radius: $border-radius-base;
+            font-size: $font-size-base;
+            background-color: $color-white;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+            &:focus {
+                outline: none;
+                border-color: $color-primary;
+                box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+            }
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .comment-notes, // "Your email address will not be published..."
+        .logged-in-as {
+            font-size: $font-size-sm;
+            color: $color-text-secondary;
+            margin-bottom: $spacing-unit-lg;
+            a {
+                color: $color-primary;
+                text-decoration: none;
+                &:hover { text-decoration: underline; }
+            }
+        }
+
+        .form-submit {
+            margin-top: $spacing-unit-md;
+            text-align: right;
+            .submit {
+                @extend .btn;
+                @extend .btn-primary;
+            }
+        }
+
+        // GDPR checkbox
+        .comment-form-cookies-consent {
+            display: flex;
+            align-items: center;
+            font-size: $font-size-sm;
+            color: $color-text-secondary;
+
+            input[type="checkbox"] {
+                width: auto;
+                margin-right: $spacing-unit-sm;
+            }
+
+            label {
+                font-weight: normal;
+                margin-bottom: 0;
+            }
+        }
+    }
+} 

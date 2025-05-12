@@ -1,0 +1,561 @@
+/**
+ * Front Page Styles
+ */
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-slider {
+    width: 100%;
+    height: 600px;
+}
+
+@media (max-width: 768px) {
+    .hero-slider {
+        height: 450px;
+    }
+}
+
+.hero-slider .swiper-slide {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.hero-slider .swiper-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.slide-content-wrap {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+.slide-content {
+    color: #fff;
+    max-width: 600px;
+    padding: 30px 0;
+}
+
+.slide-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.slide-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+}
+
+.slide-buttons {
+    margin-top: 20px;
+}
+
+.hero-slider .swiper-button-next,
+.hero-slider .swiper-button-prev {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.3);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.hero-slider .swiper-button-next:hover,
+.hero-slider .swiper-button-prev:hover {
+    background: rgba(92, 161, 87, 0.8);
+}
+
+.hero-slider .swiper-button-next:after,
+.hero-slider .swiper-button-prev:after {
+    font-size: 20px;
+}
+
+.hero-slider .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    opacity: 0.7;
+}
+
+.hero-slider .swiper-pagination-bullet-active {
+    background: #5ca157;
+    opacity: 1;
+}
+
+/* Philosophy Section */
+.philosophy-section {
+    padding: 80px 0;
+}
+
+.section-title {
+    position: relative;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #2c3624;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 50px;
+}
+
+.philosophy-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.philosophy-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.philosophy-icon {
+    font-size: 3rem;
+    color: #5ca157;
+    margin-bottom: 20px;
+}
+
+.philosophy-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+/* Stats Section */
+.stats-section {
+    background-color: #f5f7fa;
+    padding: 60px 0;
+}
+
+.stat-item {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    color: #5ca157;
+    margin-bottom: 15px;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3624;
+    margin-bottom: 10px;
+}
+
+.stat-title {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+/* Products Section */
+.products-section {
+    padding: 80px 0;
+}
+
+.product-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.1);
+}
+
+.product-content {
+    padding: 20px;
+}
+
+.product-title {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.product-excerpt {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* CTA Section */
+.cta-section {
+    background-color: #5ca157;
+    color: #fff;
+    padding: 60px 0;
+}
+
+.cta-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.cta-text {
+    font-size: 1.1rem;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+    padding: 80px 0;
+}
+
+.testimonials-slider {
+    padding-bottom: 50px;
+}
+
+.testimonial-item {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    margin: 10px;
+}
+
+.testimonial-content {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.testimonial-icon {
+    font-size: 2rem;
+    color: #5ca157;
+    opacity: 0.2;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+}
+
+.testimonial-author-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.testimonial-author-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.testimonial-author-name {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.testimonial-author-role {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0;
+}
+
+.testimonials-pagination {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+/* Partners Section */
+.partners-section {
+    padding: 60px 0;
+    background: #f5f7fa;
+}
+
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 30px;
+    align-items: center;
+}
+
+.partner-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.partner-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.partner-item img {
+    max-width: 100%;
+    max-height: 80px;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+}
+
+.partner-item:hover img {
+    filter: grayscale(0%);
+}
+
+/*--------------------------------------------------------------
+# News Section
+--------------------------------------------------------------*/
+.news-section .news-card {
+    transition: all 0.3s ease-in-out;
+}
+
+.news-section .news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.news-section .news-card-img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.news-section .news-meta {
+    font-size: 0.85rem;
+}
+
+.news-section .news-excerpt {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/*--------------------------------------------------------------
+# Testimonials Section
+--------------------------------------------------------------*/
+.testimonials-section .testimonial-card-home {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    /* Add any specific card styling if different from other cards */
+}
+
+.testimonials-section .testimonial-card-home:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15) !important; /* Equivalent to Bootstrap 'shadow' class */
+}
+
+.testimonials-section .testimonial-image {
+    border: 3px solid var(--bs-primary);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.5rem; /* Was 3rem, adjusted for better spacing with parent row mb-5 */
+}
+
+.testimonials-section .testimonial-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+}
+
+.testimonials-section .testimonial-author {
+    font-weight: 600;
+    color: var(--bs-primary);
+}
+
+.testimonials-section .testimonial-meta {
+    font-size: 0.85rem;
+}
+
+/* Swiper Pagination for Testimonials */
+.testimonials-section .swiper-pagination {
+    position: relative;
+    bottom: auto;
+    margin-top: 20px;
+}
+
+.testimonials-section .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background-color: #ccc;
+    opacity: 1;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.testimonials-section .swiper-pagination-bullet-active {
+    background-color: var(--bs-primary);
+    transform: scale(1.2);
+}
+
+/* Quick Actions Section */
+.quick-actions-section {
+    background-color: #f8f9fa; /* Light gray background */
+}
+
+.quick-action-card {
+    transition: all 0.3s ease-in-out;
+    border: 0; /* Remove default card border */
+}
+
+.quick-action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,.1) !important;
+}
+
+.quick-action-icon i {
+    /* color: #5ca157; */ /* Using text-primary utility class instead */
+}
+
+.quick-action-title {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Why Choose Us Section (using .philosophy-card styles) */
+.why-choose-us-section .philosophy-card:hover {
+    /* Styles already defined for .philosophy-card:hover */
+}
+
+/* Mobile App CTA Section */
+.mobile-app-cta-section {
+    /* background-color: #f5f7fa; */ /* Can be bg-light or other */
+}
+
+.mobile-app-image {
+    max-height: 450px;
+    object-fit: contain;
+}
+
+.app-store-badges img.app-badge {
+    height: 50px;
+    width: auto;
+    margin-bottom: 10px;
+}
+
+/* Partners Section */
+.partners-section {
+    padding: 60px 0;
+    background-color: #fff; /* Or #f8f9fa if preferred */
+}
+
+.partners-slider .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px; /* Adjust as needed */
+}
+
+.partner-item {
+    padding: 15px;
+    text-align: center;
+}
+
+.partner-logo {
+    max-height: 80px; /* Adjust as needed */
+    width: auto;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s ease-in-out;
+}
+
+.partner-item:hover .partner-logo,
+.partners-slider .swiper-slide:hover .partner-logo {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.partners-pagination.swiper-pagination-bullets .swiper-pagination-bullet {
+    background-color: #adb5bd; /* Light gray for inactive */
+    opacity: 1;
+}
+
+.partners-pagination.swiper-pagination-bullets .swiper-pagination-bullet-active {
+    background-color: var(--bs-primary, #007bff); /* Primary color for active */
+}
+
+/* Ensure section titles and subtitles have consistent styling if not already covered */
+.section-title {
+    font-size: 2.2rem; /* Example size */
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #212529; /* Dark color */
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: #6c757d; /* Muted color */
+    margin-bottom: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* CTA Section - minor refinement for better color consistency */
+.cta-section {
+    background-color: var(--bs-primary, #007bff); /* Ensure this uses a theme variable or clear primary color */
+    color: #fff;
+}
+
+.cta-title {
+    color: #fff; /* Explicitly set for contrast */
+}
+
+.cta-supertitle {
+    color: rgba(255,255,255,0.8); /* Slightly muted supertitle */
+    letter-spacing: 1px; /* Consistent with example */
+}
+
+/* Product Card Home - specific hover if not covered by .product-card */
+.product-card-home:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15) !important; /* Equivalent to Bootstrap 'shadow' class */
+} 

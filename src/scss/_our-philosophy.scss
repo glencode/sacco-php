@@ -1,0 +1,83 @@
+// ---------------------------------------------------------------------------
+// Our Philosophy Section Styles
+// ---------------------------------------------------------------------------
+
+.our-philosophy-section {
+  padding-top: $spacing-unit-xxl;
+  padding-bottom: $spacing-unit-xxl;
+  background-color: $color-white; // Or a very light alternate background
+
+  .section-title { // Optional section title, if you add one
+    text-align: center;
+    margin-bottom: $spacing-unit-xl;
+    font-size: $font-size-h2;
+    color: $color-text-dark;
+  }
+
+  .philosophy-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); // Responsive grid
+    gap: $spacing-unit-lg; // Gap between cards
+
+    @media (max-width: $breakpoint-sm) {
+      grid-template-columns: 1fr; // Single column on very small screens
+    }
+  }
+
+  .philosophy-card {
+    background-color: $color-white; 
+    border: 1px solid $color-light-gray; // Subtle border
+    border-radius: $border-radius-base * 2; // Slightly more rounded
+    padding: $spacing-unit-lg;
+    text-align: center; // Center content within the card
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba($color-black, 0.08);
+    }
+
+    .card-icon {
+      margin-bottom: $spacing-unit-md;
+      img {
+        max-height: 60px; // Adjust icon size as needed
+        width: auto;
+      }
+      // If using FontAwesome icons instead of images:
+      // i {
+      //   font-size: 3rem; // Adjust icon size
+      //   color: $color-primary;
+      //   margin-bottom: $spacing-unit-md;
+      // }
+    }
+
+    .card-title {
+      font-size: $font-size-h4;
+      color: $color-text-dark;
+      margin-top: 0;
+      margin-bottom: $spacing-unit-sm;
+    }
+
+    .card-description {
+      font-size: $font-size-base; // Or slightly smaller, e.g., 0.9rem
+      color: lighten($color-text-dark, 15%);
+      line-height: 1.7;
+      margin-bottom: $spacing-unit-md;
+    }
+
+    .card-link {
+      font-family: $font-family-headings;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: inline-block; // To allow margin-top if needed
+      margin-top: auto; // Push link to bottom if cards have varying content height and flex is used on card
+      .arrow {
+        margin-left: $spacing-unit-xs;
+        transition: transform 0.3s ease;
+      }
+      &:hover .arrow {
+        transform: translateX(3px);
+      }
+    }
+  }
+} 

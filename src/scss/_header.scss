@@ -1,0 +1,139 @@
+// ---------------------------------------------------------------------------
+// Header Styles
+// ---------------------------------------------------------------------------
+
+.site-header {
+  background-color: $color-white; // Assuming a white header background
+  padding-top: $spacing-unit-md;
+  padding-bottom: $spacing-unit-md;
+  border-bottom: 1px solid $color-light-gray; // Subtle border like some headers
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .site-branding {
+    // Logo and site title/tagline
+    // Underscores default styles might be okay for now, or we can customize
+    // e.g., ensure logo image isn't too large
+    img.custom-logo {
+      max-height: 60px; // Adjust as needed
+      width: auto;
+    }
+
+    .site-title {
+      margin: 0;
+      font-size: $font-size-h4; // Adjust as needed
+      a {
+        text-decoration: none;
+        color: $color-text-dark;
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+
+    .site-description {
+      margin: 0;
+      font-size: 0.85rem; // Adjust as needed
+      color: lighten($color-text-dark, 20%);
+    }
+  }
+
+  .main-navigation {
+    // Navigation menu. Underscores provides base styles.
+    // We'll enhance these for dropdowns/mega-menu later.
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex; // Basic horizontal menu
+
+      li {
+        margin-left: $spacing-unit-md;
+
+        a {
+          text-decoration: none;
+          color: $color-text-dark;
+          font-family: $font-family-headings; // Poppins for nav links
+          font-weight: 500;
+          padding: $spacing-unit-sm 0; // Padding for clickable area
+
+          &:hover,
+          &:focus,
+          &.current-menu-item a, // Highlight current page
+          &.current_page_item a { // Another way WP might class it
+            color: $color-primary;
+          }
+        }
+      }
+    }
+    // Hide the mobile menu toggle on larger screens by default
+    .menu-toggle {
+      display: none;
+    }
+  }
+
+  .header-cta {
+    // Members Portal button
+    // Styles are mostly from .btn and .btn-primary
+    // Add any specific alignment if needed
+  }
+}
+
+// Basic responsive considerations for the header
+// (will need more for proper mobile navigation toggle later)
+@media (max-width: $breakpoint-md) { // Tablet and below
+  .site-header {
+    .container {
+      flex-wrap: wrap; // Allow items to wrap if they don't fit
+    }
+
+    .main-navigation {
+      // Underscores handles showing .menu-toggle and hiding the ul via JS.
+      // We'll need to style the toggled mobile menu later.
+      ul {
+        display: none; // Initially hidden on mobile, shown by JS
+        width: 100%;
+        flex-direction: column;
+        background-color: $color-white;
+        position: absolute;
+        top: 100%; // Position below the header
+        left: 0;
+        right: 0;
+        z-index: 999;
+        border-top: 1px solid $color-light-gray;
+        box-shadow: 0 2px 5px rgba($color-black, 0.1);
+
+        li {
+          margin-left: 0;
+          width: 100%;
+          a {
+            display: block;
+            padding: $spacing-unit-md;
+            border-bottom: 1px solid $color-light-gray;
+          }
+          &:last-child a {
+            border-bottom: none;
+          }
+        }
+      }
+      // When mobile menu is open (Underscores adds .toggled class to .main-navigation)
+      &.toggled ul {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: inline-block; // Show hamburger on mobile
+      }
+    }
+
+    .header-cta {
+      // Potentially adjust CTA for mobile, e.g., full width or different placement
+      // For now, let it be as is, or hide if menu is too crowded.
+      // Example: margin-top: $spacing-unit-md; width: 100%; text-align: center;
+    }
+  }
+} 

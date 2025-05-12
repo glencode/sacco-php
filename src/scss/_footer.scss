@@ -1,0 +1,410 @@
+// ---------------------------------------------------------------------------
+// Footer Styles (Customizer Driven - Based on footer (2).php)
+// ---------------------------------------------------------------------------
+
+// Basic Grid Simulation (if not using Bootstrap or similar)
+.container {
+    // Assumes .container is already defined with max-width, padding, margin: auto
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px; // Adjust gutter simulation if needed
+    margin-left: -15px;
+}
+// Basic column padding
+[class*="col-"] {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+// Example desktop column width (adjust breakpoints and classes as needed)
+@media (min-width: 992px) { // lg breakpoint approx
+    .col-lg-4 {
+        flex: 0 0 33.33333%;
+        max-width: 33.33333%;
+    }
+}
+@media (min-width: 768px) { // md breakpoint approx
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .col-md-12 {
+         flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+.mb-0 { margin-bottom: 0 !important; }
+.mb-3 { margin-bottom: 1rem !important; }
+.text-center { text-align: center !important; }
+.text-white { color: #fff !important; }
+// End Basic Grid Simulation
+
+.site-footer.customizer-driven {
+  $footer-bg-color: #4a148c; // Purple from reference
+  $footer-text-color: #e0e0e0; // Light grey/off-white text
+  $footer-link-color: #ffffff; // White links
+  $footer-link-hover-color: #f3e5f5; // Lighter purple/white for hover
+  $footer-title-color: #ffffff; // White titles
+  $bottom-bar-bg-color: #311b92; // Darker purple/near black for bottom bar (adjust)
+  $bottom-bar-text-color: #bdbdbd; // Light grey for bottom bar text
+
+  color: $footer-text-color;
+  font-size: 0.9rem;
+
+  a {
+    color: $footer-link-color;
+    text-decoration: none;
+    &:hover,
+    &:focus {
+      color: $footer-link-hover-color;
+      text-decoration: none;
+    }
+  }
+
+  // Main Footer Area
+  .footer-main-area {
+    background-color: $footer-bg-color;
+    color: $footer-text-color;
+    padding-top: $spacing-unit-xxl;
+    padding-bottom: $spacing-unit-xl;
+  }
+
+  .footer-column {
+    margin-bottom: $spacing-unit-lg; // Space below columns when they stack
+  }
+
+  .footer-widget {
+    .footer-logo {
+      // Style for logo/company name from reference
+      img.custom-logo {
+         max-width: 200px;
+         height: auto;
+         filter: brightness(0) invert(1); // Make logo white if it's dark
+         margin-bottom: $spacing-unit-md;
+      }
+      .company-name {
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: $footer-title-color;
+          margin-bottom: $spacing-unit-md;
+          position: relative;
+          display: inline-block;
+          padding-bottom: $spacing-unit-sm;
+          &::after {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 50px;
+              height: 3px;
+              background-color: $footer-link-color;
+          }
+          a {
+             color: inherit;
+             &:hover { text-decoration: none; }
+          }
+      }
+    }
+
+    .footer-description {
+      line-height: 1.7;
+      margin-bottom: $spacing-unit-lg;
+      color: $footer-text-color;
+    }
+
+    .footer-widget-title {
+      color: $footer-title-color;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-top: 0;
+      margin-bottom: $spacing-unit-lg;
+      position: relative;
+      display: inline-block;
+      padding-bottom: $spacing-unit-sm;
+      &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 40px;
+          height: 2px;
+          background-color: $footer-link-color;
+      }
+    }
+
+    // Quick Links List
+    .footer-links-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li {
+        margin-bottom: $spacing-unit-sm * 1.5; // Slightly more space for links
+      }
+      a {
+          color: $footer-link-color;
+          &:hover, &:focus { color: $footer-link-hover-color; }
+      }
+    }
+
+    // Contact Info List
+    .footer-contact-info {
+        color: $footer-text-color;
+      p {
+        margin-bottom: $spacing-unit-md;
+        display: flex;
+        align-items: center;
+        i {
+          margin-right: $spacing-unit-md;
+          color: $footer-link-color;
+          width: 1.3em;
+          text-align: center;
+          font-size: 1.1rem;
+        }
+        a {
+             color: $footer-link-color;
+             &:hover, &:focus { color: $footer-link-hover-color; }
+        }
+      }
+    }
+
+    // Social Links
+    .footer-social {
+      margin-top: $spacing-unit-lg;
+      .social-links-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap; // Allow wrapping if many icons
+        gap: $spacing-unit-sm;
+        li {
+          a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px; // Match reference style more closely
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba($color-white, 0.15);
+            color: $footer-link-color;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+
+            &:hover,
+            &:focus {
+              background-color: $color-white;
+              color: $footer-bg-color; // Icon color changes on hover
+              text-decoration: none;
+            }
+            .screen-reader-text {
+                @extend .screen-reader-text;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Bottom Bar Styles
+  .footer-bottom-bar {
+    background-color: $bottom-bar-bg-color;
+    padding-top: $spacing-unit-md;
+    padding-bottom: $spacing-unit-md;
+    color: $bottom-bar-text-color;
+    font-size: 0.9rem;
+    text-align: center;
+
+    .footer-copyright {
+      padding: $spacing-unit-xs 0; // Add a bit of padding
+      a {
+         color: $footer-link-color;
+         &:hover, &:focus { color: $footer-link-hover-color; }
+      }
+    }
+  }
+}
+
+// Ensure screen-reader-text is defined
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    width: 1px;
+    word-wrap: normal !important;
+}
+
+// Footer Styles adapted from style (2).css
+// Original selectors like .itsulu-footer, .mil-footer-bottom are used as per footer.php modifications.
+
+.itsulu-footer {
+  background-color: var(--dark-bg, #1a1a1a); // Fallback to a dark color
+  color: var(--text-light, #f8f9fa);
+  padding: 60px 0 30px;
+  font-size: 15px;
+
+  .container .row {
+    // display: flex; // Bootstrap row handles this
+    // flex-wrap: wrap;
+    // justify-content: space-between;
+    gap: 30px; // This might be desired if Bootstrap's gutter isn't enough or for specific spacing
+  }
+
+  // .col-lg-4, .col-md-6 can be further styled if needed, but Bootstrap handles layout.
+  // .footer-widget is a good general container for styling padding/margins within columns if needed.
+
+  .footer-widget-title {
+    font-weight: 600;
+    font-size: 1.1rem; // Slightly increased from 16px for better hierarchy
+    margin-bottom: 1rem; // Increased from 12px
+    color: var(--text-light, #f8f9fa);
+    // text-align: left; // Default for LTR
+  }
+
+  a {
+    color: var(--text-light, #f0f0f0); // Slightly less bright than pure white for better contrast on dark bg
+    text-decoration: none;
+    transition: color var(--transition-speed, 0.3s);
+
+    &:hover {
+      color: var(--primary-hover, #5034cd); // Use primary-hover variable
+    }
+  }
+
+  .footer-logo {
+    img {
+      max-width: 180px; // Was 160px, slight increase
+      margin-bottom: 1rem;
+    }
+    .company-name {
+        // Ensure this matches the text color from the <a> tag if it's a link
+        // Styles for text-white are likely from Bootstrap if used.
+        a {
+            text-decoration: none;
+        }
+        h2 {
+             color: var(--text-light, #f8f9fa); // Ensure heading color
+        }
+    }
+  }
+
+  .footer-social {
+    margin-top: 20px;
+    .social-links-menu {
+        padding-left: 0;
+        list-style: none;
+        // d-flex and flex-row are applied in PHP, styles below are for items if needed
+        li {
+            margin-right: 15px;
+            &:last-child {
+                margin-right: 0;
+            }
+            a {
+                font-size: 1.3rem;
+                color: var(--text-light, #f8f9fa); // Ensure this color is applied if not by .itsulu-footer a
+                transition: color var(--transition-speed, 0.3s);
+                 display: inline-block; // Helps with spacing and hover effects
+
+                &:hover {
+                 color: var(--primary, #2C1D6D); // Use primary variable
+                }
+            }
+        }
+    }
+  }
+  .footer-contact-info {
+    p {
+        margin-bottom: 0.5rem;
+        i {
+            margin-right: 8px;
+            color: var(--primary, #5ca157); // Use theme primary for icons
+        }
+    }
+  }
+
+  .footer-widget ul {
+      padding-left: 0;
+      list-style: none;
+      li {
+          margin-bottom: 0.5rem;
+          a {
+              // Standard link styling from .itsulu-footer a applies
+          }
+      }
+  }
+}
+
+.mil-footer-bottom {
+  background-color: darken(#1a1a1a, 5%); // Slightly darker than main footer bg - Using fallback directly
+  color: var(--gray, #aaa); // Use gray variable, or a lighter gray
+  text-align: center;
+  padding: 15px 0; // Was 5px 0, increased padding
+  font-size: 0.9rem;
+
+  p {
+    margin: 0;
+  }
+  a {
+      color: var(--text-light, #f0f0f0); // Ensure links are visible
+      &:hover {
+          color: var(--primary-hover, #5034cd);
+      }
+  }
+}
+
+// Back to top button
+.back-to-top {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  display: none; // Hidden by default, JS will show it
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: var(--primary, #5ca157);
+  color: var(--text-light, #fff);
+  border-radius: 50%;
+  z-index: 999;
+  transition: background-color var(--transition-speed, 0.3s), opacity var(--transition-speed, 0.3s);
+
+  i {
+    font-size: 1rem;
+    line-height: 40px; // Center icon vertically
+  }
+
+  &:hover {
+    background-color: var(--primary-hover, #a7a843);
+    color: var(--text-light, #fff);
+  }
+}
+
+// Contact Modal Styles (from footer.php)
+#contactModal {
+    .modal-header {
+        background-color: var(--primary, #5ca157);
+        color: var(--text-light, #fff);
+        .btn-close {
+            filter: invert(1) grayscale(100%) brightness(200%); // Makes close button white
+        }
+    }
+    .modal-content {
+        // Using a Bootstrap variable for border-radius if available, or a theme variable.
+        // For example, if you have $border-radius-lg in your _variables.scss
+        // border-radius: $border-radius-lg; 
+        border-radius: 0.5rem; // Fallback to a specific value
+    }
+    .form-label {
+        font-weight: 500; // Medium weight
+    }
+    .btn-primary {
+        // Uses existing .btn-primary styles defined in _buttons.scss
+    }
+} 

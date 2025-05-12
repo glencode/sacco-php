@@ -1,0 +1,50 @@
+// ---------------------------------------------------------------------------
+// Floating WhatsApp Button Styles
+// ---------------------------------------------------------------------------
+
+.floating-whatsapp-button {
+  position: fixed;
+  bottom: $spacing-unit-lg; // 24px from bottom
+  right: $spacing-unit-lg; // 24px from right
+  z-index: 1000; // Ensure it's above most other content
+
+  background-color: #25D366; // WhatsApp green
+  color: $color-white;
+  padding: $spacing-unit-sm $spacing-unit-md; // Adjust padding
+  border-radius: 50px; // Make it pill-shaped or fully round
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 2px 2px 10px rgba($color-black, 0.2);
+  transition: transform 0.3s ease;
+
+  // TODO: Style the icon when added
+  // i {
+  //   font-size: 1.5rem; 
+  //   margin-right: $spacing-unit-xs; 
+  // }
+  
+  span {
+      font-family: $font-family-body;
+      font-weight: 500;
+      font-size: 0.9rem;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 3px 3px 15px rgba($color-black, 0.3);
+    color: $color-white;
+    text-decoration: none;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    // Optional: Adjust position or size slightly on mobile
+    bottom: $spacing-unit-md;
+    right: $spacing-unit-md;
+    padding: $spacing-unit-xs $spacing-unit-sm;
+    span { display: none; } // Hide text on mobile, show only icon
+    // Increase icon size slightly if text is hidden
+    // i { font-size: 1.8rem; margin-right: 0; }
+  }
+} 
