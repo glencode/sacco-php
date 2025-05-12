@@ -6,7 +6,7 @@
 .hero-section {
     position: relative;
     overflow: hidden;
-    height: 100vh; /* Changed from 85vh to use full screen */
+    height: 100vh; /* Full screen height */
     min-height: 600px;
     margin-top: -90px; /* Offset for navbar */
 }
@@ -26,6 +26,10 @@
 .slide-content-wrap {
     position: relative;
     z-index: 2;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-top: 90px; /* Account for navbar offset */
 }
 
 /* Swiper pagination enhancements */
@@ -56,11 +60,12 @@
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
-    padding-top: 10px; /* Added padding to fix compressed appearance */
+    padding-top: 15px; /* Increased padding to fix compressed appearance */
+    padding-bottom: 15px; /* Added padding to pull navbar down a bit */
 }
 
 .site-header .main-header {
-    padding: 1rem 0;
+    padding: 0.5rem 0;
 }
 
 .site-header.scrolled {
