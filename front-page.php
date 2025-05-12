@@ -88,8 +88,8 @@ get_header();
 					<div class="swiper-slide" style="background-image: url('<?php echo esc_url($slide_bg); ?>');">
 						<div class="slide-content-wrap">
 							<div class="container">
-								<div class="row">
-									<div class="col-lg-8 col-md-10">
+								<div class="row justify-content-center">
+									<div class="col-lg-10 text-center">
 										<div class="slide-content">
 											<h2 class="slide-title"><?php the_title(); ?></h2>
 											<div class="slide-subtitle">
@@ -119,8 +119,8 @@ get_header();
 					<div class="swiper-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/img/default-slide.jpg');">
 						<div class="slide-content-wrap">
 							<div class="container">
-								<div class="row">
-									<div class="col-lg-8 col-md-10">
+								<div class="row justify-content-center">
+									<div class="col-lg-10 text-center">
 										<div class="slide-content">
 											<h2 class="slide-title"><?php echo esc_html(get_theme_mod('default_slide_title', 'Welcome to Our Sacco')); ?></h2>
 											<div class="slide-subtitle">
