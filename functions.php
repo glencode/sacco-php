@@ -1111,5 +1111,68 @@ function sacco_php_optimize_images() {
 }
 add_action('after_setup_theme', 'sacco_php_optimize_images');
 
+/**
+ * Image optimization functions
+ */
+function sacco_optimize_image_sizes() {
+    // Remove default image sizes
+    remove_image_size('1536x1536');
+    remove_image_size('2048x2048');
+    
+    // Add custom optimized sizes
+    add_image_size('card-thumbnail', 480, 320, true);
+    add_image_size('hero-mobile', 768, 500, true);
+    add_image_size('hero-desktop', 1920, 800, true);
+}
+add_action('after_setup_theme', 'sacco_optimize_image_sizes');
+
+/**
+ * Add WebP support
+ */
+function sacco_webp_upload_mimes($existing_mimes) {
+    $existing_mimes['webp'] = 'image/webp';
+    return $existing_mimes;
+}
+add_filter('mime_types', 'sacco_webp_upload_mimes');
+
+/**
+ * Add image quality control
+ */
+function sacco_jpeg_quality() {
+    return 82; // Optimal quality-size ratio
+}
+add_filter('jpeg_quality', 'sacco_jpeg_quality');
+
+/**
+ * Add responsive image attributes
+ */
+function sacco_responsive_image_attributes($attributes) {
+    if (isset($attributes['src'])) {
+        $attributes['loading'] = 'lazy';
+        $attributes['decoding'] = 'async';
+    }
+    return $attributes;
+}
+add_filter('wp_get_attachment_image_attributes', 'sacco_responsive_image_attributes');
+
+/**
+ * Disable WordPress scaling for uploaded images
+ */
+add_filter('big_image_size_threshold', '__return_false');
+
+/**
+ * Add preload for critical images
+ */
+function sacco_preload_critical_images() {
+    if (is_front_page()) {
+        $hero_image_id = get_theme_mod('hero_image');
+        if ($hero_image_id) {
+            $hero_image_src = wp_get_attachment_image_src($hero_image_id, 'hero-desktop')[0];
+            echo '<link rel="preload" as="image" href="' . esc_url($hero_image_src) . '">';
+        }
+    }
+}
+add_action('wp_head', 'sacco_preload_critical_images', 1);
+
 
 
