@@ -134,37 +134,58 @@ get_header();
 		<section class="key-features-section py-5">
 			<div class="container">
 				<div class="row g-4">
-					<div class="col-md-4">
+					<div class="col-lg-3 col-md-6">
 						<div class="feature-card h-100">
 							<div class="feature-icon">
 								<i class="fas fa-shield-alt"></i>
 							</div>
 							<h3><?php esc_html_e('Secure & Licensed', 'sacco-php'); ?></h3>
-							<p><?php esc_html_e('Licensed by SASRA and deposits protected by the NSSF', 'sacco-php'); ?></p>
+							<p><?php esc_html_e('Licensed by SASRA with protected deposits', 'sacco-php'); ?></p>
+							<div class="feature-hover">
+								<a href="<?php echo esc_url(home_url('/about-us/')); ?>" class="btn btn-sm btn-outline-primary mt-3">Learn More</a>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-lg-3 col-md-6">
 						<div class="feature-card h-100">
 							<div class="feature-icon">
-								<i class="fas fa-percent"></i>
+								<i class="fas fa-percentage"></i>
 							</div>
-							<h3><?php esc_html_e('Competitive Rates', 'sacco-php'); ?></h3>
-							<p><?php esc_html_e('Enjoy high savings returns and low interest rates on loans', 'sacco-php'); ?></p>
+							<h3><?php esc_html_e('Best Rates', 'sacco-php'); ?></h3>
+							<p><?php esc_html_e('Competitive interest rates on savings and loans', 'sacco-php'); ?></p>
+							<div class="feature-hover">
+								<a href="<?php echo esc_url(home_url('/products-services/')); ?>" class="btn btn-sm btn-outline-primary mt-3">View Rates</a>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-lg-3 col-md-6">
 						<div class="feature-card h-100">
 							<div class="feature-icon">
 								<i class="fas fa-mobile-alt"></i>
 							</div>
 							<h3><?php esc_html_e('Digital Banking', 'sacco-php'); ?></h3>
-							<p><?php esc_html_e('Access your accounts 24/7 through our mobile app and online portal', 'sacco-php'); ?></p>
+							<p><?php esc_html_e('24/7 access through our mobile app', 'sacco-php'); ?></p>
+							<div class="feature-hover">
+								<a href="<?php echo esc_url(home_url('/online-banking/')); ?>" class="btn btn-sm btn-outline-primary mt-3">Get Started</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="feature-card h-100">
+							<div class="feature-icon">
+								<i class="fas fa-handshake"></i>
+							</div>
+							<h3><?php esc_html_e('Member Support', 'sacco-php'); ?></h3>
+							<p><?php esc_html_e('Dedicated support team for all members', 'sacco-php'); ?></p>
+							<div class="feature-hover">
+								<a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="btn btn-sm btn-outline-primary mt-3">Contact Us</a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
-		
+
 		<!-- Quick Links/Actions Section -->
 		<?php 
 		$quick_actions_title = get_field('home_quick_actions_title') ?: esc_html__('How Can We Help You?', 'sacco-php');
@@ -286,82 +307,71 @@ get_header();
 		</section>
 		
 		<!-- Stats Section -->
-		<?php
-		$stats_section_title = get_field('home_stats_section_title') ?: esc_html__('Our Impact in Numbers', 'sacco-php');
-		$stats_section_subtitle = get_field('home_stats_section_subtitle') ?: esc_html__('Key figures that highlight our commitment and success.', 'sacco-php');
-		$stats_items = get_field('home_stats_items');
-		?>
 		<section class="stats-section py-5 bg-light">
 			<div class="container">
 				<div class="row mb-5">
 					<div class="col-md-12 text-center">
-						<?php if ($stats_section_title) : ?>
-							<h2 class="section-title"><?php echo esc_html($stats_section_title); ?></h2>
-						<?php endif; ?>
-						<?php if ($stats_section_subtitle) : ?>
-							<p class="section-subtitle"><?php echo esc_html($stats_section_subtitle); ?></p>
-						<?php endif; ?>
+						<h2 class="section-title">Our Impact in Numbers</h2>
+						<p class="section-subtitle">Growing stronger together with our members</p>
 					</div>
 				</div>
 				<div class="row justify-content-center">
-					<?php 
-					if ($stats_items && is_array($stats_items)) :
-						$stat_col_class = count($stats_items) >= 4 ? 'col-lg-3 col-md-6' : 'col-md-4'; // Adjust columns for 3 items
-						foreach ($stats_items as $stat) :
-							$icon = !empty($stat['icon']) ? $stat['icon'] : 'fa-star';
-							$number = !empty($stat['number']) ? $stat['number'] : '0';
-							$title = !empty($stat['title']) ? $stat['title'] : esc_html__('Stat Title', 'sacco-php');
-					?>
-					<div class="<?php echo esc_attr($stat_col_class); ?> text-center mb-4 mb-lg-0">
-						<div class="stat-item p-4 border rounded bg-white shadow-sm h-100">
-							<div class="stat-icon text-primary mb-3">
-								<i class="fas <?php echo esc_attr($icon); ?> fa-3x"></i>
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center">
+							<div class="stat-icon bg-primary-soft mb-3">
+								<i class="fas fa-users fa-2x text-primary"></i>
 							</div>
-							<h3 class="stat-number display-4 fw-bold" data-count="<?php echo esc_attr($number); ?>">0</h3>
-							<p class="stat-title text-muted mb-0"><?php echo esc_html($title); ?></p>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-count="15000">0</h3>
+							<p class="stat-label">Active Members</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<?php 
-						endforeach;
-					else: // Fallback static stats
-					?>
-					<div class="col-lg-3 col-md-6 text-center mb-4 mb-lg-0">
-						<div class="stat-item p-4 border rounded bg-white shadow-sm">
-							<div class="stat-icon text-primary mb-3">
-								<i class="fas fa-users fa-3x"></i>
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center">
+							<div class="stat-icon bg-success-soft mb-3">
+								<i class="fas fa-money-bill-wave fa-2x text-success"></i>
 							</div>
-							<h3 class="stat-number display-4 fw-bold" data-count="10000">0</h3>
-							<p class="stat-title text-muted mb-0">Happy Members</p>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-count="500">0</h3>
+							<p class="stat-label">Million in Assets</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-6 text-center mb-4 mb-lg-0">
-						<div class="stat-item p-4 border rounded bg-white shadow-sm">
-							<div class="stat-icon text-primary mb-3">
-								<i class="fas fa-money-bill-wave fa-3x"></i>
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center">
+							<div class="stat-icon bg-info-soft mb-3">
+								<i class="fas fa-chart-line fa-2x text-info"></i>
 							</div>
-							<h3 class="stat-number display-4 fw-bold" data-count="250">0</h3>
-							<p class="stat-title text-muted mb-0">Million in Assets</p>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-count="20">0</h3>
+							<p class="stat-label">Years of Service</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar bg-info" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-6 text-center mb-4 mb-lg-0">
-						<div class="stat-item p-4 border rounded bg-white shadow-sm">
-							<div class="stat-icon text-primary mb-3">
-								<i class="fas fa-award fa-3x"></i>
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center">
+							<div class="stat-icon bg-warning-soft mb-3">
+								<i class="fas fa-award fa-2x text-warning"></i>
 							</div>
-							<h3 class="stat-number display-4 fw-bold" data-count="15">0</h3>
-							<p class="stat-title text-muted mb-0">Years of Service</p>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-count="12">0</h3>
+							<p class="stat-label">Branch Locations</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-6 text-center">
-						<div class="stat-item p-4 border rounded bg-white shadow-sm">
-							<div class="stat-icon text-primary mb-3">
-								<i class="fas fa-landmark fa-3x"></i>
-							</div>
-							<h3 class="stat-number display-4 fw-bold" data-count="5">0</h3>
-							<p class="stat-title text-muted mb-0">Branches</p>
-						</div>
-					</div>
-					<?php endif; ?>
 				</div>
 			</div>
 		</section>
