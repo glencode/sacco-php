@@ -185,4 +185,23 @@
 		html += '</div>';
 		return html;
 	}
+
+	// Add scroll behavior for glassmorphic navbar
+	function handleNavbarScroll() {
+		const header = document.querySelector('.site-header');
+		const scrollTrigger = 100; // Adjust this value as needed
+
+		window.addEventListener('scroll', () => {
+			if (window.scrollY > scrollTrigger) {
+				header.classList.add('scrolled');
+			} else {
+				header.classList.remove('scrolled');
+			}
+		});
+	}
+
+	// Initialize scroll behavior
+	document.addEventListener('DOMContentLoaded', () => {
+		handleNavbarScroll();
+	});
 }() );
