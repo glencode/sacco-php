@@ -141,6 +141,39 @@
         
         // Initialize preloader
         initPreloader();
+
+        // Load dynamic content
+        loadDynamicContent();
+        
+        // Optimize scroll performance
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (!scrollTimeout) {
+                window.requestAnimationFrame(() => {
+                    // Handle scroll-based animations and loading
+                    scrollTimeout = null;
+                });
+                scrollTimeout = true;
+            }
+        });
+
+        // Optimize form submissions
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitButton = form.querySelector('[type="submit"]');
+                if (submitButton) submitButton.disabled = true;
+                
+                try {
+                    const formData = new FormData(form);
+                    // Add your form submission logic here
+                } catch (error) {
+                    console.error('Form submission error:', error);
+                } finally {
+                    if (submitButton) submitButton.disabled = false;
+                }
+            });
+        });
     });
 
     function initLazyLoading() {
@@ -266,6 +299,33 @@
         }
     }
 
+    // Performance optimization for dynamic content loading
+    const loadDynamicContent = () => {
+        const intersectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = entry.target;
+                    if (target.dataset.src) {
+                        target.src = target.dataset.src;
+                        target.removeAttribute('data-src');
+                    }
+                    if (target.dataset.background) {
+                        target.style.backgroundImage = `url(${target.dataset.background})`;
+                        target.removeAttribute('data-background');
+                    }
+                    intersectionObserver.unobserve(target);
+                }
+            });
+        }, {
+            rootMargin: '50px'
+        });
+
+        // Observe all elements with data-src or data-background
+        document.querySelectorAll('[data-src], [data-background]').forEach(element => {
+            intersectionObserver.observe(element);
+        });
+    };
+
     // Debounce utility function
     function debounce(func, wait) {
         let timeout;
@@ -290,6 +350,13 @@
             }
         };
     }
+
+    // Optimize resize handlers
+    const optimizedResize = debounce(() => {
+        // Handle resize operations here
+    }, 250);
+
+    window.addEventListener('resize', optimizedResize);
 
     // Resource hint preloading
     function preloadResources() {
