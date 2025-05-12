@@ -100,6 +100,20 @@
     position: relative;
     transition: color 0.3s ease;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+/* Menu arrow indicators */
+.main-navigation a .menu-arrow {
+    margin-left: 0.3rem;
+    font-size: 0.75em;
+    transition: transform 0.3s ease;
+}
+
+.main-navigation .sub-menu a .submenu-arrow {
+    margin-left: auto;
+    font-size: 0.75em;
 }
 
 .scrolled .main-navigation a {
@@ -155,7 +169,9 @@
 .main-navigation .sub-menu a {
     color: var(--dark-color);
     padding: 0.75rem 1rem;
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     text-shadow: none;
     border-radius: 4px;
 }
