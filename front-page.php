@@ -446,52 +446,74 @@ get_header();
 		<!-- Mobile Banking / App CTA Section -->
 		<?php 
 		$mobile_app_enable = get_field('home_mobile_app_enable');
-		if( $mobile_app_enable || is_customize_preview() ) : // Show if enabled or in customizer
+		if ($mobile_app_enable || is_customize_preview()) : // Show if enabled or in customizer
 			$mobile_app_title = get_field('home_mobile_app_title') ?: esc_html__('Access Your Accounts on the Go', 'sacco-php');
 			$mobile_app_subtitle = get_field('home_mobile_app_subtitle') ?: esc_html__('Download our mobile app for easy and secure banking.', 'sacco-php');
 			$mobile_app_description = get_field('home_mobile_app_description') ?: esc_html__('Manage your finances anytime, anywhere. Check balances, transfer funds, pay bills, and much more, all from the convenience of your smartphone.', 'sacco-php');
 			$mobile_app_image = get_field('home_mobile_app_image');
 			$google_play_url = get_field('home_mobile_app_google_play_url');
-							<?php endif; ?>
-							<?php if ($apple_store_url && $apple_store_image) : ?>
-								<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank"><img src="<?php echo esc_url($apple_store_image['url']); ?>" alt="<?php echo esc_attr($apple_store_image['alt'] ?: 'Download on the App Store'); ?>" class="img-fluid app-badge"></a>
-							<?php elseif ($apple_store_url) : ?>
-								<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="btn btn-dark"><i class="fab fa-app-store-ios"></i> App Store</a>
-							<?php endif; ?>
-							<?php if (empty($google_play_url) && empty($apple_store_url) && is_customize_preview() ) : // Fallback for customizer?>
-					<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-2' : ''; ?> text-center text-lg-start mb-4 mb-lg-0">
-						<h2 class="section-title"><?php echo esc_html($mobile_app_title); ?></h2>
-						<p class="section-subtitle fs-5"><?php echo esc_html($mobile_app_subtitle); ?></p>
-						<p><?php echo nl2br(esc_html($mobile_app_description)); ?></p>
-						<div class="app-store-badges mt-4">
-							<?php if ($google_play_url && $google_play_image) : ?>
-								<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="me-2"><img src="<?php echo esc_url($google_play_image['url']); ?>" alt="<?php echo esc_attr($google_play_image['alt'] ?: 'Get it on Google Play'); ?>" class="img-fluid app-badge"></a>
-							<?php elseif ($google_play_url) : ?>
-								<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="btn btn-dark me-2"><i class="fab fa-google-play"></i> Google Play</a>
-							<?php endif; ?>
-							<?php if ($apple_store_url && $apple_store_image) : ?>
-								<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank"><img src="<?php echo esc_url($apple_store_image['url']); ?>" alt="<?php echo esc_attr($apple_store_image['alt'] ?: 'Download on the App Store'); ?>" class="img-fluid app-badge"></a>
-							<?php elseif ($apple_store_url) : ?>
-								<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="btn btn-dark"><i class="fab fa-app-store-ios"></i> App Store</a>
-							<?php endif; ?>
-							<?php if (empty($google_play_url) && empty($apple_store_url) && is_customize_preview() ) : // Fallback for customizer?>
-								<a href="#" class="btn btn-dark me-2"><i class="fab fa-google-play"></i> Google Play (Sample)</a>
-								<a href="#" class="btn btn-dark"><i class="fab fa-app-store-ios"></i> App Store (Sample)</a>
-							<?php endif; ?>
+			$google_play_image = get_field('home_mobile_app_google_play_image');
+			$apple_store_url = get_field('home_mobile_app_apple_store_url');
+			$apple_store_image = get_field('home_mobile_app_apple_store_image');
+		?>
+			<section class="mobile-app-cta-section py-5">
+				<div class="container">
+					<div class="row align-items-center">
+						<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-2' : ''; ?> text-center text-lg-start mb-4 mb-lg-0">
+							<h2 class="section-title"><?php echo esc_html($mobile_app_title); ?></h2>
+							<p class="section-subtitle fs-5"><?php echo esc_html($mobile_app_subtitle); ?></p>
+							<p><?php echo nl2br(esc_html($mobile_app_description)); ?></p>
+							<div class="app-store-badges mt-4">
+								<?php if ($google_play_url && $google_play_image) : ?>
+									<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="me-2">
+										<img src="<?php echo esc_url($google_play_image['url']); ?>" 
+											 alt="<?php echo esc_attr($google_play_image['alt'] ?: 'Get it on Google Play'); ?>" 
+											 class="img-fluid app-badge">
+									</a>
+								<?php elseif ($google_play_url) : ?>
+									<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="btn btn-dark me-2">
+										<i class="fab fa-google-play"></i> Google Play
+									</a>
+								<?php endif; ?>
+
+								<?php if ($apple_store_url && $apple_store_image) : ?>
+									<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank">
+										<img src="<?php echo esc_url($apple_store_image['url']); ?>" 
+											 alt="<?php echo esc_attr($apple_store_image['alt'] ?: 'Download on the App Store'); ?>" 
+											 class="img-fluid app-badge">
+									</a>
+								<?php elseif ($apple_store_url) : ?>
+									<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="btn btn-dark">
+										<i class="fab fa-app-store-ios"></i> App Store
+									</a>
+								<?php endif; ?>
+
+								<?php if (empty($google_play_url) && empty($apple_store_url) && is_customize_preview()) : ?>
+									<a href="#" class="btn btn-dark me-2">
+										<i class="fab fa-google-play"></i> Google Play (Sample)
+									</a>
+									<a href="#" class="btn btn-dark">
+										<i class="fab fa-app-store-ios"></i> App Store (Sample)
+									</a>
+								<?php endif; ?>
+							</div>
 						</div>
+						<?php if ($mobile_app_image) : ?>
+							<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
+								<img src="<?php echo esc_url($mobile_app_image['url']); ?>" 
+									 alt="<?php echo esc_attr($mobile_app_image['alt'] ?: 'Sacco Mobile App'); ?>" 
+									 class="img-fluid rounded shadow-lg mobile-app-image">
+							</div>
+						<?php elseif (is_customize_preview()): // Fallback image for customizer ?>
+							<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
+								<img src="<?php echo get_template_directory_uri(); ?>/assets/img/default-phone-mockup.png" 
+									 alt="Sacco Mobile App Preview" 
+									 class="img-fluid rounded shadow-lg mobile-app-image">
+							</div>
+						<?php endif; ?>
 					</div>
-					<?php if ($mobile_app_image) : ?>
-						<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
-							<img src="<?php echo esc_url($mobile_app_image['url']); ?>" alt="<?php echo esc_attr($mobile_app_image['alt'] ?: 'Sacco Mobile App'); ?>" class="img-fluid rounded shadow-lg mobile-app-image">
-						</div>
-					<?php elseif (is_customize_preview()): // Fallback image for customizer ?>
-						<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
-							<img src="<?php echo get_template_directory_uri(); ?>/assets/img/default-phone-mockup.png" alt="Sacco Mobile App Preview" class="img-fluid rounded shadow-lg mobile-app-image">
-						</div>
-					<?php endif; ?>
 				</div>
-			</div>
-		</section>
+			</section>
 		<?php endif; ?>
 
 		<!-- News & Updates Section -->
