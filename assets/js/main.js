@@ -526,4 +526,80 @@
         return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     }
     
-})(jQuery); 
+})(jQuery);
+
+// Performance optimized scroll handler
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Initialize on document ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Progressive loading animation
+    document.body.classList.add('loaded');
+    
+    // Initialize AOS with custom settings
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 50,
+            disable: 'mobile'
+        });
+    }
+
+    // Optimize scroll performance for animations
+    const scrollHandler = debounce(() => {
+        const scrolled = window.scrollY;
+        
+        // Apply parallax effect to hero section
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+            const translateY = scrolled * 0.4;
+            heroSection.style.transform = `translateY(${translateY}px)`;
+        }
+        
+        // Add subtle parallax to other sections
+        document.querySelectorAll('.feature-card, .stat-card').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+            
+            if (isVisible) {
+                const distance = window.innerHeight - rect.top;
+                const parallaxOffset = Math.min(20, distance * 0.1);
+                el.style.transform = `translateY(${parallaxOffset}px)`;
+            }
+        });
+    }, 10);
+
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+    
+    // Enhanced smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                const headerOffset = document.querySelector('.site-header').offsetHeight;
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});
