@@ -47,27 +47,30 @@ function loadScript(url, callback) {
 function initializePage() {
     // Initialize when document is ready
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize AOS
+        // Initialize AOS with enhanced settings
         AOS.init({
-            duration: 800,
+            duration: 1000,
             once: true,
-            offset: 50
+            offset: 100,
+            delay: 100,
+            easing: 'ease-out-cubic'
         });
 
-        // Hero Slider
+        // Enhanced Hero Slider
         const heroSwiper = new Swiper('.hero-slider', {
             slidesPerView: 1,
             spaceBetween: 0,
             loop: true,
             autoplay: {
-                delay: 5000,
+                delay: 6000,
                 disableOnInteraction: false,
             },
             effect: 'fade',
             fadeEffect: {
                 crossFade: true
             },
-            speed: 1000,
+            speed: 1500,
+            parallax: true,
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
@@ -80,21 +83,30 @@ function initializePage() {
                 prevEl: '.swiper-button-prev',
             },
             on: {
+                init: function() {
+                    this.el.addEventListener('mouseenter', () => {
+                        this.autoplay.stop();
+                    });
+                    this.el.addEventListener('mouseleave', () => {
+                        this.autoplay.start();
+                    });
+                },
                 slideChangeTransitionStart: function () {
                     const activeSlide = this.slides[this.activeIndex];
-                    const elements = activeSlide.querySelectorAll('.animate-in');
+                    const elements = activeSlide.querySelectorAll('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]');
                     elements.forEach(el => {
                         el.style.opacity = '0';
-                        el.style.transform = 'translateY(20px)';
+                        el.style.transform = 'translate3d(0, 50px, 0)';
                     });
                 },
                 slideChangeTransitionEnd: function () {
                     const activeSlide = this.slides[this.activeIndex];
-                    const elements = activeSlide.querySelectorAll('.animate-in');
+                    const elements = activeSlide.querySelectorAll('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]');
                     elements.forEach((el, index) => {
                         setTimeout(() => {
                             el.style.opacity = '1';
-                            el.style.transform = 'translateY(0)';
+                            el.style.transform = 'translate3d(0, 0, 0)';
+                            el.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s cubic-bezier(0.4, 0, 0.2, 1)';
                         }, index * 200);
                     });
                 }
