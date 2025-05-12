@@ -53,6 +53,7 @@
 /* Glassmorphic Navbar */
 .site-header {
     position: absolute;
+    top: 10px; /* Added to pull navbar down from the top */
     width: 100%;
     z-index: 1000;
     background: rgba(255, 255, 255, 0.08);
