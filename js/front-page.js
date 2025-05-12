@@ -412,7 +412,183 @@ function initializePage() {
             infiniteScrollObserver.observe(document.querySelector('.infinite-scroll-trigger'));
         }
     });
+
+    // Dynamic content loading
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize dynamic loading for testimonials
+        initDynamicTestimonials();
+        
+        // Initialize dynamic loading for products
+        initDynamicProducts();
+        
+        // Initialize intersection observer for animations
+        initIntersectionObserver();
+    });
 }
+
+function initDynamicTestimonials() {
+    const testimonialsContainer = document.querySelector('.testimonials-container');
+    if (!testimonialsContainer) return;
+
+    let page = 1;
+    const loadMoreTestimonials = async () => {
+        try {
+            const response = await fetch(`/wp-json/wp/v2/testimonial?page=${page}&per_page=3`);
+            const testimonials = await response.json();
+            
+            testimonials.forEach(testimonial => {
+                const testimonialElement = createTestimonialElement(testimonial);
+                testimonialsContainer.appendChild(testimonialElement);
+            });
+            
+            page++;
+        } catch (error) {
+            console.error('Error loading testimonials:', error);
+        }
+    };
+
+    // Intersection Observer for infinite scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                loadMoreTestimonials();
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const loadMoreTrigger = document.querySelector('.load-more-testimonials');
+    if (loadMoreTrigger) {
+        observer.observe(loadMoreTrigger);
+    }
+}
+
+function createTestimonialElement(testimonial) {
+    const template = document.createElement('div');
+    template.className = 'testimonial-card-home';
+    template.setAttribute('data-aos', 'fade-up');
+    template.innerHTML = `
+        <div class="testimonial-content">
+            <i class="fas fa-quote-left testimonial-icon"></i>
+            <p>${testimonial.content.rendered}</p>
+        </div>
+        <div class="testimonial-author">
+            <div class="testimonial-author-img">
+                ${testimonial._embedded?.['wp:featuredmedia'] ? 
+                    `<img src="${testimonial._embedded['wp:featuredmedia'][0].source_url}" alt="${testimonial.title.rendered}">` :
+                    '<img src="/wp-content/themes/sacco-php/assets/images/default-avatar.png" alt="Default avatar">'}
+            </div>
+            <div class="testimonial-author-info">
+                <h4 class="testimonial-author-name">${testimonial.title.rendered}</h4>
+                <p class="testimonial-author-role">${testimonial.meta.role || ''}</p>
+            </div>
+        </div>
+    `;
+    return template;
+}
+
+function initDynamicProducts() {
+    const productsContainer = document.querySelector('.products-container');
+    if (!productsContainer) return;
+
+    let productsPage = 1;
+    const loadMoreProducts = async () => {
+        try {
+            const response = await fetch(`/wp-json/wp/v2/product?page=${productsPage}&per_page=6`);
+            const products = await response.json();
+            
+            products.forEach(product => {
+                const productElement = createProductElement(product);
+                productsContainer.appendChild(productElement);
+            });
+            
+            productsPage++;
+        } catch (error) {
+            console.error('Error loading products:', error);
+        }
+    };
+
+    // Intersection Observer for products
+    const productObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                loadMoreProducts();
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const loadMoreProductsTrigger = document.querySelector('.load-more-products');
+    if (loadMoreProductsTrigger) {
+        productObserver.observe(loadMoreProductsTrigger);
+    }
+}
+
+function createProductElement(product) {
+    const template = document.createElement('div');
+    template.className = 'product-card';
+    template.setAttribute('data-aos', 'fade-up');
+    template.innerHTML = `
+        <div class="product-image">
+            ${product._embedded?.['wp:featuredmedia'] ? 
+                `<img src="${product._embedded['wp:featuredmedia'][0].source_url}" alt="${product.title.rendered}">` :
+                '<img src="/wp-content/themes/sacco-php/assets/images/default-product.png" alt="Default product image">'}
+        </div>
+        <div class="product-content">
+            <h3 class="product-title">${product.title.rendered}</h3>
+            <div class="product-excerpt">${product.excerpt.rendered}</div>
+            <a href="${product.link}" class="btn btn-primary">Learn More</a>
+        </div>
+    `;
+    return template;
+}
+
+function initIntersectionObserver() {
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+    });
+
+    // Lazy load images
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                }
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    lazyImages.forEach(img => imageObserver.observe(img));
+
+    // Animate elements on scroll
+    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    const elementObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    animatedElements.forEach(element => elementObserver.observe(element));
+}
+
+// Handle preloader
+window.addEventListener('load', function() {
+    const preloader = document.querySelector('.preloader');
+    if (preloader) {
+        preloader.classList.add('preloader-hidden');
+        setTimeout(() => {
+            preloader.style.display = 'none';
+        }, 500);
+    }
+});
 
 // Run dependency check when DOM is ready
 document.addEventListener('DOMContentLoaded', ensureDependencies);
