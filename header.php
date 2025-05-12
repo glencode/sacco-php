@@ -23,7 +23,7 @@
 		<div class="main-header">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-lg-3 col-md-4 col-6">
+					<div class="col-lg-3 col-md-4 col-7">
 						<div class="site-branding">
 							<?php
 							the_custom_logo();
@@ -39,7 +39,7 @@
 							?>
 						</div>
 					</div>
-					<div class="col-lg-7 col-md-4 col-6">
+					<div class="col-lg-7 col-md-4 col-5">
 						<nav id="site-navigation" class="main-navigation">
 							<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
 								<i class="fas fa-bars"></i>
@@ -55,6 +55,10 @@
 								));
 							}
 							?>
+							<!-- Close button for mobile menu -->
+							<button class="mobile-menu-close" aria-label="Close menu">
+								<i class="fas fa-times"></i>
+							</button>
 						</nav>
 					</div>
 					<div class="col-lg-2 col-md-4 d-none d-md-block">
