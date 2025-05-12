@@ -128,14 +128,30 @@ get_header();
 				<!-- Pagination -->
 				<div class="swiper-pagination"></div>
 			</div>
+			
+			<!-- Add Scroll Down Button -->
+			<div class="scroll-down-btn">
+				<a href="#features" class="scroll-link">
+					<i class="fas fa-chevron-down"></i>
+					<span class="sr-only">Scroll to next section</span>
+				</a>
+			</div>
 		</section>
 
 		<!-- Key Features Section -->
-		<section class="key-features-section py-5">
+		<section id="features" class="key-features-section py-5">
 			<div class="container">
+				<div class="row text-center mb-5">
+					<div class="col-lg-8 mx-auto">
+						<h2 class="section-title" data-aos="fade-up">Our Key Features</h2>
+						<p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+							Discover the benefits that make us your trusted financial partner
+						</p>
+					</div>
+				</div>
 				<div class="row g-4">
 					<div class="col-lg-3 col-md-6">
-						<div class="feature-card h-100">
+						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="0">
 							<div class="feature-icon">
 								<i class="fas fa-shield-alt"></i>
 							</div>
@@ -147,7 +163,7 @@ get_header();
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6">
-						<div class="feature-card h-100">
+						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="100">
 							<div class="feature-icon">
 								<i class="fas fa-percentage"></i>
 							</div>
@@ -159,7 +175,7 @@ get_header();
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6">
-						<div class="feature-card h-100">
+						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="200">
 							<div class="feature-icon">
 								<i class="fas fa-mobile-alt"></i>
 							</div>
@@ -171,7 +187,7 @@ get_header();
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6">
-						<div class="feature-card h-100">
+						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="300">
 							<div class="feature-icon">
 								<i class="fas fa-handshake"></i>
 							</div>
@@ -179,6 +195,76 @@ get_header();
 							<p><?php esc_html_e('Dedicated support team for all members', 'sacco-php'); ?></p>
 							<div class="feature-hover">
 								<a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="btn btn-sm btn-outline-primary mt-3">Contact Us</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+			<!-- Stats Section -->
+		<section class="stats-section py-5 bg-light">
+			<div class="container">
+				<div class="row mb-5">
+					<div class="col-md-12 text-center">
+						<h2 class="section-title">Our Impact in Numbers</h2>
+						<p class="section-subtitle">Growing stronger together with our members</p>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center" data-aos="fade-up" data-aos-delay="0">
+							<div class="stat-icon bg-primary-soft mb-3">
+								<i class="fas fa-users fa-2x text-primary"></i>
+							</div>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-count="15000">0</h3>
+							<p class="stat-label">Active Members</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center" data-aos="fade-up" data-aos-delay="100">
+							<div class="stat-icon bg-success-soft mb-3">
+								<i class="fas fa-money-bill-wave fa-2x text-success"></i>
+							</div>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-count="500">0</h3>
+							<p class="stat-label">Million in Assets</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center" data-aos="fade-up" data-aos-delay="200">
+							<div class="stat-icon bg-info-soft mb-3">
+								<i class="fas fa-chart-line fa-2x text-info"></i>
+							</div>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-count="20">0</h3>
+							<p class="stat-label">Years of Service</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar bg-info" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center" data-aos="fade-up" data-aos-delay="300">
+							<div class="stat-icon bg-warning-soft mb-3">
+								<i class="fas fa-award fa-2x text-warning"></i>
+							</div>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-count="12">0</h3>
+							<p class="stat-label">Branch Locations</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -306,76 +392,6 @@ get_header();
 			</div>
 		</section>
 		
-		<!-- Stats Section -->
-		<section class="stats-section py-5 bg-light">
-			<div class="container">
-				<div class="row mb-5">
-					<div class="col-md-12 text-center">
-						<h2 class="section-title">Our Impact in Numbers</h2>
-						<p class="section-subtitle">Growing stronger together with our members</p>
-					</div>
-				</div>
-				<div class="row justify-content-center">
-					<div class="col-lg-3 col-md-6 mb-4">
-						<div class="stat-card text-center">
-							<div class="stat-icon bg-primary-soft mb-3">
-								<i class="fas fa-users fa-2x text-primary"></i>
-							</div>
-							<h3 class="stat-number display-4 fw-bold mb-2" data-count="15000">0</h3>
-							<p class="stat-label">Active Members</p>
-							<div class="stat-progress">
-								<div class="progress" style="height: 4px;">
-									<div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6 mb-4">
-						<div class="stat-card text-center">
-							<div class="stat-icon bg-success-soft mb-3">
-								<i class="fas fa-money-bill-wave fa-2x text-success"></i>
-							</div>
-							<h3 class="stat-number display-4 fw-bold mb-2" data-count="500">0</h3>
-							<p class="stat-label">Million in Assets</p>
-							<div class="stat-progress">
-								<div class="progress" style="height: 4px;">
-									<div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6 mb-4">
-						<div class="stat-card text-center">
-							<div class="stat-icon bg-info-soft mb-3">
-								<i class="fas fa-chart-line fa-2x text-info"></i>
-							</div>
-							<h3 class="stat-number display-4 fw-bold mb-2" data-count="20">0</h3>
-							<p class="stat-label">Years of Service</p>
-							<div class="stat-progress">
-								<div class="progress" style="height: 4px;">
-									<div class="progress-bar bg-info" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6 mb-4">
-						<div class="stat-card text-center">
-							<div class="stat-icon bg-warning-soft mb-3">
-								<i class="fas fa-award fa-2x text-warning"></i>
-							</div>
-							<h3 class="stat-number display-4 fw-bold mb-2" data-count="12">0</h3>
-							<p class="stat-label">Branch Locations</p>
-							<div class="stat-progress">
-								<div class="progress" style="height: 4px;">
-									<div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
 		<!-- Products Section -->
 		<?php 
 		$products_title = get_field('home_products_section_title') ?: esc_html__('Our Financial Solutions', 'sacco-php');
@@ -436,13 +452,13 @@ get_header();
 			$mobile_app_description = get_field('home_mobile_app_description') ?: esc_html__('Manage your finances anytime, anywhere. Check balances, transfer funds, pay bills, and much more, all from the convenience of your smartphone.', 'sacco-php');
 			$mobile_app_image = get_field('home_mobile_app_image');
 			$google_play_url = get_field('home_mobile_app_google_play_url');
-			$google_play_image = get_field('home_mobile_app_google_play_image');
-			$apple_store_url = get_field('home_mobile_app_apple_store_url');
-			$apple_store_image = get_field('home_mobile_app_apple_store_image');
-		?>
-		<section class="mobile-app-cta-section py-5 bg-light">
-			<div class="container">
-				<div class="row align-items-center">
+							<?php endif; ?>
+							<?php if ($apple_store_url && $apple_store_image) : ?>
+								<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank"><img src="<?php echo esc_url($apple_store_image['url']); ?>" alt="<?php echo esc_attr($apple_store_image['alt'] ?: 'Download on the App Store'); ?>" class="img-fluid app-badge"></a>
+							<?php elseif ($apple_store_url) : ?>
+								<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="btn btn-dark"><i class="fab fa-app-store-ios"></i> App Store</a>
+							<?php endif; ?>
+							<?php if (empty($google_play_url) && empty($apple_store_url) && is_customize_preview() ) : // Fallback for customizer?>
 					<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-2' : ''; ?> text-center text-lg-start mb-4 mb-lg-0">
 						<h2 class="section-title"><?php echo esc_html($mobile_app_title); ?></h2>
 						<p class="section-subtitle fs-5"><?php echo esc_html($mobile_app_subtitle); ?></p>
