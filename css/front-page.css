@@ -359,12 +359,25 @@
 @media (max-width: 991px) {
     .hero-section {
         margin-top: -70px;
+        height: auto; /* Allow hero to adjust height on mobile */
+        min-height: 90vh; /* Use percentage of viewport instead of fixed height */
+        padding-top: 80px; /* Add padding to prevent content from being hidden under navbar */
+    }
+
+    .site-header {
+        background: rgba(255, 255, 255, 0.15); /* Slightly more visible on mobile */
+    }
+    
+    .slide-content-wrap {
+        padding-top: 0; /* Remove extra padding as we've added it to hero-section */
+        padding-bottom: 100px; /* Make room for quick nav */
     }
 
     .floating-quick-nav {
         position: relative;
         bottom: auto;
         margin-top: -80px;
+        z-index: 20; /* Ensure it's above other elements */
     }
 
     .quick-nav-container {
@@ -379,9 +392,33 @@
     .scrolled .menu-toggle {
         color: var(--dark-color);
     }
+    
+    /* Ensure slider content is visible */
+    .swiper-slide {
+        height: auto;
+        min-height: 90vh;
+    }
 }
 
 @media (max-width: 768px) {
+    .hero-section {
+        padding-top: 60px; /* Less padding on smaller screens */
+        min-height: 85vh; /* Slightly less height on very small screens */
+    }
+    
+    .slide-content {
+        padding: 0 15px; /* Add horizontal padding */
+    }
+    
+    .slide-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .slide-subtitle {
+        font-size: 1rem;
+    }
+
     .quick-nav-row {
         grid-template-columns: 1fr;
     }
@@ -389,13 +426,28 @@
     .floating-quick-nav {
         margin-top: -60px;
     }
-    
-    /* Enhance hero content on small screens */
-    .slide-content-wrap {
-        padding-top: 80px;
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        min-height: 80vh;
     }
     
-    .slide-title {
-        font-size: 2rem;
+    .quick-nav-item {
+        padding: 0.5rem;
+    }
+    
+    .quick-nav-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    .quick-nav-label {
+        font-size: 0.9rem;
+    }
+    
+    .quick-nav-description {
+        font-size: 0.8rem;
     }
 }
