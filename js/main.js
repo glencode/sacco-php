@@ -4,6 +4,17 @@
 (function($) {
     'use strict';
 
+    // Preloader handling
+    window.addEventListener('load', function() {
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            preloader.classList.add('fade-out');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        }
+    });
+
     // Document ready
     $(document).ready(function() {
         
@@ -117,4 +128,4 @@
         }
     });
     
-})(jQuery); 
+})(jQuery);
