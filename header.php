@@ -18,7 +18,7 @@
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'sacco-php' ); ?></a>
 
 	<header id="masthead" class="site-header">
-		<div class="main-header py-3">
+		<div class="main-header">
 			<div class="container">
 				<div class="row align-items-center">
 					<div class="col-lg-3 col-md-4 col-6">
@@ -26,17 +26,17 @@
 							<?php
 							the_custom_logo();
 							if ( is_front_page() && is_home() ) :
-								?>
+							?>
 								<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-								<?php
+							<?php
 							else :
-								?>
+							?>
 								<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-								<?php
+							<?php
 							endif;
 							$sacco_php_description = get_bloginfo( 'description', 'display' );
 							if ( $sacco_php_description || is_customize_preview() ) :
-								?>
+							?>
 								<p class="site-description"><?php echo $sacco_php_description; ?></p>
 							<?php endif; ?>
 						</div>
@@ -55,18 +55,18 @@
 										<i class="fas fa-times"></i>
 									</button>
 								</div>
-							
-							<?php
-							if (has_nav_menu('primary')) {
-								wp_nav_menu(array(
-									'theme_location' => 'primary',
-									'menu_id'        => 'primary-menu',
-									'menu_class'     => 'primary-menu',
-									'container'      => false,
-									'depth'          => 3,
-								));
-							}
-							?>
+								
+								<?php
+								if (has_nav_menu('primary')) {
+									wp_nav_menu(array(
+										'theme_location' => 'primary',
+										'menu_id'        => 'primary-menu',
+										'menu_class'     => 'primary-menu',
+										'container'      => false,
+										'depth'          => 3,
+									));
+								}
+								?>
 							</div>
 						</nav>
 					</div>
