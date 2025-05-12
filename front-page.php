@@ -15,6 +15,36 @@ get_header();
 		<!-- Hero Slider Section -->
 		<section class="hero-section">
 			<div class="hero-slider swiper">
+				<div class="floating-quick-nav">
+					<div class="container">
+						<div class="row g-2">
+							<div class="col-6 col-md-3">
+								<a href="<?php echo esc_url(home_url('/loan-application/')); ?>" class="quick-nav-item">
+									<i class="fas fa-hand-holding-usd"></i>
+									<span><?php esc_html_e('Apply for Loan', 'sacco-php'); ?></span>
+								</a>
+							</div>
+							<div class="col-6 col-md-3">
+								<a href="<?php echo esc_url(home_url('/savings-calculator/')); ?>" class="quick-nav-item">
+									<i class="fas fa-calculator"></i>
+									<span><?php esc_html_e('Calculate Savings', 'sacco-php'); ?></span>
+								</a>
+							</div>
+							<div class="col-6 col-md-3">
+								<a href="<?php echo esc_url(home_url('/how-to-join/')); ?>" class="quick-nav-item">
+									<i class="fas fa-user-plus"></i>
+									<span><?php esc_html_e('Join Now', 'sacco-php'); ?></span>
+								</a>
+							</div>
+							<div class="col-6 col-md-3">
+								<a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="quick-nav-item">
+									<i class="fas fa-headset"></i>
+									<span><?php esc_html_e('Get Help', 'sacco-php'); ?></span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="swiper-wrapper">
 					<?php
 					// Get slides from custom post type
@@ -97,6 +127,41 @@ get_header();
 				<div class="swiper-button-prev"></div>
 				<!-- Pagination -->
 				<div class="swiper-pagination"></div>
+			</div>
+		</section>
+
+		<!-- Key Features Section -->
+		<section class="key-features-section py-5">
+			<div class="container">
+				<div class="row g-4">
+					<div class="col-md-4">
+						<div class="feature-card h-100">
+							<div class="feature-icon">
+								<i class="fas fa-shield-alt"></i>
+							</div>
+							<h3><?php esc_html_e('Secure & Licensed', 'sacco-php'); ?></h3>
+							<p><?php esc_html_e('Licensed by SASRA and deposits protected by the NSSF', 'sacco-php'); ?></p>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="feature-card h-100">
+							<div class="feature-icon">
+								<i class="fas fa-percent"></i>
+							</div>
+							<h3><?php esc_html_e('Competitive Rates', 'sacco-php'); ?></h3>
+							<p><?php esc_html_e('Enjoy high savings returns and low interest rates on loans', 'sacco-php'); ?></p>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="feature-card h-100">
+							<div class="feature-icon">
+								<i class="fas fa-mobile-alt"></i>
+							</div>
+							<h3><?php esc_html_e('Digital Banking', 'sacco-php'); ?></h3>
+							<p><?php esc_html_e('Access your accounts 24/7 through our mobile app and online portal', 'sacco-php'); ?></p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</section>
 		
@@ -623,4 +688,4 @@ get_header();
 	</main><!-- #main -->
 
 <?php
-get_footer(); 
+get_footer();
