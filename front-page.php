@@ -410,51 +410,118 @@ get_header();
 		</section>
 		
 		<!-- Products Section -->
-		<?php 
-		$products_title = get_field('home_products_section_title') ?: esc_html__('Our Financial Solutions', 'sacco-php');
-		$products_subtitle = get_field('home_products_section_subtitle') ?: esc_html__('Tailored products to meet your diverse financial needs.', 'sacco-php');
-		$featured_products = get_field('home_products_featured_items'); // ACF Relationship field
-
-		?>
 		<section class="products-section py-5">
 			<div class="container">
 				<div class="row mb-5">
 					<div class="col-md-12 text-center">
-						<h2 class="section-title"><?php echo esc_html($products_title); ?></h2>
-						<p class="section-subtitle"><?php echo esc_html($products_subtitle); ?></p>
+						<h2 class="section-title" data-aos="fade-up"><?php echo esc_html($products_title); ?></h2>
+						<p class="section-subtitle" data-aos="fade-up" data-aos-delay="100"><?php echo esc_html($products_subtitle); ?></p>
 					</div>
 				</div>
-				<div class="row justify-content-center">
+				<div class="row g-4">
 					<?php
-					if ( $featured_products ) :
-						foreach ( $featured_products as $post ) : // $post is already a post object or ID
-							setup_postdata( $post );
-							sacco_php_display_home_product_card(get_the_ID());
+					if ($featured_products) :
+						foreach ($featured_products as $post) :
+							setup_postdata($post);
+							$product_type = get_post_type();
+							$icon_class = '';
+							switch ($product_type) {
+								case 'savings':
+									$icon_class = 'fa-piggy-bank';
+									$card_color = 'primary';
+									break;
+								case 'loan':
+									$icon_class = 'fa-hand-holding-usd';
+									$card_color = 'success';
+									break;
+								default:
+									$icon_class = 'fa-star';
+									$card_color = 'info';
+							}
+					?>
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $loop_index * 100; ?>">
+						<div class="product-card h-100">
+							<div class="product-card-header bg-<?php echo $card_color; ?>-soft p-4">
+								<div class="product-icon">
+									<i class="fas <?php echo $icon_class; ?> text-<?php echo $card_color; ?>"></i>
+								</div>
+								<h3 class="product-title h5 mb-0">
+									<a href="<?php the_permalink(); ?>" class="stretched-link"><?php the_title(); ?></a>
+								</h3>
+							</div>
+							<div class="product-card-body p-4">
+								<div class="product-excerpt mb-3">
+									<?php echo wp_trim_words(get_the_excerpt(), 20); ?>
+								</div>
+								<div class="product-features">
+									<?php
+									$features = get_field('product_features');
+									if ($features) :
+									?>
+									<ul class="list-unstyled mb-0">
+										<?php foreach (array_slice($features, 0, 3) as $feature) : ?>
+										<li><i class="fas fa-check-circle text-<?php echo $card_color; ?> me-2"></i><?php echo esc_html($feature['feature']); ?></li>
+										<?php endforeach; ?>
+									</ul>
+									<?php endif; ?>
+								</div>
+							</div>
+							<div class="product-card-footer p-4 pt-0">
+								<div class="d-grid">
+									<a href="<?php the_permalink(); ?>" class="btn btn-outline-<?php echo $card_color; ?>">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php
 						endforeach;
 						wp_reset_postdata();
-					else: // Fallback to random products if ACF field is empty
-						$args = array(
-							'post_type'      => array('product', 'loan', 'savings'),
-							'posts_per_page' => 4,
-							'orderby'        => 'rand',
-						); 
-						$home_products = new WP_Query( $args );
-						if ( $home_products->have_posts() ) :
-							while ( $home_products->have_posts() ) : $home_products->the_post();
-								sacco_php_display_home_product_card(get_the_ID());
-							endwhile;
-							wp_reset_postdata();
-						else :
-							for ($i=1; $i <=3; $i++) { // Placeholder cards if no products
-								echo '<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch"><div class="card product-card-home h-100 shadow-sm border-0"><div class="product-card-home-icon-placeholder bg-light d-flex align-items-center justify-content-center" style="height: 200px;"><i class="fas fa-box-open fa-3x text-primary"></i></div><div class="card-body d-flex flex-column p-4"><h3 class="card-title h5"><a href="#" class="text-decoration-none stretched-link">'.esc_html__('Sample Product '. $i, 'sacco-php').'</a></h3><p class="card-text small text-muted flex-grow-1">'.esc_html__('This is a brief description of a sample financial product offering great benefits.', 'sacco-php').'</p></div></div></div>';
-							}
-						endif;
+					else :
+						// Fallback if no products are set
+						$product_types = array(
+							array('title' => 'Regular Savings', 'icon' => 'fa-piggy-bank', 'color' => 'primary', 'features' => array('Competitive interest rates', 'Easy access to funds', 'No minimum balance')),
+							array('title' => 'Personal Loans', 'icon' => 'fa-hand-holding-usd', 'color' => 'success', 'features' => array('Quick approval process', 'Flexible terms', 'Competitive rates')),
+							array('title' => 'Investment Plans', 'icon' => 'fa-chart-line', 'color' => 'info', 'features' => array('High returns', 'Long-term growth', 'Professional management'))
+						);
+						foreach ($product_types as $index => $product) :
+					?>
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $index * 100; ?>">
+						<div class="product-card h-100">
+							<div class="product-card-header bg-<?php echo $product['color']; ?>-soft p-4">
+								<div class="product-icon">
+									<i class="fas <?php echo $product['icon']; ?> text-<?php echo $product['color']; ?>"></i>
+								</div>
+								<h3 class="product-title h5 mb-0">
+									<a href="#" class="stretched-link"><?php echo esc_html($product['title']); ?></a>
+								</h3>
+							</div>
+							<div class="product-card-body p-4">
+								<div class="product-excerpt mb-3">
+									<?php echo esc_html__('Experience the best financial solutions tailored to your needs.', 'sacco-php'); ?>
+								</div>
+								<div class="product-features">
+									<ul class="list-unstyled mb-0">
+										<?php foreach ($product['features'] as $feature) : ?>
+										<li><i class="fas fa-check-circle text-<?php echo $product['color']; ?> me-2"></i><?php echo esc_html($feature); ?></li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							</div>
+							<div class="product-card-footer p-4 pt-0">
+								<div class="d-grid">
+									<a href="#" class="btn btn-outline-<?php echo $product['color']; ?>">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php
+						endforeach;
 					endif;
 					?>
 				</div>
-				<div class="row mt-4">
+				<div class="row mt-5">
 					<div class="col-12 text-center">
-						<a href="<?php echo esc_url(home_url('/products-services/')); ?>" class="btn btn-outline-primary"><?php esc_html_e('View All Products & Services', 'sacco-php'); ?></a>
+						<a href="<?php echo esc_url(home_url('/products-services/')); ?>" class="btn btn-primary btn-lg">View All Products & Services</a>
 					</div>
 				</div>
 			</div>
