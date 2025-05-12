@@ -15,33 +15,48 @@ get_header();
 		<!-- Hero Slider Section -->
 		<section class="hero-section">
 			<div class="hero-slider swiper">
-				<div class="floating-quick-nav bg-white rounded-3 shadow-lg py-3">
-					<div class="container">
-						<div class="row g-3">
-							<div class="col-6 col-md-3">
-								<a href="<?php echo esc_url(home_url('/loan-application/')); ?>" class="quick-nav-item">
-									<i class="fas fa-hand-holding-usd fa-lg"></i>
-									<span><?php esc_html_e('Quick Loan', 'sacco-php'); ?></span>
-								</a>
-							</div>
-							<div class="col-6 col-md-3">
-								<a href="<?php echo esc_url(home_url('/loan-calculator/')); ?>" class="quick-nav-item">
-									<i class="fas fa-calculator fa-lg"></i>
-									<span><?php esc_html_e('Loan Calculator', 'sacco-php'); ?></span>
-								</a>
-							</div>
-							<div class="col-6 col-md-3">
-								<a href="<?php echo esc_url(home_url('/online-banking/')); ?>" class="quick-nav-item">
-									<i class="fas fa-laptop fa-lg"></i>
-									<span><?php esc_html_e('Online Banking', 'sacco-php'); ?></span>
-								</a>
-							</div>
-							<div class="col-6 col-md-3">
-								<a href="<?php echo esc_url(home_url('/how-to-join/')); ?>" class="quick-nav-item">
-									<i class="fas fa-user-plus fa-lg"></i>
-									<span><?php esc_html_e('Join Now', 'sacco-php'); ?></span>
-								</a>
-							</div>
+				<div class="floating-quick-nav">
+					<div class="quick-nav-container">
+						<div class="quick-nav-row">
+							<a href="<?php echo esc_url(home_url('loan-application')); ?>" class="quick-nav-item">
+								<div class="quick-nav-icon">
+									<i class="fas fa-money-bill-wave"></i>
+								</div>
+								<div class="quick-nav-content">
+									<div class="quick-nav-label">Quick Loan</div>
+									<div class="quick-nav-description">Apply for a loan instantly</div>
+								</div>
+							</a>
+							
+							<a href="<?php echo esc_url(home_url('loan-calculator')); ?>" class="quick-nav-item">
+								<div class="quick-nav-icon">
+									<i class="fas fa-calculator"></i>
+								</div>
+								<div class="quick-nav-content">
+									<div class="quick-nav-label">Loan Calculator</div>
+									<div class="quick-nav-description">Calculate your loan payments</div>
+								</div>
+							</a>
+							
+							<a href="<?php echo esc_url(home_url('member-dashboard')); ?>" class="quick-nav-item">
+								<div class="quick-nav-icon">
+									<i class="fas fa-laptop-house"></i>
+								</div>
+								<div class="quick-nav-content">
+									<div class="quick-nav-label">Online Banking</div>
+									<div class="quick-nav-description">Access your account</div>
+								</div>
+							</a>
+							
+							<a href="<?php echo esc_url(home_url('how-to-join')); ?>" class="quick-nav-item">
+								<div class="quick-nav-icon">
+									<i class="fas fa-user-plus"></i>
+								</div>
+								<div class="quick-nav-content">
+									<div class="quick-nav-label">Join Now</div>
+									<div class="quick-nav-description">Become a member today</div>
+								</div>
+							</a>
 						</div>
 					</div>
 				</div>
