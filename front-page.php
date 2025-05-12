@@ -86,6 +86,7 @@ get_header();
 					?>
 					<?php echo $slide_tag_open; ?>
 					<div class="swiper-slide" style="background-image: url('<?php echo esc_url($slide_bg); ?>');">
+						<div class="slide-overlay"></div>
 						<div class="slide-content-wrap">
 							<div class="container">
 								<div class="row justify-content-center">
@@ -117,6 +118,7 @@ get_header();
 						// Default slide if no custom slides created
 					?>
 					<div class="swiper-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/img/default-slide.jpg');">
+						<div class="slide-overlay"></div>
 						<div class="slide-content-wrap">
 							<div class="container">
 								<div class="row justify-content-center">
