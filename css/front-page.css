@@ -215,18 +215,44 @@
 
 .philosophy-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 .philosophy-icon {
-    font-size: 3rem;
-    color: #5ca157;
-    margin-bottom: 20px;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(92, 161, 87, 0.1) 0%, rgba(92, 161, 87, 0.05) 100%);
+    transition: all 0.4s ease;
+}
+
+.philosophy-card:hover .philosophy-icon {
+    transform: rotateY(360deg);
+    background: linear-gradient(135deg, rgba(92, 161, 87, 0.2) 0%, rgba(92, 161, 87, 0.1) 100%);
+}
+
+.philosophy-icon i {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, var(--bs-primary) 0%, var(--bs-success) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.4s ease;
 }
 
 .philosophy-title {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
+    color: #2c3624;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.philosophy-desc {
+    color: #6c757d;
+    line-height: 1.6;
 }
 
 /* Stats Section */
@@ -1860,4 +1886,5 @@ select:focus {
     &[aria-busy="true"]::after {
         content: 'Loading...';
     }
+    
 }
