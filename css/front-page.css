@@ -395,6 +395,8 @@
 /* Testimonials Section */
 .testimonials-section {
     padding: 80px 0;
+    position: relative;
+    overflow: hidden;
 }
 
 .testimonials-slider {
@@ -415,17 +417,26 @@
 }
 
 .testimonial-icon {
-    font-size: 2rem;
-    color: #5ca157;
-    opacity: 0.2;
+    font-size: 3rem;
+    color: var(--bs-primary);
+    opacity: 0.1;
     position: absolute;
-    top: -10px;
-    left: -10px;
+    top: 20px;
+    left: 20px;
+    transition: all 0.3s ease;
+}
+
+.testimonial-card-home:hover .testimonial-icon {
+    transform: rotate(-10deg);
+    opacity: 0.15;
 }
 
 .testimonial-author {
     display: flex;
     align-items: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.05);
 }
 
 .testimonial-author-img {
@@ -440,17 +451,27 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border: 3px solid var(--bs-primary);
+    padding: 2px;
+    transition: all 0.3s ease;
+}
+
+.testimonial-card-home:hover .testimonial-author-img img {
+    transform: scale(1.1);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
 .testimonial-author-name {
     font-size: 1.1rem;
     margin-bottom: 5px;
+    color: #2d3748;
+    font-weight: 600;
+    transition: color 0.3s ease;
 }
 
 .testimonial-author-role {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 0;
+    font-size: 0.875rem;
+    color: #718096;
 }
 
 .testimonials-pagination {
@@ -459,6 +480,21 @@
     left: 0;
     width: 100%;
     text-align: center;
+    margin-top: 2rem;
+}
+
+.testimonials-pagination .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: #cbd5e0;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.testimonials-pagination .swiper-pagination-bullet-active {
+    width: 20px;
+    border-radius: 5px;
+    background: var(--bs-primary);
 }
 
 /* Partners Section */
@@ -535,12 +571,14 @@
 .testimonials-section .testimonial-card-home {
     background-color: #fff;
     border-radius: 0.5rem;
-    /* Add any specific card styling if different from other cards */
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+    border: none;
 }
 
 .testimonials-section .testimonial-card-home:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15) !important; /* Equivalent to Bootstrap 'shadow' class */
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
 }
 
 .testimonials-section .testimonial-image {
@@ -552,9 +590,12 @@
 }
 
 .testimonials-section .testimonial-text {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: #555;
+    position: relative;
+    z-index: 1;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #4a5568;
+    margin-top: 2rem;
 }
 
 .testimonials-section .testimonial-author {
@@ -566,7 +607,6 @@
     font-size: 0.85rem;
 }
 
-/* Swiper Pagination for Testimonials */
 .testimonials-section .swiper-pagination {
     position: relative;
     bottom: auto;
@@ -975,6 +1015,15 @@
     
     .feature-card {
         margin-bottom: 20px;
+    }
+    
+    .testimonial-card-home {
+        margin-bottom: 1rem;
+    }
+    
+    .testimonial-text {
+        font-size: 1rem;
+        line-height: 1.6;
     }
 }
 
