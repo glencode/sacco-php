@@ -10,7 +10,7 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+	<!-- <main id="primary" class="site-main"> -->
 
 		<section class="error-404 not-found py-5 text-center">
 			<div class="container">
