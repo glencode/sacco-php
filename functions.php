@@ -2193,5 +2193,118 @@ function sacco_php_handle_product_enquiry_submission() {
 add_action('admin_post_nopriv_product_enquiry_submission', 'sacco_php_handle_product_enquiry_submission');
 add_action('admin_post_product_enquiry_submission', 'sacco_php_handle_product_enquiry_submission');
 
+/**
+ * Optimize resource loading and performance
+ */
+function sacco_php_optimize_performance() {
+    // Defer non-critical CSS
+    function defer_non_critical_css($tag, $handle, $href) {
+        $deferred_stylesheets = array(
+            'swiper-css',
+            'aos-css',
+            'fontawesome-css'
+        );
+        
+        if (in_array($handle, $deferred_stylesheets)) {
+            return str_replace(' href', ' media="print" onload="this.media=\'all\'" href', $tag);
+        }
+        return $tag;
+    }
+    add_filter('style_loader_tag', 'defer_non_critical_css', 10, 3);
+
+    // Preload critical resources
+    function add_resource_hints($urls, $relation_type) {
+        if ($relation_type === 'preload') {
+            // Preload critical fonts
+            $urls[] = array(
+                'href' => get_template_directory_uri() . '/assets/fonts/critical-font.woff2',
+                'as' => 'font',
+                'type' => 'font/woff2',
+                'crossorigin' => 'anonymous',
+            );
+        }
+        return $urls;
+    }
+    add_filter('wp_resource_hints', 'add_resource_hints', 10, 2);
+
+    // Add async/defer attributes to non-critical scripts
+    function add_async_defer_attributes($tag, $handle, $src) {
+        $async_scripts = array(
+            'aos-js',
+            'swiper-js',
+            'analytics'
+        );
+        
+        $defer_scripts = array(
+            'comment-reply',
+            'fontawesome-js'
+        );
+        
+        if (in_array($handle, $async_scripts)) {
+            return str_replace(' src', ' async src', $tag);
+        }
+        if (in_array($handle, $defer_scripts)) {
+            return str_replace(' src', ' defer src', $tag);
+        }
+        return $tag;
+    }
+    add_filter('script_loader_tag', 'add_async_defer_attributes', 10, 3);
+
+    // Enable gzip compression if not already enabled
+    if (!in_array('mod_deflate', apache_get_modules())) {
+        add_action('wp_headers', function($headers) {
+            if (!isset($headers['Content-Encoding'])) {
+                $headers['Content-Encoding'] = 'gzip';
+            }
+            return $headers;
+        });
+    }
+
+    // Set browser caching headers
+    function add_browser_caching_headers() {
+        $cache_time = 31536000; // 1 year
+        if (!is_user_logged_in()) {
+            header('Cache-Control: public, max-age=' . $cache_time);
+            header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $cache_time) . ' GMT');
+            header('Pragma: cache');
+        }
+    }
+    add_action('send_headers', 'add_browser_caching_headers');
+
+    // Disable emojis
+    function disable_emojis() {
+        remove_action('wp_head', 'print_emoji_detection_script', 7);
+        remove_action('admin_print_scripts', 'print_emoji_detection_script');
+        remove_action('wp_print_styles', 'print_emoji_styles');
+        remove_action('admin_print_styles', 'print_emoji_styles');
+        remove_filter('the_content_feed', 'wp_staticize_emoji');
+        remove_filter('comment_text_rss', 'wp_staticize_emoji');
+        remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+    }
+    add_action('init', 'disable_emojis');
+
+    // Remove query strings from static resources
+    function remove_query_strings($src) {
+        if (strpos($src, '?ver=')) {
+            $src = remove_query_arg('ver', $src);
+        }
+        return $src;
+    }
+    add_filter('style_loader_src', 'remove_query_strings', 10, 1);
+    add_filter('script_loader_src', 'remove_query_strings', 10, 1);
+
+    // Disable XML-RPC
+    add_filter('xmlrpc_enabled', '__return_false');
+
+    // Remove unnecessary meta tags
+    remove_action('wp_head', 'wp_generator');
+    remove_action('wp_head', 'wlwmanifest_link');
+    remove_action('wp_head', 'rsd_link');
+
+    // Enable lazy loading for images
+    add_filter('wp_lazy_loading_enabled', '__return_true');
+}
+add_action('init', 'sacco_php_optimize_performance');
+
 
 
