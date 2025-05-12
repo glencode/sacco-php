@@ -202,6 +202,8 @@
     font-weight: 700;
     color: #2c3624;
     margin-bottom: 10px;
+    background-clip: text;
+    -webkit-background-clip: text;
 }
 
 .stat-title {
@@ -542,7 +544,8 @@
 }
 
 .quick-action-icon i {
-    /* color: #5ca157; */ /* Using text-primary utility class instead */
+    color: var(--bs-primary);
+    transition: color 0.3s ease;
 }
 
 .quick-action-title {
@@ -552,12 +555,15 @@
 
 /* Why Choose Us Section (using .philosophy-card styles) */
 .why-choose-us-section .philosophy-card:hover {
-    /* Styles already defined for .philosophy-card:hover */
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
 }
 
 /* Mobile App CTA Section */
 .mobile-app-cta-section {
-    /* background-color: #f5f7fa; */ /* Can be bg-light or other */
+    background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
+    position: relative;
+    overflow: hidden;
 }
 
 .mobile-app-image {
