@@ -419,115 +419,102 @@
     .main-navigation .dropdown-toggle[aria-expanded="true"] + .sub-menu {
         display: block;
     }
-}
 
-/* Responsive Adjustments */
-@media (max-width: 991px) {
     .hero-section {
-        margin-top: -70px;
-        height: auto; /* Allow hero to adjust height on mobile */
-        min-height: 90vh; /* Use percentage of viewport instead of fixed height */
-        padding-top: 80px; /* Add padding to prevent content from being hidden under navbar */
+        height: 100vh; /* Keep full height on mobile */
+        min-height: 500px;
+        margin-top: -60px; /* Adjust offset for smaller header */
     }
-
+    
     .site-header {
-        background: rgba(255, 255, 255, 0.15); /* Slightly more visible on mobile */
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
     
     .slide-content-wrap {
-        padding-top: 0; /* Remove extra padding as we've added it to hero-section */
-        padding-bottom: 100px; /* Make room for quick nav */
-    }
-    
-    /* Make text more readable on mobile */
-    .slide-title {
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-    
-    .slide-subtitle {
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    }
-    
-    /* Adjust pagination on mobile */
-    .swiper-pagination {
-        bottom: 70px !important;
-    }
-
-    .floating-quick-nav {
-        position: relative;
-        bottom: auto;
-        margin-top: -80px;
-        z-index: 20; /* Ensure it's above other elements */
-    }
-
-    .quick-nav-container {
-        margin: 0 1rem;
-    }
-
-    .quick-nav-item {
-        padding: 0.75rem;
-    }
-    
-    /* Adjust header in mobile view */
-    .scrolled .menu-toggle {
-        color: var(--dark-color);
-    }
-    
-    /* Ensure slider content is visible */
-    .swiper-slide {
-        height: auto;
-        min-height: 90vh;
-        background-position: center center;
-        background-size: cover;
-    }
-}
-
-@media (max-width: 768px) {
-    .hero-section {
-        padding-top: 60px; /* Less padding on smaller screens */
-        min-height: 85vh; /* Slightly less height on very small screens */
-    }
-    
-    .slide-content {
-        padding: 0 15px; /* Add horizontal padding */
+        padding-top: 70px; /* Adjusted for mobile header */
     }
     
     .slide-title {
-        font-size: 2rem;
-        margin-bottom: 1rem;
+        font-size: 2.5rem;
     }
     
     .slide-subtitle {
         font-size: 1rem;
     }
     
-    /* Adjust pagination on smaller screens */
     .swiper-pagination {
-        bottom: 60px !important;
+        bottom: 110px !important;
+    }
+    
+    .floating-quick-nav {
+        bottom: 1rem;
+    }
+    
+    .quick-nav-container {
+        padding: 1rem;
+    }
+    
+    .quick-nav-item {
+        padding: 0.75rem;
+    }
+    
+    .scrolled .menu-toggle {
+        color: var(--dark-color);
+    }
+    
+    .swiper-slide {
+        background-position: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        height: 100vh;
+        min-height: 450px;
+        margin-top: -50px;
+    }
+    
+    .slide-content {
+        padding: 1rem 0;
+    }
+    
+    .slide-title {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .slide-subtitle {
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+    }
+    
+    .swiper-pagination {
+        bottom: 100px !important;
     }
     
     .swiper-pagination-bullet {
         width: 10px;
         height: 10px;
     }
-
+    
     .quick-nav-row {
-        grid-template-columns: 1fr;
-    }
-
-    .floating-quick-nav {
-        margin-top: -60px;
+        grid-template-columns: 1fr 1fr;
     }
     
-    /* For very small screens */
+    .floating-quick-nav {
+        bottom: 0.5rem;
+    }
+    
     .site-branding img {
-        max-height: 40px;
+        max-height: 35px;
     }
 }
 
 @media (max-width: 576px) {
     .hero-section {
-        min-height: 80vh;
+        height: 100vh;
+        min-height: 400px;
     }
     
     .quick-nav-item {
@@ -535,26 +522,26 @@
     }
     
     .quick-nav-icon {
-        width: 35px;
-        height: 35px;
+        width: 30px;
+        height: 30px;
         font-size: 1rem;
+        margin-right: 0.5rem;
     }
     
     .quick-nav-label {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
     
     .quick-nav-description {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
+        opacity: 0.8;
     }
     
-    /* Even smaller screens adjustments */
     .site-header .main-header {
         padding: 0.5rem 0;
     }
     
     .menu-toggle {
-        padding: 0.25rem;
         font-size: 1.25rem;
     }
 }
