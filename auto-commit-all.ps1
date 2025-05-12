@@ -1,4 +1,4 @@
-$repoPath = $PSScriptRoot  # Uses the directory where the script is located
+$repoPath = "C:\path\to\your\localwp\project"  # Change this to your project root
 $branchName = "main"  # Or whatever branch you’re working on
 
 Set-Location $repoPath
