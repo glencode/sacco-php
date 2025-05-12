@@ -812,6 +812,114 @@
     100% { transform: translateY(0px); }
 }
 
+/* Header Animations */
+.site-header {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
+}
+
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-hidden {
+    transform: translateY(-100%);
+}
+
+.top-bar {
+    transition: height 0.3s ease, overflow 0.3s ease;
+}
+
+.main-header {
+    transition: padding 0.3s ease;
+    background: #fff;
+}
+
+/* Hero Section Enhancements */
+.hero-slide {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5));
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.swiper-slide-active .hero-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-title {
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+}
+
+.swiper-slide-active .hero-title {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+}
+
+.swiper-slide-active .hero-subtitle {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-buttons {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease 0.6s, transform 0.8s ease 0.6s;
+}
+
+.swiper-slide-active .hero-buttons {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-buttons .btn {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
 /* Responsive Adjustments */
 @media (max-width: 991px) {
     .hero-slider {
