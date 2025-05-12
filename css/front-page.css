@@ -6,7 +6,7 @@
 .hero-section {
     position: relative;
     overflow: hidden;
-    height: 85vh;
+    height: 100vh; /* Changed from 85vh to use full screen */
     min-height: 600px;
     margin-top: -90px; /* Offset for navbar */
 }
@@ -21,6 +21,7 @@
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
+    padding-top: 10px; /* Added padding to fix compressed appearance */
 }
 
 .site-header .main-header {
@@ -195,6 +196,125 @@
 .quick-nav-description {
     font-size: 0.875rem;
     color: rgba(0, 0, 0, 0.6);
+}
+
+/* Center align hero content */
+.slide-content-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+}
+
+.slide-content-wrap .container .row {
+    justify-content: center;
+}
+
+.slide-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Mobile menu styles */
+.menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-left: auto;
+}
+
+/* Sidebar Menu (Mobile) */
+@media (max-width: 991px) {
+    .menu-toggle {
+        display: block;
+    }
+    
+    /* Hide desktop menu on mobile */
+    .main-navigation ul.primary-menu {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 300px;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        padding: 5rem 1.5rem 1.5rem;
+        overflow-y: auto;
+        z-index: 1000;
+        transition: right 0.3s ease, opacity 0.3s ease;
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Show the menu when toggled */
+    .main-navigation.toggled ul.primary-menu {
+        right: 0;
+    }
+    
+    /* Add overlay when menu is open */
+    .main-navigation.toggled::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        animation: fadeIn 0.3s forwards;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    /* Style mobile menu items */
+    .main-navigation .primary-menu a {
+        color: var(--dark-color);
+        padding: 0.75rem 0;
+        display: block;
+        text-shadow: none;
+    }
+    
+    /* Mobile dropdown styles */
+    .main-navigation .sub-menu {
+        position: static;
+        width: 100%;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        background: transparent;
+        padding: 0 0 0 1rem;
+        margin: 0;
+        display: none;
+    }
+    
+    .main-navigation .menu-item-has-children:hover > .sub-menu {
+        display: none;
+    }
+    
+    .main-navigation .dropdown-toggle {
+        position: absolute;
+        right: 0;
+        top: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: transparent;
+        border: none;
+    }
+    
+    .main-navigation .dropdown-toggle[aria-expanded="true"] + .sub-menu {
+        display: block;
+    }
 }
 
 /* Responsive Adjustments */
