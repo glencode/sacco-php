@@ -48,7 +48,6 @@
 							</button>
 							
 							<div class="mobile-menu-overlay"></div>
-							
 							<div class="mobile-menu-wrapper">
 								<div class="mobile-menu-header">
 									<span class="site-title"><?php bloginfo( 'name' ); ?></span>
@@ -83,7 +82,7 @@
 				</div>
 			</div>
 		</div>
-	</header>
+	</header><!-- #masthead -->
 </div>
 </body>
 </html>
