@@ -29,7 +29,7 @@
     display: flex;
     align-items: center;
     height: 100%;
-    padding-top: 90px; /* Account for navbar offset */
+    padding-top: 50px; /* Account for navbar offset */
 }
 
 /* Swiper pagination enhancements */
