@@ -39,11 +39,26 @@
     // Toggle mobile menu
     function toggleMenu() {
         const isExpanded = button.getAttribute('aria-expanded') === 'true';
-        siteNavigation.classList.toggle('toggled');
-        button.setAttribute('aria-expanded', !isExpanded);
         
-        // Handle body scroll lock
-        document.body.style.overflow = isExpanded ? '' : 'hidden';
+        if (!isExpanded) {
+            // Opening menu - add transition class first
+            siteNavigation.classList.add('menu-transitioning');
+            setTimeout(() => {
+                siteNavigation.classList.add('toggled');
+                button.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+            }, 10);
+        } else {
+            // Closing menu - remove toggled class but keep transition
+            siteNavigation.classList.remove('toggled');
+            button.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+            
+            // Remove transition class after animation completes
+            setTimeout(() => {
+                siteNavigation.classList.remove('menu-transitioning');
+            }, 300);
+        }
     }
 
     // Handle click outside menu
@@ -59,6 +74,7 @@
     function handleResize() {
         if (window.innerWidth > 991 && siteNavigation.classList.contains('toggled')) {
             siteNavigation.classList.remove('toggled');
+            siteNavigation.classList.remove('menu-transitioning');
             button.setAttribute('aria-expanded', 'false');
             document.body.style.overflow = '';
         }
