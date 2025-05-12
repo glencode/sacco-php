@@ -135,26 +135,52 @@ function initializePage() {
             }
         });
 
-        // Testimonials Slider
-        const testimonialsSwiper = new Swiper('.testimonials-slider', {
+        // Enhanced Testimonials Slider
+        const testimonialsSlider = new Swiper('.testimonials-slider', {
             slidesPerView: 1,
             spaceBetween: 30,
             loop: true,
             autoplay: {
-                delay: 4000,
+                delay: 5000,
                 disableOnInteraction: false,
             },
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            },
+            speed: 1000,
             pagination: {
                 el: '.testimonials-pagination',
                 clickable: true,
+                renderBullet: function (index, className) {
+                    return `<span class="${className}"></span>`;
+                },
             },
             breakpoints: {
                 768: {
                     slidesPerView: 2,
+                    effect: 'slide'
                 },
                 1024: {
                     slidesPerView: 3,
-                },
+                    effect: 'slide'
+                }
+            },
+            on: {
+                slideChange: function () {
+                    // Add fade-in animation to active slide content
+                    const activeSlide = this.slides[this.activeIndex];
+                    const content = activeSlide.querySelectorAll('.testimonial-text, .testimonial-author');
+                    content.forEach((el, index) => {
+                        el.style.opacity = '0';
+                        el.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            el.style.opacity = '1';
+                            el.style.transform = 'translateY(0)';
+                            el.style.transition = 'all 0.5s ease';
+                        }, index * 200);
+                    });
+                }
             }
         });
 
