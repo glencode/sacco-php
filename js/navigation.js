@@ -204,4 +204,22 @@
 	document.addEventListener('DOMContentLoaded', () => {
 		handleNavbarScroll();
 	});
+
+	// Navbar scroll effect
+	document.addEventListener('DOMContentLoaded', function() {
+		const header = document.querySelector('.site-header');
+		const scrollThreshold = 50;
+
+		function handleScroll() {
+			if (window.scrollY > scrollThreshold) {
+				header.classList.add('scrolled');
+			} else {
+				header.classList.remove('scrolled');
+			}
+		}
+
+		window.addEventListener('scroll', handleScroll);
+		// Initial check
+		handleScroll();
+	});
 }() );
