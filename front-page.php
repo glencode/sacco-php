@@ -202,7 +202,7 @@ get_header();
 			</div>
 		</section>
 
-			<!-- Stats Section -->
+		<!-- Stats Section -->
 		<section class="stats-section py-5 bg-light">
 			<div class="container">
 				<div class="row mb-5">
@@ -217,7 +217,7 @@ get_header();
 							<div class="stat-icon bg-primary-soft mb-3">
 								<i class="fas fa-users fa-2x text-primary"></i>
 							</div>
-							<h3 class="stat-number display-4 fw-bold mb-2" data-count="15000">0</h3>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-value="25000">0</h3>
 							<p class="stat-label">Active Members</p>
 							<div class="stat-progress">
 								<div class="progress" style="height: 4px;">
@@ -231,7 +231,7 @@ get_header();
 							<div class="stat-icon bg-success-soft mb-3">
 								<i class="fas fa-money-bill-wave fa-2x text-success"></i>
 							</div>
-							<h3 class="stat-number display-4 fw-bold mb-2" data-count="500">0</h3>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-value="800">0</h3>
 							<p class="stat-label">Million in Assets</p>
 							<div class="stat-progress">
 								<div class="progress" style="height: 4px;">
@@ -245,7 +245,7 @@ get_header();
 							<div class="stat-icon bg-info-soft mb-3">
 								<i class="fas fa-chart-line fa-2x text-info"></i>
 							</div>
-							<h3 class="stat-number display-4 fw-bold mb-2" data-count="20">0</h3>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-value="25">0</h3>
 							<p class="stat-label">Years of Service</p>
 							<div class="stat-progress">
 								<div class="progress" style="height: 4px;">
@@ -259,7 +259,7 @@ get_header();
 							<div class="stat-icon bg-warning-soft mb-3">
 								<i class="fas fa-award fa-2x text-warning"></i>
 							</div>
-							<h3 class="stat-number display-4 fw-bold mb-2" data-count="12">0</h3>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-value="15">0</h3>
 							<p class="stat-label">Branch Locations</p>
 							<div class="stat-progress">
 								<div class="progress" style="height: 4px;">
