@@ -9,6 +9,7 @@
 (function() {
     const siteNavigation = document.getElementById('site-navigation');
     const button = siteNavigation?.querySelector('.menu-toggle');
+    const closeButton = siteNavigation?.querySelector('.mobile-menu-close');
     const menu = siteNavigation?.querySelector('ul');
     const header = document.querySelector('.site-header');
     let lastScroll = 0;
@@ -21,6 +22,9 @@
     function initMenu() {
         // Setup mobile menu
         button.addEventListener('click', toggleMenu);
+        if (closeButton) {
+            closeButton.addEventListener('click', toggleMenu);
+        }
         document.addEventListener('click', handleClickOutside);
         window.addEventListener('resize', handleResize);
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -47,12 +51,18 @@
                 siteNavigation.classList.add('toggled');
                 button.setAttribute('aria-expanded', 'true');
                 document.body.style.overflow = 'hidden';
+                if (closeButton) {
+                    closeButton.style.display = 'block';
+                }
             }, 10);
         } else {
             // Closing menu - remove toggled class but keep transition
             siteNavigation.classList.remove('toggled');
             button.setAttribute('aria-expanded', 'false');
             document.body.style.overflow = '';
+            if (closeButton) {
+                closeButton.style.display = 'none';
+            }
             
             // Remove transition class after animation completes
             setTimeout(() => {
@@ -77,6 +87,9 @@
             siteNavigation.classList.remove('menu-transitioning');
             button.setAttribute('aria-expanded', 'false');
             document.body.style.overflow = '';
+            if (closeButton) {
+                closeButton.style.display = 'none';
+            }
         }
 
         // Reset any inline styles on submenus
@@ -90,8 +103,12 @@
     // Enhanced scroll behavior
     function handleScroll() {
         const currentScroll = window.pageYOffset;
-        const scrollDelta = 10;
-        const scrollThreshold = 100;
+        const scrollThreshold = 50; // Lower threshold for mobile
+        
+        // Skip scroll updates during menu open
+        if (siteNavigation.classList.contains('toggled')) {
+            return;
+        }
 
         // Toggle header classes based on scroll position
         if (currentScroll > scrollThreshold) {
@@ -127,7 +144,7 @@
             const toggleBtn = document.createElement('button');
             toggleBtn.classList.add('dropdown-toggle');
             toggleBtn.setAttribute('aria-expanded', 'false');
-            toggleBtn.innerHTML = '<span class="screen-reader-text">Toggle Dropdown</span>';
+            toggleBtn.innerHTML = '<span class="screen-reader-text">Toggle Dropdown</span><i class="fas fa-chevron-down"></i>';
             link.parentNode.insertBefore(toggleBtn, link.nextSibling);
 
             // Handle dropdown toggle
@@ -143,11 +160,15 @@
                         setTimeout(() => {
                             submenu.style.opacity = '1';
                             submenu.style.transform = 'translateY(0)';
+                            toggleBtn.querySelector('i').classList.remove('fa-chevron-down');
+                            toggleBtn.querySelector('i').classList.add('fa-chevron-up');
                         }, 10);
                     } else {
                         // Closing submenu
                         submenu.style.opacity = '0';
                         submenu.style.transform = 'translateY(-10px)';
+                        toggleBtn.querySelector('i').classList.remove('fa-chevron-up');
+                        toggleBtn.querySelector('i').classList.add('fa-chevron-down');
                         setTimeout(() => {
                             submenu.style.display = 'none';
                         }, 300);
