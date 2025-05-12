@@ -140,7 +140,13 @@
             const menuItem = link.parentElement;
             const submenu = menuItem.querySelector('.sub-menu');
             
-            // Add dropdown toggle button
+            // Add arrow indicator to menu link for desktop view
+            const arrowSpan = document.createElement('span');
+            arrowSpan.classList.add('menu-arrow');
+            arrowSpan.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            link.appendChild(arrowSpan);
+            
+            // Add dropdown toggle button for mobile
             const toggleBtn = document.createElement('button');
             toggleBtn.classList.add('dropdown-toggle');
             toggleBtn.setAttribute('aria-expanded', 'false');
@@ -162,6 +168,12 @@
                             submenu.style.transform = 'translateY(0)';
                             toggleBtn.querySelector('i').classList.remove('fa-chevron-down');
                             toggleBtn.querySelector('i').classList.add('fa-chevron-up');
+                            // Also flip the arrow in the menu link
+                            const menuArrow = link.querySelector('.menu-arrow i');
+                            if (menuArrow) {
+                                menuArrow.classList.remove('fa-chevron-down');
+                                menuArrow.classList.add('fa-chevron-up');
+                            }
                         }, 10);
                     } else {
                         // Closing submenu
@@ -169,6 +181,12 @@
                         submenu.style.transform = 'translateY(-10px)';
                         toggleBtn.querySelector('i').classList.remove('fa-chevron-up');
                         toggleBtn.querySelector('i').classList.add('fa-chevron-down');
+                        // Also flip back the arrow in the menu link
+                        const menuArrow = link.querySelector('.menu-arrow i');
+                        if (menuArrow) {
+                            menuArrow.classList.remove('fa-chevron-up');
+                            menuArrow.classList.add('fa-chevron-down');
+                        }
                         setTimeout(() => {
                             submenu.style.display = 'none';
                         }, 300);
@@ -184,6 +202,12 @@
                         setTimeout(() => {
                             submenu.style.opacity = '1';
                             submenu.style.transform = 'translateY(0)';
+                            // Change arrow direction on hover
+                            const menuArrow = link.querySelector('.menu-arrow i');
+                            if (menuArrow) {
+                                menuArrow.classList.remove('fa-chevron-down');
+                                menuArrow.classList.add('fa-chevron-up');
+                            }
                         }, 10);
                     }
                 });
@@ -192,12 +216,27 @@
                     if (submenu) {
                         submenu.style.opacity = '0';
                         submenu.style.transform = 'translateY(-10px)';
+                        // Restore arrow direction
+                        const menuArrow = link.querySelector('.menu-arrow i');
+                        if (menuArrow) {
+                            menuArrow.classList.remove('fa-chevron-up');
+                            menuArrow.classList.add('fa-chevron-down');
+                        }
                         setTimeout(() => {
                             submenu.style.display = 'none';
                         }, 300);
                     }
                 });
             }
+            
+            // Handle nested submenus - add right arrows for submenu items that have children
+            const nestedDropdowns = submenu?.querySelectorAll('.menu-item-has-children > a');
+            nestedDropdowns?.forEach(nestedLink => {
+                const nestedArrowSpan = document.createElement('span');
+                nestedArrowSpan.classList.add('submenu-arrow');
+                nestedArrowSpan.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nestedLink.appendChild(nestedArrowSpan);
+            });
         });
     }
 
