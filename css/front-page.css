@@ -228,6 +228,21 @@
     margin-left: auto;
 }
 
+/* Mobile menu close button */
+.mobile-menu-close {
+    display: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    color: var(--dark-color);
+    font-size: 1.75rem;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 0.5rem;
+}
+
 /* Enhanced menu transition effects */
 .main-navigation.menu-transitioning::before {
     content: '';
@@ -246,10 +261,23 @@
     opacity: 1;
 }
 
+/* Dropdown toggle icon */
+.dropdown-toggle i {
+    font-size: 0.85rem;
+    margin-left: 0.25rem;
+    opacity: 0.7;
+}
+
 /* Sidebar Menu (Mobile) */
 @media (max-width: 991px) {
     .menu-toggle {
         display: block;
+    }
+    
+    /* Site branding mobile tweaks */
+    .site-branding img {
+        max-height: 45px;
+        width: auto;
     }
     
     /* Hide desktop menu on mobile */
@@ -301,6 +329,7 @@
         padding: 0.75rem 0;
         display: block;
         text-shadow: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
     
     /* Mobile dropdown styles */
@@ -324,33 +353,14 @@
     .main-navigation .dropdown-toggle {
         position: absolute;
         right: 0;
-        top: 0.5rem;
+        top: 0.75rem;
         padding: 0.25rem 0.5rem;
         background: transparent;
         border: none;
+        color: var(--dark-color);
     }
     
     .main-navigation .dropdown-toggle[aria-expanded="true"] + .sub-menu {
-        display: block;
-    }
-    
-    /* Close button for mobile menu */
-    .main-navigation::after {
-        content: '×';
-        position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
-        font-size: 2rem;
-        color: var(--dark-color);
-        z-index: 1001;
-        cursor: pointer;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        display: none;
-    }
-    
-    .main-navigation.toggled::after {
-        opacity: 1;
         display: block;
     }
 }
@@ -426,6 +436,11 @@
     .floating-quick-nav {
         margin-top: -60px;
     }
+    
+    /* For very small screens */
+    .site-branding img {
+        max-height: 40px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -449,5 +464,15 @@
     
     .quick-nav-description {
         font-size: 0.8rem;
+    }
+    
+    /* Even smaller screens adjustments */
+    .site-header .main-header {
+        padding: 0.5rem 0;
+    }
+    
+    .menu-toggle {
+        padding: 0.25rem;
+        font-size: 1.25rem;
     }
 }
