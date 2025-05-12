@@ -24,6 +24,7 @@
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
+    background-attachment: fixed;
 }
 
 .hero-slider .swiper-slide::before {
@@ -33,7 +34,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
 }
 
 .slide-content-wrap {
@@ -96,6 +97,48 @@
 .hero-slider .swiper-pagination-bullet-active {
     background: #5ca157;
     opacity: 1;
+}
+
+/* Floating Quick Nav */
+.floating-quick-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    transform: translateY(50%);
+    padding: 0 15px;
+}
+
+.quick-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    padding: 20px 15px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    color: var(--bs-dark);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.quick-nav-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    color: var(--bs-primary);
+}
+
+.quick-nav-item i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--bs-primary);
+}
+
+.quick-nav-item span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
 }
 
 /* Philosophy Section */
@@ -558,4 +601,81 @@
 .product-card-home:hover {
     transform: translateY(-5px);
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15) !important; /* Equivalent to Bootstrap 'shadow' class */
-} 
+}
+
+/* Key Features Section */
+.key-features-section {
+    padding-top: 80px;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.feature-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bs-primary);
+    border-radius: 50%;
+    color: #fff;
+    animation: float 3s ease-in-out infinite;
+}
+
+.feature-icon i {
+    font-size: 2rem;
+}
+
+.feature-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+    color: var(--bs-dark);
+    font-weight: 600;
+}
+
+.feature-card p {
+    color: #6c757d;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Enhanced Animations */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .floating-quick-nav {
+        position: relative;
+        transform: none;
+        padding: 20px 0;
+        background: #f8f9fa;
+    }
+    
+    .quick-nav-item {
+        margin-bottom: 15px;
+    }
+    
+    .feature-card {
+        margin-bottom: 20px;
+    }
+}
