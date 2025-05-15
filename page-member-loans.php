@@ -59,7 +59,7 @@ $current_user = wp_get_current_user();
 				</div>
 				
 				<!-- Main Content -->
-				<div class="col-lg-9">
+					<div id="member-loans-section" class="col-lg-9 member-content-section">
 					<!-- Loan Summary -->
 					<div class="dashboard-card mb-4">
 						<div class="dashboard-card-header">
@@ -285,4 +285,4 @@ $current_user = wp_get_current_user();
 </main><!-- #main -->
 
 <?php
-get_footer(); 
+get_footer();

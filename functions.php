@@ -931,6 +931,32 @@ function sacco_php_calculator_scripts() {
 add_action('wp_enqueue_scripts', 'sacco_php_calculator_scripts');
 
 /**
+ * Handle custom URL templates for member portal pages
+ * This fixes 404 errors on member dashboard pages
+ */
+function sacco_php_custom_template_include($template) {
+    global $wp;
+    $current_url = trailingslashit(home_url($wp->request));
+    $home_url = trailingslashit(home_url());
+    
+    // Check for member portal URLs
+    if ($current_url === $home_url . 'member-dashboard/') {
+        return get_template_directory() . '/template-member-dashboard.php';
+    } else if ($current_url === $home_url . 'member-profile/') {
+        return get_template_directory() . '/page-member-profile.php';
+    } else if ($current_url === $home_url . 'member-savings/') {
+        return get_template_directory() . '/page-member-savings.php';
+    } else if ($current_url === $home_url . 'member-loans/') {
+        return get_template_directory() . '/page-member-loans.php';
+    } else if ($current_url === $home_url . 'member-transactions/') {
+        return get_template_directory() . '/page-member-transactions.php';
+    }
+    
+    return $template;
+}
+add_filter('template_include', 'sacco_php_custom_template_include');
+
+/**
  * Add custom classes to <article> elements
  */
 function sacco_php_add_article_classes( $classes ) {

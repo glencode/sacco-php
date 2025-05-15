@@ -20,6 +20,30 @@
     font-size: 0.875rem;
 }
 
+/* Member Content */
+.member-content-wrapper {
+    position: relative;
+    min-height: 100vh;
+}
+
+.member-content-section {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.member-content-section.current-section {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 /* Member Sidebar */
 .member-sidebar {
     margin-bottom: 2rem;
@@ -486,4 +510,4 @@
     .detail-value {
         margin-top: 0.25rem;
     }
-} 
+}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Member Dashboard
+ * Template Name: Member Dashboard Template
  *
  * The template for displaying the member dashboard.
  *
@@ -299,105 +299,55 @@ $current_user = wp_get_current_user();
 												// Calculate progress percentage
 												$progress = 0;
 												if ($goal_amount > 0) {
-													$progress = ($current_amount / $goal_amount) * 100;
-													$progress = min(100, round($progress));
+													$progress = min(100, round(($current_amount / $goal_amount) * 100));
 												}
 												
-												// Format target date
-												$formatted_date = $target_date ? date_i18n(get_option('date_format'), strtotime($target_date)) : '';
-												
-												// Icon based on category
-												$category_icons = array(
-													'emergency' => 'fa-umbrella',
-													'education' => 'fa-graduation-cap',
-													'home' => 'fa-home',
-													'vehicle' => 'fa-car',
-													'vacation' => 'fa-plane',
-													'wedding' => 'fa-ring',
-													'retirement' => 'fa-umbrella-beach',
-													'business' => 'fa-briefcase',
-													'other' => 'fa-piggy-bank'
-												);
-												$icon = isset($category_icons[$goal_category]) ? $category_icons[$goal_category] : 'fa-piggy-bank';
-												
-												// Badge color based on priority
-												$priority_colors = array(
-													'high' => 'bg-danger',
-													'medium' => 'bg-warning',
-													'low' => 'bg-info'
-												);
-												$badge_color = isset($priority_colors[$priority]) ? $priority_colors[$priority] : 'bg-secondary';
-											?>
-											<div class="col-lg-4 col-md-6 mb-4">
-												<div class="savings-goal-card h-100">
-													<div class="goal-header">
-														<h4><i class="fas <?php echo esc_attr($icon); ?> me-2"></i> <?php the_title(); ?></h4>
-														<span class="goal-badge <?php echo esc_attr($badge_color); ?>"><?php echo ucfirst(esc_html($priority)); ?></span>
-													</div>
-													
-													<div class="goal-progress">
-														<div class="progress">
-															<div class="progress-bar bg-success" role="progressbar" style="width: <?php echo esc_attr($progress); ?>%" 
-																aria-valuenow="<?php echo esc_attr($progress); ?>" aria-valuemin="0" aria-valuemax="100"></div>
+												// Determine priority badge class
+												$priority_class = 'bg-secondary';
+												if ($priority === 'high') {
+													$priority_class = 'bg-danger';
+												} elseif ($priority === 'medium') {
+													$priority_class = 'bg-warning';
+												} elseif ($priority === 'low') {
+													$priority_class = 'bg-info';
+												}
+												?>
+												<div class="col-md-6 mb-4">
+													<div class="goal-card">
+														<div class="d-flex justify-content-between align-items-start mb-2">
+															<h4 class="goal-title"><?php the_title(); ?></h4>
+															<span class="badge <?php echo esc_attr($priority_class); ?>"><?php echo ucfirst(esc_html($priority)); ?></span>
 														</div>
-														<div class="goal-amounts">
+														<p class="goal-category small text-muted mb-1"><?php echo esc_html($goal_category); ?></p>
+														<div class="progress mb-2">
+															<div class="progress-bar bg-success" role="progressbar" style="width: <?php echo esc_attr($progress); ?>%" aria-valuenow="<?php echo esc_attr($progress); ?>" aria-valuemin="0" aria-valuemax="100"></div>
+														</div>
+														<div class="d-flex justify-content-between">
 															<span>KSh <?php echo number_format($current_amount); ?></span>
-															<span><?php echo esc_html($progress); ?>%</span>
 															<span>KSh <?php echo number_format($goal_amount); ?></span>
 														</div>
-													</div>
-													
-													<div class="goal-footer">
-														<div class="goal-date">
-															<i class="far fa-calendar-alt"></i> Target: <?php echo esc_html($formatted_date); ?>
-														</div>
-														<div class="goal-actions">
-															<button type="button" class="btn btn-sm btn-outline-primary add-funds-btn" data-goal-id="<?php echo get_the_ID(); ?>">
-																<i class="fas fa-plus-circle"></i> Add Funds
-															</button>
+														<div class="goal-footer mt-3 d-flex justify-content-between align-items-center">
+															<div class="target-date small">
+																<i class="far fa-calendar-alt"></i> Target: <?php echo esc_html($target_date); ?>
+															</div>
+															<div class="goal-actions">
+																<button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#updateGoalModal" data-goal-id="<?php the_ID(); ?>">Update</button>
+															</div>
 														</div>
 													</div>
 												</div>
-											</div>
 											<?php endwhile; wp_reset_postdata(); ?>
 										</div>
 									<?php else : ?>
-										<div class="text-center py-4">
-											<div class="mb-3">
-												<i class="fas fa-piggy-bank fa-3x text-muted"></i>
-											</div>
-											<h3>No Savings Goals Yet</h3>
-											<p class="text-muted">Create your first savings goal to start tracking your progress.</p>
-											<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGoalModal">
-												<i class="fas fa-plus"></i> Create a Goal
+										<div class="empty-goals text-center py-4">
+											<img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/empty-goals.svg'); ?>" alt="No Goals" class="mb-3" width="120">
+											<h4>No Savings Goals Yet</h4>
+											<p class="text-muted">Start tracking your financial goals by creating your first savings goal.</p>
+											<button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addGoalModal">
+												<i class="fas fa-plus"></i> Create First Goal
 											</button>
 										</div>
 									<?php endif; ?>
-								</div>
-							</div>
-							
-							<!-- Announcements -->
-							<div class="dashboard-card">
-								<div class="dashboard-card-header">
-									<h2 class="dashboard-card-title">Announcements</h2>
-								</div>
-								<div class="dashboard-card-body">
-									<div class="announcement-item mb-3">
-										<div class="announcement-date">July 20, 2023</div>
-										<h4 class="announcement-title">Annual General Meeting Notice</h4>
-										<div class="announcement-content">
-											<p>The Annual General Meeting will be held on August 15, 2023, at the SACCO headquarters starting at 9:00 AM. All members are invited to attend.</p>
-										</div>
-										<a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
-									</div>
-									<div class="announcement-item">
-										<div class="announcement-date">July 15, 2023</div>
-										<h4 class="announcement-title">New Mobile Banking App Launch</h4>
-										<div class="announcement-content">
-											<p>We are excited to announce the launch of our new mobile banking app. Download now from the App Store or Google Play Store for a better banking experience.</p>
-										</div>
-										<a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
-									</div>
 								</div>
 							</div>
 						</div>
@@ -409,204 +359,77 @@ $current_user = wp_get_current_user();
 	
 	<!-- Add Goal Modal -->
 	<div class="modal fade" id="addGoalModal" tabindex="-1" aria-labelledby="addGoalModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header bg-primary text-white">
-					<h5 class="modal-title" id="addGoalModalLabel">Create New Savings Goal</h5>
+				<div class="modal-header">
+					<h5 class="modal-title" id="addGoalModalLabel">Add New Savings Goal</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<form id="add-goal-form">
-						<div class="row mb-3">
-							<div class="col-md-6">
-								<label for="goal-name" class="form-label">Goal Name</label>
-								<input type="text" class="form-control" id="goal-name" name="goal_name" required>
-							</div>
-							<div class="col-md-6">
-								<label for="goal-category" class="form-label">Category</label>
-								<select class="form-select" id="goal-category" name="goal_category">
-									<option value="emergency">Emergency Fund</option>
-									<option value="education">Education</option>
-									<option value="home">Home Purchase/Renovation</option>
-									<option value="vehicle">Vehicle</option>
-									<option value="vacation">Vacation</option>
-									<option value="wedding">Wedding</option>
-									<option value="retirement">Retirement</option>
-									<option value="business">Business</option>
-									<option value="other">Other</option>
-								</select>
-							</div>
+						<div class="mb-3">
+							<label for="goal-title" class="form-label">Goal Title</label>
+							<input type="text" class="form-control" id="goal-title" required>
 						</div>
-						
-						<div class="row mb-3">
-							<div class="col-md-6">
+						<div class="mb-3">
+							<label for="goal-category" class="form-label">Category</label>
+							<select class="form-select" id="goal-category" required>
+								<option value="">Select a category</option>
+								<option value="Education">Education</option>
+								<option value="Home">Home</option>
+								<option value="Vehicle">Vehicle</option>
+								<option value="Travel">Travel</option>
+								<option value="Emergency">Emergency Fund</option>
+								<option value="Retirement">Retirement</option>
+								<option value="Other">Other</option>
+							</select>
+						</div>
+						<div class="row">
+							<div class="col-md-6 mb-3">
 								<label for="goal-amount" class="form-label">Target Amount (KSh)</label>
-								<input type="number" class="form-control" id="goal-amount" name="goal_amount" min="1000" step="1000" required>
+								<input type="number" class="form-control" id="goal-amount" required min="1000">
 							</div>
-							<div class="col-md-6">
-								<label for="goal-date" class="form-label">Target Date</label>
-								<input type="date" class="form-control" id="goal-date" name="target_date" required>
-							</div>
-						</div>
-						
-						<div class="row mb-3">
-							<div class="col-md-6">
-								<label for="initial-deposit" class="form-label">Initial Deposit (KSh)</label>
-								<input type="number" class="form-control" id="initial-deposit" name="initial_deposit" min="0" step="1000" value="0">
-							</div>
-							<div class="col-md-6">
-								<label for="goal-priority" class="form-label">Priority</label>
-								<select class="form-select" id="goal-priority" name="goal_priority">
-									<option value="high">High</option>
-									<option value="medium" selected>Medium</option>
-									<option value="low">Low</option>
-								</select>
+							<div class="col-md-6 mb-3">
+								<label for="current-amount" class="form-label">Current Amount (KSh)</label>
+								<input type="number" class="form-control" id="current-amount" value="0" min="0">
 							</div>
 						</div>
-						
+						<div class="mb-3">
+							<label for="target-date" class="form-label">Target Date</label>
+							<input type="date" class="form-control" id="target-date" required>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Priority</label>
+							<div class="d-flex gap-3">
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="goal-priority" id="priority-high" value="high">
+									<label class="form-check-label" for="priority-high">High</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="goal-priority" id="priority-medium" value="medium" checked>
+									<label class="form-check-label" for="priority-medium">Medium</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="goal-priority" id="priority-low" value="low">
+									<label class="form-check-label" for="priority-low">Low</label>
+								</div>
+							</div>
+						</div>
 						<div class="mb-3">
 							<label for="goal-description" class="form-label">Description (Optional)</label>
-							<textarea class="form-control" id="goal-description" name="goal_description" rows="3"></textarea>
-						</div>
-						
-						<div class="mb-3">
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="auto-deposit" name="auto_deposit">
-								<label class="form-check-label" for="auto-deposit">
-									Enable Automatic Deposits
-								</label>
-							</div>
-						</div>
-						
-						<div id="auto-deposit-options" class="mb-3 p-3 bg-light rounded" style="display: none;">
-							<div class="row">
-								<div class="col-md-6">
-									<label for="auto-deposit-amount" class="form-label">Deposit Amount (KSh)</label>
-									<input type="number" class="form-control" id="auto-deposit-amount" name="auto_deposit_amount" min="100" step="100">
-								</div>
-								<div class="col-md-6">
-									<label for="auto-deposit-frequency" class="form-label">Frequency</label>
-									<select class="form-select" id="auto-deposit-frequency" name="auto_deposit_frequency">
-										<option value="weekly">Weekly</option>
-										<option value="biweekly">Every 2 Weeks</option>
-										<option value="monthly">Monthly</option>
-									</select>
-								</div>
-							</div>
+							<textarea class="form-control" id="goal-description" rows="3"></textarea>
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-					<button type="submit" class="btn btn-primary" form="add-goal-form">Create Goal</button>
+					<button type="button" class="btn btn-primary" id="save-goal-btn">Save Goal</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 </main><!-- #main -->
-
-<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		// Account Summary Chart
-		const ctx = document.getElementById('account-summary-chart').getContext('2d');
-		
-		const accountChart = new Chart(ctx, {
-			type: 'line',
-			data: {
-				labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-				datasets: [
-					{
-						label: 'Savings',
-						data: [95000, 100000, 105000, 110000, 115000, 120000, 125000],
-						borderColor: '#5ca157',
-						backgroundColor: 'rgba(92, 161, 87, 0.1)',
-						tension: 0.4,
-						fill: true
-					},
-					{
-						label: 'Shares',
-						data: [60000, 62000, 65000, 68000, 70000, 72000, 75000],
-						borderColor: '#a7a843',
-						backgroundColor: 'rgba(167, 168, 67, 0.1)',
-						tension: 0.4,
-						fill: true
-					},
-					{
-						label: 'Loans',
-						data: [280000, 270000, 260000, 250000, 245000, 240000, 230000],
-						borderColor: '#dc3545',
-						backgroundColor: 'rgba(220, 53, 69, 0.1)',
-						tension: 0.4,
-						fill: true
-					}
-				]
-			},
-			options: {
-				responsive: true,
-				maintainAspectRatio: false,
-				plugins: {
-					legend: {
-						position: 'top',
-					},
-					tooltip: {
-						callbacks: {
-							label: function(context) {
-								let label = context.dataset.label || '';
-								if (label) {
-									label += ': ';
-								}
-								if (context.parsed.y !== null) {
-									label += 'KSh ' + context.parsed.y.toFixed(2);
-								}
-								return label;
-							}
-						}
-					}
-				},
-				scales: {
-					y: {
-						beginAtZero: false,
-						ticks: {
-							callback: function(value, index, values) {
-								return 'KSh ' + value.toLocaleString();
-							}
-						}
-					}
-				}
-			}
-		});
-		
-		// Auto deposit checkbox toggle
-		const autoDepositCheckbox = document.getElementById('auto-deposit');
-		const autoDepositOptions = document.getElementById('auto-deposit-options');
-		
-		if (autoDepositCheckbox && autoDepositOptions) {
-			autoDepositCheckbox.addEventListener('change', function() {
-				autoDepositOptions.style.display = this.checked ? 'block' : 'none';
-			});
-		}
-		
-		// Goal form submission (in a real app, this would create the goal via AJAX)
-		const addGoalForm = document.getElementById('add-goal-form');
-		if (addGoalForm) {
-			addGoalForm.addEventListener('submit', function(e) {
-				e.preventDefault();
-				
-				// In a real application, this would send an AJAX request to create the goal
-				// For demo purposes, just show success message
-				alert('Goal created successfully! In a real application, this would save your goal to the database.');
-				
-				// Reset form and close modal
-				addGoalForm.reset();
-				const modal = bootstrap.Modal.getInstance(document.getElementById('addGoalModal'));
-				modal.hide();
-				
-				// In a real application, you would refresh the goals list or add the new goal dynamically
-			});
-		}
-	});
-</script>
 
 <?php
 get_footer();

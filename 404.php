@@ -32,13 +32,12 @@ get_header();
 									'container_class'=> 'footer-navigation-404',
 									'menu_class'     => 'list-unstyled d-flex flex-wrap justify-content-center',
 									'fallback_cb'    => false,
-									'depth'          => 1, // Keep it simple
-									'walker'         => new Sacco_PHP_Simple_List_Walker() // Optional: For cleaner markup if needed
+									'depth'          => 1 // Keep it simple
 								)
 							);
 
-							// Fallback if menu not set or walker not defined
-							if ( !has_nav_menu( 'primary' ) && !class_exists('Sacco_PHP_Simple_List_Walker') ) {
+							// Fallback if menu not set
+							if ( !has_nav_menu( 'primary' ) ) {
 								echo '<ul class="list-unstyled d-flex flex-wrap justify-content-center">';
 								echo '<li class="mx-2"><a href="' . esc_url(home_url('/')) . '">' . esc_html__('Homepage', 'sacco-php') . '</a></li>';
 								echo '<li class="mx-2"><a href="' . esc_url(home_url('/contact/')) . '">' . esc_html__('Contact Us', 'sacco-php') . '</a></li>';
