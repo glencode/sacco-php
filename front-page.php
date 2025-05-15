@@ -15,6 +15,51 @@ get_header();
 		<!-- Hero Slider Section -->
 		<section class="hero-section position-relative">
 			<div class="hero-slider swiper">
+				<div class="floating-quick-nav">
+					<div class="quick-nav-container">
+						<div class="quick-nav-row">
+							<a href="<?php echo esc_url(home_url('loan-application')); ?>" class="quick-nav-item">
+								<div class="quick-nav-icon">
+									<i class="fas fa-money-bill-wave"></i>
+								</div>
+								<div class="quick-nav-content">
+									<div class="quick-nav-label">Quick Loan</div>
+									<div class="quick-nav-description">Apply for a loan instantly</div>
+								</div>
+							</a>
+							
+							<a href="<?php echo esc_url(home_url('loan-calculator')); ?>" class="quick-nav-item">
+								<div class="quick-nav-icon">
+									<i class="fas fa-calculator"></i>
+								</div>
+								<div class="quick-nav-content">
+									<div class="quick-nav-label">Loan Calculator</div>
+									<div class="quick-nav-description">Calculate your loan payments</div>
+								</div>
+							</a>
+							
+							<a href="<?php echo esc_url(home_url('member-dashboard')); ?>" class="quick-nav-item">
+								<div class="quick-nav-icon">
+									<i class="fas fa-laptop-house"></i>
+								</div>
+								<div class="quick-nav-content">
+									<div class="quick-nav-label">Online Banking</div>
+									<div class="quick-nav-description">Access your account</div>
+								</div>
+							</a>
+							
+							<a href="<?php echo esc_url(home_url('how-to-join')); ?>" class="quick-nav-item">
+								<div class="quick-nav-icon">
+									<i class="fas fa-user-plus"></i>
+								</div>
+								<div class="quick-nav-content">
+									<div class="quick-nav-label">Join Now</div>
+									<div class="quick-nav-description">Become a member today</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
 				<div class="swiper-wrapper">
 					<?php
 					// Get slides from custom post type
@@ -44,11 +89,19 @@ get_header();
 						<div class="slide-overlay"></div>
 						<div class="slide-content-wrap">
 							<div class="container">
+<<<<<<< HEAD
 								<div class="row">
 									<div class="col-lg-8 col-md-10">
 										<div class="slide-content glass-effect p-4 rounded-lg">
 											<h2 class="slide-title gradient-text mb-4"><?php the_title(); ?></h2>
 											<div class="slide-subtitle text-white">
+=======
+								<div class="row justify-content-center">
+									<div class="col-lg-10 text-center">
+										<div class="slide-content">
+											<h2 class="slide-title"><?php the_title(); ?></h2>
+											<div class="slide-subtitle">
+>>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 												<?php the_content(); ?>
 											</div>
 											<?php if (empty($slide_link_url) && $slide_button_text && $slide_button_url) : ?>
@@ -72,10 +125,11 @@ get_header();
 						// Default slide if no custom slides created
 					?>
 					<div class="swiper-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/img/default-slide.jpg');">
+						<div class="slide-overlay"></div>
 						<div class="slide-content-wrap">
 							<div class="container">
-								<div class="row">
-									<div class="col-lg-8 col-md-10">
+								<div class="row justify-content-center">
+									<div class="col-lg-10 text-center">
 										<div class="slide-content">
 											<h2 class="slide-title"><?php echo esc_html(get_theme_mod('default_slide_title', 'Welcome to Our Sacco')); ?></h2>
 											<div class="slide-subtitle">
@@ -98,7 +152,16 @@ get_header();
 				<!-- Pagination -->
 				<div class="swiper-pagination"></div>
 			</div>
+			
+			<!-- Add Scroll Down Button -->
+			<div class="scroll-down-btn">
+				<a href="#features" class="scroll-link">
+					<i class="fas fa-chevron-down"></i>
+					<span class="sr-only">Scroll to next section</span>
+				</a>
+			</div>
 		</section>
+<<<<<<< HEAD
 		
 		<!-- Quick Links/Actions Section -->
 		<?php 
@@ -137,32 +200,240 @@ get_header();
 							<h3 class="quick-action-title h5"><?php echo esc_html($title); ?></h3>
 							<p class="quick-action-text small text-muted"><?php echo esc_html($text); ?></p>
 							<a href="<?php echo esc_url($button_url); ?>" class="btn glass-button btn-primary btn-sm mt-auto"><?php echo esc_html($button_text); ?></a>
-						</div>
+=======
+
+		<!-- Key Features Section -->
+		<section id="features" class="key-features-section py-5">
+			<div class="container">
+				<div class="row text-center mb-5">
+					<div class="col-lg-8 mx-auto">
+						<h2 class="section-title" data-aos="fade-up">Our Key Features</h2>
+						<p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+							Discover the benefits that make us your trusted financial partner
+						</p>
 					</div>
-					<?php 
-						endforeach;
-					else : // Fallback static content if ACF fields are not set or empty
-					?>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="quick-action-card card h-100 text-center p-4 shadow-sm">
-							<div class="quick-action-icon mb-3 text-primary">
-								<i class="fas fa-user-plus fa-3x"></i>
+				</div>
+				<div class="row g-4">
+					<div class="col-lg-3 col-md-6">
+						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="0">
+							<div class="feature-icon">
+								<i class="fas fa-shield-alt"></i>
 							</div>
-							<h3 class="quick-action-title h5"><?php esc_html_e('Become a Member', 'sacco-php'); ?></h3>
-							<p class="quick-action-text small text-muted"><?php esc_html_e('Join our Sacco community and enjoy exclusive benefits.', 'sacco-php'); ?></p>
-							<a href="<?php echo esc_url(home_url('/membership/')); ?>" class="btn btn-primary btn-sm mt-auto"><?php esc_html_e('Join Now', 'sacco-php'); ?></a>
+							<h3><?php esc_html_e('Secure & Licensed', 'sacco-php'); ?></h3>
+							<p><?php esc_html_e('Licensed by SASRA with protected deposits', 'sacco-php'); ?></p>
+							<div class="feature-hover">
+								<a href="<?php echo esc_url(home_url('/about-us/')); ?>" class="btn btn-sm btn-outline-primary mt-3">Learn More</a>
+							</div>
+>>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 						</div>
 					</div>
-					<?php endif; ?>
+					<div class="col-lg-3 col-md-6">
+						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="100">
+							<div class="feature-icon">
+								<i class="fas fa-percentage"></i>
+							</div>
+							<h3><?php esc_html_e('Best Rates', 'sacco-php'); ?></h3>
+							<p><?php esc_html_e('Competitive interest rates on savings and loans', 'sacco-php'); ?></p>
+							<div class="feature-hover">
+								<a href="<?php echo esc_url(home_url('/products-services/')); ?>" class="btn btn-sm btn-outline-primary mt-3">View Rates</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="200">
+							<div class="feature-icon">
+								<i class="fas fa-mobile-alt"></i>
+							</div>
+							<h3><?php esc_html_e('Digital Banking', 'sacco-php'); ?></h3>
+							<p><?php esc_html_e('24/7 access through our mobile app', 'sacco-php'); ?></p>
+							<div class="feature-hover">
+								<a href="<?php echo esc_url(home_url('/online-banking/')); ?>" class="btn btn-sm btn-outline-primary mt-3">Get Started</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="300">
+							<div class="feature-icon">
+								<i class="fas fa-handshake"></i>
+							</div>
+							<h3><?php esc_html_e('Member Support', 'sacco-php'); ?></h3>
+							<p><?php esc_html_e('Dedicated support team for all members', 'sacco-php'); ?></p>
+							<div class="feature-hover">
+								<a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="btn btn-sm btn-outline-primary mt-3">Contact Us</a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
 
-		<!-- Why Choose Us Section (formerly Philosophy) -->
+		<!-- Stats Section -->
+		<section class="stats-section py-5 bg-light">
+			<div class="container">
+				<div class="row mb-5">
+					<div class="col-md-12 text-center">
+						<h2 class="section-title">Our Impact in Numbers</h2>
+						<p class="section-subtitle">Growing stronger together with our members</p>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center" data-aos="fade-up" data-aos-delay="0">
+							<div class="stat-icon bg-primary-soft mb-3">
+								<i class="fas fa-users fa-2x text-primary"></i>
+							</div>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-value="25000">0</h3>
+							<p class="stat-label">Active Members</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center" data-aos="fade-up" data-aos-delay="100">
+							<div class="stat-icon bg-success-soft mb-3">
+								<i class="fas fa-money-bill-wave fa-2x text-success"></i>
+							</div>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-value="800">0</h3>
+							<p class="stat-label">Million in Assets</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center" data-aos="fade-up" data-aos-delay="200">
+							<div class="stat-icon bg-info-soft mb-3">
+								<i class="fas fa-chart-line fa-2x text-info"></i>
+							</div>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-value="25">0</h3>
+							<p class="stat-label">Years of Service</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar bg-info" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="stat-card text-center" data-aos="fade-up" data-aos-delay="300">
+							<div class="stat-icon bg-warning-soft mb-3">
+								<i class="fas fa-award fa-2x text-warning"></i>
+							</div>
+							<h3 class="stat-number display-4 fw-bold mb-2" data-value="15">0</h3>
+							<p class="stat-label">Branch Locations</p>
+							<div class="stat-progress">
+								<div class="progress" style="height: 4px;">
+									<div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Quick Links/Actions Section -->
+		<section class="quick-actions-section py-5">
+			<div class="container">
+				<div class="row mb-5">
+					<div class="col-md-12 text-center">
+						<h2 class="section-title" data-aos="fade-up">How Can We Help You Today?</h2>
+						<p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Quick access to our most popular services and resources</p>
+					</div>
+				</div>
+				<div class="row justify-content-center g-4">
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
+						<div class="quick-action-card">
+							<div class="quick-action-icon">
+								<i class="fas fa-hand-holding-usd"></i>
+							</div>
+							<h3>Apply for a Loan</h3>
+							<p>Get quick access to flexible loan options with competitive rates</p>
+							<div class="quick-action-features">
+								<ul class="list-unstyled">
+									<li><i class="fas fa-check-circle text-success"></i> Fast approval process</li>
+									<li><i class="fas fa-check-circle text-success"></i> Competitive interest rates</li>
+									<li><i class="fas fa-check-circle text-success"></i> Flexible repayment terms</li>
+								</ul>
+							</div>
+							<a href="<?php echo esc_url(home_url('/loan-application/')); ?>" class="btn btn-primary mt-3">Apply Now</a>
+						</div>
+					</div>
+					
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+						<div class="quick-action-card">
+							<div class="quick-action-icon">
+								<i class="fas fa-piggy-bank"></i>
+							</div>
+							<h3>Start Saving</h3>
+							<p>Explore our range of savings products designed for your goals</p>
+							<div class="quick-action-features">
+								<ul class="list-unstyled">
+									<li><i class="fas fa-check-circle text-success"></i> High interest returns</li>
+									<li><i class="fas fa-check-circle text-success"></i> Multiple savings options</li>
+									<li><i class="fas fa-check-circle text-success"></i> Easy account management</li>
+								</ul>
+							</div>
+							<a href="<?php echo esc_url(home_url('/savings-accounts/')); ?>" class="btn btn-primary mt-3">Learn More</a>
+						</div>
+					</div>
+					
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+						<div class="quick-action-card">
+							<div class="quick-action-icon">
+								<i class="fas fa-calculator"></i>
+							</div>
+							<h3>Financial Calculators</h3>
+							<p>Plan your finances with our easy-to-use calculators</p>
+							<div class="quick-action-features">
+								<ul class="list-unstyled">
+									<li><i class="fas fa-check-circle text-success"></i> Loan calculator</li>
+									<li><i class="fas fa-check-circle text-success"></i> Savings calculator</li>
+									<li><i class="fas fa-check-circle text-success"></i> Retirement planning</li>
+								</ul>
+							</div>
+							<div class="btn-group w-100" role="group">
+								<a href="<?php echo esc_url(home_url('/loan-calculator/')); ?>" class="btn btn-outline-primary mt-3">Loan Calculator</a>
+								<a href="<?php echo esc_url(home_url('/savings-calculator/')); ?>" class="btn btn-outline-primary mt-3">Savings Calculator</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Why Choose Us Section -->
 		<?php
-		$why_choose_us_title = get_field('home_why_choose_us_title') ?: (get_field('home_philosophy_title') ?: esc_html__('Why Choose Us?', 'sacco-php'));
-		$why_choose_us_subtitle = get_field('home_why_choose_us_subtitle') ?: (get_field('home_philosophy_subtitle') ?: esc_html__('Dedicated to your financial success and well-being.', 'sacco-php'));
-		$why_choose_us_cards = get_field('home_why_choose_us_cards') ?: get_field('home_philosophy_cards');
+		// Get Why Choose Us section content from ACF or fall back to defaults
+		$why_choose_us_title = get_field('why_choose_us_title') ?: esc_html__('Why Choose Us', 'sacco-php');
+		$why_choose_us_subtitle = get_field('why_choose_us_subtitle') ?: esc_html__('Discover the advantages of banking with us', 'sacco-php');
+		$why_choose_us_cards = get_field('why_choose_us_cards');
+
+		// Fallback cards if none are set in ACF
+		if (!$why_choose_us_cards || !is_array($why_choose_us_cards)) {
+			$why_choose_us_cards = array(
+				array(
+					'icon' => 'fa-shield-alt',
+					'title' => esc_html__('Secure & Licensed', 'sacco-php'),
+					'description' => esc_html__('We are fully licensed and regulated, ensuring your finances are in safe hands.', 'sacco-php')
+				),
+				array(
+					'icon' => 'fa-percentage',
+					'title' => esc_html__('Competitive Rates', 'sacco-php'),
+					'description' => esc_html__('Enjoy attractive interest rates on savings and favorable loan terms.', 'sacco-php')
+				),
+				array(
+					'icon' => 'fa-handshake',
+					'title' => esc_html__('Member-Focused', 'sacco-php'),
+					'description' => esc_html__('Your success is our priority. We\'re committed to helping you achieve your financial goals.', 'sacco-php')
+				)
+			);
+		}
 		?>
 		<section class="why-choose-us-section philosophy-section py-5">
 			<div class="container">
@@ -172,59 +443,32 @@ get_header();
 						<p class="section-subtitle"><?php echo esc_html($why_choose_us_subtitle); ?></p>
 					</div>
 				</div>
-				<div class="row justify-content-center">
+				<div class="row justify-content-center g-4">
 					<?php 
 					if ($why_choose_us_cards && is_array($why_choose_us_cards)) :
-						foreach ($why_choose_us_cards as $card) :
+						foreach ($why_choose_us_cards as $index => $card) :
 							$icon = !empty($card['icon']) ? $card['icon'] : 'fa-check-circle';
 							$title = !empty($card['title']) ? $card['title'] : esc_html__('Our Value', 'sacco-php');
 							$description = !empty($card['description']) ? $card['description'] : esc_html__('Description of our value.', 'sacco-php');
 					?>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="philosophy-card card h-100 text-center p-4 shadow-sm">
-							<div class="philosophy-icon mb-3 text-primary">
-								<i class="fas <?php echo esc_attr($icon); ?> fa-3x"></i>
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $index * 100; ?>">
+						<div class="philosophy-card text-center h-100">
+							<div class="philosophy-icon">
+								<i class="fas <?php echo esc_attr($icon); ?>"></i>
 							</div>
-							<h3 class="philosophy-title h5"><?php echo esc_html($title); ?></h3>
-							<p class="philosophy-desc small text-muted"><?php echo esc_html($description); ?></p>
+							<h3 class="philosophy-title"><?php echo esc_html($title); ?></h3>
+							<p class="philosophy-desc"><?php echo esc_html($description); ?></p>
 						</div>
 					</div>
 					<?php 
 						endforeach;
-					else : // Fallback static content if ACF fields are not set or empty
+					endif; 
 					?>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="philosophy-card card h-100 text-center p-4 shadow-sm">
-							<div class="philosophy-icon mb-3 text-primary">
-								<i class="fas fa-handshake fa-3x"></i>
-							</div>
-							<h3 class="philosophy-title h5"><?php esc_html_e('Member-Centric Approach', 'sacco-php'); ?></h3>
-							<p class="philosophy-desc small text-muted"><?php esc_html_e('We prioritize your needs, offering personalized financial solutions and excellent customer service.', 'sacco-php'); ?></p>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="philosophy-card card h-100 text-center p-4 shadow-sm">
-							<div class="philosophy-icon mb-3 text-primary">
-								<i class="fas fa-piggy-bank fa-3x"></i>
-							</div>
-							<h3 class="philosophy-title h5"><?php esc_html_e('Competitive Products', 'sacco-php'); ?></h3>
-							<p class="philosophy-desc small text-muted"><?php esc_html_e('Access a wide range of savings and loan products with attractive rates and flexible terms.', 'sacco-php'); ?></p>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="philosophy-card card h-100 text-center p-4 shadow-sm">
-							<div class="philosophy-icon mb-3 text-primary">
-								<i class="fas fa-shield-alt fa-3x"></i>
-							</div>
-							<h3 class="philosophy-title h5"><?php esc_html_e('Secure & Trusted', 'sacco-php'); ?></h3>
-							<p class="philosophy-desc small text-muted"><?php esc_html_e('Your finances are safe with us. We are a regulated institution committed to transparency.', 'sacco-php'); ?></p>
-						</div>
-					</div>
-					<?php endif; ?>
 				</div>
 			</div>
 		</section>
 		
+<<<<<<< HEAD
 		<!-- Stats Section -->
 		<?php
 		$stats_section_title = get_field('home_stats_section_title') ?: esc_html__('Our Impact in Numbers', 'sacco-php');
@@ -306,52 +550,126 @@ get_header();
 			</div>
 		</section>
 
+=======
+>>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 		<!-- Products Section -->
-		<?php 
-		$products_title = get_field('home_products_section_title') ?: esc_html__('Our Financial Solutions', 'sacco-php');
-		$products_subtitle = get_field('home_products_section_subtitle') ?: esc_html__('Tailored products to meet your diverse financial needs.', 'sacco-php');
-		$featured_products = get_field('home_products_featured_items'); // ACF Relationship field
-
+		<?php
+		$products_title = get_field('home_products_title') ?: esc_html__('Our Financial Products', 'sacco-php');
+		$products_subtitle = get_field('home_products_subtitle') ?: esc_html__('Explore our range of savings and loan products designed for your needs', 'sacco-php');
+		$featured_products = get_field('home_featured_products');
 		?>
 		<section class="products-section py-5">
 			<div class="container">
 				<div class="row mb-5">
 					<div class="col-md-12 text-center">
-						<h2 class="section-title"><?php echo esc_html($products_title); ?></h2>
-						<p class="section-subtitle"><?php echo esc_html($products_subtitle); ?></p>
+						<h2 class="section-title" data-aos="fade-up"><?php echo esc_html($products_title); ?></h2>
+						<p class="section-subtitle" data-aos="fade-up" data-aos-delay="100"><?php echo esc_html($products_subtitle); ?></p>
 					</div>
 				</div>
-				<div class="row justify-content-center">
+				<div class="row g-4">
 					<?php
-					if ( $featured_products ) :
-						foreach ( $featured_products as $post ) : // $post is already a post object or ID
-							setup_postdata( $post );
-							sacco_php_display_home_product_card(get_the_ID());
+					if ($featured_products) :
+						foreach ($featured_products as $post) :
+							setup_postdata($post);
+							$product_type = get_post_type();
+							$icon_class = '';
+							switch ($product_type) {
+								case 'savings':
+									$icon_class = 'fa-piggy-bank';
+									$card_color = 'primary';
+									break;
+								case 'loan':
+									$icon_class = 'fa-hand-holding-usd';
+									$card_color = 'success';
+									break;
+								default:
+									$icon_class = 'fa-star';
+									$card_color = 'info';
+							}
+					?>
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $loop_index * 100; ?>">
+						<div class="product-card h-100">
+							<div class="product-card-header bg-<?php echo $card_color; ?>-soft p-4">
+								<div class="product-icon">
+									<i class="fas <?php echo $icon_class; ?> text-<?php echo $card_color; ?>"></i>
+								</div>
+								<h3 class="product-title h5 mb-0">
+									<a href="<?php the_permalink(); ?>" class="stretched-link"><?php the_title(); ?></a>
+								</h3>
+							</div>
+							<div class="product-card-body p-4">
+								<div class="product-excerpt mb-3">
+									<?php echo wp_trim_words(get_the_excerpt(), 20); ?>
+								</div>
+								<div class="product-features">
+									<?php
+									$features = get_field('product_features');
+									if ($features) :
+									?>
+									<ul class="list-unstyled mb-0">
+										<?php foreach (array_slice($features, 0, 3) as $feature) : ?>
+										<li><i class="fas fa-check-circle text-<?php echo $card_color; ?> me-2"></i><?php echo esc_html($feature['feature']); ?></li>
+										<?php endforeach; ?>
+									</ul>
+									<?php endif; ?>
+								</div>
+							</div>
+							<div class="product-card-footer p-4 pt-0">
+								<div class="d-grid">
+									<a href="<?php the_permalink(); ?>" class="btn btn-outline-<?php echo $card_color; ?>">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php
 						endforeach;
 						wp_reset_postdata();
-					else: // Fallback to random products if ACF field is empty
-						$args = array(
-							'post_type'      => array('product', 'loan', 'savings'),
-							'posts_per_page' => 4,
-							'orderby'        => 'rand',
-						); 
-						$home_products = new WP_Query( $args );
-						if ( $home_products->have_posts() ) :
-							while ( $home_products->have_posts() ) : $home_products->the_post();
-								sacco_php_display_home_product_card(get_the_ID());
-							endwhile;
-							wp_reset_postdata();
-						else :
-							for ($i=1; $i <=3; $i++) { // Placeholder cards if no products
-								echo '<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch"><div class="card product-card-home h-100 shadow-sm border-0"><div class="product-card-home-icon-placeholder bg-light d-flex align-items-center justify-content-center" style="height: 200px;"><i class="fas fa-box-open fa-3x text-primary"></i></div><div class="card-body d-flex flex-column p-4"><h3 class="card-title h5"><a href="#" class="text-decoration-none stretched-link">'.esc_html__('Sample Product '. $i, 'sacco-php').'</a></h3><p class="card-text small text-muted flex-grow-1">'.esc_html__('This is a brief description of a sample financial product offering great benefits.', 'sacco-php').'</p></div></div></div>';
-							}
-						endif;
+					else :
+						// Fallback if no products are set
+						$product_types = array(
+							array('title' => 'Regular Savings', 'icon' => 'fa-piggy-bank', 'color' => 'primary', 'features' => array('Competitive interest rates', 'Easy access to funds', 'No minimum balance')),
+							array('title' => 'Personal Loans', 'icon' => 'fa-hand-holding-usd', 'color' => 'success', 'features' => array('Quick approval process', 'Flexible terms', 'Competitive rates')),
+							array('title' => 'Investment Plans', 'icon' => 'fa-chart-line', 'color' => 'info', 'features' => array('High returns', 'Long-term growth', 'Professional management'))
+						);
+						foreach ($product_types as $index => $product) :
+					?>
+					<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $index * 100; ?>">
+						<div class="product-card h-100">
+							<div class="product-card-header bg-<?php echo $product['color']; ?>-soft p-4">
+								<div class="product-icon">
+									<i class="fas <?php echo $product['icon']; ?> text-<?php echo $product['color']; ?>"></i>
+								</div>
+								<h3 class="product-title h5 mb-0">
+									<a href="#" class="stretched-link"><?php echo esc_html($product['title']); ?></a>
+								</h3>
+							</div>
+							<div class="product-card-body p-4">
+								<div class="product-excerpt mb-3">
+									<?php echo esc_html__('Experience the best financial solutions tailored to your needs.', 'sacco-php'); ?>
+								</div>
+								<div class="product-features">
+									<ul class="list-unstyled mb-0">
+										<?php foreach ($product['features'] as $feature) : ?>
+										<li><i class="fas fa-check-circle text-<?php echo $product['color']; ?> me-2"></i><?php echo esc_html($feature); ?></li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							</div>
+							<div class="product-card-footer p-4 pt-0">
+								<div class="d-grid">
+									<a href="#" class="btn btn-outline-<?php echo $product['color']; ?>">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php
+						endforeach;
 					endif;
 					?>
 				</div>
-				<div class="row mt-4">
+				<div class="row mt-5">
 					<div class="col-12 text-center">
-						<a href="<?php echo esc_url(home_url('/products-services/')); ?>" class="btn btn-outline-primary"><?php esc_html_e('View All Products & Services', 'sacco-php'); ?></a>
+						<a href="<?php echo esc_url(home_url('/products-services/')); ?>" class="btn btn-primary btn-lg">View All Products & Services</a>
 					</div>
 				</div>
 			</div>
@@ -360,7 +678,11 @@ get_header();
 		<!-- Mobile Banking / App CTA Section -->
 		<?php 
 		$mobile_app_enable = get_field('home_mobile_app_enable');
+<<<<<<< HEAD
 		if( $mobile_app_enable || is_customize_preview() ) :
+=======
+		if ($mobile_app_enable || is_customize_preview()) : // Show if enabled or in customizer
+>>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 			$mobile_app_title = get_field('home_mobile_app_title') ?: esc_html__('Access Your Accounts on the Go', 'sacco-php');
 			$mobile_app_subtitle = get_field('home_mobile_app_subtitle') ?: esc_html__('Download our mobile app for easy and secure banking.', 'sacco-php');
 			$mobile_app_description = get_field('home_mobile_app_description') ?: esc_html__('Manage your finances anytime, anywhere. Check balances, transfer funds, pay bills, and much more, all from the convenience of your smartphone.', 'sacco-php');
@@ -370,6 +692,7 @@ get_header();
 			$apple_store_url = get_field('home_mobile_app_apple_store_url');
 			$apple_store_image = get_field('home_mobile_app_apple_store_image');
 		?>
+<<<<<<< HEAD
 		<section class="mobile-app-cta-section py-5 position-relative overflow-hidden animated-gradient">
 			<div class="container">
 				<div class="row align-items-center">
@@ -395,11 +718,65 @@ get_header();
 								<?php elseif ($apple_store_url) : ?>
 									<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="btn glass-button btn-light btn-lg floating-element">
 										<i class="fab fa-app-store-ios me-2"></i> App Store
+=======
+			<section class="mobile-app-cta-section py-5">
+				<div class="container">
+					<div class="row align-items-center">
+						<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-2' : ''; ?> text-center text-lg-start mb-4 mb-lg-0">
+							<h2 class="section-title"><?php echo esc_html($mobile_app_title); ?></h2>
+							<p class="section-subtitle fs-5"><?php echo esc_html($mobile_app_subtitle); ?></p>
+							<p><?php echo nl2br(esc_html($mobile_app_description)); ?></p>
+							<div class="app-store-badges mt-4">
+								<?php if ($google_play_url && $google_play_image) : ?>
+									<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="me-2">
+										<img src="<?php echo esc_url($google_play_image['url']); ?>" 
+											 alt="<?php echo esc_attr($google_play_image['alt'] ?: 'Get it on Google Play'); ?>" 
+											 class="img-fluid app-badge">
+									</a>
+								<?php elseif ($google_play_url) : ?>
+									<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="btn btn-dark me-2">
+										<i class="fab fa-google-play"></i> Google Play
+									</a>
+								<?php endif; ?>
+
+								<?php if ($apple_store_url && $apple_store_image) : ?>
+									<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank">
+										<img src="<?php echo esc_url($apple_store_image['url']); ?>" 
+											 alt="<?php echo esc_attr($apple_store_image['alt'] ?: 'Download on the App Store'); ?>" 
+											 class="img-fluid app-badge">
+									</a>
+								<?php elseif ($apple_store_url) : ?>
+									<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="btn btn-dark">
+										<i class="fab fa-app-store-ios"></i> App Store
+									</a>
+								<?php endif; ?>
+
+								<?php if (empty($google_play_url) && empty($apple_store_url) && is_customize_preview()) : ?>
+									<a href="#" class="btn btn-dark me-2">
+										<i class="fab fa-google-play"></i> Google Play (Sample)
+									</a>
+									<a href="#" class="btn btn-dark">
+										<i class="fab fa-app-store-ios"></i> App Store (Sample)
+>>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 									</a>
 								<?php endif; ?>
 							</div>
 						</div>
+						<?php if ($mobile_app_image) : ?>
+							<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
+								<img src="<?php echo esc_url($mobile_app_image['url']); ?>" 
+									 alt="<?php echo esc_attr($mobile_app_image['alt'] ?: 'Sacco Mobile App'); ?>" 
+									 class="img-fluid rounded shadow-lg mobile-app-image">
+							</div>
+						<?php elseif (is_customize_preview()): // Fallback image for customizer ?>
+							<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
+								<img src="<?php echo get_template_directory_uri(); ?>/assets/img/default-phone-mockup.png" 
+									 alt="Sacco Mobile App Preview" 
+									 class="img-fluid rounded shadow-lg mobile-app-image">
+							</div>
+						<?php endif; ?>
 					</div>
+<<<<<<< HEAD
 					<?php if ($mobile_app_image) : ?>
 						<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
 							<img src="<?php echo esc_url($mobile_app_image['url']); ?>" 
@@ -415,6 +792,10 @@ get_header();
 				</svg>
 			</div>
 		</section>
+=======
+				</div>
+			</section>
+>>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 		<?php endif; ?>
 
 		<!-- News & Updates Section -->

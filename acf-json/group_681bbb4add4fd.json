@@ -432,4 +432,84 @@
     "description": "",
     "show_in_rest": 0,
     "modified": 1747042266
+},
+{
+    "key": "group_681bbb4add4fd",
+    "title": "Why Choose Us Section",
+    "fields": [
+        {
+            "key": "field_why_choose_us_title",
+            "label": "Section Title",
+            "name": "why_choose_us_title",
+            "type": "text",
+            "instructions": "Enter the main title for the Why Choose Us section",
+            "required": 0,
+            "default_value": "Why Choose Us"
+        },
+        {
+            "key": "field_why_choose_us_subtitle",
+            "label": "Section Subtitle",
+            "name": "why_choose_us_subtitle",
+            "type": "text",
+            "instructions": "Enter the subtitle text below the main title",
+            "required": 0,
+            "default_value": "Discover the advantages of banking with us"
+        },
+        {
+            "key": "field_why_choose_us_cards",
+            "label": "Feature Cards",
+            "name": "why_choose_us_cards",
+            "type": "repeater",
+            "instructions": "Add feature cards for the Why Choose Us section",
+            "required": 0,
+            "min": 0,
+            "max": 6,
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_why_choose_us_card_icon",
+                    "label": "Icon",
+                    "name": "icon",
+                    "type": "text",
+                    "instructions": "Enter a Font Awesome icon class (e.g., fa-shield-alt)",
+                    "required": 1,
+                    "default_value": "fa-check-circle"
+                },
+                {
+                    "key": "field_why_choose_us_card_title",
+                    "label": "Title",
+                    "name": "title",
+                    "type": "text",
+                    "instructions": "Enter the card title",
+                    "required": 1
+                },
+                {
+                    "key": "field_why_choose_us_card_description",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "textarea",
+                    "instructions": "Enter the card description",
+                    "required": 1,
+                    "rows": 3
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_type",
+                "operator": "==",
+                "value": "front_page"
+            }
+        ]
+    ],
+    "menu_order": 2,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "show_in_rest": false
 }

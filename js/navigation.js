@@ -4,185 +4,266 @@
  * Handles toggling the navigation menu for small screens and enables TAB key
  * navigation support for dropdown menus.
  */
-( function() {
-	const siteNavigation = document.getElementById( 'site-navigation' );
 
-	// Return early if the navigation doesn't exist.
-	if ( ! siteNavigation ) {
-		return;
-	}
+// Enhanced navigation functionality
+(function() {
+    const siteNavigation = document.getElementById('site-navigation');
+    const button = siteNavigation?.querySelector('.menu-toggle');
+    const closeButton = siteNavigation?.querySelector('.mobile-menu-close');
+    const menu = siteNavigation?.querySelector('ul');
+    const header = document.querySelector('.site-header');
+    let lastScroll = 0;
 
-	const button = siteNavigation.querySelector( '.menu-toggle' );
+    if (!siteNavigation || !button || !menu || !header) {
+        return;
+    }
 
-	// Return early if the button doesn't exist.
-	if ( ! button ) {
-		return;
-	}
+    // Initialize menu
+    function initMenu() {
+        // Setup mobile menu
+        button.addEventListener('click', toggleMenu);
+        if (closeButton) {
+            closeButton.addEventListener('click', toggleMenu);
+        }
+        document.addEventListener('click', handleClickOutside);
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
-	const menu = siteNavigation.querySelector( 'ul' );
+        // Initialize dropdowns
+        initDropdowns();
 
-	// Hide menu toggle button if menu is empty and return early.
-	if ( ! menu ) {
-		button.style.display = 'none';
-		return;
-	}
+        // Set initial states
+        menu.classList.add('nav-menu');
+        button.setAttribute('aria-expanded', 'false');
 
-	if ( ! menu.classList.contains( 'nav-menu' ) ) {
-		menu.classList.add( 'nav-menu' );
-	}
+        // Add keyboard navigation support
+        setupKeyboardNav();
+    }
 
-	// Toggle the .toggled class and the aria-expanded value each time the button is clicked.
-	button.addEventListener( 'click', function() {
-		siteNavigation.classList.toggle( 'toggled' );
+    // Toggle mobile menu
+    function toggleMenu() {
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        
+        if (!isExpanded) {
+            // Opening menu - add transition class first
+            siteNavigation.classList.add('menu-transitioning');
+            setTimeout(() => {
+                siteNavigation.classList.add('toggled');
+                button.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+                if (closeButton) {
+                    closeButton.style.display = 'block';
+                }
+            }, 10);
+        } else {
+            // Closing menu - remove toggled class but keep transition
+            siteNavigation.classList.remove('toggled');
+            button.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+            if (closeButton) {
+                closeButton.style.display = 'none';
+            }
+            
+            // Remove transition class after animation completes
+            setTimeout(() => {
+                siteNavigation.classList.remove('menu-transitioning');
+            }, 300);
+        }
+    }
 
-		if ( button.getAttribute( 'aria-expanded' ) === 'true' ) {
-			button.setAttribute( 'aria-expanded', 'false' );
-		} else {
-			button.setAttribute( 'aria-expanded', 'true' );
-		}
-	});
+    // Handle click outside menu
+    function handleClickOutside(event) {
+        if (siteNavigation.classList.contains('toggled') && 
+            !event.target.closest('.main-navigation') && 
+            !event.target.closest('.menu-toggle')) {
+            toggleMenu();
+        }
+    }
 
-	// Remove the .toggled class and set aria-expanded to false when the user clicks outside the navigation.
-	document.addEventListener( 'click', function( event ) {
-		const isClickInside = siteNavigation.contains( event.target );
+    // Handle window resize
+    function handleResize() {
+        if (window.innerWidth > 991 && siteNavigation.classList.contains('toggled')) {
+            siteNavigation.classList.remove('toggled');
+            siteNavigation.classList.remove('menu-transitioning');
+            button.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+            if (closeButton) {
+                closeButton.style.display = 'none';
+            }
+        }
 
-		if ( ! isClickInside ) {
-			siteNavigation.classList.remove( 'toggled' );
-			button.setAttribute( 'aria-expanded', 'false' );
-		}
-	});
+        // Reset any inline styles on submenus
+        const submenus = menu.querySelectorAll('.sub-menu');
+        submenus.forEach(submenu => {
+            submenu.style.display = '';
+            submenu.style.maxHeight = '';
+        });
+    }
 
-	// Get all the link elements within the menu.
-	const links = menu.getElementsByTagName( 'a' );
+    // Enhanced scroll behavior
+    function handleScroll() {
+        const currentScroll = window.pageYOffset;
+        const scrollThreshold = 50; // Lower threshold for mobile
+        
+        // Skip scroll updates during menu open
+        if (siteNavigation.classList.contains('toggled')) {
+            return;
+        }
 
-	// Get all the link elements with children within the menu.
-	const linksWithChildren = menu.querySelectorAll( '.menu-item-has-children > a, .page_item_has_children > a' );
+        // Toggle header classes based on scroll position
+        if (currentScroll > scrollThreshold) {
+            header.classList.add('scrolled');
+            // Add glass effect class when not at top
+            header.classList.add('glass-effect');
+        } else {
+            header.classList.remove('scrolled');
+            header.classList.remove('glass-effect');
+        }
 
-	// Toggle focus each time a menu link is focused or blurred.
-	for ( const link of links ) {
-		link.addEventListener( 'focus', toggleFocus, true );
-		link.addEventListener( 'blur', toggleFocus, true );
-	}
+        // Hide/show header based on scroll direction
+        if (currentScroll > lastScroll && currentScroll > scrollThreshold) {
+            // Scrolling down - hide header
+            header.classList.add('header-hidden');
+        } else {
+            // Scrolling up - show header
+            header.classList.remove('header-hidden');
+        }
 
-	// Toggle focus each time a menu link with children receive a touch event.
-	for ( const link of linksWithChildren ) {
-		link.addEventListener( 'touchstart', toggleFocus, false );
-	}
+        lastScroll = currentScroll;
+    }
 
-	/**
-	 * Sets or removes .focus class on an element.
-	 */
-	function toggleFocus() {
-		if ( event.type === 'focus' || event.type === 'blur' ) {
-			let self = this;
-			// Move up through the ancestors of the current link until we hit .nav-menu.
-			while ( ! self.classList.contains( 'nav-menu' ) ) {
-				// On li elements toggle the class .focus.
-				if ( 'li' === self.tagName.toLowerCase() ) {
-					self.classList.toggle( 'focus' );
-				}
-				self = self.parentNode;
-			}
-		}
+    // Initialize dropdown menus
+    function initDropdowns() {
+        const dropdownLinks = menu.querySelectorAll('.menu-item-has-children > a');
+        
+        dropdownLinks.forEach(link => {
+            const menuItem = link.parentElement;
+            const submenu = menuItem.querySelector('.sub-menu');
+            
+            // Add arrow indicator to menu link for desktop view
+            const arrowSpan = document.createElement('span');
+            arrowSpan.classList.add('menu-arrow');
+            arrowSpan.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            link.appendChild(arrowSpan);
+            
+            // Add dropdown toggle button for mobile
+            const toggleBtn = document.createElement('button');
+            toggleBtn.classList.add('dropdown-toggle');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            toggleBtn.innerHTML = '<span class="screen-reader-text">Toggle Dropdown</span><i class="fas fa-chevron-down"></i>';
+            link.parentNode.insertBefore(toggleBtn, link.nextSibling);
 
-		if ( event.type === 'touchstart' ) {
-			const menuItem = this.parentNode;
-			event.preventDefault();
-			for ( const link of menuItem.parentNode.children ) {
-				if ( menuItem !== link ) {
-					link.classList.remove( 'focus' );
-				}
-			}
-			menuItem.classList.toggle( 'focus' );
-		}
-	}
+            // Handle dropdown toggle
+            toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+                toggleBtn.setAttribute('aria-expanded', !isExpanded);
+                
+                if (submenu) {
+                    if (!isExpanded) {
+                        // Opening submenu
+                        submenu.style.display = 'block';
+                        setTimeout(() => {
+                            submenu.style.opacity = '1';
+                            submenu.style.transform = 'translateY(0)';
+                            toggleBtn.querySelector('i').classList.remove('fa-chevron-down');
+                            toggleBtn.querySelector('i').classList.add('fa-chevron-up');
+                            // Also flip the arrow in the menu link
+                            const menuArrow = link.querySelector('.menu-arrow i');
+                            if (menuArrow) {
+                                menuArrow.classList.remove('fa-chevron-down');
+                                menuArrow.classList.add('fa-chevron-up');
+                            }
+                        }, 10);
+                    } else {
+                        // Closing submenu
+                        submenu.style.opacity = '0';
+                        submenu.style.transform = 'translateY(-10px)';
+                        toggleBtn.querySelector('i').classList.remove('fa-chevron-up');
+                        toggleBtn.querySelector('i').classList.add('fa-chevron-down');
+                        // Also flip back the arrow in the menu link
+                        const menuArrow = link.querySelector('.menu-arrow i');
+                        if (menuArrow) {
+                            menuArrow.classList.remove('fa-chevron-up');
+                            menuArrow.classList.add('fa-chevron-down');
+                        }
+                        setTimeout(() => {
+                            submenu.style.display = 'none';
+                        }, 300);
+                    }
+                }
+            });
 
-	// Mega Menu Functionality
-	setupMegaMenu();
+            // Handle hover on desktop
+            if (window.innerWidth > 991) {
+                menuItem.addEventListener('mouseenter', () => {
+                    if (submenu) {
+                        submenu.style.display = 'block';
+                        setTimeout(() => {
+                            submenu.style.opacity = '1';
+                            submenu.style.transform = 'translateY(0)';
+                            // Change arrow direction on hover
+                            const menuArrow = link.querySelector('.menu-arrow i');
+                            if (menuArrow) {
+                                menuArrow.classList.remove('fa-chevron-down');
+                                menuArrow.classList.add('fa-chevron-up');
+                            }
+                        }, 10);
+                    }
+                });
 
-	function setupMegaMenu() {
-		const menuItems = document.querySelectorAll('#primary-menu > li.menu-item-has-children');
-		const megaMenuContainer = document.querySelector('.mega-menu-container');
-		
-		if (!menuItems.length || !megaMenuContainer) {
-			return;
-		}
+                menuItem.addEventListener('mouseleave', () => {
+                    if (submenu) {
+                        submenu.style.opacity = '0';
+                        submenu.style.transform = 'translateY(-10px)';
+                        // Restore arrow direction
+                        const menuArrow = link.querySelector('.menu-arrow i');
+                        if (menuArrow) {
+                            menuArrow.classList.remove('fa-chevron-up');
+                            menuArrow.classList.add('fa-chevron-down');
+                        }
+                        setTimeout(() => {
+                            submenu.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            }
+            
+            // Handle nested submenus - add right arrows for submenu items that have children
+            const nestedDropdowns = submenu?.querySelectorAll('.menu-item-has-children > a');
+            nestedDropdowns?.forEach(nestedLink => {
+                const nestedArrowSpan = document.createElement('span');
+                nestedArrowSpan.classList.add('submenu-arrow');
+                nestedArrowSpan.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nestedLink.appendChild(nestedArrowSpan);
+            });
+        });
+    }
 
-		// Setup hovering on menu items
-		menuItems.forEach(item => {
-			// Check if the menu item has many children (indicating it could be a mega menu)
-			const subMenu = item.querySelector('ul.sub-menu');
-			
-			if (subMenu && subMenu.children.length > 5) {
-				// This should likely be a mega menu
-				item.classList.add('has-mega-menu');
-				
-				// Store HTML for megamenu content
-				item.megaMenuContent = createMegaMenuHTML(subMenu);
-				
-				// Add event listeners
-				item.addEventListener('mouseenter', showMegaMenu);
-				item.addEventListener('mouseleave', hideMegaMenu);
-			}
-		});
+    // Setup keyboard navigation
+    function setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            // Close menu on Escape
+            if (e.key === 'Escape' && siteNavigation.classList.contains('toggled')) {
+                toggleMenu();
+            }
 
-		// Add event listener to mega menu container 
-		megaMenuContainer.addEventListener('mouseenter', () => {
-			megaMenuContainer.classList.add('active');
-		});
-		megaMenuContainer.addEventListener('mouseleave', () => {
-			megaMenuContainer.classList.remove('active');
-			document.querySelector('.menu-item-has-children.active')?.classList.remove('active');
-		});
-	}
+            // Add visible focus indicators when using keyboard
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-nav-active');
+            }
+        });
 
-	function showMegaMenu() {
-		// Set active class on menu item
-		this.classList.add('active');
-		
-		// Add content to the mega menu container
-		const megaMenuContainer = document.querySelector('.mega-menu-container');
-		megaMenuContainer.innerHTML = this.megaMenuContent;
-		
-		// Show the mega menu
-		megaMenuContainer.classList.add('active');
-	}
+        // Remove keyboard focus indicators when using mouse
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('keyboard-nav-active');
+        });
+    }
 
-	function hideMegaMenu() {
-		// Check if the mouse is over the mega menu container
-		const megaMenuContainer = document.querySelector('.mega-menu-container');
-		
-		if (!megaMenuContainer.matches(':hover')) {
-			// If not hovering over mega menu, hide it
-			this.classList.remove('active');
-			megaMenuContainer.classList.remove('active');
-		}
-	}
-
-	function createMegaMenuHTML(subMenu) {
-		// Get all submenu items
-		const items = Array.from(subMenu.children);
-		const columns = Math.min(4, Math.ceil(items.length / 4)); // Max 4 columns
-		
-		let html = '<div class="row mega-menu-row">';
-		
-		// Create columns
-		for (let i = 0; i < columns; i++) {
-			html += '<div class="col-md-' + (12 / columns) + ' mega-menu-column">';
-			html += '<ul class="mega-menu-items">';
-			
-			// Add items to this column
-			const columnItems = items.slice(i * Math.ceil(items.length / columns), (i + 1) * Math.ceil(items.length / columns));
-			
-			for (const item of columnItems) {
-				html += item.outerHTML;
-			}
-			
-			html += '</ul>';
-			html += '</div>';
-		}
-		
-		html += '</div>';
-		return html;
-	}
-}() );
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMenu);
+    } else {
+        initMenu();
+    }
+})();

@@ -236,6 +236,15 @@ function sacco_php_scripts() {
 	// Enqueue Custom JS
 	wp_enqueue_script('sacco-php-custom', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'swiper-js', 'chart-js'), _S_VERSION, true);
 
+	// Enqueue AOS (Animate On Scroll) library for animations
+	wp_enqueue_style('aos-css', 'https://unpkg.com/aos@2.3.1/dist/aos.css', array(), '2.3.1');
+	wp_enqueue_script('aos-js', 'https://unpkg.com/aos@2.3.1/dist/aos.js', array(), '2.3.1', true);
+
+	// Enqueue custom front page script
+	if (is_front_page()) {
+		wp_enqueue_script('sacco-php-front-page', get_template_directory_uri() . '/js/front-page.js', array('jquery', 'swiper-js', 'aos-js'), _S_VERSION, true);
+	}
+
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
@@ -1049,6 +1058,7 @@ function sacco_php_register_savings_cpt() {
         'filter_items_list'     => __( 'Filter savings products list', 'sacco-php' ),
     );
     $args = array(
+<<<<<<< HEAD
         'label'                 => __( 'Savings Product', 'sacco-php' ),
         'description'           => __( 'Savings products and accounts', 'sacco-php' ),
         'labels'                => $labels,
@@ -1745,455 +1755,133 @@ function sacco_php_register_goal_post_type() {
     );
 
     $args = array(
+=======
+>>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
         'labels'                => $labels,
         'public'                => true,
         'publicly_queryable'    => true,
         'show_ui'               => true,
         'show_in_menu'          => true,
         'query_var'             => true,
-        'rewrite'               => array('slug' => 'savings-goal'),
+        'rewrite'               => array('slug' => 'savings-product'),
         'capability_type'       => 'post',
-        'has_archive'           => false,
+        'has_archive'           => true,
         'hierarchical'          => false,
-        'menu_position'         => 25,
-        'menu_icon'             => 'dashicons-chart-pie',
-        'supports'              => array('title', 'editor', 'author'),
+        'menu_position'         => 5,
+        'menu_icon'             => 'dashicons-piggy-bank',
+        'supports'              => array('title', 'editor', 'excerpt', 'thumbnail', 'custom-fields'),
     );
-
-    register_post_type('savings_goal', $args);
+    register_post_type('savings', $args);
 }
-add_action('init', 'sacco_php_register_goal_post_type');
+add_action('init', 'sacco_php_register_savings_cpt');
 
 /**
- * Add Meta Box for Savings Goal
+ * Asset versioning system
  */
-function sacco_php_add_savings_goal_meta_box() {
-    add_meta_box(
-        'savings_goal_meta_box',
-        __('Savings Goal Details', 'sacco-php'),
-        'sacco_php_render_savings_goal_meta_box',
-        'savings_goal',
-        'normal',
-        'high'
-    );
-}
-add_action('add_meta_boxes', 'sacco_php_add_savings_goal_meta_box');
-
-/**
- * Render Meta Box for Savings Goal
- */
-function sacco_php_render_savings_goal_meta_box($post) {
-    // Add nonce for security
-    wp_nonce_field('sacco_php_save_savings_goal_meta_box_data', 'sacco_php_savings_goal_meta_box_nonce');
-
-    // Retrieve existing values
-    $goal_amount = get_post_meta($post->ID, 'goal_amount', true);
-    $current_amount = get_post_meta($post->ID, 'current_amount', true);
-    $target_date = get_post_meta($post->ID, 'target_date', true);
-    $goal_category = get_post_meta($post->ID, 'goal_category', true);
-    $priority = get_post_meta($post->ID, 'goal_priority', true);
-    $auto_deposit = get_post_meta($post->ID, 'auto_deposit', true);
-    $auto_deposit_amount = get_post_meta($post->ID, 'auto_deposit_amount', true);
-    $auto_deposit_frequency = get_post_meta($post->ID, 'auto_deposit_frequency', true);
-
-    // Output the fields
-    ?>
-    <style>
-        .goal-meta-row {
-            margin-bottom: 15px;
-        }
-        .goal-meta-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        .goal-progress {
-            height: 20px;
-            background-color: #f1f1f1;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-        .goal-progress-bar {
-            height: 100%;
-            background-color: #5ca157;
-        }
-        .goal-amounts {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-        .auto-deposit-fields {
-            padding: 10px;
-            background-color: #f9f9f9;
-            margin-top: 10px;
-            display: none;
-        }
-    </style>
-
-    <div class="goal-meta-row">
-        <label class="goal-meta-label" for="goal_amount">
-            <?php _e('Goal Amount (KSh)', 'sacco-php'); ?>
-        </label>
-        <input type="number" id="goal_amount" name="goal_amount" value="<?php echo esc_attr($goal_amount); ?>" class="regular-text" min="0" step="1000" required>
-    </div>
-
-    <div class="goal-meta-row">
-        <label class="goal-meta-label" for="current_amount">
-            <?php _e('Current Amount (KSh)', 'sacco-php'); ?>
-        </label>
-        <input type="number" id="current_amount" name="current_amount" value="<?php echo esc_attr($current_amount); ?>" class="regular-text" min="0" step="1000">
-    </div>
-
-    <?php
-    // Calculate the progress percentage
-    $progress = 0;
-    if (!empty($goal_amount) && !empty($current_amount) && $goal_amount > 0) {
-        $progress = ($current_amount / $goal_amount) * 100;
-        $progress = min(100, $progress); // Cap at 100%
-    }
-    ?>
-
-    <div class="goal-meta-row">
-        <label class="goal-meta-label">
-            <?php _e('Progress', 'sacco-php'); ?>
-        </label>
-        <div class="goal-progress">
-            <div class="goal-progress-bar" style="width: <?php echo esc_attr($progress); ?>%;"></div>
-        </div>
-        <div class="goal-amounts">
-            <span><?php echo esc_html($current_amount ? 'KSh ' . number_format($current_amount) : 'KSh 0'); ?></span>
-            <span><?php echo esc_html($progress); ?>%</span>
-            <span><?php echo esc_html($goal_amount ? 'KSh ' . number_format($goal_amount) : 'KSh 0'); ?></span>
-        </div>
-    </div>
-
-    <div class="goal-meta-row">
-        <label class="goal-meta-label" for="target_date">
-            <?php _e('Target Date', 'sacco-php'); ?>
-        </label>
-        <input type="date" id="target_date" name="target_date" value="<?php echo esc_attr($target_date); ?>" class="regular-text" required>
-    </div>
-
-    <div class="goal-meta-row">
-        <label class="goal-meta-label" for="goal_category">
-            <?php _e('Category', 'sacco-php'); ?>
-        </label>
-        <select id="goal_category" name="goal_category">
-            <option value="" <?php selected($goal_category, ''); ?>><?php _e('Select a category', 'sacco-php'); ?></option>
-            <option value="emergency" <?php selected($goal_category, 'emergency'); ?>><?php _e('Emergency Fund', 'sacco-php'); ?></option>
-            <option value="education" <?php selected($goal_category, 'education'); ?>><?php _e('Education', 'sacco-php'); ?></option>
-            <option value="home" <?php selected($goal_category, 'home'); ?>><?php _e('Home Purchase/Renovation', 'sacco-php'); ?></option>
-            <option value="vehicle" <?php selected($goal_category, 'vehicle'); ?>><?php _e('Vehicle', 'sacco-php'); ?></option>
-            <option value="vacation" <?php selected($goal_category, 'vacation'); ?>><?php _e('Vacation', 'sacco-php'); ?></option>
-            <option value="wedding" <?php selected($goal_category, 'wedding'); ?>><?php _e('Wedding', 'sacco-php'); ?></option>
-            <option value="retirement" <?php selected($goal_category, 'retirement'); ?>><?php _e('Retirement', 'sacco-php'); ?></option>
-            <option value="business" <?php selected($goal_category, 'business'); ?>><?php _e('Business', 'sacco-php'); ?></option>
-            <option value="other" <?php selected($goal_category, 'other'); ?>><?php _e('Other', 'sacco-php'); ?></option>
-        </select>
-    </div>
-
-    <div class="goal-meta-row">
-        <label class="goal-meta-label" for="goal_priority">
-            <?php _e('Priority', 'sacco-php'); ?>
-        </label>
-        <select id="goal_priority" name="goal_priority">
-            <option value="high" <?php selected($priority, 'high'); ?>><?php _e('High', 'sacco-php'); ?></option>
-            <option value="medium" <?php selected($priority, 'medium'); ?>><?php _e('Medium', 'sacco-php'); ?></option>
-            <option value="low" <?php selected($priority, 'low'); ?>><?php _e('Low', 'sacco-php'); ?></option>
-        </select>
-    </div>
-
-    <div class="goal-meta-row">
-        <label class="goal-meta-label">
-            <?php _e('Automatic Deposits', 'sacco-php'); ?>
-        </label>
-        <div>
-            <input type="checkbox" id="auto_deposit" name="auto_deposit" value="1" <?php checked($auto_deposit, '1'); ?>>
-            <label for="auto_deposit"><?php _e('Enable automatic deposits', 'sacco-php'); ?></label>
-        </div>
-        <div class="auto-deposit-fields" id="auto_deposit_fields" style="<?php echo $auto_deposit ? 'display:block;' : ''; ?>">
-            <div class="goal-meta-row">
-                <label class="goal-meta-label" for="auto_deposit_amount">
-                    <?php _e('Deposit Amount (KSh)', 'sacco-php'); ?>
-                </label>
-                <input type="number" id="auto_deposit_amount" name="auto_deposit_amount" value="<?php echo esc_attr($auto_deposit_amount); ?>" min="0" step="100">
-            </div>
-            <div class="goal-meta-row">
-                <label class="goal-meta-label" for="auto_deposit_frequency">
-                    <?php _e('Deposit Frequency', 'sacco-php'); ?>
-                </label>
-                <select id="auto_deposit_frequency" name="auto_deposit_frequency">
-                    <option value="weekly" <?php selected($auto_deposit_frequency, 'weekly'); ?>><?php _e('Weekly', 'sacco-php'); ?></option>
-                    <option value="biweekly" <?php selected($auto_deposit_frequency, 'biweekly'); ?>><?php _e('Every 2 Weeks', 'sacco-php'); ?></option>
-                    <option value="monthly" <?php selected($auto_deposit_frequency, 'monthly'); ?>><?php _e('Monthly', 'sacco-php'); ?></option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const autoDepositCheckbox = document.getElementById('auto_deposit');
-            const autoDepositFields = document.getElementById('auto_deposit_fields');
-            
-            autoDepositCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    autoDepositFields.style.display = 'block';
-                } else {
-                    autoDepositFields.style.display = 'none';
-                }
-            });
-        });
-    </script>
-    <?php
+function sacco_php_asset_version($path) {
+    $version = filemtime(get_template_directory() . $path);
+    return $version;
 }
 
 /**
- * Save Savings Goal Meta Box Data
+ * Image optimization settings
  */
-function sacco_php_save_savings_goal_meta_box_data($post_id) {
-    // Check nonce
-    if (!isset($_POST['sacco_php_savings_goal_meta_box_nonce']) ||
-        !wp_verify_nonce($_POST['sacco_php_savings_goal_meta_box_nonce'], 'sacco_php_save_savings_goal_meta_box_data')) {
-        return;
-    }
+function sacco_php_optimize_images() {
+    // Set default image quality
+    add_filter('jpeg_quality', function($quality) {
+        return 82;
+    });
 
-    // Check user permissions
-    if (!current_user_can('edit_post', $post_id)) {
-        return;
-    }
+    // Add custom image sizes with optimal dimensions
+    add_image_size('card-thumbnail', 400, 300, true);
+    add_image_size('mobile-hero', 800, 600, true);
+    add_image_size('desktop-hero', 1920, 1080, true);
 
-    // Don't save during autosave
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-
-    // Save goal amount
-    if (isset($_POST['goal_amount'])) {
-        update_post_meta($post_id, 'goal_amount', sanitize_text_field($_POST['goal_amount']));
-    }
-
-    // Save current amount
-    if (isset($_POST['current_amount'])) {
-        update_post_meta($post_id, 'current_amount', sanitize_text_field($_POST['current_amount']));
-    }
-
-    // Save target date
-    if (isset($_POST['target_date'])) {
-        update_post_meta($post_id, 'target_date', sanitize_text_field($_POST['target_date']));
-    }
-
-    // Save goal category
-    if (isset($_POST['goal_category'])) {
-        update_post_meta($post_id, 'goal_category', sanitize_text_field($_POST['goal_category']));
-    }
-
-    // Save goal priority
-    if (isset($_POST['goal_priority'])) {
-        update_post_meta($post_id, 'goal_priority', sanitize_text_field($_POST['goal_priority']));
-    }
-
-    // Save auto deposit setting
-    $auto_deposit = isset($_POST['auto_deposit']) ? '1' : '0';
-    update_post_meta($post_id, 'auto_deposit', $auto_deposit);
-
-    // Save auto deposit amount
-    if (isset($_POST['auto_deposit_amount'])) {
-        update_post_meta($post_id, 'auto_deposit_amount', sanitize_text_field($_POST['auto_deposit_amount']));
-    }
-
-    // Save auto deposit frequency
-    if (isset($_POST['auto_deposit_frequency'])) {
-        update_post_meta($post_id, 'auto_deposit_frequency', sanitize_text_field($_POST['auto_deposit_frequency']));
-    }
-}
-add_action('save_post_savings_goal', 'sacco_php_save_savings_goal_meta_box_data');
-
-// Register meta boxes for Download CPT
-function sacco_php_register_download_meta_boxes() {
-    add_meta_box(
-        'download_details_meta_box',
-        __('Download File Details', 'sacco-php'),
-        'sacco_php_download_meta_box_callback',
-        'download',
-        'normal',
-        'high'
-    );
-}
-add_action('add_meta_boxes_download', 'sacco_php_register_download_meta_boxes'); // Specific hook for CPT
-
-// Meta box display callback for Download CPT
-function sacco_php_download_meta_box_callback($post) {
-    wp_nonce_field('sacco_php_download_meta_box', 'sacco_php_download_meta_box_nonce');
-
-    $download_file_url = get_post_meta($post->ID, '_download_file_url', true);
-    $file_version = get_post_meta($post->ID, '_file_version', true);
-    $file_publish_date = get_post_meta($post->ID, '_file_publish_date', true);
-
-    ?>
-    <p>
-        <label for="download_file_url"><?php _e('Download File URL:', 'sacco-php'); ?></label>
-        <input type="url" id="download_file_url" name="download_file_url" value="<?php echo esc_attr($download_file_url); ?>" class="widefat" placeholder="https://example.com/path/to/file.pdf">
-        <small><?php _e('Enter the direct URL to the downloadable file. You can upload files via Media > Add New and then paste the URL here.', 'sacco-php'); ?></small>
-    </p>
-    <p>
-        <label for="file_version"><?php _e('File Version (Optional):', 'sacco-php'); ?></label>
-        <input type="text" id="file_version" name="file_version" value="<?php echo esc_attr($file_version); ?>" class="widefat" placeholder="e.g., v1.2, July 2024">
-    </p>
-    <p>
-        <label for="file_publish_date"><?php _e('File Publish Date (Optional):', 'sacco-php'); ?></label>
-        <input type="date" id="file_publish_date" name="file_publish_date" value="<?php echo esc_attr($file_publish_date); ?>" class="widefat">
-    </p>
-    <?php
-}
-
-// Save meta box content for Download CPT
-function sacco_php_save_download_meta_box_data($post_id) {
-    // Check if our nonce is set.
-    if (!isset($_POST['sacco_php_download_meta_box_nonce'])) {
-        return;
-    }
-    // Verify that the nonce is valid.
-    if (!wp_verify_nonce($_POST['sacco_php_download_meta_box_nonce'], 'sacco_php_download_meta_box')) {
-        return;
-    }
-    // If this is an autosave, our form has not been submitted, so we don't want to do anything.
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-    // Check permissions for 'download' post type
-    if (isset($_POST['post_type']) && 'download' == $_POST['post_type']) {
-        if (!current_user_can('edit_post', $post_id)) {
-            return;
+    // Add WebP support
+    function sacco_php_content_type_webp($headers) {
+        if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'image/webp') !== false) {
+            $headers['Vary'] = 'Accept';
         }
-    } else {
-         // For other post types, or if post_type is not set (though it should be)
-        if (!current_user_can('edit_page', $post_id)) { // Fallback, adjust capability if needed
-            return;
-        }
+        return $headers;
     }
+    add_filter('wp_headers', 'sacco_php_content_type_webp');
 
-
-    $fields_to_save = array(
-        '_download_file_url' => 'download_file_url',
-        '_file_version' => 'file_version',
-        '_file_publish_date' => 'file_publish_date'
-    );
-
-    foreach ($fields_to_save as $meta_key => $post_field_name) {
-        if (isset($_POST[$post_field_name])) {
-            $value = sanitize_text_field($_POST[$post_field_name]);
-            if (empty($value)) {
-                delete_post_meta($post_id, $meta_key);
-            } else {
-                update_post_meta($post_id, $meta_key, $value);
-            }
+    // Add responsive image attributes
+    function sacco_php_responsive_image_attributes($attributes) {
+        if (!isset($attributes['loading'])) {
+            $attributes['loading'] = 'lazy';
         }
+        if (!isset($attributes['decoding'])) {
+            $attributes['decoding'] = 'async';
+        }
+        return $attributes;
     }
+    add_filter('wp_get_attachment_image_attributes', 'sacco_php_responsive_image_attributes');
 }
-// Use the more specific save_post_{post_type} hook
-add_action('save_post_download', 'sacco_php_save_download_meta_box_data');
-
-// --- Form Submission Handlers ---
+add_action('after_setup_theme', 'sacco_php_optimize_images');
 
 /**
- * Handles the submission of the native contact form on the contact page.
+ * Image optimization functions
  */
-function sacco_php_handle_contact_page_submission() {
-    // Verify nonce
-    if (!isset($_POST['contact_page_nonce']) || !wp_verify_nonce($_POST['contact_page_nonce'], 'sacco_contact_page_form_nonce')) {
-        wp_die('Nonce verification failed!', 'Error', array('response' => 403));
-    }
-
-    // Sanitize and collect data
-    $name = isset($_POST['contact_name']) ? sanitize_text_field($_POST['contact_name']) : '';
-    $email = isset($_POST['contact_email']) ? sanitize_email($_POST['contact_email']) : '';
-    $subject = isset($_POST['contact_subject']) ? sanitize_text_field($_POST['contact_subject']) : '';
-    $message = isset($_POST['contact_message']) ? sanitize_textarea_field($_POST['contact_message']) : '';
-    $privacy = isset($_POST['contact_privacy']) && $_POST['contact_privacy'] === 'agree' ? true : false;
-
-    // Basic validation (more can be added)
-    if (empty($name) || empty($email) || !is_email($email) || empty($subject) || empty($message) || !$privacy) {
-        // Redirect back with an error message
-        $redirect_url = isset($_POST['_wp_http_referer']) ? esc_url_raw($_POST['_wp_http_referer']) : home_url('/contact/');
-        wp_redirect(add_query_arg('form_status', 'error', remove_query_arg('form_status', $redirect_url)));
-        exit;
-    }
-
-    // Prepare email
-    $to = get_option('admin_email'); // Send to admin email
-    $email_subject = 'Contact Page Submission: ' . $subject;
-    $body = "Name: $name\nEmail: $email\nSubject: $subject\n\nMessage:\n$message";
-    $headers = array('Content-Type: text/plain; charset=UTF-8', 'From: ' . $name . ' <' . $email . '>', 'Reply-To: ' . $email);
-
-    // Send email
-    if (wp_mail($to, $email_subject, $body, $headers)) {
-        // Redirect back with a success message
-        $redirect_url = isset($_POST['_wp_http_referer']) ? esc_url_raw($_POST['_wp_http_referer']) : home_url('/contact/');
-        wp_redirect(add_query_arg('form_status', 'success', remove_query_arg('form_status', $redirect_url)));
-        exit;
-    } else {
-        // Redirect back with a mail error message
-        $redirect_url = isset($_POST['_wp_http_referer']) ? esc_url_raw($_POST['_wp_http_referer']) : home_url('/contact/');
-        wp_redirect(add_query_arg('form_status', 'mail_error', remove_query_arg('form_status', $redirect_url)));
-        exit;
-    }
+function sacco_optimize_image_sizes() {
+    // Remove default image sizes
+    remove_image_size('1536x1536');
+    remove_image_size('2048x2048');
+    
+    // Add custom optimized sizes
+    add_image_size('card-thumbnail', 480, 320, true);
+    add_image_size('hero-mobile', 768, 500, true);
+    add_image_size('hero-desktop', 1920, 800, true);
 }
-add_action('admin_post_nopriv_contact_page_submission', 'sacco_php_handle_contact_page_submission');
-add_action('admin_post_contact_page_submission', 'sacco_php_handle_contact_page_submission');
+add_action('after_setup_theme', 'sacco_optimize_image_sizes');
 
 /**
- * Handles the submission of the product enquiry form.
+ * Add WebP support
  */
-function sacco_php_handle_product_enquiry_submission() {
-    // Verify nonce
-    if (!isset($_POST['enquiry_nonce']) || !wp_verify_nonce($_POST['enquiry_nonce'], 'product_enquiry_form_nonce')) {
-        wp_die('Nonce verification failed!', 'Error', array('response' => 403));
+function sacco_webp_upload_mimes($existing_mimes) {
+    $existing_mimes['webp'] = 'image/webp';
+    return $existing_mimes;
+}
+add_filter('mime_types', 'sacco_webp_upload_mimes');
+
+/**
+ * Add image quality control
+ */
+function sacco_jpeg_quality() {
+    return 82; // Optimal quality-size ratio
+}
+add_filter('jpeg_quality', 'sacco_jpeg_quality');
+
+/**
+ * Add responsive image attributes
+ */
+function sacco_responsive_image_attributes($attributes) {
+    if (isset($attributes['src'])) {
+        $attributes['loading'] = 'lazy';
+        $attributes['decoding'] = 'async';
     }
+    return $attributes;
+}
+add_filter('wp_get_attachment_image_attributes', 'sacco_responsive_image_attributes');
 
-    // Sanitize and collect data
-    $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
-    $product_title = isset($_POST['product_title']) ? sanitize_text_field($_POST['product_title']) : 'N/A';
-    $name = isset($_POST['enquiry_name']) ? sanitize_text_field($_POST['enquiry_name']) : '';
-    $email = isset($_POST['enquiry_email']) ? sanitize_email($_POST['enquiry_email']) : '';
-    $phone = isset($_POST['enquiry_phone']) ? sanitize_text_field($_POST['enquiry_phone']) : ''; 
-    $message = isset($_POST['enquiry_message']) ? sanitize_textarea_field($_POST['enquiry_message']) : '';
+/**
+ * Disable WordPress scaling for uploaded images
+ */
+add_filter('big_image_size_threshold', '__return_false');
 
-    // Basic validation
-    $product_page_url = $product_id ? get_permalink($product_id) : home_url();
-    if (empty($name) || empty($email) || !is_email($email) || empty($message) || $product_id === 0) {
-        wp_redirect(add_query_arg(array('form_status' => 'error', 'modal' => 'productEnquiryModal'), remove_query_arg('form_status', $product_page_url) . '#productEnquiryModal')); 
-        exit;
-    }
-
-    // Prepare email
-    $to = get_option('admin_email');
-    $email_subject = 'Product Enquiry: ' . $product_title;
-    $body  = "A new enquiry has been submitted for the product: $product_title (ID: $product_id)\n";
-    $body .= "--------------------------------------------------------------------\n";
-    $body .= "Name: $name\n";
-    $body .= "Email: $email\n";
-    if ($phone) {
-        $body .= "Phone: $phone\n";
-    }
-    $body .= "\nMessage:\n$message\n";
-    $body .= "--------------------------------------------------------------------\n";
-    $body .= "You can view the product here: " . esc_url($product_page_url) . "\n";
-
-    $headers = array('Content-Type: text/plain; charset=UTF-8', 'From: ' . $name . ' <' . $email . '>', 'Reply-To: ' . $email);
-
-    if (wp_mail($to, $email_subject, $body, $headers)) {
-        wp_redirect(add_query_arg(array('form_status' => 'success', 'modal_success' => 'productEnquiryModal'), remove_query_arg('form_status', $product_page_url) . '#productEnquiryModalSuccess')); 
-        exit;
-    } else {
-        wp_redirect(add_query_arg(array('form_status' => 'mail_error', 'modal' => 'productEnquiryModal'), remove_query_arg('form_status', $product_page_url) . '#productEnquiryModal'));
-        exit;
+/**
+ * Add preload for critical images
+ */
+function sacco_preload_critical_images() {
+    if (is_front_page()) {
+        $hero_image_id = get_theme_mod('hero_image');
+        if ($hero_image_id) {
+            $hero_image_src = wp_get_attachment_image_src($hero_image_id, 'hero-desktop')[0];
+            echo '<link rel="preload" as="image" href="' . esc_url($hero_image_src) . '">';
+        }
     }
 }
-add_action('admin_post_nopriv_product_enquiry_submission', 'sacco_php_handle_product_enquiry_submission');
-add_action('admin_post_product_enquiry_submission', 'sacco_php_handle_product_enquiry_submission');
+add_action('wp_head', 'sacco_preload_critical_images', 1);
 
 
 
