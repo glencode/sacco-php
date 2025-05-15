@@ -13,7 +13,7 @@ get_header();
 	<main id="primary" class="site-main">
 
 		<!-- Hero Slider Section -->
-		<section class="hero-section">
+		<section class="hero-section position-relative">
 			<div class="hero-slider swiper">
 				<div class="swiper-wrapper">
 					<?php
@@ -41,21 +41,21 @@ get_header();
 					?>
 					<?php echo $slide_tag_open; ?>
 					<div class="swiper-slide" style="background-image: url('<?php echo esc_url($slide_bg); ?>');">
+						<div class="slide-overlay"></div>
 						<div class="slide-content-wrap">
 							<div class="container">
 								<div class="row">
 									<div class="col-lg-8 col-md-10">
-										<div class="slide-content">
-											<h2 class="slide-title"><?php the_title(); ?></h2>
-											<div class="slide-subtitle">
+										<div class="slide-content glass-effect p-4 rounded-lg">
+											<h2 class="slide-title gradient-text mb-4"><?php the_title(); ?></h2>
+											<div class="slide-subtitle text-white">
 												<?php the_content(); ?>
 											</div>
-											<?php
-											// Display button only if there's no whole slide link, or if specifically designed to coexist
-											if (empty($slide_link_url) && $slide_button_text && $slide_button_url) :
-											?>
-											<div class="slide-buttons">
-												<a href="<?php echo esc_url($slide_button_url); ?>" class="btn btn-primary"><?php echo esc_html($slide_button_text); ?></a>
+											<?php if (empty($slide_link_url) && $slide_button_text && $slide_button_url) : ?>
+											<div class="slide-buttons mt-4">
+												<a href="<?php echo esc_url($slide_button_url); ?>" class="btn glass-button btn-light btn-lg floating-element">
+													<?php echo esc_html($slide_button_text); ?>
+												</a>
 											</div>
 											<?php endif; ?>
 										</div>
@@ -106,11 +106,16 @@ get_header();
 		$quick_actions_subtitle = get_field('home_quick_actions_subtitle') ?: esc_html__('Quick access to our most popular services and information.', 'sacco-php');
 		$quick_action_cards = get_field('home_quick_action_cards');
 		?>
-		<section class="quick-actions-section py-5 bg-light">
+		<section class="quick-actions-section py-5 position-relative overflow-hidden">
+			<div class="shape-divider">
+				<svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+					<path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+				</svg>
+			</div>
 			<div class="container">
 				<div class="row mb-5">
 					<div class="col-md-12 text-center">
-						<h2 class="section-title"><?php echo esc_html($quick_actions_title); ?></h2>
+						<h2 class="section-title gradient-text"><?php echo esc_html($quick_actions_title); ?></h2>
 						<p class="section-subtitle"><?php echo esc_html($quick_actions_subtitle); ?></p>
 					</div>
 				</div>
@@ -125,13 +130,13 @@ get_header();
 							$button_url = !empty($card['button_url']) ? $card['button_url'] : '#';
 					?>
 					<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-						<div class="quick-action-card card h-100 text-center p-4 shadow-sm">
-							<div class="quick-action-icon mb-3 text-primary">
+						<div class="quick-action-card glass-card h-100 text-center p-4">
+							<div class="quick-action-icon mb-3 text-primary floating-element">
 								<i class="fas <?php echo esc_attr($icon); ?> fa-3x"></i>
 							</div>
 							<h3 class="quick-action-title h5"><?php echo esc_html($title); ?></h3>
 							<p class="quick-action-text small text-muted"><?php echo esc_html($text); ?></p>
-							<a href="<?php echo esc_url($button_url); ?>" class="btn btn-primary btn-sm mt-auto"><?php echo esc_html($button_text); ?></a>
+							<a href="<?php echo esc_url($button_url); ?>" class="btn glass-button btn-primary btn-sm mt-auto"><?php echo esc_html($button_text); ?></a>
 						</div>
 					</div>
 					<?php 
@@ -226,7 +231,7 @@ get_header();
 		$stats_section_subtitle = get_field('home_stats_section_subtitle') ?: esc_html__('Key figures that highlight our commitment and success.', 'sacco-php');
 		$stats_items = get_field('home_stats_items');
 		?>
-		<section class="stats-section py-5 bg-light">
+		<section class="stats-section py-5 position-relative animated-gradient text-white">
 			<div class="container">
 				<div class="row mb-5">
 					<div class="col-md-12 text-center">
@@ -241,19 +246,19 @@ get_header();
 				<div class="row justify-content-center">
 					<?php 
 					if ($stats_items && is_array($stats_items)) :
-						$stat_col_class = count($stats_items) >= 4 ? 'col-lg-3 col-md-6' : 'col-md-4'; // Adjust columns for 3 items
+						$stat_col_class = count($stats_items) >= 4 ? 'col-lg-3 col-md-6' : 'col-md-4';
 						foreach ($stats_items as $stat) :
 							$icon = !empty($stat['icon']) ? $stat['icon'] : 'fa-star';
 							$number = !empty($stat['number']) ? $stat['number'] : '0';
 							$title = !empty($stat['title']) ? $stat['title'] : esc_html__('Stat Title', 'sacco-php');
 					?>
 					<div class="<?php echo esc_attr($stat_col_class); ?> text-center mb-4 mb-lg-0">
-						<div class="stat-item p-4 border rounded bg-white shadow-sm h-100">
-							<div class="stat-icon text-primary mb-3">
+						<div class="stat-item glass-effect p-4 rounded h-100">
+							<div class="stat-icon text-white mb-3 floating-element">
 								<i class="fas <?php echo esc_attr($icon); ?> fa-3x"></i>
 							</div>
 							<h3 class="stat-number display-4 fw-bold" data-count="<?php echo esc_attr($number); ?>">0</h3>
-							<p class="stat-title text-muted mb-0"><?php echo esc_html($title); ?></p>
+							<p class="stat-title mb-0"><?php echo esc_html($title); ?></p>
 						</div>
 					</div>
 					<?php 
@@ -355,7 +360,7 @@ get_header();
 		<!-- Mobile Banking / App CTA Section -->
 		<?php 
 		$mobile_app_enable = get_field('home_mobile_app_enable');
-		if( $mobile_app_enable || is_customize_preview() ) : // Show if enabled or in customizer
+		if( $mobile_app_enable || is_customize_preview() ) :
 			$mobile_app_title = get_field('home_mobile_app_title') ?: esc_html__('Access Your Accounts on the Go', 'sacco-php');
 			$mobile_app_subtitle = get_field('home_mobile_app_subtitle') ?: esc_html__('Download our mobile app for easy and secure banking.', 'sacco-php');
 			$mobile_app_description = get_field('home_mobile_app_description') ?: esc_html__('Manage your finances anytime, anywhere. Check balances, transfer funds, pay bills, and much more, all from the convenience of your smartphone.', 'sacco-php');
@@ -365,40 +370,49 @@ get_header();
 			$apple_store_url = get_field('home_mobile_app_apple_store_url');
 			$apple_store_image = get_field('home_mobile_app_apple_store_image');
 		?>
-		<section class="mobile-app-cta-section py-5 bg-light">
+		<section class="mobile-app-cta-section py-5 position-relative overflow-hidden animated-gradient">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-2' : ''; ?> text-center text-lg-start mb-4 mb-lg-0">
-						<h2 class="section-title"><?php echo esc_html($mobile_app_title); ?></h2>
-						<p class="section-subtitle fs-5"><?php echo esc_html($mobile_app_subtitle); ?></p>
-						<p><?php echo nl2br(esc_html($mobile_app_description)); ?></p>
-						<div class="app-store-badges mt-4">
-							<?php if ($google_play_url && $google_play_image) : ?>
-								<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="me-2"><img src="<?php echo esc_url($google_play_image['url']); ?>" alt="<?php echo esc_attr($google_play_image['alt'] ?: 'Get it on Google Play'); ?>" class="img-fluid app-badge"></a>
-							<?php elseif ($google_play_url) : ?>
-								<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="btn btn-dark me-2"><i class="fab fa-google-play"></i> Google Play</a>
-							<?php endif; ?>
-							<?php if ($apple_store_url && $apple_store_image) : ?>
-								<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank"><img src="<?php echo esc_url($apple_store_image['url']); ?>" alt="<?php echo esc_attr($apple_store_image['alt'] ?: 'Download on the App Store'); ?>" class="img-fluid app-badge"></a>
-							<?php elseif ($apple_store_url) : ?>
-								<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="btn btn-dark"><i class="fab fa-app-store-ios"></i> App Store</a>
-							<?php endif; ?>
-							<?php if (empty($google_play_url) && empty($apple_store_url) && is_customize_preview() ) : // Fallback for customizer?>
-								<a href="#" class="btn btn-dark me-2"><i class="fab fa-google-play"></i> Google Play (Sample)</a>
-								<a href="#" class="btn btn-dark"><i class="fab fa-app-store-ios"></i> App Store (Sample)</a>
-							<?php endif; ?>
+					<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-2' : ''; ?> text-center text-lg-start">
+						<div class="glass-effect p-5 rounded-lg">
+							<h2 class="section-title text-white mb-4"><?php echo esc_html($mobile_app_title); ?></h2>
+							<p class="section-subtitle text-white fs-5 mb-4"><?php echo esc_html($mobile_app_subtitle); ?></p>
+							<p class="text-white mb-5"><?php echo nl2br(esc_html($mobile_app_description)); ?></p>
+							<div class="app-store-badges">
+								<?php if ($google_play_url && $google_play_image) : ?>
+									<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="me-3 floating-element">
+										<img src="<?php echo esc_url($google_play_image['url']); ?>" alt="<?php echo esc_attr($google_play_image['alt'] ?: 'Get it on Google Play'); ?>" class="img-fluid app-badge glass-effect">
+									</a>
+								<?php elseif ($google_play_url) : ?>
+									<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="btn glass-button btn-light btn-lg me-3 floating-element">
+										<i class="fab fa-google-play me-2"></i> Google Play
+									</a>
+								<?php endif; ?>
+								<?php if ($apple_store_url && $apple_store_image) : ?>
+									<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="floating-element">
+										<img src="<?php echo esc_url($apple_store_image['url']); ?>" alt="<?php echo esc_attr($apple_store_image['alt'] ?: 'Download on the App Store'); ?>" class="img-fluid app-badge glass-effect">
+									</a>
+								<?php elseif ($apple_store_url) : ?>
+									<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="btn glass-button btn-light btn-lg floating-element">
+										<i class="fab fa-app-store-ios me-2"></i> App Store
+									</a>
+								<?php endif; ?>
+							</div>
 						</div>
 					</div>
 					<?php if ($mobile_app_image) : ?>
 						<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
-							<img src="<?php echo esc_url($mobile_app_image['url']); ?>" alt="<?php echo esc_attr($mobile_app_image['alt'] ?: 'Sacco Mobile App'); ?>" class="img-fluid rounded shadow-lg mobile-app-image">
-						</div>
-					<?php elseif (is_customize_preview()): // Fallback image for customizer ?>
-						<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
-							<img src="<?php echo get_template_directory_uri(); ?>/assets/img/default-phone-mockup.png" alt="Sacco Mobile App Preview" class="img-fluid rounded shadow-lg mobile-app-image">
+							<img src="<?php echo esc_url($mobile_app_image['url']); ?>" 
+								 alt="<?php echo esc_attr($mobile_app_image['alt'] ?: 'Sacco Mobile App'); ?>" 
+								 class="img-fluid mobile-app-image floating-element">
 						</div>
 					<?php endif; ?>
 				</div>
+			</div>
+			<div class="shape-divider">
+				<svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+					<path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+				</svg>
 			</div>
 		</section>
 		<?php endif; ?>
@@ -465,11 +479,11 @@ get_header();
 		$testimonials = new WP_Query(array('post_type' => 'testimonial', 'posts_per_page' => 5, 'orderby' => 'rand'));
 
 		?>
-		<section class="testimonials-section py-5 bg-light">
+		<section class="testimonials-section py-5 position-relative overflow-hidden">
 			<div class="container">
 				<div class="row mb-5">
 					<div class="col-md-12 text-center">
-						<h2 class="section-title"><?php echo esc_html($testimonials_title); ?></h2>
+						<h2 class="section-title gradient-text"><?php echo esc_html($testimonials_title); ?></h2>
 						<p class="section-subtitle"><?php echo esc_html($testimonials_subtitle); ?></p>
 					</div>
 				</div>
@@ -480,20 +494,20 @@ get_header();
 								<?php
 								if ( $testimonials->have_posts() ) :
 									while ( $testimonials->have_posts() ) : $testimonials->the_post();
-										$author_role = get_post_meta(get_the_ID(), '_testimonial_role', true); // Assuming you have a meta field for role
+										$author_role = get_post_meta(get_the_ID(), '_testimonial_role', true);
 								?>
 								<div class="swiper-slide">
-									<div class="testimonial-card-home card shadow-sm p-4 h-100">
-										<div class="testimonial-icon display-4 text-primary mb-3"><i class="fas fa-quote-left"></i></div>
-										<div class="testimonial-text mb-3 fst-italic text-muted"><?php echo wp_kses_post(get_the_content()); ?></div>
+									<div class="testimonial-card-home glass-card p-4 h-100">
+										<div class="testimonial-icon display-4 text-primary mb-3 floating-element"><i class="fas fa-quote-left"></i></div>
+										<div class="testimonial-text mb-3 fst-italic"><?php echo wp_kses_post(get_the_content()); ?></div>
 										<div class="testimonial-author d-flex align-items-center">
 											<?php if(has_post_thumbnail()): ?>
 											<div class="testimonial-image me-3">
-												<?php the_post_thumbnail('thumbnail', array('class' => 'rounded-circle')); ?>
+												<?php the_post_thumbnail('thumbnail', array('class' => 'rounded-circle morphic-shadow')); ?>
 											</div>
 											<?php endif; ?>
 											<div class="testimonial-meta">
-												<h5 class="testimonial-author-name h6 mb-0"><?php the_title(); ?></h5>
+												<h5 class="testimonial-author-name h6 mb-0 gradient-text"><?php the_title(); ?></h5>
 												<?php if ($author_role) : ?>
 													<small class="testimonial-author-role text-muted"><?php echo esc_html($author_role); ?></small>
 												<?php endif; ?>
@@ -604,23 +618,46 @@ get_header();
 		$cta_secondary_button_text = get_field('home_cta_secondary_button_text');
 		$cta_secondary_button_url = get_field('home_cta_secondary_button_url');
 		?>
-		<section class="cta-section py-5 text-white text-center" style="background-color: var(--bs-primary, #007bff);">
-			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-lg-8">
-						<?php if ($cta_supertitle): ?><p class="cta-supertitle text-uppercase letter-spacing-1"><?php echo esc_html($cta_supertitle); ?></p><?php endif; ?>
-						<h2 class="cta-title display-5 fw-bold mb-3"><?php echo esc_html($cta_title); ?></h2>
-						<p class="cta-text lead mb-4"><?php echo esc_html($cta_text); ?></p>
-						<a href="<?php echo esc_url($cta_button_url); ?>" class="btn btn-light btn-lg px-4 me-md-2"><?php echo esc_html($cta_button_text); ?></a>
-						<?php if ($cta_secondary_button_text && $cta_secondary_button_url): ?>
-							<a href="<?php echo esc_url($cta_secondary_button_url); ?>" class="btn btn-outline-light btn-lg px-4"><?php echo esc_html($cta_secondary_button_text); ?></a>
-						<?php endif; ?>
-					</div>
-				</div>
-			</div>
-		</section>
+		<section class="cta-section py-5 text-white text-center position-relative animated-gradient overflow-hidden">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="glass-effect p-5 rounded-lg">
+                    <?php if ($cta_supertitle): ?>
+                        <p class="cta-supertitle text-uppercase letter-spacing-1 mb-2">
+                            <?php echo esc_html($cta_supertitle); ?>
+                        </p>
+                    <?php endif; ?>
+                    <h2 class="cta-title display-5 fw-bold mb-3">
+                        <?php echo esc_html($cta_title); ?>
+                    </h2>
+                    <p class="cta-text lead mb-4">
+                        <?php echo esc_html($cta_text); ?>
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="<?php echo esc_url($cta_button_url); ?>" 
+                           class="btn glass-button btn-light btn-lg px-4 me-md-2 floating-element">
+                            <?php echo esc_html($cta_button_text); ?>
+                        </a>
+                        <?php if ($cta_secondary_button_text && $cta_secondary_button_url): ?>
+                            <a href="<?php echo esc_url($cta_secondary_button_url); ?>" 
+                               class="btn glass-button btn-outline-light btn-lg px-4">
+                                <?php echo esc_html($cta_secondary_button_text); ?>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shape-divider" style="transform: rotate(180deg)">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+        </svg>
+    </div>
+</section>
 
 	</main><!-- #main -->
 
 <?php
-get_footer(); 
+get_footer();

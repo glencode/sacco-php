@@ -199,6 +199,9 @@ function sacco_php_scripts() {
 	// Enqueue Bootstrap CSS
 	wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css', array(), '5.1.3', 'all');
 	
+	// Enqueue Glassmorphism CSS
+	wp_enqueue_style('sacco-glassmorphism', get_template_directory_uri() . '/css/glassmorphism.css', array(), _S_VERSION);
+	
 	// Enqueue Google Fonts
 	wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap', array(), null);
 	
@@ -222,6 +225,13 @@ function sacco_php_scripts() {
 	
 	// Enqueue Chart.js for calculators
 	wp_enqueue_script('chart-js', 'https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js', array(), '3.7.1', true);
+	
+	// Enqueue AOS (Animate On Scroll) library for animations
+    wp_enqueue_style('aos-css', 'https://unpkg.com/aos@2.3.1/dist/aos.css', array(), '2.3.1');
+    wp_enqueue_script('aos-js', 'https://unpkg.com/aos@2.3.1/dist/aos.js', array(), '2.3.1', true);
+
+    // Enqueue Glassmorphism JS
+    wp_enqueue_script('sacco-glassmorphism', get_template_directory_uri() . '/js/glassmorphism.js', array('jquery'), _S_VERSION, true);
 	
 	// Enqueue Custom JS
 	wp_enqueue_script('sacco-php-custom', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'swiper-js', 'chart-js'), _S_VERSION, true);
@@ -1298,6 +1308,7 @@ function sacco_handle_login() {
 
     if (is_wp_error($user)) {
         $error = $user->get_error_message();
+
         wp_redirect(add_query_arg('login_error', urlencode($error), wp_get_referer()));
         exit;
     } else {
