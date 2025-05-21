@@ -1058,7 +1058,6 @@ function sacco_php_register_savings_cpt() {
         'filter_items_list'     => __( 'Filter savings products list', 'sacco-php' ),
     );
     $args = array(
-<<<<<<< HEAD
         'label'                 => __( 'Savings Product', 'sacco-php' ),
         'description'           => __( 'Savings products and accounts', 'sacco-php' ),
         'labels'                => $labels,
@@ -1755,8 +1754,6 @@ function sacco_php_register_goal_post_type() {
     );
 
     $args = array(
-=======
->>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
         'labels'                => $labels,
         'public'                => true,
         'publicly_queryable'    => true,
