@@ -199,6 +199,9 @@ function sacco_php_scripts() {
 	// Enqueue Bootstrap CSS
 	wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css', array(), '5.1.3', 'all');
 	
+	// Enqueue Glassmorphism CSS
+	wp_enqueue_style('sacco-glassmorphism', get_template_directory_uri() . '/css/glassmorphism.css', array(), _S_VERSION);
+	
 	// Enqueue Google Fonts
 	wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap', array(), null);
 	
@@ -222,6 +225,13 @@ function sacco_php_scripts() {
 	
 	// Enqueue Chart.js for calculators
 	wp_enqueue_script('chart-js', 'https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js', array(), '3.7.1', true);
+	
+	// Enqueue AOS (Animate On Scroll) library for animations
+    wp_enqueue_style('aos-css', 'https://unpkg.com/aos@2.3.1/dist/aos.css', array(), '2.3.1');
+    wp_enqueue_script('aos-js', 'https://unpkg.com/aos@2.3.1/dist/aos.js', array(), '2.3.1', true);
+
+    // Enqueue Glassmorphism JS
+    wp_enqueue_script('sacco-glassmorphism', get_template_directory_uri() . '/js/glassmorphism.js', array('jquery'), _S_VERSION, true);
 	
 	// Enqueue Custom JS
 	wp_enqueue_script('sacco-php-custom', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'swiper-js', 'chart-js'), _S_VERSION, true);
@@ -1073,6 +1083,702 @@ function sacco_php_register_savings_cpt() {
         'items_list_navigation' => __( 'Savings Products list navigation', 'sacco-php' ),
         'filter_items_list'     => __( 'Filter savings products list', 'sacco-php' ),
     );
+    $args = array(
+        'label'                 => __( 'Savings Product', 'sacco-php' ),
+        'description'           => __( 'Savings products and accounts', 'sacco-php' ),
+        'labels'                => $labels,
+        'supports'              => array( 'title', 'editor', 'excerpt', 'thumbnail', 'custom-fields' ),
+        'taxonomies'            => array( 'savings_category' ),
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 5,
+        'menu_icon'             => 'dashicons-piggy-bank',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => 'savings',
+        'exclude_from_search'   => false,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'post',
+        'show_in_rest'          => true,
+        'rewrite'               => array( 'slug' => 'savings-product' ),
+    );
+    register_post_type( 'savings', $args );
+}
+add_action( 'init', 'sacco_php_register_savings_cpt', 0 );
+
+/**
+ * Register Savings Category Taxonomy
+ */
+function sacco_php_register_savings_category_taxonomy() {
+    $labels = array(
+        'name'                       => _x( 'Savings Categories', 'Taxonomy General Name', 'sacco-php' ),
+        'singular_name'              => _x( 'Savings Category', 'Taxonomy Singular Name', 'sacco-php' ),
+        'menu_name'                  => __( 'Savings Categories', 'sacco-php' ),
+        'all_items'                  => __( 'All Savings Categories', 'sacco-php' ),
+        'parent_item'                => __( 'Parent Savings Category', 'sacco-php' ),
+        'parent_item_colon'          => __( 'Parent Savings Category:', 'sacco-php' ),
+        'new_item_name'              => __( 'New Savings Category Name', 'sacco-php' ),
+        'add_new_item'               => __( 'Add New Savings Category', 'sacco-php' ),
+        'edit_item'                  => __( 'Edit Savings Category', 'sacco-php' ),
+        'update_item'                => __( 'Update Savings Category', 'sacco-php' ),
+        'view_item'                  => __( 'View Savings Category', 'sacco-php' ),
+        'separate_items_with_commas' => __( 'Separate savings categories with commas', 'sacco-php' ),
+        'add_or_remove_items'        => __( 'Add or remove savings categories', 'sacco-php' ),
+        'choose_from_most_used'      => __( 'Choose from the most used', 'sacco-php' ),
+        'popular_items'              => __( 'Popular Savings Categories', 'sacco-php' ),
+        'search_items'               => __( 'Search Savings Categories', 'sacco-php' ),
+        'not_found'                  => __( 'Not Found', 'sacco-php' ),
+        'no_terms'                   => __( 'No savings categories', 'sacco-php' ),
+        'items_list'                 => __( 'Savings Categories list', 'sacco-php' ),
+        'items_list_navigation'      => __( 'Savings Categories list navigation', 'sacco-php' ),
+    );
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+        'show_in_rest'               => true,
+    );
+    register_taxonomy( 'savings_category', array( 'savings' ), $args );
+}
+add_action( 'init', 'sacco_php_register_savings_category_taxonomy', 0 );
+
+/**
+ * Enqueue scripts and styles for member portal, savings, and loans.
+ */
+function sacco_php_enqueue_member_portal_scripts() {
+    // Register and enqueue member portal CSS if on member portal pages
+    if (is_page(array('member-dashboard', 'member-loans', 'member-savings', 'member-profile', 'member-transactions', 'login'))) {
+        wp_enqueue_style('sacco-php-member-portal', get_template_directory_uri() . '/css/member-portal.css', array(), _S_VERSION);
+    }
+    
+    // Register and enqueue savings CSS if on savings related pages
+    if (is_post_type_archive('savings') || is_singular('savings') || is_tax('savings_category') || is_page('savings-calculator')) {
+        wp_enqueue_style('sacco-php-savings', get_template_directory_uri() . '/css/savings.css', array(), _S_VERSION);
+        
+        // Enqueue Chart.js if on calculator page
+        if (is_page('savings-calculator')) {
+            wp_enqueue_script('chart-js', 'https://cdn.jsdelivr.net/npm/chart.js', array('jquery'), '3.9.1', true);
+            wp_enqueue_script('sacco-php-savings-calculator', get_template_directory_uri() . '/js/savings-calculator.js', array('jquery', 'chart-js'), _S_VERSION, true);
+        }
+    }
+}
+add_action('wp_enqueue_scripts', 'sacco_php_enqueue_member_portal_scripts');
+
+/**
+ * Register meta boxes for Savings Products
+ */
+function sacco_php_register_savings_meta_boxes() {
+    add_meta_box(
+        'savings_product_details',
+        __('Savings Product Details', 'sacco-php'),
+        'sacco_php_savings_meta_box_callback',
+        'savings',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'sacco_php_register_savings_meta_boxes');
+
+/**
+ * Meta box display callback.
+ *
+ * @param WP_Post $post Current post object.
+ */
+function sacco_php_savings_meta_box_callback($post) {
+    // Add nonce for security
+    wp_nonce_field('sacco_php_savings_meta_box', 'sacco_php_savings_meta_box_nonce');
+    
+    // Get values
+    $interest_rate = get_post_meta($post->ID, 'interest_rate', true);
+    $minimum_deposit = get_post_meta($post->ID, 'minimum_deposit', true);
+    $term = get_post_meta($post->ID, 'term', true);
+    $withdrawal_terms = get_post_meta($post->ID, 'withdrawal_terms', true);
+    $target_audience = get_post_meta($post->ID, 'target_audience', true);
+    $features = get_post_meta($post->ID, 'features', true);
+    $age_limit = get_post_meta($post->ID, '_age_limit', true); // New field
+    
+    ?>
+    <p>
+        <label for="interest_rate"><?php _e('Interest Rate:', 'sacco-php'); ?></label>
+        <input type="text" id="interest_rate" name="interest_rate" value="<?php echo esc_attr($interest_rate); ?>" class="widefat" placeholder="e.g., 5% p.a.">
+    </p>
+    <p>
+        <label for="minimum_deposit"><?php _e('Minimum Deposit:', 'sacco-php'); ?></label>
+        <input type="text" id="minimum_deposit" name="minimum_deposit" value="<?php echo esc_attr($minimum_deposit); ?>" class="widefat" placeholder="e.g., KSh 1,000">
+    </p>
+    <p>
+        <label for="term"><?php _e('Term Period:', 'sacco-php'); ?></label>
+        <input type="text" id="term" name="term" value="<?php echo esc_attr($term); ?>" class="widefat" placeholder="e.g., Flexible, 1 Year, 3 Years">
+    </p>
+    <p>
+        <label for="withdrawal_terms"><?php _e('Withdrawal Terms:', 'sacco-php'); ?></label>
+        <input type="text" id="withdrawal_terms" name="withdrawal_terms" value="<?php echo esc_attr($withdrawal_terms); ?>" class="widefat" placeholder="e.g., Anytime, After maturity">
+    </p>
+    <p>
+        <label for="target_audience"><?php _e('Target Audience:', 'sacco-php'); ?></label>
+        <input type="text" id="target_audience" name="target_audience" value="<?php echo esc_attr($target_audience); ?>" class="widefat" placeholder="e.g., All members, Children, Seniors">
+    </p>
+    <p>
+        <label for="features"><?php _e('Key Features & Benefits (one per line):', 'sacco-php'); ?></label>
+        <textarea id="features" name="features" class="widefat" rows="5" placeholder="Enter one feature per line"><?php echo esc_textarea($features); ?></textarea>
+    </p>
+    <p>
+        <label for="age_limit"><?php _e('Age Limit (e.g., for Junior accounts):', 'sacco-php'); ?></label>
+        <input type="text" id="age_limit" name="age_limit" value="<?php echo esc_attr($age_limit); ?>" class="widefat" placeholder="e.g., Members below 18 years, No age limit">
+    </p>
+    <?php
+}
+
+/**
+ * Save meta box content.
+ *
+ * @param int $post_id Post ID
+ */
+function sacco_php_save_savings_meta_box_data($post_id) {
+    // Check if nonce is set
+    if (!isset($_POST['sacco_php_savings_meta_box_nonce'])) {
+        return;
+    }
+
+    // Verify that the nonce is valid
+    if (!wp_verify_nonce($_POST['sacco_php_savings_meta_box_nonce'], 'sacco_php_savings_meta_box')) {
+        return;
+    }
+
+    // If this is an autosave, don't do anything
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Check the user's permissions.
+    if (isset($_POST['post_type']) && 'savings' == $_POST['post_type']) {
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+    } else {
+         if (!current_user_can('edit_page', $post_id)) { // Fallback capability
+            return;
+        }
+    }
+
+    // Sanitize and save the data
+    $meta_fields = array(
+        'interest_rate',
+        'minimum_deposit',
+        'term',
+        'withdrawal_terms',
+        'target_audience',
+        'features',
+        'age_limit' // New field
+    );
+
+    foreach ($meta_fields as $field_name) {
+        if (isset($_POST[$field_name])) {
+            $value = $_POST[$field_name];
+            $meta_key = ($field_name === 'age_limit') ? '_age_limit' : $field_name; // Use underscore for new field
+
+            if ($field_name === 'features') { // Only features is a textarea here
+                $sanitized_value = sanitize_textarea_field($value);
+            } else {
+                $sanitized_value = sanitize_text_field($value);
+            }
+
+            if (empty($sanitized_value)) {
+                delete_post_meta($post_id, $meta_key);
+            } else {
+                update_post_meta($post_id, $meta_key, $sanitized_value);
+            }
+        }
+    }
+}
+add_action('save_post_savings', 'sacco_php_save_savings_meta_box_data');
+
+/**
+ * Enqueue Savings and Loans Page Styles
+ */
+function sacco_php_product_page_styles() {
+    // Savings Archive and Single Savings
+    if (is_post_type_archive('savings') || is_singular('savings')) {
+        wp_enqueue_style('sacco-savings', get_template_directory_uri() . '/css/savings.css', array(), _S_VERSION);
+    }
+    
+    // Loans Archive and Single Loan
+    if (is_post_type_archive('loan') || is_singular('loan')) {
+        wp_enqueue_style('sacco-loans', get_template_directory_uri() . '/css/loans.css', array(), _S_VERSION);
+    }
+    
+    // About Page
+    if (is_page_template('page-about.php')) {
+        wp_enqueue_style('sacco-about', get_template_directory_uri() . '/css/about.css', array(), _S_VERSION);
+    }
+}
+add_action('wp_enqueue_scripts', 'sacco_php_product_page_styles');
+
+/**
+ * User login and registration handlers
+ */
+function sacco_handle_login() {
+    if (!isset($_POST['sacco_login_nonce']) || !wp_verify_nonce($_POST['sacco_login_nonce'], 'sacco_login')) {
+        return;
+    }
+
+    $username = sanitize_user($_POST['username']);
+    $password = $_POST['password'];
+    $remember = isset($_POST['remember']) ? true : false;
+
+    $credentials = array(
+        'user_login'    => $username,
+        'user_password' => $password,
+        'remember'      => $remember
+    );
+
+    $user = wp_signon($credentials, is_ssl());
+
+    if (is_wp_error($user)) {
+        $error = $user->get_error_message();
+
+        wp_redirect(add_query_arg('login_error', urlencode($error), wp_get_referer()));
+        exit;
+    } else {
+        wp_redirect(home_url('member-dashboard'));
+        exit;
+    }
+}
+add_action('admin_post_sacco_login', 'sacco_handle_login');
+add_action('admin_post_nopriv_sacco_login', 'sacco_handle_login');
+
+function sacco_handle_registration() {
+    if (!isset($_POST['sacco_register_nonce']) || !wp_verify_nonce($_POST['sacco_register_nonce'], 'sacco_register')) {
+        return;
+    }
+
+    $username = sanitize_user($_POST['username']);
+    $email = sanitize_email($_POST['email']);
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+    $first_name = sanitize_text_field($_POST['first_name']);
+    $last_name = sanitize_text_field($_POST['last_name']);
+
+    // Check if passwords match
+    if ($password !== $confirm_password) {
+        wp_redirect(add_query_arg('register_error', 'passwords_mismatch', wp_get_referer()));
+        exit;
+    }
+
+    // Create user
+    $user_id = wp_create_user($username, $password, $email);
+
+    if (is_wp_error($user_id)) {
+        $error = $user_id->get_error_message();
+        wp_redirect(add_query_arg('register_error', urlencode($error), wp_get_referer()));
+        exit;
+    } else {
+        // Update user meta
+        wp_update_user(array(
+            'ID' => $user_id,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'display_name' => $first_name . ' ' . $last_name,
+        ));
+
+        // Log the user in
+        wp_set_current_user($user_id);
+        wp_set_auth_cookie($user_id);
+
+        // Redirect to member dashboard
+        wp_redirect(home_url('member-dashboard'));
+        exit;
+    }
+}
+add_action('admin_post_nopriv_sacco_register', 'sacco_handle_registration');
+
+/**
+ * Add Member Portal rewrite rules
+ */
+function sacco_add_member_portal_rewrite_rules() {
+    add_rewrite_rule(
+        'member-dashboard/?$',
+        'index.php?pagename=member-portal&portal_page=dashboard',
+        'top'
+    );
+    
+    add_rewrite_rule(
+        'member-profile/?$',
+        'index.php?pagename=member-portal&portal_page=profile',
+        'top'
+    );
+    
+    add_rewrite_rule(
+        'member-loans/?$',
+        'index.php?pagename=member-portal&portal_page=loans',
+        'top'
+    );
+    
+    add_rewrite_rule(
+        'member-savings/?$',
+        'index.php?pagename=member-portal&portal_page=savings',
+        'top'
+    );
+    
+    add_rewrite_rule(
+        'member-transactions/?$',
+        'index.php?pagename=member-portal&portal_page=transactions',
+        'top'
+    );
+}
+add_action('init', 'sacco_add_member_portal_rewrite_rules');
+
+function sacco_add_query_vars($vars) {
+    $vars[] = 'portal_page';
+    return $vars;
+}
+add_filter('query_vars', 'sacco_add_query_vars');
+
+/**
+ * Member Portal Template Redirects
+ */
+function sacco_member_portal_template_redirect() {
+    global $wp_query;
+    
+    if (is_page('member-portal')) {
+        $portal_page = get_query_var('portal_page');
+        
+        if ($portal_page == 'dashboard') {
+            include(get_template_directory() . '/page-member-dashboard.php');
+            exit;
+        } elseif ($portal_page == 'profile') {
+            include(get_template_directory() . '/page-member-profile.php');
+            exit;
+        } elseif ($portal_page == 'loans') {
+            include(get_template_directory() . '/page-member-loans.php');
+            exit;
+        } elseif ($portal_page == 'savings') {
+            include(get_template_directory() . '/page-member-savings.php');
+            exit;
+        } elseif ($portal_page == 'transactions') {
+            include(get_template_directory() . '/page-member-transactions.php');
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'sacco_member_portal_template_redirect');
+
+/**
+ * Restrict access to member portal pages for non-logged-in users
+ */
+function sacco_restrict_member_portal_access() {
+    if (!is_user_logged_in() && 
+        (is_page('member-portal') || 
+         get_query_var('portal_page') == 'dashboard' || 
+         get_query_var('portal_page') == 'profile' || 
+         get_query_var('portal_page') == 'loans' || 
+         get_query_var('portal_page') == 'savings' || 
+         get_query_var('portal_page') == 'transactions')) {
+        
+        wp_redirect(home_url('login'));
+        exit;
+    }
+}
+add_action('template_redirect', 'sacco_restrict_member_portal_access', 1);
+
+/**
+ * Register Loan Custom Post Type
+ */
+function sacco_php_register_loan_cpt() {
+    $labels = array(
+        'name'                  => _x( 'Loan Products', 'Post Type General Name', 'sacco-php' ),
+        'singular_name'         => _x( 'Loan Product', 'Post Type Singular Name', 'sacco-php' ),
+        'menu_name'             => __( 'Loan Products', 'sacco-php' ),
+        'name_admin_bar'        => __( 'Loan Product', 'sacco-php' ),
+        'archives'              => __( 'Loan Product Archives', 'sacco-php' ),
+        'attributes'            => __( 'Loan Product Attributes', 'sacco-php' ),
+        'parent_item_colon'     => __( 'Parent Loan Product:', 'sacco-php' ),
+        'all_items'             => __( 'All Loan Products', 'sacco-php' ),
+        'add_new_item'          => __( 'Add New Loan Product', 'sacco-php' ),
+        'add_new'               => __( 'Add New', 'sacco-php' ),
+        'new_item'              => __( 'New Loan Product', 'sacco-php' ),
+        'edit_item'             => __( 'Edit Loan Product', 'sacco-php' ),
+        'update_item'           => __( 'Update Loan Product', 'sacco-php' ),
+        'view_item'             => __( 'View Loan Product', 'sacco-php' ),
+        'view_items'            => __( 'View Loan Products', 'sacco-php' ),
+        'search_items'          => __( 'Search Loan Product', 'sacco-php' ),
+        'not_found'             => __( 'Not found', 'sacco-php' ),
+        'not_found_in_trash'    => __( 'Not found in Trash', 'sacco-php' ),
+        'featured_image'        => __( 'Featured Image', 'sacco-php' ),
+        'set_featured_image'    => __( 'Set featured image', 'sacco-php' ),
+        'remove_featured_image' => __( 'Remove featured image', 'sacco-php' ),
+        'use_featured_image'    => __( 'Use as featured image', 'sacco-php' ),
+        'insert_into_item'      => __( 'Insert into loan product', 'sacco-php' ),
+        'uploaded_to_this_item' => __( 'Uploaded to this loan product', 'sacco-php' ),
+        'items_list'            => __( 'Loan Products list', 'sacco-php' ),
+        'items_list_navigation' => __( 'Loan Products list navigation', 'sacco-php' ),
+        'filter_items_list'     => __( 'Filter loan products list', 'sacco-php' ),
+    );
+    $args = array(
+        'label'                 => __( 'Loan Product', 'sacco-php' ),
+        'description'           => __( 'Loan products and services', 'sacco-php' ),
+        'labels'                => $labels,
+        'supports'              => array( 'title', 'editor', 'excerpt', 'thumbnail', 'custom-fields' ),
+        'taxonomies'            => array( 'loan_category' ),
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 5,
+        'menu_icon'             => 'dashicons-money-alt',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => 'loans',
+        'exclude_from_search'   => false,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'post',
+        'show_in_rest'          => true,
+        'rewrite'               => array( 'slug' => 'loan-product' ),
+    );
+    register_post_type( 'loan', $args );
+}
+add_action( 'init', 'sacco_php_register_loan_cpt', 0 );
+
+/**
+ * Register Loan Category Taxonomy
+ */
+function sacco_php_register_loan_category_taxonomy() {
+    $labels = array(
+        'name'                       => _x( 'Loan Categories', 'Taxonomy General Name', 'sacco-php' ),
+        'singular_name'              => _x( 'Loan Category', 'Taxonomy Singular Name', 'sacco-php' ),
+        'menu_name'                  => __( 'Loan Categories', 'sacco-php' ),
+        'all_items'                  => __( 'All Loan Categories', 'sacco-php' ),
+        'parent_item'                => __( 'Parent Loan Category', 'sacco-php' ),
+        'parent_item_colon'          => __( 'Parent Loan Category:', 'sacco-php' ),
+        'new_item_name'              => __( 'New Loan Category Name', 'sacco-php' ),
+        'add_new_item'               => __( 'Add New Loan Category', 'sacco-php' ),
+        'edit_item'                  => __( 'Edit Loan Category', 'sacco-php' ),
+        'update_item'                => __( 'Update Loan Category', 'sacco-php' ),
+        'view_item'                  => __( 'View Loan Category', 'sacco-php' ),
+        'separate_items_with_commas' => __( 'Separate loan categories with commas', 'sacco-php' ),
+        'add_or_remove_items'        => __( 'Add or remove loan categories', 'sacco-php' ),
+        'choose_from_most_used'      => __( 'Choose from the most used', 'sacco-php' ),
+        'popular_items'              => __( 'Popular Loan Categories', 'sacco-php' ),
+        'search_items'               => __( 'Search Loan Categories', 'sacco-php' ),
+        'not_found'                  => __( 'Not Found', 'sacco-php' ),
+        'no_terms'                   => __( 'No loan categories', 'sacco-php' ),
+        'items_list'                 => __( 'Loan Categories list', 'sacco-php' ),
+        'items_list_navigation'      => __( 'Loan Categories list navigation', 'sacco-php' ),
+    );
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+        'show_in_rest'               => true,
+    );
+    register_taxonomy( 'loan_category', array( 'loan' ), $args );
+}
+add_action( 'init', 'sacco_php_register_loan_category_taxonomy', 0 );
+
+/**
+ * Register meta boxes for Loan Products
+ */
+function sacco_php_register_loan_meta_boxes() {
+    add_meta_box(
+        'loan_product_details',
+        __('Loan Product Details', 'sacco-php'),
+        'sacco_php_loan_meta_box_callback',
+        'loan',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'sacco_php_register_loan_meta_boxes');
+
+/**
+ * Meta box display callback for loans.
+ *
+ * @param WP_Post $post Current post object.
+ */
+function sacco_php_loan_meta_box_callback($post) {
+    // Add nonce for security
+    wp_nonce_field('sacco_php_loan_meta_box', 'sacco_php_loan_meta_box_nonce');
+    
+    // Get values
+    $interest_rate = get_post_meta($post->ID, 'interest_rate', true);
+    $minimum_amount = get_post_meta($post->ID, 'minimum_amount', true);
+    $maximum_amount = get_post_meta($post->ID, 'maximum_amount', true);
+    $loan_term = get_post_meta($post->ID, 'loan_term', true);
+    $loan_badge = get_post_meta($post->ID, 'loan_badge', true);
+    $processing_time = get_post_meta($post->ID, 'processing_time', true);
+    $processing_fee = get_post_meta($post->ID, 'processing_fee', true);
+    $features = get_post_meta($post->ID, 'features', true);
+    $requirements = get_post_meta($post->ID, 'requirements', true); // Make sure to get this value
+    $insurance_partner_company = get_post_meta($post->ID, '_insurance_partner_company', true); // New field
+    
+    ?>
+    <p>
+        <label for="interest_rate"><?php _e('Interest Rate:', 'sacco-php'); ?></label>
+        <input type="text" id="interest_rate" name="interest_rate" value="<?php echo esc_attr($interest_rate); ?>" class="widefat" placeholder="e.g., 14% p.a.">
+    </p>
+    <p>
+        <label for="minimum_amount"><?php _e('Minimum Amount:', 'sacco-php'); ?></label>
+        <input type="text" id="minimum_amount" name="minimum_amount" value="<?php echo esc_attr($minimum_amount); ?>" class="widefat" placeholder="e.g., KSh 10,000">
+    </p>
+    <p>
+        <label for="maximum_amount"><?php _e('Maximum Amount:', 'sacco-php'); ?></label>
+        <input type="text" id="maximum_amount" name="maximum_amount" value="<?php echo esc_attr($maximum_amount); ?>" class="widefat" placeholder="e.g., KSh 1,000,000">
+    </p>
+    <p>
+        <label for="loan_term"><?php _e('Loan Term:', 'sacco-php'); ?></label>
+        <input type="text" id="loan_term" name="loan_term" value="<?php echo esc_attr($loan_term); ?>" class="widefat" placeholder="e.g., Up to 48 months">
+    </p>
+    <p>
+        <label for="loan_badge"><?php _e('Badge (Optional):', 'sacco-php'); ?></label>
+        <input type="text" id="loan_badge" name="loan_badge" value="<?php echo esc_attr($loan_badge); ?>" class="widefat" placeholder="e.g., Popular, New, Featured">
+        <small><?php _e('Leave empty for no badge', 'sacco-php'); ?></small>
+    </p>
+    <p>
+        <label for="processing_time"><?php _e('Processing Time:', 'sacco-php'); ?></label>
+        <input type="text" id="processing_time" name="processing_time" value="<?php echo esc_attr($processing_time); ?>" class="widefat" placeholder="e.g., 24-48 hours">
+    </p>
+    <p>
+        <label for="processing_fee"><?php _e('Processing Fee:', 'sacco-php'); ?></label>
+        <input type="text" id="processing_fee" name="processing_fee" value="<?php echo esc_attr($processing_fee); ?>" class="widefat" placeholder="e.g., 2% of loan amount">
+    </p>
+    <p>
+        <label for="features"><?php _e('Key Features & Benefits (one per line):', 'sacco-php'); ?></label>
+        <textarea id="features" name="features" class="widefat" rows="5" placeholder="Enter one feature per line"><?php echo esc_textarea($features); ?></textarea>
+    </p>
+    <p>
+        <label for="requirements"><?php _e('Requirements (one per line):', 'sacco-php'); ?></label>
+        <textarea id="requirements" name="requirements" class="widefat" rows="5" placeholder="Enter one requirement per line"><?php echo esc_textarea($requirements); ?></textarea>
+    </p>
+    <p>
+        <label for="insurance_partner_company"><?php _e('Insurance Partner Company (if applicable for IPF loans):', 'sacco-php'); ?></label>
+        <input type="text" id="insurance_partner_company" name="insurance_partner_company" value="<?php echo esc_attr($insurance_partner_company); ?>" class="widefat" placeholder="e.g., ABC Insurance Ltd.">
+    </p>
+    <?php
+}
+
+/**
+ * Save meta box content for loans.
+ *
+ * @param int $post_id Post ID
+ */
+function sacco_php_save_loan_meta_box_data($post_id) {
+    // Check if nonce is set
+    if (!isset($_POST['sacco_php_loan_meta_box_nonce'])) {
+        return;
+    }
+
+    // Verify that the nonce is valid
+    if (!wp_verify_nonce($_POST['sacco_php_loan_meta_box_nonce'], 'sacco_php_loan_meta_box')) {
+        return;
+    }
+
+    // If this is an autosave, don't do anything
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Check the user's permissions.
+    if (isset($_POST['post_type']) && 'loan' == $_POST['post_type']) {
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+    } else {
+        // For other post types or if post_type is not set
+        if (!current_user_can('edit_page', $post_id)) { // Fallback capability
+            return;
+        }
+    }
+
+    // Sanitize and save the data
+    $meta_fields = array(
+        'interest_rate',
+        'minimum_amount',
+        'maximum_amount',
+        'loan_term',
+        'loan_badge',
+        'processing_time',
+        'processing_fee',
+        'features',
+        'requirements', // Added to ensure it's saved
+        'insurance_partner_company' // New field prefixed with underscore for consistency if preferred, but matching form field name here
+    );
+
+    foreach ($meta_fields as $field_name) {
+        if (isset($_POST[$field_name])) {
+            $value = $_POST[$field_name];
+            $meta_key = ($field_name === 'insurance_partner_company') ? '_insurance_partner_company' : $field_name; // Use underscore for new field
+
+            if ($field_name === 'features' || $field_name === 'requirements') {
+                $sanitized_value = sanitize_textarea_field($value);
+            } else {
+                $sanitized_value = sanitize_text_field($value);
+            }
+
+            if (empty($sanitized_value)) {
+                delete_post_meta($post_id, $meta_key);
+            } else {
+                update_post_meta($post_id, $meta_key, $sanitized_value);
+            }
+        }
+    }
+}
+add_action('save_post_loan', 'sacco_php_save_loan_meta_box_data');
+
+/**
+ * Add WhatsApp Floating Button
+ */
+function sacco_php_add_whatsapp_button() {
+    // Get WhatsApp number from theme options or use default
+    $whatsapp_number = get_theme_mod('whatsapp_number', '+254700000000');
+    
+    // Get pre-filled message from theme options or use default
+    $whatsapp_message = get_theme_mod('whatsapp_message', 'Hello! I have a question about Sacco services.');
+    
+    // Encode message for URL
+    $encoded_message = urlencode($whatsapp_message);
+    
+    // Generate WhatsApp link
+    $whatsapp_link = "https://wa.me/{$whatsapp_number}?text={$encoded_message}";
+    
+    // Output the floating button HTML
+    echo '<a href="' . esc_url($whatsapp_link) . '" class="whatsapp-float" target="_blank" rel="noopener noreferrer">';
+    echo '<i class="fab fa-whatsapp"></i>';
+    echo '</a>';
+}
+add_action('wp_footer', 'sacco_php_add_whatsapp_button');
+
+/**
+ * Register Savings Goal Custom Post Type
+ */
+function sacco_php_register_goal_post_type() {
+    $labels = array(
+        'name'                  => _x('Savings Goals', 'Post type general name', 'sacco-php'),
+        'singular_name'         => _x('Savings Goal', 'Post type singular name', 'sacco-php'),
+        'menu_name'             => _x('Savings Goals', 'Admin Menu text', 'sacco-php'),
+        'name_admin_bar'        => _x('Savings Goal', 'Add New on Toolbar', 'sacco-php'),
+        'add_new'               => __('Add New', 'sacco-php'),
+        'add_new_item'          => __('Add New Savings Goal', 'sacco-php'),
+        'new_item'              => __('New Savings Goal', 'sacco-php'),
+        'edit_item'             => __('Edit Savings Goal', 'sacco-php'),
+        'view_item'             => __('View Savings Goal', 'sacco-php'),
+        'all_items'             => __('All Savings Goals', 'sacco-php'),
+        'search_items'          => __('Search Savings Goals', 'sacco-php'),
+        'not_found'             => __('No savings goals found.', 'sacco-php'),
+        'not_found_in_trash'    => __('No savings goals found in Trash.', 'sacco-php'),
+    );
+
     $args = array(
         'labels'                => $labels,
         'public'                => true,
