@@ -89,19 +89,11 @@ get_header();
 						<div class="slide-overlay"></div>
 						<div class="slide-content-wrap">
 							<div class="container">
-<<<<<<< HEAD
 								<div class="row">
 									<div class="col-lg-8 col-md-10">
 										<div class="slide-content glass-effect p-4 rounded-lg">
 											<h2 class="slide-title gradient-text mb-4"><?php the_title(); ?></h2>
 											<div class="slide-subtitle text-white">
-=======
-								<div class="row justify-content-center">
-									<div class="col-lg-10 text-center">
-										<div class="slide-content">
-											<h2 class="slide-title"><?php the_title(); ?></h2>
-											<div class="slide-subtitle">
->>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 												<?php the_content(); ?>
 											</div>
 											<?php if (empty($slide_link_url) && $slide_button_text && $slide_button_url) : ?>
@@ -161,7 +153,6 @@ get_header();
 				</a>
 			</div>
 		</section>
-<<<<<<< HEAD
 		
 		<!-- Quick Links/Actions Section -->
 		<?php 
@@ -200,69 +191,12 @@ get_header();
 							<h3 class="quick-action-title h5"><?php echo esc_html($title); ?></h3>
 							<p class="quick-action-text small text-muted"><?php echo esc_html($text); ?></p>
 							<a href="<?php echo esc_url($button_url); ?>" class="btn glass-button btn-primary btn-sm mt-auto"><?php echo esc_html($button_text); ?></a>
-=======
-
-		<!-- Key Features Section -->
-		<section id="features" class="key-features-section py-5">
-			<div class="container">
-				<div class="row text-center mb-5">
-					<div class="col-lg-8 mx-auto">
-						<h2 class="section-title" data-aos="fade-up">Our Key Features</h2>
-						<p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-							Discover the benefits that make us your trusted financial partner
-						</p>
-					</div>
-				</div>
-				<div class="row g-4">
-					<div class="col-lg-3 col-md-6">
-						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="0">
-							<div class="feature-icon">
-								<i class="fas fa-shield-alt"></i>
-							</div>
-							<h3><?php esc_html_e('Secure & Licensed', 'sacco-php'); ?></h3>
-							<p><?php esc_html_e('Licensed by SASRA with protected deposits', 'sacco-php'); ?></p>
-							<div class="feature-hover">
-								<a href="<?php echo esc_url(home_url('/about-us/')); ?>" class="btn btn-sm btn-outline-primary mt-3">Learn More</a>
-							</div>
->>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="100">
-							<div class="feature-icon">
-								<i class="fas fa-percentage"></i>
-							</div>
-							<h3><?php esc_html_e('Best Rates', 'sacco-php'); ?></h3>
-							<p><?php esc_html_e('Competitive interest rates on savings and loans', 'sacco-php'); ?></p>
-							<div class="feature-hover">
-								<a href="<?php echo esc_url(home_url('/products-services/')); ?>" class="btn btn-sm btn-outline-primary mt-3">View Rates</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="200">
-							<div class="feature-icon">
-								<i class="fas fa-mobile-alt"></i>
-							</div>
-							<h3><?php esc_html_e('Digital Banking', 'sacco-php'); ?></h3>
-							<p><?php esc_html_e('24/7 access through our mobile app', 'sacco-php'); ?></p>
-							<div class="feature-hover">
-								<a href="<?php echo esc_url(home_url('/online-banking/')); ?>" class="btn btn-sm btn-outline-primary mt-3">Get Started</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="feature-card h-100" data-aos="fade-up" data-aos-delay="300">
-							<div class="feature-icon">
-								<i class="fas fa-handshake"></i>
-							</div>
-							<h3><?php esc_html_e('Member Support', 'sacco-php'); ?></h3>
-							<p><?php esc_html_e('Dedicated support team for all members', 'sacco-php'); ?></p>
-							<div class="feature-hover">
-								<a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="btn btn-sm btn-outline-primary mt-3">Contact Us</a>
-							</div>
-						</div>
-					</div>
+					<?php
+						endforeach;
+					endif;
+					?>
 				</div>
 			</div>
 		</section>
@@ -678,11 +612,7 @@ get_header();
 		<!-- Mobile Banking / App CTA Section -->
 		<?php 
 		$mobile_app_enable = get_field('home_mobile_app_enable');
-<<<<<<< HEAD
-		if( $mobile_app_enable || is_customize_preview() ) :
-=======
 		if ($mobile_app_enable || is_customize_preview()) : // Show if enabled or in customizer
->>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 			$mobile_app_title = get_field('home_mobile_app_title') ?: esc_html__('Access Your Accounts on the Go', 'sacco-php');
 			$mobile_app_subtitle = get_field('home_mobile_app_subtitle') ?: esc_html__('Download our mobile app for easy and secure banking.', 'sacco-php');
 			$mobile_app_description = get_field('home_mobile_app_description') ?: esc_html__('Manage your finances anytime, anywhere. Check balances, transfer funds, pay bills, and much more, all from the convenience of your smartphone.', 'sacco-php');
@@ -692,7 +622,6 @@ get_header();
 			$apple_store_url = get_field('home_mobile_app_apple_store_url');
 			$apple_store_image = get_field('home_mobile_app_apple_store_image');
 		?>
-<<<<<<< HEAD
 		<section class="mobile-app-cta-section py-5 position-relative overflow-hidden animated-gradient">
 			<div class="container">
 				<div class="row align-items-center">
@@ -718,65 +647,11 @@ get_header();
 								<?php elseif ($apple_store_url) : ?>
 									<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="btn glass-button btn-light btn-lg floating-element">
 										<i class="fab fa-app-store-ios me-2"></i> App Store
-=======
-			<section class="mobile-app-cta-section py-5">
-				<div class="container">
-					<div class="row align-items-center">
-						<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-2' : ''; ?> text-center text-lg-start mb-4 mb-lg-0">
-							<h2 class="section-title"><?php echo esc_html($mobile_app_title); ?></h2>
-							<p class="section-subtitle fs-5"><?php echo esc_html($mobile_app_subtitle); ?></p>
-							<p><?php echo nl2br(esc_html($mobile_app_description)); ?></p>
-							<div class="app-store-badges mt-4">
-								<?php if ($google_play_url && $google_play_image) : ?>
-									<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="me-2">
-										<img src="<?php echo esc_url($google_play_image['url']); ?>" 
-											 alt="<?php echo esc_attr($google_play_image['alt'] ?: 'Get it on Google Play'); ?>" 
-											 class="img-fluid app-badge">
-									</a>
-								<?php elseif ($google_play_url) : ?>
-									<a href="<?php echo esc_url($google_play_url); ?>" target="_blank" class="btn btn-dark me-2">
-										<i class="fab fa-google-play"></i> Google Play
-									</a>
-								<?php endif; ?>
-
-								<?php if ($apple_store_url && $apple_store_image) : ?>
-									<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank">
-										<img src="<?php echo esc_url($apple_store_image['url']); ?>" 
-											 alt="<?php echo esc_attr($apple_store_image['alt'] ?: 'Download on the App Store'); ?>" 
-											 class="img-fluid app-badge">
-									</a>
-								<?php elseif ($apple_store_url) : ?>
-									<a href="<?php echo esc_url($apple_store_url); ?>" target="_blank" class="btn btn-dark">
-										<i class="fab fa-app-store-ios"></i> App Store
-									</a>
-								<?php endif; ?>
-
-								<?php if (empty($google_play_url) && empty($apple_store_url) && is_customize_preview()) : ?>
-									<a href="#" class="btn btn-dark me-2">
-										<i class="fab fa-google-play"></i> Google Play (Sample)
-									</a>
-									<a href="#" class="btn btn-dark">
-										<i class="fab fa-app-store-ios"></i> App Store (Sample)
->>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 									</a>
 								<?php endif; ?>
 							</div>
 						</div>
-						<?php if ($mobile_app_image) : ?>
-							<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
-								<img src="<?php echo esc_url($mobile_app_image['url']); ?>" 
-									 alt="<?php echo esc_attr($mobile_app_image['alt'] ?: 'Sacco Mobile App'); ?>" 
-									 class="img-fluid rounded shadow-lg mobile-app-image">
-							</div>
-						<?php elseif (is_customize_preview()): // Fallback image for customizer ?>
-							<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/img/default-phone-mockup.png" 
-									 alt="Sacco Mobile App Preview" 
-									 class="img-fluid rounded shadow-lg mobile-app-image">
-							</div>
-						<?php endif; ?>
 					</div>
-<<<<<<< HEAD
 					<?php if ($mobile_app_image) : ?>
 						<div class="col-lg-6 <?php echo $mobile_app_image ? 'order-lg-1' : ''; ?> text-center">
 							<img src="<?php echo esc_url($mobile_app_image['url']); ?>" 
@@ -792,10 +667,6 @@ get_header();
 				</svg>
 			</div>
 		</section>
-=======
-				</div>
-			</section>
->>>>>>> 8a23b165185fd058b1f19f80442def5d11313350
 		<?php endif; ?>
 
 		<!-- News & Updates Section -->
