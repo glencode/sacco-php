@@ -902,6 +902,84 @@ function sacco_php_calculator_scripts() {
 		// Loan Calculator specific script
 		if (is_page_template('page-loan-calculator.php')) {
 			wp_enqueue_script('sacco-loan-calculator', get_template_directory_uri() . '/js/loan-calculator.js', array('jquery', 'chart-js', 'sacco-calculator-common'), _S_VERSION, true);
+
+			// Prepare data for loan calculator
+			$loan_products_data = array();
+			$loan_meta_keys_to_fetch = array(
+				// General Info
+				'interest_rate', // General interest rate, might be overridden by base_interest_rate_pa
+				'minimum_amount',
+				'maximum_amount',
+				'loan_term', // General loan term, might be overridden by specific repayment periods
+				'loan_badge',
+				'processing_time',
+				'processing_fee', // Descriptive field e.g. "2% of loan amount"
+				'_insurance_partner_company',
+				// Policy & Interest
+				'loan_policy_category',
+				'base_interest_rate_pa',
+				'interest_rate_type',
+				'processing_fee_flat',
+				'sinking_fund_percentage',
+				'appraisal_fee_percentage',
+				'refinance_charge_percentage',
+				'salary_advance_one_off_rate',
+				'salary_advance_compounded_rate',
+				'instant_loan_charge_percentage',
+				'loan_factor_deposits',
+				'requires_postdated_cheques',
+				'minimum_deposit_requirement',
+				// Repayment Periods
+				'repayment_period_part_timers_permanent_months',
+				'repayment_period_others_months',
+				'repayment_period_supersavers_months',
+				'repayment_period_school_fees_months',
+				'repayment_period_instant_loan_months',
+				'repayment_period_emergency_loan_months',
+				'repayment_period_salary_advance_months',
+				// Max Loan Amounts
+				'max_loan_development',
+				'max_loan_super_saver',
+				'max_loan_instant',
+				'max_loan_emergency',
+				'max_loan_special',
+				// Special Loan Config (3 tiers)
+				'special_loan_config_1_amount_limit', 'special_loan_config_1_repayment_period',
+				'special_loan_config_2_amount_limit', 'special_loan_config_2_repayment_period',
+				'special_loan_config_3_amount_limit', 'special_loan_config_3_repayment_period',
+				// Special Charges & Eligibility
+				'defer_charge_flat',
+				'defer_penalty_percentage',
+				'bounced_cheque_fee_flat',
+				'requires_shares_for_application'
+			);
+
+			$loan_args = array(
+				'post_type' => 'loan',
+				'post_status' => 'publish',
+				'posts_per_page' => -1,
+			);
+			$loan_posts = get_posts($loan_args);
+
+			foreach ($loan_posts as $loan_post) {
+				$loan_data = array();
+				$loan_data['title'] = $loan_post->post_title;
+				$loan_data['id'] = $loan_post->ID; // Add post ID for reference
+
+				foreach ($loan_meta_keys_to_fetch as $meta_key) {
+					$value = get_post_meta($loan_post->ID, $meta_key, true);
+					// Attempt to cast numeric strings to numbers, otherwise keep as string or null
+					if (is_numeric($value)) {
+						$loan_data[$meta_key] = (strpos($value, '.') !== false) ? floatval($value) : intval($value);
+					} elseif ($value === '') {
+						$loan_data[$meta_key] = null; // Represent empty fields as null for easier JS handling
+					} else {
+						$loan_data[$meta_key] = $value; // Keep as string (e.g. for 'loan_badge', 'processing_fee' description)
+					}
+				}
+				$loan_products_data[$loan_post->ID] = $loan_data;
+			}
+			wp_localize_script('sacco-loan-calculator', 'saccoLoanProductsData', $loan_products_data);
 		}
 		
 		// Mortgage Calculator specific script
@@ -1620,9 +1698,26 @@ function sacco_php_loan_meta_box_callback($post) {
     $processing_time = get_post_meta($post->ID, 'processing_time', true);
     $processing_fee = get_post_meta($post->ID, 'processing_fee', true);
     $features = get_post_meta($post->ID, 'features', true);
-    $requirements = get_post_meta($post->ID, 'requirements', true); // Make sure to get this value
-    $insurance_partner_company = get_post_meta($post->ID, '_insurance_partner_company', true); // New field
+    $requirements = get_post_meta($post->ID, 'requirements', true);
+    $insurance_partner_company = get_post_meta($post->ID, '_insurance_partner_company', true);
     
+    // New fields
+    $loan_policy_category = get_post_meta($post->ID, 'loan_policy_category', true);
+    $base_interest_rate_pa = get_post_meta($post->ID, 'base_interest_rate_pa', true);
+    $interest_rate_type = get_post_meta($post->ID, 'interest_rate_type', true);
+    $processing_fee_flat = get_post_meta($post->ID, 'processing_fee_flat', true);
+    $sinking_fund_percentage = get_post_meta($post->ID, 'sinking_fund_percentage', true);
+    $appraisal_fee_percentage = get_post_meta($post->ID, 'appraisal_fee_percentage', true);
+    
+    // New fields (Part 2)
+    $refinance_charge_percentage = get_post_meta($post->ID, 'refinance_charge_percentage', true);
+    $salary_advance_one_off_rate = get_post_meta($post->ID, 'salary_advance_one_off_rate', true);
+    $salary_advance_compounded_rate = get_post_meta($post->ID, 'salary_advance_compounded_rate', true);
+    $instant_loan_charge_percentage = get_post_meta($post->ID, 'instant_loan_charge_percentage', true);
+    $loan_factor_deposits = get_post_meta($post->ID, 'loan_factor_deposits', true);
+    $requires_postdated_cheques = get_post_meta($post->ID, 'requires_postdated_cheques', true);
+    $minimum_deposit_requirement = get_post_meta($post->ID, 'minimum_deposit_requirement', true);
+
     ?>
     <p>
         <label for="interest_rate"><?php _e('Interest Rate:', 'sacco-php'); ?></label>
@@ -1665,6 +1760,169 @@ function sacco_php_loan_meta_box_callback($post) {
         <label for="insurance_partner_company"><?php _e('Insurance Partner Company (if applicable for IPF loans):', 'sacco-php'); ?></label>
         <input type="text" id="insurance_partner_company" name="insurance_partner_company" value="<?php echo esc_attr($insurance_partner_company); ?>" class="widefat" placeholder="e.g., ABC Insurance Ltd.">
     </p>
+    <hr>
+    <p><strong><?php _e('Loan Policy & Interest Details:', 'sacco-php'); ?></strong></p>
+    <p>
+        <label for="loan_policy_category"><?php _e('Loan Policy Category:', 'sacco-php'); ?></label>
+        <select id="loan_policy_category" name="loan_policy_category" class="widefat">
+            <option value="" <?php selected($loan_policy_category, ''); ?>><?php _e('Select Policy Category', 'sacco-php'); ?></option>
+            <option value="normal_development" <?php selected($loan_policy_category, 'normal_development'); ?>><?php _e('Normal/Development Loan', 'sacco-php'); ?></option>
+            <option value="school_fees" <?php selected($loan_policy_category, 'school_fees'); ?>><?php _e('School Fees Loan', 'sacco-php'); ?></option>
+            <option value="instant_loan" <?php selected($loan_policy_category, 'instant_loan'); ?>><?php _e('Instant Loan', 'sacco-php'); ?></option>
+            <option value="refinance_loan" <?php selected($loan_policy_category, 'refinance_loan'); ?>><?php _e('Refinance Loan', 'sacco-php'); ?></option>
+            <option value="emergency_loan" <?php selected($loan_policy_category, 'emergency_loan'); ?>><?php _e('Emergency Loan', 'sacco-php'); ?></option>
+            <option value="special_loan" <?php selected($loan_policy_category, 'special_loan'); ?>><?php _e('Special Loan', 'sacco-php'); ?></option>
+            <option value="super_saver" <?php selected($loan_policy_category, 'super_saver'); ?>><?php _e('Super Saver Loan', 'sacco-php'); ?></option>
+            <option value="salary_advance" <?php selected($loan_policy_category, 'salary_advance'); ?>><?php _e('Salary Advance', 'sacco-php'); ?></option>
+        </select>
+    </p>
+    <p>
+        <label for="base_interest_rate_pa"><?php _e('Base Interest Rate (p.a %):', 'sacco-php'); ?></label>
+        <input type="number" step="any" id="base_interest_rate_pa" name="base_interest_rate_pa" value="<?php echo esc_attr($base_interest_rate_pa); ?>" class="widefat" placeholder="e.g., 12.5">
+    </p>
+    <p>
+        <label for="interest_rate_type"><?php _e('Interest Rate Type:', 'sacco-php'); ?></label>
+        <select id="interest_rate_type" name="interest_rate_type" class="widefat">
+            <option value="reducing_balance" <?php selected($interest_rate_type, 'reducing_balance'); ?>><?php _e('Reducing Balance', 'sacco-php'); ?></option>
+            <option value="compounded" <?php selected($interest_rate_type, 'compounded'); ?>><?php _e('Compounded', 'sacco-php'); ?></option>
+            <option value="one_off" <?php selected($interest_rate_type, 'one_off'); ?>><?php _e('One-off', 'sacco-php'); ?></option>
+        </select>
+    </p>
+    <p>
+        <label for="processing_fee_flat"><?php _e('Processing Fee (Flat):', 'sacco-php'); ?></label>
+        <input type="number" step="any" id="processing_fee_flat" name="processing_fee_flat" value="<?php echo esc_attr($processing_fee_flat); ?>" class="widefat" placeholder="e.g., 500">
+    </p>
+    <p>
+        <label for="sinking_fund_percentage"><?php _e('Sinking Fund (%):', 'sacco-php'); ?></label>
+        <input type="number" step="any" id="sinking_fund_percentage" name="sinking_fund_percentage" value="<?php echo esc_attr($sinking_fund_percentage); ?>" class="widefat" placeholder="e.g., 1.0">
+    </p>
+    <p>
+        <label for="appraisal_fee_percentage"><?php _e('Appraisal Fee (%):', 'sacco-php'); ?></label>
+        <input type="number" step="any" id="appraisal_fee_percentage" name="appraisal_fee_percentage" value="<?php echo esc_attr($appraisal_fee_percentage); ?>" class="widefat" placeholder="e.g., 0.5">
+    </p>
+    <p>
+        <label for="refinance_charge_percentage"><?php _e('Refinance Charge (%):', 'sacco-php'); ?></label>
+        <input type="number" step="any" id="refinance_charge_percentage" name="refinance_charge_percentage" value="<?php echo esc_attr($refinance_charge_percentage); ?>" class="widefat" placeholder="e.g., 1.5">
+    </p>
+    <p>
+        <label for="salary_advance_one_off_rate"><?php _e('Salary Advance One-off Rate (%):', 'sacco-php'); ?></label>
+        <input type="number" step="any" id="salary_advance_one_off_rate" name="salary_advance_one_off_rate" value="<?php echo esc_attr($salary_advance_one_off_rate); ?>" class="widefat" placeholder="e.g., 5">
+    </p>
+    <p>
+        <label for="salary_advance_compounded_rate"><?php _e('Salary Advance Compounded Rate (%):', 'sacco-php'); ?></label>
+        <input type="number" step="any" id="salary_advance_compounded_rate" name="salary_advance_compounded_rate" value="<?php echo esc_attr($salary_advance_compounded_rate); ?>" class="widefat" placeholder="e.g., 10">
+    </p>
+    <p>
+        <label for="instant_loan_charge_percentage"><?php _e('Instant Loan Charge (%):', 'sacco-php'); ?></label>
+        <input type="number" step="any" id="instant_loan_charge_percentage" name="instant_loan_charge_percentage" value="<?php echo esc_attr($instant_loan_charge_percentage); ?>" class="widefat" placeholder="e.g., 8">
+    </p>
+    <p>
+        <label for="loan_factor_deposits"><?php _e('Loan Factor (multiplier of deposits):', 'sacco-php'); ?></label>
+        <input type="number" step="any" id="loan_factor_deposits" name="loan_factor_deposits" value="<?php echo esc_attr($loan_factor_deposits); ?>" class="widefat" placeholder="e.g., 3">
+    </p>
+    <p>
+        <label for="minimum_deposit_requirement"><?php _e('Minimum Deposit Requirement (for eligibility):', 'sacco-php'); ?></label>
+        <input type="number" step="1" id="minimum_deposit_requirement" name="minimum_deposit_requirement" value="<?php echo esc_attr($minimum_deposit_requirement); ?>" class="widefat" placeholder="e.g., 50000">
+    </p>
+    <p>
+        <input type="checkbox" id="requires_postdated_cheques" name="requires_postdated_cheques" value="1" <?php checked( $requires_postdated_cheques, '1' ); ?> />
+        <label for="requires_postdated_cheques"><?php _e('Requires Post-dated Cheques', 'sacco-php'); ?></label>
+    </p>
+    <hr>
+    <p><strong><?php _e('Special Loan Charges & Eligibility:', 'sacco-php'); ?></strong></p>
+    <?php
+    $defer_charge_flat = get_post_meta($post->ID, 'defer_charge_flat', true);
+    $defer_penalty_percentage = get_post_meta($post->ID, 'defer_penalty_percentage', true);
+    $bounced_cheque_fee_flat = get_post_meta($post->ID, 'bounced_cheque_fee_flat', true);
+    $requires_shares_for_application = get_post_meta($post->ID, 'requires_shares_for_application', true);
+    // Default to '1' (checked) if no value is saved yet (for new posts)
+    if ('' === $requires_shares_for_application && $post->post_status === 'auto-draft') { // auto-draft is for new, unsaved posts
+        $requires_shares_for_application = '1';
+    }
+    ?>
+    <p>
+        <label for="defer_charge_flat"><?php _e('Defer Charge (Flat Ksh):', 'sacco-php'); ?></label>
+        <input type="number" step="1" id="defer_charge_flat" name="defer_charge_flat" value="<?php echo esc_attr($defer_charge_flat); ?>" class="widefat" placeholder="e.g., 1000">
+    </p>
+    <p>
+        <label for="defer_penalty_percentage"><?php _e('Defer Penalty Charge (% of instalment):', 'sacco-php'); ?></label>
+        <input type="number" step="any" id="defer_penalty_percentage" name="defer_penalty_percentage" value="<?php echo esc_attr($defer_penalty_percentage); ?>" class="widefat" placeholder="e.g., 5.5">
+    </p>
+    <p>
+        <label for="bounced_cheque_fee_flat"><?php _e('Bounced Cheque Fee (Flat Ksh):', 'sacco-php'); ?></label>
+        <input type="number" step="1" id="bounced_cheque_fee_flat" name="bounced_cheque_fee_flat" value="<?php echo esc_attr($bounced_cheque_fee_flat); ?>" class="widefat" placeholder="e.g., 2000">
+    </p>
+    <p>
+        <input type="checkbox" id="requires_shares_for_application" name="requires_shares_for_application" value="1" <?php checked( $requires_shares_for_application, '1' ); ?> />
+        <label for="requires_shares_for_application"><?php _e('Requires Share Capital for Application', 'sacco-php'); ?></label>
+    </p>
+    <hr>
+    <p><strong><?php _e('Repayment Periods & Maximum Amounts:', 'sacco-php'); ?></strong></p>
+    
+    <?php
+    // Repayment Period Fields
+    $repayment_fields = [
+        'repayment_period_part_timers_permanent_months' => __('Repayment - Part-timers & Permanent (months):', 'sacco-php'),
+        'repayment_period_others_months' => __('Repayment - Others (months):', 'sacco-php'),
+        'repayment_period_supersavers_months' => __('Repayment - Supersavers (months):', 'sacco-php'),
+        'repayment_period_school_fees_months' => __('Repayment - School Fees (months):', 'sacco-php'),
+        'repayment_period_instant_loan_months' => __('Repayment - Instant Loan (months):', 'sacco-php'),
+        'repayment_period_emergency_loan_months' => __('Repayment - Emergency Loan (months):', 'sacco-php'),
+        'repayment_period_salary_advance_months' => __('Repayment - Salary Advance (months):', 'sacco-php'),
+    ];
+
+    foreach ($repayment_fields as $meta_key => $label) {
+        $value = get_post_meta($post->ID, $meta_key, true);
+        ?>
+        <p>
+            <label for="<?php echo esc_attr($meta_key); ?>"><?php echo esc_html($label); ?></label>
+            <input type="number" step="1" id="<?php echo esc_attr($meta_key); ?>" name="<?php echo esc_attr($meta_key); ?>" value="<?php echo esc_attr($value); ?>" class="widefat" placeholder="<?php _e('Months', 'sacco-php'); ?>">
+        </p>
+        <?php
+    }
+
+    // Maximum Loan Amount Fields
+    $max_loan_fields = [
+        'max_loan_development' => __('Max Loan - Development (Ksh):', 'sacco-php'),
+        'max_loan_super_saver' => __('Max Loan - Super Saver (Ksh):', 'sacco-php'),
+        'max_loan_instant' => __('Max Loan - Instant (Ksh):', 'sacco-php'),
+        'max_loan_emergency' => __('Max Loan - Emergency (Ksh):', 'sacco-php'),
+        'max_loan_special' => __('Max Loan - Special (Ksh):', 'sacco-php'),
+    ];
+
+    foreach ($max_loan_fields as $meta_key => $label) {
+        $value = get_post_meta($post->ID, $meta_key, true);
+        ?>
+        <p>
+            <label for="<?php echo esc_attr($meta_key); ?>"><?php echo esc_html($label); ?></label>
+            <input type="number" step="1" id="<?php echo esc_attr($meta_key); ?>" name="<?php echo esc_attr($meta_key); ?>" value="<?php echo esc_attr($value); ?>" class="widefat" placeholder="<?php _e('Amount in Ksh', 'sacco-php'); ?>">
+        </p>
+        <?php
+    }
+    ?>
+    
+    <p><strong><?php _e('Special Loan Repayment Configuration (Max 3 Tiers):', 'sacco-php'); ?></strong></p>
+    <?php
+    for ($i = 1; $i <= 3; $i++) {
+        $amount_limit_key = "special_loan_config_{$i}_amount_limit";
+        $repayment_period_key = "special_loan_config_{$i}_repayment_period";
+        $amount_limit_value = get_post_meta($post->ID, $amount_limit_key, true);
+        $repayment_period_value = get_post_meta($post->ID, $repayment_period_key, true);
+        ?>
+        <div style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px;">
+            <p><em><?php printf(esc_html__('Configuration Tier %d', 'sacco-php'), $i); ?></em></p>
+            <p>
+                <label for="<?php echo esc_attr($amount_limit_key); ?>"><?php _e('Max Amount Limit (Ksh) - Tier:', 'sacco-php'); ?></label>
+                <input type="number" step="1" id="<?php echo esc_attr($amount_limit_key); ?>" name="<?php echo esc_attr($amount_limit_key); ?>" value="<?php echo esc_attr($amount_limit_value); ?>" class="widefat" placeholder="<?php _e('e.g., 100000', 'sacco-php'); ?>">
+            </p>
+            <p>
+                <label for="<?php echo esc_attr($repayment_period_key); ?>"><?php _e('Repayment Period (Months) - Tier:', 'sacco-php'); ?></label>
+                <input type="number" step="1" id="<?php echo esc_attr($repayment_period_key); ?>" name="<?php echo esc_attr($repayment_period_key); ?>" value="<?php echo esc_attr($repayment_period_value); ?>" class="widefat" placeholder="<?php _e('e.g., 4', 'sacco-php'); ?>">
+            </p>
+        </div>
+        <?php
+    }
+    ?>
     <?php
 }
 
@@ -1711,26 +1969,136 @@ function sacco_php_save_loan_meta_box_data($post_id) {
         'processing_time',
         'processing_fee',
         'features',
-        'requirements', // Added to ensure it's saved
-        'insurance_partner_company' // New field prefixed with underscore for consistency if preferred, but matching form field name here
+        'requirements',
+        'insurance_partner_company', // Note: form field is 'insurance_partner_company', meta key is '_insurance_partner_company'
+        // New fields
+        'loan_policy_category',
+        'base_interest_rate_pa',
+        'interest_rate_type',
+        'processing_fee_flat',
+        'sinking_fund_percentage',
+        'appraisal_fee_percentage',
+        // New fields (Part 2)
+        'refinance_charge_percentage',
+        'salary_advance_one_off_rate',
+        'salary_advance_compounded_rate',
+        'instant_loan_charge_percentage',
+        'loan_factor_deposits',
+        'minimum_deposit_requirement',
+        // Note: 'requires_postdated_cheques' & 'requires_shares_for_application' are handled separately below
+        
+        // Repayment Periods & Max Amounts
+        'repayment_period_part_timers_permanent_months',
+        'repayment_period_others_months',
+        'repayment_period_supersavers_months',
+        'repayment_period_school_fees_months',
+        'repayment_period_instant_loan_months',
+        'repayment_period_emergency_loan_months',
+        'repayment_period_salary_advance_months',
+        'max_loan_development',
+        'max_loan_super_saver',
+        'max_loan_instant',
+        'max_loan_emergency',
+        'max_loan_special',
+        // Special Loan Configs are handled separately below
+        
+        // Final new charge fields
+        'defer_charge_flat',
+        'defer_penalty_percentage',
+        'bounced_cheque_fee_flat'
     );
 
     foreach ($meta_fields as $field_name) {
+        // Skip checkboxes here, they are handled below
+        if ($field_name === 'requires_postdated_cheques' || $field_name === 'requires_shares_for_application') {
+            continue;
+        }
+
         if (isset($_POST[$field_name])) {
             $value = $_POST[$field_name];
-            $meta_key = ($field_name === 'insurance_partner_company') ? '_insurance_partner_company' : $field_name; // Use underscore for new field
+            $meta_key = ($field_name === 'insurance_partner_company') ? '_insurance_partner_company' : $field_name;
 
-            if ($field_name === 'features' || $field_name === 'requirements') {
+            // Determine sanitization type
+            if (in_array($field_name, [
+                'base_interest_rate_pa', 'processing_fee_flat', 'sinking_fund_percentage', 'appraisal_fee_percentage',
+                'refinance_charge_percentage', 'salary_advance_one_off_rate', 'salary_advance_compounded_rate',
+                'instant_loan_charge_percentage', 'loan_factor_deposits', 'defer_penalty_percentage'
+            ])) {
+                $sanitized_value = floatval($value);
+            } elseif (in_array($field_name, [
+                'minimum_deposit_requirement', 'defer_charge_flat', 'bounced_cheque_fee_flat',
+                'repayment_period_part_timers_permanent_months', 'repayment_period_others_months',
+                'repayment_period_supersavers_months', 'repayment_period_school_fees_months',
+                'repayment_period_instant_loan_months', 'repayment_period_emergency_loan_months',
+                'repayment_period_salary_advance_months',
+                'max_loan_development', 'max_loan_super_saver', 'max_loan_instant',
+                'max_loan_emergency', 'max_loan_special'
+            ])) {
+                $sanitized_value = intval($value);
+            } elseif ($field_name === 'features' || $field_name === 'requirements') {
                 $sanitized_value = sanitize_textarea_field($value);
+            } elseif (in_array($field_name, ['loan_policy_category', 'interest_rate_type'])) {
+                $sanitized_value = sanitize_text_field($value);
             } else {
                 $sanitized_value = sanitize_text_field($value);
             }
 
-            if (empty($sanitized_value)) {
-                delete_post_meta($post_id, $meta_key);
+            // Save or delete meta
+            if ($value === '' || (is_numeric($sanitized_value) && $value === '')) { 
+                 delete_post_meta($post_id, $meta_key);
+            } elseif (is_numeric($sanitized_value) || !empty($sanitized_value)) {
+                 update_post_meta($post_id, $meta_key, $sanitized_value);
             } else {
-                update_post_meta($post_id, $meta_key, $sanitized_value);
+                 delete_post_meta($post_id, $meta_key);
             }
+
+        } else {
+             if (in_array($field_name, [
+                'base_interest_rate_pa', 'processing_fee_flat', 'sinking_fund_percentage', 'appraisal_fee_percentage',
+                'loan_policy_category', 'interest_rate_type',
+                'refinance_charge_percentage', 'salary_advance_one_off_rate', 'salary_advance_compounded_rate',
+                'instant_loan_charge_percentage', 'loan_factor_deposits', 'minimum_deposit_requirement',
+                'repayment_period_part_timers_permanent_months', 'repayment_period_others_months',
+                'repayment_period_supersavers_months', 'repayment_period_school_fees_months',
+                'repayment_period_instant_loan_months', 'repayment_period_emergency_loan_months',
+                'repayment_period_salary_advance_months',
+                'max_loan_development', 'max_loan_super_saver', 'max_loan_instant',
+                'max_loan_emergency', 'max_loan_special',
+                'defer_charge_flat', 'defer_penalty_percentage', 'bounced_cheque_fee_flat'
+                ])) {
+                 delete_post_meta($post_id, $meta_key);
+             }
+        }
+    }
+    
+    // Handle checkbox for 'requires_postdated_cheques'
+    if (isset($_POST['requires_postdated_cheques']) && $_POST['requires_postdated_cheques'] === '1') {
+        update_post_meta($post_id, 'requires_postdated_cheques', '1');
+    } else {
+        delete_post_meta($post_id, 'requires_postdated_cheques');
+    }
+    
+    // Handle checkbox for 'requires_shares_for_application'
+    if (isset($_POST['requires_shares_for_application']) && $_POST['requires_shares_for_application'] === '1') {
+        update_post_meta($post_id, 'requires_shares_for_application', '1');
+    } else {
+        update_post_meta($post_id, 'requires_shares_for_application', '0');
+    }
+
+    // Handle Special Loan Repayment Configuration (3 tiers)
+    for ($i = 1; $i <= 3; $i++) {
+        $amount_limit_key = "special_loan_config_{$i}_amount_limit";
+        $repayment_period_key = "special_loan_config_{$i}_repayment_period";
+
+        $amount_limit_value = isset($_POST[$amount_limit_key]) ? intval($_POST[$amount_limit_key]) : '';
+        $repayment_period_value = isset($_POST[$repayment_period_key]) ? intval($_POST[$repayment_period_key]) : '';
+
+        if ($amount_limit_value !== '' && $repayment_period_value !== '') {
+            update_post_meta($post_id, $amount_limit_key, $amount_limit_value);
+            update_post_meta($post_id, $repayment_period_key, $repayment_period_value);
+        } else {
+            delete_post_meta($post_id, $amount_limit_key);
+            delete_post_meta($post_id, $repayment_period_key);
         }
     }
 }
@@ -1906,5 +2274,115 @@ function sacco_preload_critical_images() {
 }
 add_action('wp_head', 'sacco_preload_critical_images', 1);
 
+/**
+ * Add custom user profile fields for SACCO information.
+ */
+function sacco_user_profile_fields($user) {
+    ?>
+    <h2><?php _e('SACCO Loan Information', 'sacco-php'); ?></h2>
+    <table class="form-table" id="sacco-loan-info-fields">
+        <tr>
+            <th><label for="sacco_registration_date"><?php _e('SACCO Registration Date', 'sacco-php'); ?></label></th>
+            <td>
+                <input type="date" name="sacco_registration_date" id="sacco_registration_date" value="<?php echo esc_attr(get_user_meta($user->ID, 'sacco_registration_date', true)); ?>" class="regular-text" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="sacco_share_capital_amount"><?php _e('Share Capital Amount (Ksh)', 'sacco-php'); ?></label></th>
+            <td>
+                <input type="number" step="any" name="sacco_share_capital_amount" id="sacco_share_capital_amount" value="<?php echo esc_attr(get_user_meta($user->ID, 'sacco_share_capital_amount', true)); ?>" class="regular-text" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="sacco_total_deposits"><?php _e('Total Deposits (Ksh)', 'sacco-php'); ?></label></th>
+            <td>
+                <input type="number" step="any" name="sacco_total_deposits" id="sacco_total_deposits" value="<?php echo esc_attr(get_user_meta($user->ID, 'sacco_total_deposits', true)); ?>" class="regular-text" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="sacco_employment_type"><?php _e('Employment Type', 'sacco-php'); ?></label></th>
+            <td>
+                <select name="sacco_employment_type" id="sacco_employment_type">
+                    <?php $employment_type = get_user_meta($user->ID, 'sacco_employment_type', true); ?>
+                    <option value="not_specified" <?php selected($employment_type, 'not_specified'); ?>><?php _e('Not Specified', 'sacco-php'); ?></option>
+                    <option value="permanent" <?php selected($employment_type, 'permanent'); ?>><?php _e('Permanent', 'sacco-php'); ?></option>
+                    <option value="part_time" <?php selected($employment_type, 'part_time'); ?>><?php _e('Part-time', 'sacco-php'); ?></option>
+                    <option value="contract" <?php selected($employment_type, 'contract'); ?>><?php _e('Contract', 'sacco-php'); ?></option>
+                    <option value="other" <?php selected($employment_type, 'other'); ?>><?php _e('Other', 'sacco-php'); ?></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="sacco_is_staff_or_office_bearer"><?php _e('Is Staff or Office Bearer?', 'sacco-php'); ?></label></th>
+            <td>
+                <input type="checkbox" name="sacco_is_staff_or_office_bearer" id="sacco_is_staff_or_office_bearer" value="1" <?php checked(get_user_meta($user->ID, 'sacco_is_staff_or_office_bearer', true), '1'); ?> />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="sacco_user_allowances"><?php _e('Allowances (JSON)', 'sacco-php'); ?></label></th>
+            <td>
+                <textarea name="sacco_user_allowances" id="sacco_user_allowances" rows="5" cols="30" class="regular-text"><?php echo esc_textarea(get_user_meta($user->ID, 'sacco_user_allowances', true)); ?></textarea>
+                <p class="description"><?php _e('Enter as JSON, e.g., [{"type": "Responsibility", "amount": 5000}, {"type": "Telephone", "amount": 2000}]', 'sacco-php'); ?></p>
+            </td>
+        </tr>
+    </table>
+    <?php
+    // Add a nonce field for security
+    wp_nonce_field('sacco_user_profile_update_nonce', 'sacco_user_profile_nonce');
+}
+add_action('show_user_profile', 'sacco_user_profile_fields');
+add_action('edit_user_profile', 'sacco_user_profile_fields');
 
+/**
+ * Save custom user profile fields for SACCO information.
+ */
+function sacco_save_user_profile_fields($user_id) {
+    // Check nonce
+    if (!isset($_POST['sacco_user_profile_nonce']) || !wp_verify_nonce($_POST['sacco_user_profile_nonce'], 'sacco_user_profile_update_nonce')) {
+        return;
+    }
 
+    // Check capabilities
+    if (!current_user_can('edit_user', $user_id)) {
+        return;
+    }
+
+    // Sanitize and save each field
+    if (isset($_POST['sacco_registration_date'])) {
+        update_user_meta($user_id, 'sacco_registration_date', sanitize_text_field($_POST['sacco_registration_date']));
+    }
+    if (isset($_POST['sacco_share_capital_amount'])) {
+        update_user_meta($user_id, 'sacco_share_capital_amount', floatval($_POST['sacco_share_capital_amount']));
+    }
+    if (isset($_POST['sacco_total_deposits'])) {
+        update_user_meta($user_id, 'sacco_total_deposits', floatval($_POST['sacco_total_deposits']));
+    }
+    if (isset($_POST['sacco_employment_type'])) {
+        update_user_meta($user_id, 'sacco_employment_type', sanitize_text_field($_POST['sacco_employment_type']));
+    }
+    
+    // Checkbox: sacco_is_staff_or_office_bearer
+    if (isset($_POST['sacco_is_staff_or_office_bearer']) && $_POST['sacco_is_staff_or_office_bearer'] === '1') {
+        update_user_meta($user_id, 'sacco_is_staff_or_office_bearer', '1');
+    } else {
+        update_user_meta($user_id, 'sacco_is_staff_or_office_bearer', '0');
+    }
+
+    if (isset($_POST['sacco_user_allowances'])) {
+        // Basic JSON validation before saving. For more robust validation, a JSON schema validator could be used.
+        $json_data = stripslashes($_POST['sacco_user_allowances']);
+        if (!empty($json_data)) {
+            json_decode($json_data);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                update_user_meta($user_id, 'sacco_user_allowances', sanitize_textarea_field($json_data)); // sanitize_textarea_field for safety
+            } else {
+                // Optionally, add an admin notice here if JSON is invalid
+                // For now, we just don't update if it's not valid JSON to prevent saving malformed data.
+            }
+        } else {
+             delete_user_meta($user_id, 'sacco_user_allowances'); // Delete if empty
+        }
+    }
+}
+add_action('personal_options_update', 'sacco_save_user_profile_fields');
+add_action('edit_user_profile_update', 'sacco_save_user_profile_fields');
