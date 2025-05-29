@@ -40,6 +40,31 @@ get_header();
 						</div>
 						<div class="calculator-body">
 							<form id="loan-calculator-form">
+								<!-- Loan Type Selection -->
+								<div class="row mb-4">
+									<div class="col-md-12">
+										<label for="calculator_loan_type_select" class="form-label">Select Loan Type</label>
+										<select class="form-select" id="calculator_loan_type_select" name="calculator_loan_type_select">
+											<option value="">-- Select Loan Product --</option>
+											<?php
+											$loan_products_args = array(
+												'post_type' => 'loan',
+												'post_status' => 'publish',
+												'posts_per_page' => -1, // Get all loan products
+												'orderby' => 'title',
+												'order' => 'ASC',
+											);
+											$loan_products = get_posts($loan_products_args);
+											if ($loan_products) {
+												foreach ($loan_products as $loan_product) {
+													echo '<option value="' . esc_attr($loan_product->ID) . '">' . esc_html($loan_product->post_title) . '</option>';
+												}
+											}
+											?>
+										</select>
+									</div>
+								</div>
+
 								<!-- Loan Information Inputs -->
 								<div class="row mb-4">
 									<div class="col-md-6 mb-3 mb-md-0">
