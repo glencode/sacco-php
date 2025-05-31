@@ -13,6 +13,201 @@ get_header();
 $current_user = wp_get_current_user();
 ?>
 
+<style>
+:root {
+    --color-primary: #DBA979;    /* Warm beige */
+    --color-secondary: #ECCA9C;  /* Light cream */
+    --color-accent: #E8EFCF;     /* Soft mint */
+    --color-highlight: #AFD198;  /* Sage green */
+    --color-white: #FFFFFF;
+    --color-gray-100: #F8F9FA;
+    --color-gray-200: #E9ECEF;
+    --color-gray-300: #DEE2E6;
+    --color-gray-600: #6C757D;
+    --color-gray-800: #343A40;
+    --color-success: #AFD198;
+    --color-danger: #DC3545;
+}
+
+.bg-primary {
+    background-color: var(--color-primary) !important;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-gray-800);
+}
+
+.btn-primary:hover {
+    background-color: #c99660;
+    border-color: #c99660;
+    color: var(--color-gray-800);
+}
+
+.btn-outline-primary {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-gray-800);
+}
+
+.dashboard-card {
+    background: linear-gradient(135deg, var(--color-white) 0%, var(--color-accent) 100%);
+    border: 1px solid var(--color-secondary);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(219, 169, 121, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(219, 169, 121, 0.15);
+}
+
+.dashboard-card-header {
+    background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+    color: var(--color-gray-800);
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--color-primary);
+    border-radius: 12px 12px 0 0;
+}
+
+.dashboard-card-body {
+    padding: 2rem;
+}
+
+.dashboard-card-title {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.member-sidebar .list-group-item {
+    background-color: var(--color-white);
+    border-color: var(--color-secondary);
+    color: var(--color-gray-800);
+    transition: all 0.3s ease;
+}
+
+.member-sidebar .list-group-item:hover {
+    background-color: var(--color-accent);
+    border-color: var(--color-primary);
+    transform: translateX(5px);
+}
+
+.member-sidebar .list-group-item.active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-gray-800);
+}
+
+.member-sidebar .list-group-item.text-danger:hover {
+    background-color: var(--color-danger);
+    color: var(--color-white);
+}
+
+.badge.bg-success {
+    background-color: var(--color-highlight) !important;
+    color: var(--color-gray-800);
+}
+
+.badge.bg-primary {
+    background-color: var(--color-primary) !important;
+    color: var(--color-gray-800);
+}
+
+.profile-avatar img {
+    border: 4px solid var(--color-primary);
+    box-shadow: 0 4px 8px rgba(219, 169, 121, 0.3);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.2rem rgba(219, 169, 121, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.profile-detail-item {
+    background-color: rgba(232, 239, 207, 0.3);
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--color-gray-600);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.detail-value {
+    color: var(--color-gray-800);
+    font-weight: 500;
+}
+
+.member-header {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    color: var(--color-gray-800) !important;
+}
+
+.member-header .text-white {
+    color: var(--color-gray-800) !important;
+}
+
+.member-id {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+/* Animation for form transitions */
+.form-control, .form-select {
+    transition: all 0.3s ease;
+}
+
+.form-control:disabled, .form-select:disabled {
+    background-color: rgba(232, 239, 207, 0.2);
+    border-color: var(--color-gray-300);
+}
+
+/* Custom scrollbar for sidebar */
+.member-sidebar {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.member-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.member-sidebar::-webkit-scrollbar-track {
+    background: var(--color-accent);
+    border-radius: 3px;
+}
+
+.member-sidebar::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 3px;
+}
+
+.member-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #c99660;
+}
+</style>
+
 <main id="primary" class="site-main">
 
 	<section class="member-header bg-primary text-white py-4">

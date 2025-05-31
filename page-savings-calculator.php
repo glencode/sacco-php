@@ -12,6 +12,260 @@
 get_header();
 ?>
 
+<style>
+/* Color Palette Variables */
+:root {
+	--primary-dark: #5A827E;
+	--primary-medium: #84AE92;
+	--primary-light: #B9D4AA;
+	--primary-lightest: #FAFFCA;
+	--text-dark: #2c3e50;
+	--text-light: #ffffff;
+	--shadow: rgba(90, 130, 126, 0.15);
+}
+
+/* Override existing styles with new color palette */
+.bg-primary {
+	background-color: var(--primary-dark) !important;
+}
+
+.btn-primary {
+	background-color: var(--primary-medium);
+	border-color: var(--primary-medium);
+	color: var(--text-light);
+}
+
+.btn-primary:hover {
+	background-color: var(--primary-dark);
+	border-color: var(--primary-dark);
+}
+
+.btn-outline-primary {
+	color: var(--primary-dark);
+	border-color: var(--primary-medium);
+}
+
+.btn-outline-primary:hover {
+	background-color: var(--primary-medium);
+	border-color: var(--primary-medium);
+	color: var(--text-light);
+}
+
+.calculator-card {
+	background: var(--text-light);
+	border-radius: 15px;
+	box-shadow: 0 10px 30px var(--shadow);
+	overflow: hidden;
+}
+
+.calculator-header {
+	background: linear-gradient(135deg, var(--primary-medium), var(--primary-dark));
+	color: var(--text-light);
+	padding: 2rem;
+	text-align: center;
+}
+
+.calculator-header h2 {
+	margin-bottom: 0.5rem;
+	font-weight: 600;
+}
+
+.calculator-body {
+	padding: 2rem;
+}
+
+.form-control:focus {
+	border-color: var(--primary-medium);
+	box-shadow: 0 0 0 0.2rem rgba(132, 174, 146, 0.25);
+}
+
+.form-range::-webkit-slider-thumb {
+	background-color: var(--primary-medium);
+}
+
+.form-range::-moz-range-thumb {
+	background-color: var(--primary-medium);
+	border: none;
+}
+
+.result-box {
+	background: linear-gradient(135deg, var(--primary-lightest), var(--primary-light));
+	border-radius: 10px;
+	padding: 1.5rem;
+	text-align: center;
+	border: 1px solid var(--primary-light);
+}
+
+.result-title {
+	color: var(--primary-dark);
+	font-size: 0.9rem;
+	font-weight: 600;
+	margin-bottom: 0.5rem;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.result-value {
+	color: var(--primary-dark);
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+.chart-container {
+	background: var(--primary-lightest);
+	border-radius: 10px;
+	padding: 1rem;
+	border: 1px solid var(--primary-light);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+	background-color: rgba(185, 212, 170, 0.1);
+}
+
+.table th {
+	background-color: var(--primary-light);
+	color: var(--primary-dark);
+	border: none;
+	font-weight: 600;
+}
+
+.comparison-table th {
+	background-color: var(--primary-medium);
+	color: var(--text-light);
+}
+
+.comparison-table tbody tr:hover {
+	background-color: rgba(185, 212, 170, 0.2);
+}
+
+.sidebar-card {
+	background: var(--text-light);
+	border-radius: 15px;
+	padding: 2rem;
+	box-shadow: 0 5px 20px var(--shadow);
+	border: 1px solid var(--primary-light);
+}
+
+.sidebar-card h3 {
+	color: var(--primary-dark);
+	margin-bottom: 1rem;
+	font-weight: 600;
+}
+
+.loan-options-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.loan-options-list li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.75rem 0;
+	border-bottom: 1px solid var(--primary-light);
+}
+
+.loan-options-list li:last-child {
+	border-bottom: none;
+}
+
+.loan-options-list a {
+	color: var(--primary-dark);
+	text-decoration: none;
+	font-weight: 500;
+}
+
+.loan-options-list a:hover {
+	color: var(--primary-medium);
+}
+
+.loan-options-list span {
+	background: var(--primary-light);
+	color: var(--primary-dark);
+	padding: 0.25rem 0.75rem;
+	border-radius: 20px;
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+.tip-item {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 1.5rem;
+	padding: 1rem;
+	background: var(--primary-lightest);
+	border-radius: 10px;
+	border-left: 4px solid var(--primary-medium);
+}
+
+.tip-icon {
+	background: var(--primary-medium);
+	color: var(--text-light);
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 1rem;
+	flex-shrink: 0;
+}
+
+.tip-content h4 {
+	color: var(--primary-dark);
+	margin-bottom: 0.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.tip-content p {
+	color: var(--text-dark);
+	margin: 0;
+	font-size: 0.9rem;
+}
+
+.calculator-note {
+	background: var(--primary-lightest);
+	border: 1px solid var(--primary-light);
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+.calculator-note p {
+	margin: 0;
+	color: var(--primary-dark);
+	font-size: 0.9rem;
+}
+
+.calculator-note i {
+	color: var(--primary-medium);
+	margin-right: 0.5rem;
+}
+
+/* Form Labels */
+.form-label {
+	color: var(--primary-dark);
+	font-weight: 500;
+	margin-bottom: 0.5rem;
+}
+
+/* Small text under sliders */
+small {
+	color: var(--primary-dark);
+	opacity: 0.8;
+}
+
+/* Breadcrumbs */
+#breadcrumbs {
+	color: rgba(255, 255, 255, 0.8) !important;
+}
+
+#breadcrumbs a {
+	color: var(--text-light) !important;
+}
+</style>
+
 <main id="primary" class="site-main">
 
 	<section class="page-header bg-primary text-white py-5">
@@ -293,4 +547,4 @@ get_header();
 </script>
 
 <?php
-get_footer(); 
+get_footer();

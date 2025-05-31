@@ -13,6 +13,205 @@ get_header();
 $current_user = wp_get_current_user();
 ?>
 
+<style>
+/* Color Hunt Palette Integration */
+:root {
+    --color-light-blue: #B1F0F7;
+    --color-medium-blue: #81BFDA;
+    --color-light-cream: #F5F0CD;
+    --color-golden: #FADA7A;
+}
+
+.bg-primary {
+    background-color: var(--color-medium-blue) !important;
+}
+
+.btn-primary {
+    background-color: var(--color-medium-blue);
+    border-color: var(--color-medium-blue);
+}
+
+.btn-primary:hover {
+    background-color: #6ba8c4;
+    border-color: #6ba8c4;
+}
+
+.btn-outline-primary {
+    color: var(--color-medium-blue);
+    border-color: var(--color-medium-blue);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--color-medium-blue);
+    border-color: var(--color-medium-blue);
+}
+
+.member-sidebar .list-group-item.active {
+    background-color: var(--color-light-blue);
+    border-color: var(--color-medium-blue);
+    color: #333;
+}
+
+.member-sidebar .list-group-item:hover {
+    background-color: var(--color-light-cream);
+}
+
+.member-support-card {
+    background: linear-gradient(135deg, var(--color-light-cream), var(--color-golden));
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--color-golden);
+}
+
+.dashboard-card {
+    background: white;
+    border: 1px solid var(--color-light-blue);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(177, 240, 247, 0.3);
+}
+
+.dashboard-card-header {
+    background: linear-gradient(135deg, var(--color-light-blue), var(--color-medium-blue));
+    padding: 1rem 1.5rem;
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid var(--color-medium-blue);
+}
+
+.dashboard-card-title {
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+.account-summary-item {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--color-light-cream), var(--color-golden));
+    border-radius: 10px;
+    border: 1px solid var(--color-golden);
+}
+
+.summary-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--color-medium-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.quick-link-card {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: linear-gradient(135deg, var(--color-light-blue), var(--color-medium-blue));
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    color: #333;
+    border: 1px solid var(--color-medium-blue);
+}
+
+.quick-link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(129, 191, 218, 0.4);
+    color: #333;
+    text-decoration: none;
+}
+
+.quick-link-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--color-golden);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.savings-goal-card {
+    background: white;
+    border: 1px solid var(--color-light-blue);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(177, 240, 247, 0.3);
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.goal-badge.bg-danger {
+    background-color: #e74c3c !important;
+}
+
+.goal-badge.bg-warning {
+    background-color: var(--color-golden) !important;
+    color: #333 !important;
+}
+
+.goal-badge.bg-info {
+    background-color: var(--color-light-blue) !important;
+    color: #333 !important;
+}
+
+.progress-bar.bg-success {
+    background-color: var(--color-medium-blue) !important;
+}
+
+.announcement-item {
+    background: var(--color-light-cream);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid var(--color-golden);
+}
+
+.announcement-date {
+    color: var(--color-medium-blue);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.modal-header.bg-primary {
+    background: linear-gradient(135deg, var(--color-medium-blue), var(--color-light-blue)) !important;
+    color: #333 !important;
+}
+
+.btn-close {
+    filter: brightness(0.7);
+}
+
+.bg-light {
+    background-color: var(--color-light-cream) !important;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(177, 240, 247, 0.1);
+}
+
+.badge.bg-success {
+    background-color: var(--color-medium-blue) !important;
+}
+
+.badge.bg-primary {
+    background-color: var(--color-golden) !important;
+    color: #333 !important;
+}
+
+.text-success {
+    color: var(--color-medium-blue) !important;
+}
+</style>
+
 <main id="primary" class="site-main">
 
 	<section class="member-header bg-primary text-white py-4">
@@ -503,110 +702,6 @@ $current_user = wp_get_current_user();
 			</div>
 		</div>
 	</div>
+</div>
 
-</main><!-- #main -->
-
-<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		// Account Summary Chart
-		const ctx = document.getElementById('account-summary-chart').getContext('2d');
-		
-		const accountChart = new Chart(ctx, {
-			type: 'line',
-			data: {
-				labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-				datasets: [
-					{
-						label: 'Savings',
-						data: [95000, 100000, 105000, 110000, 115000, 120000, 125000],
-						borderColor: '#5ca157',
-						backgroundColor: 'rgba(92, 161, 87, 0.1)',
-						tension: 0.4,
-						fill: true
-					},
-					{
-						label: 'Shares',
-						data: [60000, 62000, 65000, 68000, 70000, 72000, 75000],
-						borderColor: '#a7a843',
-						backgroundColor: 'rgba(167, 168, 67, 0.1)',
-						tension: 0.4,
-						fill: true
-					},
-					{
-						label: 'Loans',
-						data: [280000, 270000, 260000, 250000, 245000, 240000, 230000],
-						borderColor: '#dc3545',
-						backgroundColor: 'rgba(220, 53, 69, 0.1)',
-						tension: 0.4,
-						fill: true
-					}
-				]
-			},
-			options: {
-				responsive: true,
-				maintainAspectRatio: false,
-				plugins: {
-					legend: {
-						position: 'top',
-					},
-					tooltip: {
-						callbacks: {
-							label: function(context) {
-								let label = context.dataset.label || '';
-								if (label) {
-									label += ': ';
-								}
-								if (context.parsed.y !== null) {
-									label += 'KSh ' + context.parsed.y.toFixed(2);
-								}
-								return label;
-							}
-						}
-					}
-				},
-				scales: {
-					y: {
-						beginAtZero: false,
-						ticks: {
-							callback: function(value, index, values) {
-								return 'KSh ' + value.toLocaleString();
-							}
-						}
-					}
-				}
-			}
-		});
-		
-		// Auto deposit checkbox toggle
-		const autoDepositCheckbox = document.getElementById('auto-deposit');
-		const autoDepositOptions = document.getElementById('auto-deposit-options');
-		
-		if (autoDepositCheckbox && autoDepositOptions) {
-			autoDepositCheckbox.addEventListener('change', function() {
-				autoDepositOptions.style.display = this.checked ? 'block' : 'none';
-			});
-		}
-		
-		// Goal form submission (in a real app, this would create the goal via AJAX)
-		const addGoalForm = document.getElementById('add-goal-form');
-		if (addGoalForm) {
-			addGoalForm.addEventListener('submit', function(e) {
-				e.preventDefault();
-				
-				// In a real application, this would send an AJAX request to create the goal
-				// For demo purposes, just show success message
-				alert('Goal created successfully! In a real application, this would save your goal to the database.');
-				
-				// Reset form and close modal
-				addGoalForm.reset();
-				const modal = bootstrap.Modal.getInstance(document.getElementById('addGoalModal'));
-				modal.hide();
-				
-				// In a real application, you would refresh the goals list or add the new goal dynamically
-			});
-		}
-	});
-</script>
-
-<?php
-get_footer();
+<?php get_footer(); ?>

@@ -13,6 +13,308 @@ get_header();
 $current_user = wp_get_current_user();
 ?>
 
+<style>
+/* Custom Color Palette CSS */
+:root {
+    --color-primary: #2A2438;
+    --color-secondary: #352F44;
+    --color-accent: #5C5470;
+    --color-light: #DBD8E3;
+    --color-white: #ffffff;
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+}
+
+/* Header Styling */
+.member-header {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    color: var(--color-white);
+    box-shadow: 0 4px 6px rgba(42, 36, 56, 0.1);
+}
+
+.member-dashboard-title {
+    color: var(--color-white);
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.member-id {
+    color: var(--color-light);
+    font-size: 0.9rem;
+}
+
+/* Sidebar Styling */
+.member-sidebar {
+    background: var(--color-white);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(42, 36, 56, 0.1);
+    overflow: hidden;
+}
+
+.list-group-item {
+    border: none;
+    color: var(--color-secondary);
+    transition: all 0.3s ease;
+    padding: 15px 20px;
+}
+
+.list-group-item:hover {
+    background-color: var(--color-light);
+    color: var(--color-primary);
+    transform: translateX(5px);
+}
+
+.list-group-item.active {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}
+
+.list-group-item.text-danger {
+    color: var(--color-danger) !important;
+}
+
+.list-group-item.text-danger:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--color-danger) !important;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    background: var(--color-white);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(42, 36, 56, 0.1);
+    border: 1px solid var(--color-light);
+    overflow: hidden;
+}
+
+.dashboard-card-header {
+    background: linear-gradient(135deg, var(--color-light) 0%, rgba(219, 216, 227, 0.5) 100%);
+    padding: 20px;
+    border-bottom: 1px solid var(--color-light);
+}
+
+.dashboard-card-title {
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.dashboard-card-body {
+    padding: 20px;
+}
+
+/* Account Summary Items */
+.account-summary-item {
+    padding: 20px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--color-light) 0%, rgba(219, 216, 227, 0.3) 100%);
+    border: 1px solid rgba(92, 84, 112, 0.1);
+}
+
+.summary-icon {
+    background: var(--color-primary);
+    color: var(--color-white);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 24px;
+}
+
+.account-summary-item h4 {
+    color: var(--color-secondary);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.summary-amount {
+    color: var(--color-primary);
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* Savings Account Cards */
+.savings-account-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-light);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.savings-account-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(42, 36, 56, 0.15);
+}
+
+.savings-account-header {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+    color: var(--color-white);
+    padding: 20px;
+}
+
+.savings-account-type {
+    color: var(--color-white);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.savings-account-number {
+    color: var(--color-light);
+    font-size: 0.9rem;
+}
+
+.savings-account-body {
+    padding: 20px;
+}
+
+.savings-account-amount {
+    color: var(--color-primary);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.savings-account-details {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.savings-account-details li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-light);
+}
+
+.savings-account-details li:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: var(--color-accent);
+    font-weight: 500;
+}
+
+.detail-value {
+    color: var(--color-secondary);
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(42, 36, 56, 0.2);
+}
+
+.btn-outline-primary {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(42, 36, 56, 0.2);
+}
+
+/* Badges */
+.badge.bg-success {
+    background: var(--color-success) !important;
+    color: var(--color-white);
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+/* Table Styling */
+.table {
+    color: var(--color-secondary);
+}
+
+.table thead th {
+    background: var(--color-light);
+    color: var(--color-primary);
+    font-weight: 600;
+    border: none;
+    padding: 15px;
+}
+
+.table tbody td {
+    border-color: var(--color-light);
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(219, 216, 227, 0.3);
+}
+
+.badge.bg-success {
+    background: var(--color-success) !important;
+}
+
+.badge.bg-danger {
+    background: var(--color-danger) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .member-header {
+        text-align: center;
+    }
+    
+    .member-sidebar {
+        margin-bottom: 20px;
+    }
+    
+    .summary-amount {
+        font-size: 20px;
+    }
+    
+    .savings-account-amount {
+        font-size: 24px;
+    }
+}
+
+/* Animation for page load */
+.member-content-wrapper {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
 <main id="primary" class="site-main">
 
     <section class="member-header bg-primary text-white py-4">
