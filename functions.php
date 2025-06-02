@@ -2110,148 +2110,6 @@ function daystar_fix_navbar_menu() {
 add_action('after_setup_theme', 'daystar_fix_navbar_menu');
 
 /**
- * Add inline CSS fixes to handle theme-specific issues
- */
-function daystar_add_inline_css_fixes() {
-    $custom_css = "
-        /* Fix navbar styling */
-        .navbar {
-            background-color: #f8f9fa !important;
-            padding: 1rem;
-        }
-        
-        .navbar-brand img {
-            max-height: 50px;
-        }
-        
-        .navbar-nav .nav-link {
-            color: #333 !important;
-            padding: 0.5rem 1rem;
-        }
-        
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link:focus {
-            color: #0056b3 !important;
-        }
-        
-        .dropdown-menu {
-            border-radius: 0;
-            margin-top: 0;
-            border-color: #eee;
-        }
-        
-        /* Fix header colors */
-        .top-bar {
-            background-color: #0056b3 !important;
-            color: #ffffff !important;
-        }
-        
-        /* Fix member login button */
-        .member-login-btn {
-            background-color: #00447c !important;
-            color: #ffffff !important;
-            border-radius: 4px;
-            padding: 0.5rem 1rem;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: bold;
-        }
-        
-        /* Fix hero section */
-        .hero-section {
-            background: linear-gradient(135deg, rgba(0, 128, 128, 0.8) 0%, rgba(0, 68, 124, 0.8) 100%) !important;
-            color: #ffffff;
-            padding: 4rem 0;
-        }
-        
-        .hero-section h1,
-        .hero-section h2,
-        .hero-section h3 {
-            color: #ffffff !important;
-        }
-        
-        /* Fix buttons */
-        .btn-primary {
-            background-color: #00447c !important;
-            border-color: #00447c !important;
-        }
-        
-        .btn-primary:hover,
-        .btn-primary:focus {
-            background-color: #003366 !important;
-            border-color: #003366 !important;
-        }
-        
-        /* Fix footer */
-        .site-footer {
-            background-color: #00447c !important;
-            color: #ffffff !important;
-            padding: 3rem 0;
-        }
-        
-        .site-footer a {
-            color: #ffffff !important;
-        }
-        
-        /* Fix WhatsApp button */
-        .whatsapp-button {            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #25d366;
-        }
-    ";
-    
-    wp_add_inline_style('daystar-custom-styles', $custom_css);
-}
-            color: #ffffff;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            text-decoration: none;
-        }
-        
-        .whatsapp-button:hover {
-            background-color: #128c7e;
-            color: #ffffff;
-        }
-        
-        /* Fix membership cards */
-        .step-item,
-        .membership-card {
-            background-color: #ffffff !important;
-            color: #333333 !important;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        /* Fix responsive issues */
-        @media (max-width: 768px) {
-            .navbar-collapse {
-                background-color: #f8f9fa;
-                padding: 1rem;
-                border-radius: 8px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-            
-            .hero-section {
-                padding: 2rem 0;
-            }
-        }
-    ";
-    
-    wp_add_inline_style('daystar-custom-styles', $custom_css);
-}
-add_action('wp_enqueue_scripts', 'daystar_add_inline_css_fixes', 1000); // Even higher priority
-
-/**
  * Add inline JavaScript fixes to handle theme-specific issues
  */
 function daystar_add_inline_js_fixes() {
@@ -2349,60 +2207,13 @@ register_activation_hook(__FILE__, 'daystar_clear_cache_on_activation');
  * Customize the WordPress login page
  */
 function daystar_custom_login_page() {
-    // Custom login page styles
-    $custom_login_css = "
-        body.login {
-            background: linear-gradient(135deg, rgba(0, 128, 128, 0.8) 0%, rgba(0, 68, 124, 0.8) 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        #login h1 a {
-            background-image: url('" . get_template_directory_uri() . "/assets/images/daystar-coop-logo.png');
-            background-size: contain;
-            width: 320px;
-            height: 80px;
-            margin-bottom: 30px;
-        }
-        
-        .login form {
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 26px 24px 34px;
-        }
-        
-        .login label {
-            color: #333;
-            font-size: 14px;
-        }
-        
-        .wp-core-ui .button-primary {
-            background-color: #00447c;
-            border-color: #00447c;
-            color: #fff;
-            text-decoration: none;
-            text-shadow: none;
-            border-radius: 4px;
-        }
-        
-        .wp-core-ui .button-primary:hover,
-        .wp-core-ui .button-primary:focus {
-            background-color: #003366;
-            border-color: #003366;
-        }
-        
-        .login #backtoblog a, 
-        .login #nav a {
-            color: #ffffff;
-        }
-        
-        .login #backtoblog a:hover, 
-        .login #nav a:hover {
-            color: #f0f0f0;
-        }
-    ";
-    
-    // Add the custom login styles
-    echo '<style type="text/css">' . $custom_login_css . '</style>';
+    // Enqueue custom login page styles
+    wp_enqueue_style(
+        'daystar-custom-login-page',
+        get_template_directory_uri() . '/assets/css/components/login-page.css',
+        array(),
+        time() // Or a specific version number
+    );
 }
 add_action('login_head', 'daystar_custom_login_page');
 
@@ -2609,6 +2420,14 @@ add_action('init', 'daystar_create_member_role');
  * Add shortcode to display member dashboard
  */
 function daystar_member_dashboard_shortcode() {
+    // Enqueue member dashboard styles
+    wp_enqueue_style(
+        'daystar-member-dashboard',
+        get_template_directory_uri() . '/assets/css/components/member-dashboard.css',
+        array(),
+        time() // Or a specific version number
+    );
+
     // Check if user is logged in
     if (!is_user_logged_in()) {
         return '<div class="alert alert-warning">Please <a href="' . wp_login_url() . '">login</a> to view your dashboard.</div>';
@@ -2803,6 +2622,14 @@ add_shortcode('member_dashboard', 'daystar_member_dashboard_shortcode');
  * Add shortcode to display login form
  */
 function daystar_login_form_shortcode() {
+    // Enqueue login form styles
+    wp_enqueue_style(
+        'daystar-login-form',
+        get_template_directory_uri() . '/assets/css/components/login-form.css',
+        array(),
+        time() // Or a specific version number
+    );
+
     if (is_user_logged_in()) {
         return '<div class="alert alert-info">You are already logged in. <a href="' . home_url('/member-dashboard/') . '">Go to Dashboard</a> or <a href="' . wp_logout_url(home_url()) . '">Logout</a></div>';
     }
@@ -2837,76 +2664,6 @@ function daystar_login_form_shortcode() {
     $output .= '</div>';
     $output .= '</div>';
     
-    // Add custom styling
-    $output .= '<style>
-        .custom-login-form {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .custom-login-form h2 {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #00447c;
-        }
-        
-        .custom-login-form p {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #666;
-        }
-        
-        .custom-login-form form {
-            margin-bottom: 20px;
-        }
-        
-        .custom-login-form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        .custom-login-form input[type="text"],
-        .custom-login-form input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .custom-login-form .button-primary {
-            background-color: #00447c;
-            border-color: #00447c;
-            color: #fff;
-            text-decoration: none;
-            text-shadow: none;
-            border-radius: 4px;
-        }
-        
-        .custom-login-form .button-primary:hover {
-            background-color: #003366;
-        }
-        
-        .login-links {
-            text-align: center;
-            margin-top: 20px;
-        }
-        
-        .login-links a {
-            color: #00447c;
-            text-decoration: none;
-        }
-        
-        .login-links a:hover {
-            text-decoration: underline;
-        }
-    </style>';
-    
     return $output;
 }
 add_shortcode('login_form', 'daystar_login_form_shortcode');
@@ -2915,6 +2672,14 @@ add_shortcode('login_form', 'daystar_login_form_shortcode');
  * Add shortcode to display registration form
  */
 function daystar_registration_form_shortcode() {
+    // Enqueue registration form styles
+    wp_enqueue_style(
+        'daystar-registration-form',
+        get_template_directory_uri() . '/assets/css/components/registration-form.css',
+        array(),
+        time() // Or a specific version number
+    );
+
     if (is_user_logged_in()) {
         return '<div class="alert alert-info">You are already registered and logged in. <a href="' . home_url('/member-dashboard/') . '">Go to Dashboard</a></div>';
     }
@@ -3110,93 +2875,6 @@ function daystar_registration_form_shortcode() {
     $output .= '</div>';
     
     $output .= '</div>'; // End custom-registration-form
-    
-    // Add custom styling
-    $output .= '<style>
-        .custom-registration-form {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .custom-registration-form h2 {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #00447c;
-        }
-        
-        .custom-registration-form p {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #666;
-        }
-        
-        .custom-registration-form h4 {
-            margin-top: 20px;
-            margin-bottom: 15px;
-            color: #00447c;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .required {
-            color: red;
-        }
-        
-        .btn-primary {
-            background-color: #00447c;
-            border-color: #00447c;
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
-        
-        .btn-primary:hover {
-            background-color: #003366;
-        }
-        
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-        
-        .alert-danger {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-        }
-        
-        .form-check-input:checked {
-            background-color: #00447c;
-            border-color: #00447c;
-        }
-        
-        .form-check-label a {
-            color: #00447c;
-        }
-        
-        .form-check-label a:hover {
-            text-decoration: underline;
-        }
-    </style>';
     
     // Add validation script
     $output .= '<script type="text/javascript">
@@ -3799,6 +3477,14 @@ add_action('template_redirect', 'daystar_handle_mpesa_callback');
  * Add shortcode to display M-Pesa payment form
  */
 function daystar_mpesa_payment_form_shortcode($atts) {
+    // Enqueue M-Pesa payment form styles
+    wp_enqueue_style(
+        'daystar-mpesa-payment-form',
+        get_template_directory_uri() . '/assets/css/components/mpesa-payment-form.css',
+        array(),
+        time() // Or a specific version number
+    );
+
     $atts = shortcode_atts(array(
         'type' => '',
         'amount' => '',
@@ -3986,7 +3672,7 @@ function daystar_mpesa_payment_form_shortcode($atts) {
         </div>
         
         <div class="text-center mt-4">
-            <img src="<?php echo esc_url(plugins_url('assets/images/mpesa-logo.png', __FILE__)); ?>" alt="M-Pesa Logo" class="img-fluid mb-3" style="max-height: 60px;">
+            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/mpesa-logo.png'); ?>" alt="M-Pesa Logo" class="img-fluid mb-3" style="max-height: 60px;">
             <p class="text-muted small">
                 <i class="fas fa-lock me-1"></i> Your payment information is secure and encrypted.
                 Daystar Multi-Purpose Co-op Society Ltd. is an authorized M-Pesa partner.
@@ -4053,75 +3739,6 @@ function daystar_mpesa_payment_form_shortcode($atts) {
             }
         });
     </script>
-    
-    <style>
-        .mpesa-payment-form {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .input-group-text {
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-        }
-        
-        .btn-primary {
-            background-color: #00447c;
-            border-color: #00447c;
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
-        
-        .btn-primary:hover {
-            background-color: #003366;
-        }
-        
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-        
-        .alert-danger {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-        }
-        
-        .payment-info {
-            background-color: #f0f8ff;
-            padding: 15px;
-            border-radius: 4px;
-        }
-        
-        .payment-info h5 {
-            margin-top: 0;
-            color: #00447c;
-        }
-        
-        .payment-info ol {
-            padding-left: 20px;
-        }
-    </style>
     <?php
     return ob_get_clean();
 }

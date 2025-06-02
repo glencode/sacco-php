@@ -811,3 +811,132 @@ a:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Added CSS from functions.php */
+        /* Fix navbar styling */
+        .navbar {
+            background-color: #f8f9fa !important;
+            padding: 1rem;
+        }
+
+        .navbar-brand img {
+            max-height: 50px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #333 !important;
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link:focus {
+            color: #0056b3 !important;
+        }
+
+        .dropdown-menu {
+            border-radius: 0;
+            margin-top: 0;
+            border-color: #eee;
+        }
+
+        /* Fix header colors */
+        .top-bar {
+            background-color: #0056b3 !important;
+            color: #ffffff !important;
+        }
+
+        /* Fix member login button */
+        .member-login-btn {
+            background-color: #00447c !important;
+            color: #ffffff !important;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        /* Fix hero section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.8) 0%, rgba(0, 68, 124, 0.8) 100%) !important;
+            color: #ffffff;
+            padding: 4rem 0;
+        }
+
+        .hero-section h1,
+        .hero-section h2,
+        .hero-section h3 {
+            color: #ffffff !important;
+        }
+
+        /* Fix buttons */
+        .btn-primary {
+            background-color: #00447c !important;
+            border-color: #00447c !important;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: #003366 !important;
+            border-color: #003366 !important;
+        }
+
+        /* Fix footer */
+        .site-footer {
+            background-color: #00447c !important;
+            color: #ffffff !important;
+            padding: 3rem 0;
+        }
+
+        .site-footer a {
+            color: #ffffff !important;
+        }
+
+        /* Fix WhatsApp button */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: #ffffff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .whatsapp-button:hover {
+            background-color: #128c7e;
+            color: #ffffff;
+        }
+
+        /* Fix membership cards */
+        .step-item,
+        .membership-card {
+            background-color: #ffffff !important;
+            color: #333333 !important;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Fix responsive issues */
+        @media (max-width: 768px) {
+            .navbar-collapse {
+                background-color: #f8f9fa;
+                padding: 1rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .hero-section {
+                padding: 2rem 0;
+            }
+        }
