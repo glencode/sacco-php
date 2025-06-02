@@ -1,0 +1,515 @@
+{
+    "key": "group_681bbb4add4fd",
+    "title": "Homepage Sections",
+    "fields": [
+        {
+            "key": "field_681bbb4b08995",
+            "label": "Our Philosophy Cards",
+            "name": "our_philosophy_cards",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "row",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Philosophy Card",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_681bbbe408996",
+                    "label": "Card Icon",
+                    "name": "card_icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "allow_in_bindings": 0,
+                    "preview_size": "medium",
+                    "parent_repeater": "field_681bbb4b08995"
+                },
+                {
+                    "key": "field_681bbc1108997",
+                    "label": "Card Title",
+                    "name": "card_title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_681bbb4b08995"
+                },
+                {
+                    "key": "field_681bbc3508998",
+                    "label": "Card Description",
+                    "name": "card_description",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "rows": "",
+                    "placeholder": "",
+                    "new_lines": "",
+                    "parent_repeater": "field_681bbb4b08995"
+                },
+                {
+                    "key": "field_681bbc3d08999",
+                    "label": "Card Link",
+                    "name": "card_link",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_681bbb4b08995"
+                }
+            ]
+        },
+        {
+            "key": "field_681bd0e40d43c",
+            "label": "Growth Stats Section Title",
+            "name": "growth_stats_section_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_681bd1220d43d",
+            "label": "Growth Stats Items",
+            "name": "growth_stats_items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Row",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_681bd13f0d43e",
+                    "label": "Stat Icon",
+                    "name": "stat_icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "allow_in_bindings": 0,
+                    "preview_size": "medium",
+                    "parent_repeater": "field_681bd1220d43d"
+                },
+                {
+                    "key": "field_681bd1580d43f",
+                    "label": "Stat Number",
+                    "name": "stat_number",
+                    "aria-label": "",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "min": "",
+                    "max": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "step": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_681bd1220d43d"
+                },
+                {
+                    "key": "field_681bd1680d440",
+                    "label": "Stat Label",
+                    "name": "stat_label",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_681bd1220d43d"
+                },
+                {
+                    "key": "field_681bd17a0d441",
+                    "label": "Stat Suffix",
+                    "name": "stat_suffix",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_681bd1220d43d"
+                },
+                {
+                    "key": "field_681bd1920d442",
+                    "label": "Stat Prefix",
+                    "name": "stat_prefix",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_681bd1220d43d"
+                }
+            ]
+        },
+        {
+            "key": "field_681bf1242298c",
+            "label": "CTA Banner Heading",
+            "name": "cta_banner_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "\"Main text for the Call to Action banner.\"",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_681bf17e2298d",
+            "label": "CTA Banner Subheading",
+            "name": "cta_banner_subheading",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "\"Optional smaller text below the main heading.\"",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_681bf1b22298e",
+            "label": "CTA Banner Button Text",
+            "name": "cta_banner_button_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_681bf1cb2298f",
+            "label": "CTA Banner Button Link",
+            "name": "cta_banner_button_link",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_681bf1f622990",
+            "label": "CTA Banner Background Image",
+            "name": "cta_banner_background_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "\"Optional. If not set, a solid background color will be used.\"",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "allow_in_bindings": 0,
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_681bf5903666d",
+            "label": "Homepage Contact Form Shortcode",
+            "name": "homepage_contact_form_shortcode",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "\"Paste the shortcode from Contact Form 7 here.\"",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "91"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1747042266
+},
+{
+    "key": "group_681bbb4add4fd",
+    "title": "Why Choose Us Section",
+    "fields": [
+        {
+            "key": "field_why_choose_us_title",
+            "label": "Section Title",
+            "name": "why_choose_us_title",
+            "type": "text",
+            "instructions": "Enter the main title for the Why Choose Us section",
+            "required": 0,
+            "default_value": "Why Choose Us"
+        },
+        {
+            "key": "field_why_choose_us_subtitle",
+            "label": "Section Subtitle",
+            "name": "why_choose_us_subtitle",
+            "type": "text",
+            "instructions": "Enter the subtitle text below the main title",
+            "required": 0,
+            "default_value": "Discover the advantages of banking with us"
+        },
+        {
+            "key": "field_why_choose_us_cards",
+            "label": "Feature Cards",
+            "name": "why_choose_us_cards",
+            "type": "repeater",
+            "instructions": "Add feature cards for the Why Choose Us section",
+            "required": 0,
+            "min": 0,
+            "max": 6,
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_why_choose_us_card_icon",
+                    "label": "Icon",
+                    "name": "icon",
+                    "type": "text",
+                    "instructions": "Enter a Font Awesome icon class (e.g., fa-shield-alt)",
+                    "required": 1,
+                    "default_value": "fa-check-circle"
+                },
+                {
+                    "key": "field_why_choose_us_card_title",
+                    "label": "Title",
+                    "name": "title",
+                    "type": "text",
+                    "instructions": "Enter the card title",
+                    "required": 1
+                },
+                {
+                    "key": "field_why_choose_us_card_description",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "textarea",
+                    "instructions": "Enter the card description",
+                    "required": 1,
+                    "rows": 3
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_type",
+                "operator": "==",
+                "value": "front_page"
+            }
+        ]
+    ],
+    "menu_order": 2,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "show_in_rest": false
+}

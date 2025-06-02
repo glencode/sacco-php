@@ -1,0 +1,182 @@
+/**
+ * Theme-specific fixes and enhancements
+ */
+
+/* Navbar Styling */
+.navbar {
+    background-color: #f8f9fa !important;
+    padding: 1rem;
+}
+
+.navbar-brand img {
+    max-height: 50px;
+}
+
+.navbar-nav .nav-link {
+    color: #333 !important;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+    color: #0056b3 !important;
+}
+
+.dropdown-menu {
+    border-radius: 0;
+    margin-top: 0;
+    border-color: #eee;
+}
+
+/* Header Colors */
+.top-bar {
+    background-color: #0056b3 !important;
+    color: #ffffff !important;
+}
+
+/* Member Login Button */
+.member-login-btn {
+    background-color: #00447c !important;
+    color: #ffffff !important;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: bold;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, rgba(0, 128, 128, 0.8) 0%, rgba(0, 68, 124, 0.8) 100%) !important;
+    color: #ffffff;
+    padding: 4rem 0;
+}
+
+.hero-section h1,
+.hero-section h2,
+.hero-section h3 {
+    color: #ffffff !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #00447c !important;
+    border-color: #00447c !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #003366 !important;
+    border-color: #003366 !important;
+}
+
+/* Footer */
+.site-footer {
+    background-color: #00447c !important;
+    color: #ffffff !important;
+    padding: 3rem 0;
+}
+
+.site-footer a {
+    color: #ffffff !important;
+}
+
+/* WhatsApp Button */
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: #ffffff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    background-color: #128c7e;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* Membership Cards */
+.step-item,
+.membership-card {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Login Page Customization */
+body.login {
+    background: linear-gradient(135deg, #00447c 0%, #008080 100%);
+}
+
+.login h1 a {
+    background-image: url('../img/logo.png');
+    background-size: contain;
+    width: 320px;
+    height: 80px;
+}
+
+.login form {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.login label {
+    color: #333;
+}
+
+.login .button-primary {
+    background: #00447c;
+    border-color: #00447c;
+}
+
+.login .button-primary:hover,
+.login .button-primary:focus {
+    background: #003366;
+    border-color: #003366;
+}
+
+.login #backtoblog a, 
+.login #nav a {
+    color: #ffffff !important;
+}
+
+.login #backtoblog a:hover, 
+.login #nav a:hover {
+    color: #e6e6e6 !important;
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+    .navbar-collapse {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .hero-section {
+        padding: 2rem 0;
+    }
+    
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+}
