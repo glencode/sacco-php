@@ -1,0 +1,20 @@
+# Dependencies
+/node_modules
+/vendor
+
+# Build outputs
+*.css.map
+style-rtl.css
+
+# WordPress specific
+/languages/_s.pot
+
+# Environment
+.DS_Store
+
+# IDE specific
+.vscode
+.idea
+
+# Build artifacts
+_s.zip
