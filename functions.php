@@ -213,7 +213,7 @@ function sacco_php_scripts() {	// Base theme style
 	wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css', array(), '5.1.3', 'all');
 	
 	// Enqueue Glassmorphism CSS
-	wp_enqueue_style('sacco-glassmorphism', get_template_directory_uri() . '/css/glassmorphism.css', array(), _S_VERSION);
+	wp_enqueue_style('sacco-glassmorphism', get_template_directory_uri() . '/assets/css/glassmorphism.css', array(), _S_VERSION);
 	
 	// Enqueue Google Fonts
 	wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap', array(), null);
@@ -228,14 +228,14 @@ function sacco_php_scripts() {	// Base theme style
 	wp_enqueue_style('sacco-php-custom', get_template_directory_uri() . '/assets/css/style.css', array('bootstrap'), _S_VERSION, 'all');
 	
 	// Enqueue modern effects stylesheet
-    wp_enqueue_style('sacco-php-modern-effects', get_template_directory_uri() . '/css/modern-effects.css', array(), _S_VERSION);
+    wp_enqueue_style('sacco-php-modern-effects', get_template_directory_uri() . '/assets/css/modern-effects.css', array(), _S_VERSION);
 	
 	// Enqueue jQuery and Bootstrap first
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.1.3', true);
 	
 	// Enqueue our custom scripts
-	wp_enqueue_script('sacco-php-glassmorphism', get_template_directory_uri() . '/js/glassmorphism.js', array('jquery'), _S_VERSION . '.' . time(), true);
+	wp_enqueue_script('sacco-php-glassmorphism', get_template_directory_uri() . '/assets/js/glassmorphism.js', array('jquery'), _S_VERSION . '.' . time(), true);
 	
 	// Add dynamic data for the glassmorphism script
 	wp_localize_script('sacco-php-glassmorphism', 'glassmorphismData', array(
@@ -255,7 +255,7 @@ function sacco_php_scripts() {	// Base theme style
     wp_enqueue_script('aos-js', 'https://unpkg.com/aos@2.3.1/dist/aos.js', array(), '2.3.1', true);
 
     // Enqueue Glassmorphism JS
-    wp_enqueue_script('sacco-glassmorphism', get_template_directory_uri() . '/js/glassmorphism.js', array('jquery'), _S_VERSION, true);
+    wp_enqueue_script('sacco-glassmorphism', get_template_directory_uri() . '/assets/js/glassmorphism.js', array('jquery'), _S_VERSION, true);
 	
 	// Enqueue Custom JS
 	wp_enqueue_script('sacco-php-custom', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'swiper-js', 'chart-js'), _S_VERSION, true);
@@ -266,7 +266,7 @@ function sacco_php_scripts() {	// Base theme style
 
 	// Enqueue custom front page script
 	if (is_front_page()) {
-		wp_enqueue_script('sacco-php-front-page', get_template_directory_uri() . '/js/front-page.js', array('jquery', 'swiper-js', 'aos-js'), _S_VERSION, true);
+		wp_enqueue_script('sacco-php-front-page', get_template_directory_uri() . '/assets/js/front-page.js', array('jquery', 'swiper-js', 'aos-js'), _S_VERSION, true);
 	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -274,33 +274,6 @@ function sacco_php_scripts() {	// Base theme style
 	}
 }
 add_action( 'wp_enqueue_scripts', 'sacco_php_scripts' );
-
-/**
- * Implement the Custom Header feature.
- */
-require get_template_directory() . '/inc/custom-header.php';
-
-/**
- * Custom template tags for this theme.
- */
-require get_template_directory() . '/inc/template-tags.php';
-
-/**
- * Functions which enhance the theme by hooking into WordPress.
- */
-require get_template_directory() . '/inc/template-functions.php';
-
-/**
- * Customizer additions.
- */
-require get_template_directory() . '/inc/customizer.php';
-
-/**
- * Load Jetpack compatibility file.
- */
-if ( defined( 'JETPACK__VERSION' ) ) {
-	require get_template_directory() . '/inc/jetpack.php';
-}
 
 // Register Custom Post Type for Slides
 function sacco_php_register_slide_cpt() {
@@ -1012,17 +985,17 @@ add_action( 'init', 'sacco_php_register_savings_category_taxonomy', 0 );
 function sacco_php_enqueue_member_portal_scripts() {
     // Register and enqueue member portal CSS if on member portal pages
     if (is_page(array('member-dashboard', 'member-loans', 'member-savings', 'member-profile', 'member-transactions', 'login'))) {
-        wp_enqueue_style('sacco-php-member-portal', get_template_directory_uri() . '/css/member-portal.css', array(), _S_VERSION);
+        wp_enqueue_style('sacco-php-member-portal', get_template_directory_uri() . '/assets/css/member-portal.css', array(), _S_VERSION);
     }
     
     // Register and enqueue savings CSS if on savings related pages
     if (is_post_type_archive('savings') || is_singular('savings') || is_tax('savings_category') || is_page('savings-calculator')) {
-        wp_enqueue_style('sacco-php-savings', get_template_directory_uri() . '/css/savings.css', array(), _S_VERSION);
+        wp_enqueue_style('sacco-php-savings', get_template_directory_uri() . '/assets/css/savings.css', array(), _S_VERSION);
         
         // Enqueue Chart.js if on calculator page
         if (is_page('savings-calculator')) {
             wp_enqueue_script('chart-js', 'https://cdn.jsdelivr.net/npm/chart.js', array('jquery'), '3.9.1', true);
-            wp_enqueue_script('sacco-php-savings-calculator', get_template_directory_uri() . '/js/savings-calculator.js', array('jquery', 'chart-js'), _S_VERSION, true);
+            wp_enqueue_script('sacco-php-savings-calculator', get_template_directory_uri() . '/assets/js/savings-calculator.js', array('jquery', 'chart-js'), _S_VERSION, true);
         }
     }
 }
@@ -1163,17 +1136,17 @@ add_action('save_post_savings', 'sacco_php_save_savings_meta_box_data');
 function sacco_php_product_page_styles() {
     // Savings Archive and Single Savings
     if (is_post_type_archive('savings') || is_singular('savings')) {
-        wp_enqueue_style('sacco-savings', get_template_directory_uri() . '/css/savings.css', array(), _S_VERSION);
+        wp_enqueue_style('sacco-savings', get_template_directory_uri() . '/assets/css/savings.css', array(), _S_VERSION);
     }
     
     // Loans Archive and Single Loan
     if (is_post_type_archive('loan') || is_singular('loan')) {
-        wp_enqueue_style('sacco-loans', get_template_directory_uri() . '/css/loans.css', array(), _S_VERSION);
+        wp_enqueue_style('sacco-loans', get_template_directory_uri() . '/assets/css/loans.css', array(), _S_VERSION);
     }
     
     // About Page
     if (is_page_template('page-about.php')) {
-        wp_enqueue_style('sacco-about', get_template_directory_uri() . '/css/about.css', array(), _S_VERSION);
+        wp_enqueue_style('sacco-about', get_template_directory_uri() . '/assets/css/about.css', array(), _S_VERSION);
     }
 }
 add_action('wp_enqueue_scripts', 'sacco_php_product_page_styles');
