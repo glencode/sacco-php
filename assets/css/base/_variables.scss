@@ -1,0 +1,261 @@
+/**
+ * Daystar Multi-Purpose Co-op Society - Variables
+ *
+ * This file contains all global variables used throughout the site
+ */
+
+// Color System
+// Primary Colors
+$primary-color: #0056b3;       // Deep blue - primary brand color
+$secondary-color: #00a896;     // Teal - secondary brand color
+$accent-color: #ffc107;        // Amber - accent color for highlights
+
+// Neutral Colors
+$white: #ffffff;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black: #000000;
+
+// Functional Colors
+$success-color: #28a745;       // Green for success messages
+$info-color: #17a2b8;          // Blue for information messages
+$warning-color: #ffc107;       // Amber for warning messages
+$danger-color: #dc3545;        // Red for error messages
+
+// Background Colors
+$body-bg: $white;
+$light-bg: $gray-100;
+$dark-bg: $gray-800;
+
+// Text Colors
+$text-color: $gray-900;
+$text-muted: $gray-600;
+$link-color: $primary-color;
+$link-hover-color: darken($primary-color, 15%);
+
+// Typography
+$font-family-sans-serif: 'Nunito Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-family-serif: Georgia, "Times New Roman", serif;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+$font-family-base: $font-family-sans-serif;
+$font-family-headings: $font-family-sans-serif;
+
+// Font Sizes
+$font-size-base: 1rem;         // 16px
+$font-size-lg: 1.25rem;        // 20px
+$font-size-sm: 0.875rem;       // 14px
+$font-size-xs: 0.75rem;        // 12px
+
+$h1-font-size: 2.5rem;         // 40px
+$h2-font-size: 2rem;           // 32px
+$h3-font-size: 1.75rem;        // 28px
+$h4-font-size: 1.5rem;         // 24px
+$h5-font-size: 1.25rem;        // 20px
+$h6-font-size: 1rem;           // 16px
+
+// Line Heights
+$line-height-base: 1.5;
+$line-height-sm: 1.25;
+$line-height-lg: 1.8;
+
+// Font Weights
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Spacing
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: ($spacer * 0.25),   // 4px
+  2: ($spacer * 0.5),    // 8px
+  3: $spacer,            // 16px
+  4: ($spacer * 1.5),    // 24px
+  5: ($spacer * 3),      // 48px
+  6: ($spacer * 4.5),    // 72px
+  7: ($spacer * 6),      // 96px
+);
+
+// Border Radius
+$border-radius-sm: 0.2rem;
+$border-radius: 0.25rem;
+$border-radius-lg: 0.5rem;
+$border-radius-xl: 1rem;
+$border-radius-pill: 50rem;
+
+// Borders
+$border-width: 1px;
+$border-color: $gray-300;
+
+// Box Shadows
+$box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075);
+$box-shadow: 0 0.5rem 1rem rgba($black, 0.15);
+$box-shadow-lg: 0 1rem 3rem rgba($black, 0.175);
+
+// Z-index
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+
+// Breakpoints
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+// Grid
+$grid-columns: 12;
+$grid-gutter-width: 1.5rem;
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px
+);
+
+// Components
+$component-active-color: $white;
+$component-active-bg: $primary-color;
+
+// Forms
+$input-bg: $white;
+$input-disabled-bg: $gray-200;
+$input-color: $gray-900;
+$input-border-color: $gray-400;
+$input-border-width: $border-width;
+$input-border-radius: $border-radius;
+$input-focus-border-color: lighten($primary-color, 25%);
+$input-focus-box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25);
+$input-placeholder-color: $gray-500;
+$input-height: 2.5rem;
+
+// Buttons
+$btn-padding-y: 0.375rem;
+$btn-padding-x: 0.75rem;
+$btn-font-size: $font-size-base;
+$btn-line-height: $line-height-base;
+$btn-border-width: $border-width;
+$btn-border-radius: $border-radius;
+
+// Transitions
+$transition-base: all 0.2s ease-in-out;
+$transition-fade: opacity 0.15s linear;
+$transition-collapse: height 0.35s ease;
+
+// Cards
+$card-border-width: $border-width;
+$card-border-radius: $border-radius;
+$card-border-color: $border-color;
+$card-bg: $white;
+$card-cap-bg: $gray-100;
+$card-spacer-y: 1rem;
+$card-spacer-x: 1rem;
+$card-box-shadow: $box-shadow-sm;
+
+// Tables
+$table-cell-padding-y: 0.75rem;
+$table-cell-padding-x: 0.75rem;
+$table-border-color: $border-color;
+$table-striped-bg: rgba($black, 0.05);
+$table-hover-bg: rgba($black, 0.075);
+
+// Alerts
+$alert-padding-y: 0.75rem;
+$alert-padding-x: 1.25rem;
+$alert-border-radius: $border-radius;
+$alert-link-font-weight: $font-weight-bold;
+
+// Badges
+$badge-font-size: 0.75em;
+$badge-font-weight: $font-weight-bold;
+$badge-padding-y: 0.35em;
+$badge-padding-x: 0.65em;
+$badge-border-radius: $border-radius;
+
+// Modals
+$modal-content-border-radius: $border-radius-lg;
+$modal-header-border-color: $border-color;
+$modal-footer-border-color: $border-color;
+$modal-content-box-shadow: $box-shadow-lg;
+
+// Navs
+$nav-link-padding-y: 0.5rem;
+$nav-link-padding-x: 1rem;
+$nav-link-color: $link-color;
+$nav-link-hover-color: $link-hover-color;
+$nav-tabs-border-color: $border-color;
+$nav-tabs-link-active-color: $gray-700;
+$nav-tabs-link-active-bg: $white;
+
+// Pagination
+$pagination-padding-y: 0.375rem;
+$pagination-padding-x: 0.75rem;
+$pagination-border-width: $border-width;
+$pagination-border-radius: $border-radius;
+$pagination-color: $link-color;
+$pagination-bg: $white;
+$pagination-border-color: $gray-300;
+$pagination-hover-color: $link-hover-color;
+$pagination-hover-bg: $gray-200;
+$pagination-hover-border-color: $gray-300;
+$pagination-active-color: $white;
+$pagination-active-bg: $primary-color;
+$pagination-active-border-color: $primary-color;
+
+// Progress bars
+$progress-height: 1rem;
+$progress-font-size: $font-size-sm;
+$progress-bg: $gray-200;
+$progress-border-radius: $border-radius;
+$progress-box-shadow: inset 0 0.1rem 0.1rem rgba($black, 0.1);
+$progress-bar-color: $white;
+$progress-bar-bg: $primary-color;
+
+// List groups
+$list-group-color: $text-color;
+$list-group-bg: $white;
+$list-group-border-color: $border-color;
+$list-group-border-width: $border-width;
+$list-group-border-radius: $border-radius;
+$list-group-item-padding-y: 0.75rem;
+$list-group-item-padding-x: 1.25rem;
+$list-group-hover-bg: $gray-100;
+$list-group-active-color: $component-active-color;
+$list-group-active-bg: $component-active-bg;
+$list-group-active-border-color: $component-active-bg;
+
+// Toasts
+$toast-max-width: 350px;
+$toast-padding-x: 0.75rem;
+$toast-padding-y: 0.5rem;
+$toast-font-size: 0.875rem;
+$toast-background-color: rgba($white, 0.85);
+$toast-border-width: 1px;
+$toast-border-color: rgba($black, 0.1);
+$toast-border-radius: $border-radius;
+$toast-box-shadow: $box-shadow;
+
+// Custom Daystar Variables
+$header-height: 80px;
+$footer-bg: $gray-800;
+$sidebar-width: 280px;
+$dashboard-card-height: 160px;

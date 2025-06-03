@@ -1,0 +1,157 @@
+/**
+ * Contact Page Styles
+ */
+
+.contact-info-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.contact-info-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info-icon {
+    font-size: 2.5rem;
+    color: #5ca157;
+    margin-bottom: 20px;
+}
+
+.contact-info-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.contact-form-card, 
+.contact-map-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+
+.contact-form-card h2,
+.contact-map-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.contact-form {
+    margin-top: 20px;
+}
+
+.contact-map {
+    margin-top: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.branch-card {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.branch-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.branch-card h3 {
+    color: #5ca157;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.branch-card p {
+    margin-bottom: 10px;
+}
+
+.branch-card p i {
+    color: #5ca157;
+    width: 20px;
+    text-align: center;
+}
+
+.form-control:focus {
+    border-color: #5ca157;
+    box-shadow: 0 0 0 0.25rem rgba(92, 161, 87, 0.25);
+}
+
+.btn-primary {
+    background-color: #5ca157;
+    border-color: #5ca157;
+}
+
+.btn-primary:hover {
+    background-color: #4c8447;
+    border-color: #4c8447;
+}
+
+.form-check-input:checked {
+    background-color: #5ca157;
+    border-color: #5ca157;
+}
+
+/* Contact Form 7 Styles */
+div.wpcf7 .ajax-loader {
+    margin: 0 10px;
+}
+
+span.wpcf7-not-valid-tip {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 5px;
+}
+
+div.wpcf7-response-output {
+    margin: 20px 0 0;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+div.wpcf7-validation-errors, 
+div.wpcf7-acceptance-missing {
+    border: 1px solid #ffc107;
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+div.wpcf7-mail-sent-ok {
+    border: 1px solid #5ca157;
+    background-color: rgba(92, 161, 87, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+    .contact-info-card,
+    .contact-form-card,
+    .contact-map-card,
+    .branch-card {
+        padding: 20px;
+    }
+    
+    .contact-info-icon {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+    
+    .contact-form-card h2,
+    .contact-map-card h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+} 

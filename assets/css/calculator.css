@@ -1,0 +1,92 @@
+/* Calculator Styles */
+
+.calculator-section {
+    background-color: #f9f9f9;
+}
+
+.card.shadow {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.card-header.bg-primary {
+    background-color: #5ca157 !important;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.btn-primary {
+    background-color: #5ca157;
+    border-color: #5ca157;
+}
+
+.btn-primary:hover {
+    background-color: #4c8447;
+    border-color: #4c8447;
+}
+
+.result-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-item strong {
+    font-size: 1.1rem;
+    color: #2c3624;
+}
+
+/* Make the chart container responsive */
+.mt-4 {
+    position: relative;
+    height: 200px;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+/* Amortization table styles */
+.table-responsive {
+    margin-top: 1.5rem;
+}
+
+.table th {
+    background-color: #f1f1f1;
+    font-weight: 600;
+}
+
+/* Print styles */
+@media print {
+    header, footer, .page-header, .loan-info, .mortgage-info, form button {
+        display: none !important;
+    }
+    
+    body {
+        background-color: #fff;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd;
+    }
+    
+    .card-header.bg-primary {
+        background-color: #f1f1f1 !important;
+        color: #333 !important;
+    }
+    
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Force background colors to print in browsers that support it */
+    html {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+} 

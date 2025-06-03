@@ -1,0 +1,94 @@
+.mpesa-payment-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+}
+
+.btn-primary {
+    background-color: #00447c;
+    border-color: #00447c;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+    background-color: #003366;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.payment-info {
+    background-color: #f0f8ff;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.payment-info h5 {
+    margin-top: 0;
+    color: #00447c;
+}
+
+.payment-info ol {
+    padding-left: 20px;
+}
+
+/* Style for the M-Pesa logo image */
+.mpesa-payment-form img {
+    max-height: 60px;
+    /* The path will be relative to where the CSS is eventually used,
+       but for now, this is a placeholder. The PHP code handles the correct path.
+       If this CSS were directly linked in an HTML file in assets/css/components/,
+       the path might be ../../images/mpesa-logo.png if assets/images exists.
+       However, since WordPress handles paths, this specific rule might be
+       better handled by ensuring the PHP provides the correct full URL or the
+       theme structure supports this relative path if the CSS is moved.
+       For the purpose of this task, we'll assume the PHP will handle it,
+       or a more generic class without a background-image URL is used if the image
+       is part of the dynamic content.
+       Let's assume the PHP `plugins_url` or `get_template_directory_uri` will be
+       used if the image is directly in HTML. If it's meant to be a background
+       in CSS, the path needs to be relative to this CSS file.
+       Given the original PHP code: echo esc_url(plugins_url('assets/images/mpesa-logo.png', __FILE__))
+       This implies the image is part of a plugin. If this code is for a theme,
+       it should be get_template_directory_uri() . '/assets/images/mpesa-logo.png'.
+       Assuming it's a theme asset and this CSS is in assets/css/components/,
+       the path would be: ../../images/mpesa-logo.png
+    */
+}
+
+.mpesa-payment-form .text-center .small {
+    font-size: 0.875em; /* Ensure small class has an effect */
+}

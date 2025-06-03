@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Integration Test</title>
+    <!-- Include main CSS file -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        body {
+            font-family: var(--font-family-base);
+            padding: 20px;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+        }
+        .test-title {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        .test-component {
+            margin-bottom: 15px;
+        }
+        .test-result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: var(--gray-100);
+            border-radius: var(--border-radius);
+        }
+        .success {
+            color: var(--success-color);
+        }
+        .failure {
+            color: var(--danger-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Daystar Asset Integration Test</h1>
+        <p>This page tests the integration of all CSS and JS files in the new asset structure.</p>
+        
+        <div class="test-section">
+            <h2 class="test-title">CSS Component Tests</h2>
+            
+            <div class="test-component">
+                <h3>Button Styles</h3>
+                <button class="btn btn-primary">Primary Button</button>
+                <button class="btn btn-secondary">Secondary Button</button>
+                <button class="btn btn-success">Success Button</button>
+                <button class="btn btn-danger">Danger Button</button>
+                <button class="btn btn-outline-primary">Outline Button</button>
+            </div>
+            
+            <div class="test-component">
+                <h3>Form Styles</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="test-input">Test Input</label>
+                        <input type="text" class="form-control" id="test-input" placeholder="Enter text">
+                    </div>
+                    <div class="form-group">
+                        <label for="test-select">Test Select</label>
+                        <select class="form-control" id="test-select">
+                            <option>Option 1</option>
+                            <option>Option 2</option>
+                            <option>Option 3</option>
+                        </select>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="test-checkbox">
+                        <label class="form-check-label" for="test-checkbox">Test Checkbox</label>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="test-component">
+                <h3>Card Styles</h3>
+                <div class="card">
+                    <div class="card-header">Card Header</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card Title</h5>
+                        <p class="card-text">This is a test card to verify card styling.</p>
+                        <a href="#" class="btn btn-primary">Card Button</a>
+                    </div>
+                    <div class="card-footer">Card Footer</div>
+                </div>
+            </div>
+            
+            <div class="test-component">
+                <h3>Grid System</h3>
+                <div class="row">
+                    <div class="col-md-4" style="background-color: var(--gray-200); padding: 10px;">Column 1</div>
+                    <div class="col-md-4" style="background-color: var(--gray-300); padding: 10px;">Column 2</div>
+                    <div class="col-md-4" style="background-color: var(--gray-200); padding: 10px;">Column 3</div>
+                </div>
+            </div>
+            
+            <div class="test-component">
+                <h3>Utility Classes</h3>
+                <div class="p-3 mb-2 bg-primary text-white">Primary Background</div>
+                <div class="p-3 mb-2 bg-secondary text-white">Secondary Background</div>
+                <div class="p-3 mb-2 bg-success text-white">Success Background</div>
+                <div class="p-3 mb-2 bg-danger text-white">Danger Background</div>
+                <div class="p-3 mb-2 bg-warning text-dark">Warning Background</div>
+                <div class="p-3 mb-2 bg-info text-white">Info Background</div>
+                <div class="p-3 mb-2 bg-light text-dark">Light Background</div>
+                <div class="p-3 mb-2 bg-dark text-white">Dark Background</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2 class="test-title">JS Component Tests</h2>
+            
+            <div class="test-component">
+                <h3>Modal Test</h3>
+                <button id="modal-test-btn" class="btn btn-primary">Open Test Modal</button>
+                
+                <div id="test-modal" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Test Modal</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>This is a test modal to verify modal functionality.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="test-component">
+                <h3>Dropdown Test</h3>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton">
+                        Dropdown button
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="test-component">
+                <h3>Form Validation Test</h3>
+                <form class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <label for="validation-input">Required Input</label>
+                        <input type="text" class="form-control" id="validation-input" required>
+                        <div class="invalid-feedback">
+                            Please provide a value.
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Submit form</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="test-result" id="test-results">
+            <h2>Test Results</h2>
+            <p>Running tests...</p>
+        </div>
+    </div>
+    
+    <!-- Include JS files -->
+    <script src="../assets/js/core/main.js"></script>
+    <script src="../assets/js/core/asset-test.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Modal test
+            const modalBtn = document.getElementById('modal-test-btn');
+            const testModal = document.getElementById('test-modal');
+            
+            if (modalBtn && testModal) {
+                modalBtn.addEventListener('click', function() {
+                    // Use our custom modal opening function if available
+                    if (typeof openModal === 'function') {
+                        openModal(testModal);
+                    } else {
+                        testModal.style.display = 'block';
+                        testModal.classList.add('show');
+                    }
+                });
+                
+                const closeButtons = testModal.querySelectorAll('[data-dismiss="modal"]');
+                closeButtons.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        // Use our custom modal closing function if available
+                        if (typeof closeModal === 'function') {
+                            closeModal(testModal);
+                        } else {
+                            testModal.style.display = 'none';
+                            testModal.classList.remove('show');
+                        }
+                    });
+                });
+            }
+            
+            // Update test results after a delay to allow tests to run
+            setTimeout(function() {
+                const resultsContainer = document.getElementById('test-results');
+                
+                // Check if our test script has run
+                if (window.testResults) {
+                    resultsContainer.innerHTML = `
+                        <h2>Test Results</h2>
+                        <p class="${window.testResults.overall ? 'success' : 'failure'}">
+                            Overall: ${window.testResults.overall ? 'PASSED' : 'FAILED'}
+                        </p>
+                        <ul>
+                            <li class="${window.testResults.css ? 'success' : 'failure'}">
+                                CSS Integration: ${window.testResults.css ? 'PASSED' : 'FAILED'}
+                            </li>
+                            <li class="${window.testResults.js ? 'success' : 'failure'}">
+                                JS Integration: ${window.testResults.js ? 'PASSED' : 'FAILED'}
+                            </li>
+                            <li class="${window.testResults.components ? 'success' : 'failure'}">
+                                Component Rendering: ${window.testResults.components ? 'PASSED' : 'FAILED'}
+                            </li>
+                        </ul>
+                    `;
+                } else {
+                    // Manual test results based on visual inspection
+                    resultsContainer.innerHTML = `
+                        <h2>Test Results</h2>
+                        <p>Automated tests not available. Please verify components visually:</p>
+                        <ul>
+                            <li>Button styles rendering correctly?</li>
+                            <li>Form elements styled properly?</li>
+                            <li>Card component displaying correctly?</li>
+                            <li>Grid system working?</li>
+                            <li>Utility classes applied correctly?</li>
+                            <li>Modal opens and closes?</li>
+                            <li>Dropdown menu works?</li>
+                            <li>Form validation functions?</li>
+                        </ul>
+                        <p>If all components appear and function correctly, the asset migration was successful.</p>
+                    `;
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

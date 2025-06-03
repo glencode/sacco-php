@@ -1,0 +1,40 @@
+/* Navigation and menu styles */
+.navbar {
+    background-color: #f8f9fa !important;
+    padding: 1rem;
+}
+
+.navbar-brand img {
+    max-height: 50px;
+}
+
+.navbar-nav .nav-link {
+    color: #333 !important;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+    color: #0056b3 !important;
+}
+
+.dropdown-menu {
+    border-radius: 0;
+    margin-top: 0;
+    border-color: #eee;
+}
+
+.navbar-collapse {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .navbar-collapse {
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}

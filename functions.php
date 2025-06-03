@@ -1312,10 +1312,11 @@ function sacco_member_portal_template_redirect() {
             exit;
         } elseif ($portal_page == 'profile') {
             include(get_template_directory() . '/page-member-profile.php');
-            exit;
-        } elseif ($portal_page == 'loans') {
+            exit;        } elseif ($portal_page == 'loans') {
             include(get_template_directory() . '/page-member-loans.php');
             exit;
+        }
+    }
 }
 add_action('template_redirect', 'sacco_member_portal_template_redirect');
 
@@ -1944,10 +1945,7 @@ function sacco_php_register_goal_post_type() {
 }
 add_action('init', 'sacco_php_register_savings_cpt');
 
-/**
- * Instructions: Add this code to your theme's functions.php file or create a new plugin with this code
- */
-// End of functions.php
+
 
 /**
  * Enqueue custom styles and scripts with version parameter for cache busting

@@ -1,0 +1,374 @@
+/**
+ * Daystar Multi-Purpose Co-op Society - Cards
+ *
+ * Card component styles for the site
+ */
+
+/* Base Card */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: var(--card-bg);
+  background-clip: border-box;
+  border: var(--card-border-width) solid var(--card-border-color);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--card-box-shadow);
+}
+
+.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: var(--card-spacer-y) var(--card-spacer-x);
+}
+
+.card-title {
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+.card-subtitle {
+  margin-top: -0.375rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+}
+
+.card-text:last-child {
+  margin-bottom: 0;
+}
+
+.card-link:hover {
+  text-decoration: none;
+}
+
+.card-link + .card-link {
+  margin-left: 1.25rem;
+}
+
+/* Card Header and Footer */
+.card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: var(--card-cap-bg);
+  border-bottom: var(--card-border-width) solid var(--card-border-color);
+}
+
+.card-header:first-child {
+  border-radius: calc(var(--card-border-radius) - 1px) calc(var(--card-border-radius) - 1px) 0 0;
+}
+
+.card-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: var(--card-cap-bg);
+  border-top: var(--card-border-width) solid var(--card-border-color);
+}
+
+.card-footer:last-child {
+  border-radius: 0 0 calc(var(--card-border-radius) - 1px) calc(var(--card-border-radius) - 1px);
+}
+
+/* Card Image */
+.card-img-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1.25rem;
+}
+
+.card-img,
+.card-img-top,
+.card-img-bottom {
+  width: 100%;
+}
+
+.card-img,
+.card-img-top {
+  border-top-left-radius: calc(var(--card-border-radius) - 1px);
+  border-top-right-radius: calc(var(--card-border-radius) - 1px);
+}
+
+.card-img,
+.card-img-bottom {
+  border-bottom-right-radius: calc(var(--card-border-radius) - 1px);
+  border-bottom-left-radius: calc(var(--card-border-radius) - 1px);
+}
+
+/* Card Deck */
+.card-deck {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 576px) {
+  .card-deck {
+    flex-flow: row wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+  
+  .card-deck .card {
+    display: flex;
+    flex: 1 0 0%;
+    flex-direction: column;
+    margin-right: 15px;
+    margin-bottom: 0;
+    margin-left: 15px;
+  }
+}
+
+/* Card Group */
+.card-group {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 576px) {
+  .card-group {
+    flex-flow: row wrap;
+  }
+  
+  .card-group > .card {
+    flex: 1 0 0%;
+    margin-bottom: 0;
+  }
+  
+  .card-group > .card + .card {
+    margin-left: 0;
+    border-left: 0;
+  }
+  
+  .card-group > .card:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  .card-group > .card:not(:last-child) .card-img-top,
+  .card-group > .card:not(:last-child) .card-header {
+    border-top-right-radius: 0;
+  }
+  
+  .card-group > .card:not(:last-child) .card-img-bottom,
+  .card-group > .card:not(:last-child) .card-footer {
+    border-bottom-right-radius: 0;
+  }
+  
+  .card-group > .card:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  
+  .card-group > .card:not(:first-child) .card-img-top,
+  .card-group > .card:not(:first-child) .card-header {
+    border-top-left-radius: 0;
+  }
+  
+  .card-group > .card:not(:first-child) .card-img-bottom,
+  .card-group > .card:not(:first-child) .card-footer {
+    border-bottom-left-radius: 0;
+  }
+}
+
+/* Card Columns */
+@media (min-width: 576px) {
+  .card-columns {
+    column-count: 3;
+    column-gap: 1.25rem;
+    orphans: 1;
+    widows: 1;
+  }
+  
+  .card-columns .card {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Card Variants */
+.card-primary {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.card-secondary {
+  background-color: var(--secondary-color);
+  color: #fff;
+}
+
+.card-success {
+  background-color: var(--success-color);
+  color: #fff;
+}
+
+.card-info {
+  background-color: var(--info-color);
+  color: #fff;
+}
+
+.card-warning {
+  background-color: var(--warning-color);
+  color: #212529;
+}
+
+.card-danger {
+  background-color: var(--danger-color);
+  color: #fff;
+}
+
+.card-light {
+  background-color: var(--gray-100);
+  color: #212529;
+}
+
+.card-dark {
+  background-color: var(--gray-800);
+  color: #fff;
+}
+
+/* Card Border Variants */
+.card-outline-primary {
+  background-color: transparent;
+  border-color: var(--primary-color);
+}
+
+.card-outline-secondary {
+  background-color: transparent;
+  border-color: var(--secondary-color);
+}
+
+.card-outline-success {
+  background-color: transparent;
+  border-color: var(--success-color);
+}
+
+.card-outline-info {
+  background-color: transparent;
+  border-color: var(--info-color);
+}
+
+.card-outline-warning {
+  background-color: transparent;
+  border-color: var(--warning-color);
+}
+
+.card-outline-danger {
+  background-color: transparent;
+  border-color: var(--danger-color);
+}
+
+/* Card Hover Effect */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-lg);
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+  height: var(--dashboard-card-height);
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dashboard-card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.dashboard-card-value {
+  font-size: 2rem;
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-card-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Feature Cards */
+.feature-card {
+  text-align: center;
+  padding: 2rem;
+}
+
+.feature-card-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.feature-card-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Loan Cards */
+.loan-card {
+  border-left: 4px solid var(--primary-color);
+}
+
+.loan-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loan-card-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 50rem;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+}
+
+.loan-card-status-approved {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: var(--success-color);
+}
+
+.loan-card-status-pending {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #856404;
+}
+
+.loan-card-status-rejected {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: var(--danger-color);
+}
+
+.loan-card-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.loan-card-detail {
+  text-align: center;
+}
+
+.loan-card-detail-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.loan-card-detail-value {
+  font-weight: var(--font-weight-semibold);
+}
