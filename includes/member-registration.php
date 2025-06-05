@@ -234,24 +234,6 @@ function daystar_process_registration() {
 }
 
 /**
- * Create custom member role on plugin activation
- */
-function daystar_create_member_role() {
-    add_role(
-        'member',
-        'Member',
-        array(
-            'read' => true,
-            'edit_posts' => false,
-            'delete_posts' => false,
-            'publish_posts' => false,
-            'upload_files' => false,
-        )
-    );
-}
-register_activation_hook(__FILE__, 'daystar_create_member_role');
-
-/**
  * Display registration errors
  */
 function daystar_display_registration_errors() {
