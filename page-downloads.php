@@ -220,7 +220,7 @@ get_header();
 									</div>
 								</div>
 								<div class="col-md-4 text-center mt-4 mt-md-0">
-									<img src="<?php echo get_template_directory_uri(); ?>/img/customer-service.svg" alt="Customer Service" class="img-fluid" style="max-width: 200px;">
+									<img src="<?php echo get_template_directory_uri(); ?>/assets/images/customer-service.svg" alt="Customer Service" class="img-fluid" style="max-width: 200px;">
 								</div>
 							</div>
 						</div>
@@ -231,32 +231,6 @@ get_header();
 	</section>
 
 </main><!-- #main -->
-
-<style>
-.download-tabs .nav-link {
-	color: var(--bs-dark);
-	border-radius: 0;
-	padding: 1rem;
-	font-weight: 500;
-}
-
-.download-tabs .nav-link.active {
-	color: var(--bs-primary);
-	background-color: #fff;
-	border-bottom: 3px solid var(--bs-primary);
-}
-
-.download-card .download-icon {
-	text-align: center;
-}
-
-@media (max-width: 767.98px) {
-	.download-tabs .nav-link {
-		padding: 0.5rem;
-		font-size: 0.875rem;
-	}
-}
-</style>
 
 <?php
 get_footer(); 
