@@ -1,0 +1,23 @@
+.download-tabs .nav-link {
+	color: var(--bs-dark);
+	border-radius: 0;
+	padding: 1rem;
+	font-weight: 500;
+}
+
+.download-tabs .nav-link.active {
+	color: var(--bs-primary);
+	background-color: #fff;
+	border-bottom: 3px solid var(--bs-primary);
+}
+
+.download-card .download-icon {
+	text-align: center;
+}
+
+@media (max-width: 767.98px) {
+	.download-tabs .nav-link {
+		padding: 0.5rem;
+		font-size: 0.875rem;
+	}
+}
