@@ -269,13 +269,13 @@ function daystar_admin_display_recent_activity() {
 // Include other admin files (ensure paths are correct)
 require_once(get_template_directory() . 
 '/includes/admin/admin-members.php');
-require_once(get_template_directory() . 
-'/includes/admin/admin-loans.php');
-require_once(get_template_directory() . 
-'/includes/admin/admin-payments.php');
-require_once(get_template_directory() . 
-'/includes/admin/admin-reports.php');
-require_once(get_template_directory() . 
-'/includes/admin/admin-settings.php');
+// require_once(get_template_directory() .
+// '/includes/admin/admin-loans.php');
+// require_once(get_template_directory() .
+// '/includes/admin/admin-payments.php');
+// require_once(get_template_directory() .
+// '/includes/admin/admin-reports.php');
+// require_once(get_template_directory() .
+// '/includes/admin/admin-settings.php');
 
 ?>

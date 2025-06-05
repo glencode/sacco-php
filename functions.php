@@ -272,6 +272,24 @@ function sacco_php_scripts() {	// Base theme style
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+
+	if (is_page('about')) {
+		wp_enqueue_style('page-about-styles', get_template_directory_uri() . '/assets/css/pages/page-about.css', array(), _S_VERSION);
+	}
+
+	if (is_page('downloads')) {
+		wp_enqueue_style('page-downloads-styles', get_template_directory_uri() . '/assets/css/pages/page-downloads.css', array(), _S_VERSION);
+	}
+
+	if (is_singular('product') || is_singular('loan') || is_singular('savings')) { // Or a more specific check if this template part is used elsewhere
+		wp_enqueue_style('faq-section-styles', get_template_directory_uri() . '/assets/css/template-parts/faq-section.css', array(), _S_VERSION);
+	}
+
+	// Assuming TOC is used on single posts/pages where it makes sense
+	if (is_singular() && !is_front_page()) {
+		wp_enqueue_style('table-of-contents-styles', get_template_directory_uri() . '/assets/css/template-parts/table-of-contents.css', array(), _S_VERSION);
+		wp_enqueue_script('table-of-contents-script', get_template_directory_uri() . '/assets/js/template-parts/table-of-contents.js', array('jquery'), _S_VERSION, true);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'sacco_php_scripts' );
 
@@ -4023,3 +4041,131 @@ add_action('wp_ajax_nopriv_check_mpesa_payment_status', 'daystar_check_mpesa_pay
  */
 // ///////////////////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////////////////
+
+if (!function_exists('sacco_php_posted_on')) :
+    function sacco_php_posted_on() {
+        $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+        if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
+            $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+        }
+        $time_string = sprintf( $time_string,
+            esc_attr( get_the_date( DATE_W3C ) ),
+            esc_html( get_the_date() ),
+            esc_attr( get_the_modified_date( DATE_W3C ) ),
+            esc_html( get_the_modified_date() )
+        );
+        echo '<span class="posted-on">' . $time_string . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    }
+endif;
+
+if (!function_exists('sacco_php_posted_by')) :
+    function sacco_php_posted_by() {
+        echo '<span class="byline"> by <span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span></span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    }
+endif;
+
+if (!function_exists('sacco_php_entry_footer')) :
+    function sacco_php_entry_footer() {
+        // Hide category and tag text for pages.
+        if ( 'post' === get_post_type() ) {
+            $categories_list = get_the_category_list( esc_html__( ', ', 'sacco-php' ) );
+            if ( $categories_list ) {
+                printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'sacco-php' ) . '</span>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            }
+            $tags_list = get_the_tag_list( '', esc_html_x( ', ', 'list item separator', 'sacco-php' ) );
+            if ( $tags_list ) {
+                printf( ' <span class="tags-links">' . esc_html__( 'Tagged %1$s', 'sacco-php' ) . '</span>', $tags_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            }
+        }
+        if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
+            echo ' <span class="comments-link">';
+            comments_popup_link( esc_html__( 'Leave a comment', 'sacco-php' ), esc_html__( '1 Comment', 'sacco-php' ), esc_html__( '% Comments', 'sacco-php' ) );
+            echo '</span>';
+        }
+        edit_post_link(
+            sprintf(
+                wp_kses(
+                    /* translators: %s: Name of current post. Only visible to screen readers */
+                    __( 'Edit <span class="screen-reader-text">%s</span>', 'sacco-php' ),
+                    array(
+                        'span' => array(
+                            'class' => array(),
+                        ),
+                    )
+                ),
+                wp_kses_post( get_the_title() )
+            ),
+            '<span class="edit-link">',
+            '</span>'
+        );
+    }
+endif;
+
+// Load custom theme functionalities from the includes directory
+$theme_includes_path = get_template_directory() . '/includes/';
+
+require_once $theme_includes_path . 'session-management.php';
+require_once $theme_includes_path . 'member-registration.php';
+require_once $theme_includes_path . 'member-profile.php';
+require_once $theme_includes_path . 'loan-application.php';
+require_once $theme_includes_path . 'payment-integration.php';
+require_once $theme_includes_path . 'notifications.php';
+require_once $theme_includes_path . 'dashboard-notifications.php';
+
+// Admin functionalities
+if (is_admin()) {
+    require_once $theme_includes_path . 'admin/admin-dashboard.php';
+    // Note: admin-dashboard.php itself requires other admin files which might be missing.
+}
+
+/**
+ * Handle Product Enquiry Form Submission
+ */
+function sacco_handle_product_enquiry() {
+    // Verify nonce
+    if ( ! isset( $_POST['enquiry_nonce'] ) || ! wp_verify_nonce( $_POST['enquiry_nonce'], 'product_enquiry_form_nonce' ) ) {
+        $redirect_url = isset($_POST['product_id']) ? get_permalink( absint($_POST['product_id']) ) : home_url();
+        wp_safe_redirect( add_query_arg(array('form_status' => 'nonce_error', 'modal' => 'productEnquiryModal'), $redirect_url ) );
+        exit;
+    }
+
+    // Sanitize POST data
+    $name = isset( $_POST['enquiry_name'] ) ? sanitize_text_field( $_POST['enquiry_name'] ) : '';
+    $email = isset( $_POST['enquiry_email'] ) ? sanitize_email( $_POST['enquiry_email'] ) : '';
+    $phone = isset( $_POST['enquiry_phone'] ) ? sanitize_text_field( $_POST['enquiry_phone'] ) : '';
+    $message = isset( $_POST['enquiry_message'] ) ? sanitize_textarea_field( $_POST['enquiry_message'] ) : '';
+    $product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
+    $product_title = isset( $_POST['product_title'] ) ? sanitize_text_field( $_POST['product_title'] ) : 'N/A';
+
+    // Basic validation
+    if ( empty( $name ) || empty( $email ) || empty( $message ) || ! is_email( $email ) || empty( $product_id ) ) {
+        $redirect_url = $product_id ? get_permalink( $product_id ) : home_url();
+        wp_safe_redirect( add_query_arg(array('form_status' => 'validation_error', 'modal' => 'productEnquiryModal'), $redirect_url ) );
+        exit;
+    }
+
+    $admin_email = get_option( 'admin_email' );
+    $subject = sprintf( 'Product Enquiry: %s', $product_title );
+
+    $body = "New product enquiry received:\n\n";
+    $body .= "Product: " . esc_html( $product_title ) . " (ID: " . esc_html( $product_id ) . ")\n";
+    $body .= "Name: " . esc_html( $name ) . "\n";
+    $body .= "Email: " . esc_html( $email ) . "\n";
+    if ( ! empty( $phone ) ) {
+        $body .= "Phone: " . esc_html( $phone ) . "\n";
+    }
+    $body .= "Message:\n" . esc_html( $message ) . "\n";
+
+    $headers = array('Content-Type: text/plain; charset=UTF-8');
+
+    $redirect_url = get_permalink( $product_id );
+
+    if ( wp_mail( $admin_email, $subject, $body, $headers ) ) {
+        wp_safe_redirect( add_query_arg(array('form_status' => 'success', 'modal_success' => 'productEnquiryModal'), $redirect_url ) );
+    } else {
+        wp_safe_redirect( add_query_arg(array('form_status' => 'mail_error', 'modal' => 'productEnquiryModal'), $redirect_url ) );
+    }
+    exit;
+}
+add_action('admin_post_nopriv_product_enquiry_submission', 'sacco_handle_product_enquiry');
+add_action('admin_post_product_enquiry_submission', 'sacco_handle_product_enquiry');
