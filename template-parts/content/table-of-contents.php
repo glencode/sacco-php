@@ -41,7 +41,8 @@ if (count($matches) >= 2) :
         global $post;
         $post_copy = clone $post;
         $post_copy->post_content = $content_with_ids;
-        wp_update_post($post_copy);
+        // Problematic: Modifying post content on display. Commented out.
+        // wp_update_post($post_copy);
     }
 ?>
 <div class="toc-container mb-4">
@@ -67,98 +68,4 @@ if (count($matches) >= 2) :
         </ul>
     </div>
 </div>
-
-<style>
-.toc-container {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: var(--border-radius-sm);
-    overflow: hidden;
-}
-
-.toc-header {
-    padding: 1rem;
-    background-color: #f1f3f5;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-}
-
-.toc-header h4 {
-    margin: 0;
-    font-size: 1.1rem;
-}
-
-.toc-content {
-    padding: 1rem;
-    display: none;
-}
-
-.toc-content.active {
-    display: block;
-}
-
-.toc-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.toc-item {
-    padding: 0.3rem 0;
-}
-
-.toc-link {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.toc-link:hover {
-    text-decoration: underline;
-}
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const tocToggle = document.getElementById('toc-toggle');
-    const tocContent = document.getElementById('toc-content');
-    const tocIcon = document.querySelector('.toc-toggle-icon i');
-    
-    if (tocToggle && tocContent) {
-        // Show TOC by default
-        tocContent.classList.add('active');
-        
-        tocToggle.addEventListener('click', function() {
-            tocContent.classList.toggle('active');
-            
-            // Toggle icon
-            if (tocContent.classList.contains('active')) {
-                tocIcon.classList.remove('fa-chevron-right');
-                tocIcon.classList.add('fa-chevron-down');
-            } else {
-                tocIcon.classList.remove('fa-chevron-down');
-                tocIcon.classList.add('fa-chevron-right');
-            }
-        });
-    }
-    
-    // Smooth scroll for TOC links
-    const tocLinks = document.querySelectorAll('.toc-link');
-    tocLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 100,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-});
-</script>
 <?php endif; ?> 

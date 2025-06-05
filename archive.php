@@ -71,7 +71,7 @@ get_header();
 							</div>
 
 							<div class="pagination-container mt-5">
-								<?php sacco_php_pagination(); ?>
+								<?php the_posts_pagination(); ?>
 							</div>
 
 						<?php else : ?>

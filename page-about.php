@@ -1,66 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credit Policy - Daystar Multipurpose Co-operative Society</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh}.parallax-container{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:-1;overflow:hidden}.parallax-layer{position:absolute;top:0;left:0;width:120%;height:120%;background-size:cover;background-position:center;background-repeat:no-repeat}.parallax-layer-1{background:linear-gradient(45deg,#ff6b6b,#4ecdc4,#45b7d1,#f7b731);background-size:800% 800%;animation:gradientShift 20s ease infinite;opacity:.1}.parallax-layer-2{background:radial-gradient(circle at 20% 30%,rgba(120,119,198,.3) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(255,119,198,.3) 0%,transparent 50%),radial-gradient(circle at 40% 80%,rgba(120,198,121,.3) 0%,transparent 50%);animation:floatingOrbs 15s ease-in-out infinite}.parallax-layer-3{background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,.02) 50%,transparent 70%),linear-gradient(-45deg,transparent 30%,rgba(255,255,255,.02) 50%,transparent 70%);background-size:60px 60px;animation:meshMove 25s linear infinite}@keyframes gradientShift{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}@keyframes floatingOrbs{0%,100%{transform:translate(0,0) rotate(0)}33%{transform:translate(30px,-30px) rotate(120deg)}66%{transform:translate(-20px,20px) rotate(240deg)}}@keyframes meshMove{0%{background-position:0 0}100%{background-position:60px 60px}}.glass-card{background:rgba(255,255,255,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.2);border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.2);transition:all .3s ease;position:relative;overflow:hidden}.glass-card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);transition:left .6s ease}.glass-card:hover::before{left:100%}.glass-card:hover{transform:translateY(-5px);box-shadow:0 15px 35px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.3);border-color:rgba(255,255,255,.3)}.glass-header{background:rgba(255,255,255,.15);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid rgba(255,255,255,.25);position:relative;z-index:1000}.display-title{font-weight:800;background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,.8) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:0 4px 8px rgba(0,0,0,.1);margin-bottom:1.5rem}.section-title{font-weight:700;color:rgba(255,255,255,.95);margin-bottom:1rem;position:relative;display:inline-block}.section-title::after{content:'';position:absolute;bottom:-5px;left:0;width:60px;height:3px;background:linear-gradient(45deg,#ff6b6b,#4ecdc4);border-radius:2px}.loan-card{background:rgba(255,255,255,.08);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:2rem;margin-bottom:1.5rem;transition:all .4s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}.loan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(45deg,#ff6b6b,#4ecdc4,#45b7d1,#f7b731);background-size:300% 100%;animation:gradientFlow 3s ease infinite}@keyframes gradientFlow{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}.loan-card:hover{transform:translateY(-8px) scale(1.02);background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);box-shadow:0 20px 40px rgba(0,0,0,.15),0 0 0 1px rgba(255,255,255,.1)}.policy-nav{position:sticky;top:100px;background:rgba(255,255,255,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:15px;padding:1.5rem;border:1px solid rgba(255,255,255,.2);height:fit-content}.nav-item{display:block;color:rgba(255,255,255,.8);text-decoration:none;padding:.75rem 1rem;border-radius:8px;margin:.25rem 0;transition:all .3s ease;font-weight:500;border-left:3px solid transparent}.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.1);color:#fff;border-left-color:#4ecdc4;transform:translateX(5px)}.floating-action{position:fixed;bottom:30px;right:30px;width:60px;height:60px;background:rgba(255,255,255,.15);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;cursor:pointer;transition:all .3s ease;z-index:1000;box-shadow:0 8px 25px rgba(0,0,0,.15)}.floating-action:hover{transform:scale(1.1) rotate(15deg);background:rgba(255,255,255,.2);box-shadow:0 12px 35px rgba(0,0,0,.2)}.content-text{color:rgba(255,255,255,.9);line-height:1.7;font-weight:300}.highlight-text{color:#4ecdc4;font-weight:500}@media (max-width:768px){.policy-nav{position:relative;top:0;margin-bottom:2rem}.loan-card{padding:1.5rem}.floating-action{bottom:20px;right:20px;width:50px;height:50px;font-size:1.2rem}}.fade-in-up{opacity:0;transform:translateY(30px);transition:all .8s ease}.fade-in-up.visible{opacity:1;transform:translateY(0)}::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:rgba(255,255,255,.1)}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.5)}
+<?php get_header(); ?>
 
-        /* Navigation Styles */
-        .glass-nav {background: rgba(255, 255, 255, 0.1) !important; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem 0; transition: all 0.3s ease;}
-        .glass-nav.scrolled {background: rgba(0, 0, 0, 0.9) !important;}
-        .navbar-brand {display: flex; align-items: center; font-weight: 700; font-size: 1.5rem; text-decoration: none; color: white !important;}
-        .navbar-logo {height: 40px; width: auto; margin-right: 12px; border-radius: 8px;}
-        .brand-text {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
-        .navbar-nav .nav-link {color: rgba(255, 255, 255, 0.9) !important; font-weight: 500; margin: 0 8px; padding: 8px 16px !important; border-radius: 8px; transition: all 0.3s ease;}
-        .navbar-nav .nav-link:hover {color: white !important; background: rgba(255, 255, 255, 0.1);}
-        .nav-btn {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 10px 20px !important; border-radius: 25px; font-weight: 600; margin-left: 15px;}
-        .nav-btn:hover {transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);}
-        .glass-dropdown {background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;}
-        .glass-dropdown .dropdown-item {color: rgba(255, 255, 255, 0.9); padding: 10px 20px; transition: all 0.3s ease;}
-        .glass-dropdown .dropdown-item:hover {background: rgba(255, 255, 255, 0.1); color: white;}
-    </style>
-</head>
-<body>
+<main id="primary" class="site-main page-about-content">
     <!-- Parallax Background -->
     <div class="parallax-container">
         <div class="parallax-layer parallax-layer-1"></div>
         <div class="parallax-layer parallax-layer-2"></div>
         <div class="parallax-layer parallax-layer-3"></div>
     </div>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg glass-nav fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="https://via.placeholder.com/40" alt="Logo" class="navbar-logo">
-                <span class="brand-text">Daystar Multi-Purpose Co-op Society Ltd.</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Services</a>
-                        <ul class="dropdown-menu glass-dropdown">
-                            <li><a class="dropdown-item" href="#">Loans</a></li>
-                            <li><a class="dropdown-item" href="#">Savings</a></li>
-                            <li><a class="dropdown-item" href="#">Investments</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                    <li class="nav-item"><a class="btn nav-btn" href="#">Login</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     <!-- Header -->
     <header class="glass-header py-4 mb-5" style="margin-top: 80px;">
@@ -318,35 +264,6 @@
     <div class="floating-action">
         <i class="fas fa-question"></i>
     </div>
+</main><!-- #main -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Scroll animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const fadeElements = document.querySelectorAll('.fade-in-up');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            fadeElements.forEach(element => {
-                observer.observe(element);
-            });
-
-            // Navbar scroll effect
-            const navbar = document.querySelector('.glass-nav');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+<?php get_footer(); ?>

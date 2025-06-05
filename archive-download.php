@@ -49,7 +49,7 @@ get_header();
 				</div>
 
 				<div class="pagination-container mt-5">
-					<?php sacco_php_pagination(); // Assumes sacco_php_pagination() is defined in template-tags.php ?>
+					<?php the_posts_pagination(); ?>
 				</div>
 
 			<?php else : ?>
