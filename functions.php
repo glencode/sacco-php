@@ -1300,10 +1300,10 @@ function sacco_member_portal_template_redirect() {
         
         if ($portal_page == 'dashboard') {
             include(get_template_directory() . '/page-member-dashboard.php');
+            exit;        } elseif ($portal_page == 'profile') {
+            include(get_template_directory() . '/page-member-profile.php');
             exit;
-        } elseif ($portal_page == 'profile') {
-            include(get_template_directory() . '/includes/member-profile.php');
-            exit;        } elseif ($portal_page == 'loans') {
+        } elseif ($portal_page == 'loans') {
             // include(get_template_directory() . '/page-member-loans.php'); // File missing - was not found in theme root or includes folder.
             exit;
         }

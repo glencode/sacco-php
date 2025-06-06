@@ -15,7 +15,7 @@
             <!-- About Column -->
             <div class="col-lg-4 mb-4 mb-lg-0">
                 <div class="footer-logo mb-4">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/daystar-coop-logo-white.png" alt="Daystar Multi-Purpose Co-op Society Ltd." class="img-fluid" style="max-height: 60px;">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/daystar multipurpose logo.png" alt="Daystar Multi-Purpose Co-op Society Ltd." class="img-fluid" style="max-height: 60px;">
                 </div>
                 <p>Daystar Multi-Purpose Co-op Society Ltd. is dedicated to empowering our members through financial solutions that promote economic growth and stability.</p>
                 <ul class="social-links mt-3">

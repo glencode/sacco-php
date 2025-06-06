@@ -98,7 +98,7 @@
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="<?php echo esc_url(home_url('/')); ?>">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/daystar-coop-logo.png" alt="Daystar Multi-Purpose Co-op Society Ltd.">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/daystar multipurpose logo.png" alt="Daystar Multi-Purpose Co-op Society Ltd.">
         </a>
         
         <!-- Mobile Toggle Button -->

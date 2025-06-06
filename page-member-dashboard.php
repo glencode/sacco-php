@@ -25,6 +25,13 @@ if (!in_array('member', $current_user->roles)) {
 $user_id = $current_user->ID;
 $member_number = get_user_meta($user_id, 'member_number', true);
 $member_status = get_user_meta($user_id, 'member_status', true);
+
+// Check if member is active
+if ($member_status !== 'active') {
+    wp_redirect(home_url('/registration-success?status=pending'));
+    exit;
+}
+
 $registration_date = get_user_meta($user_id, 'registration_date', true);
 $initial_contribution = get_user_meta($user_id, 'initial_contribution', true);
 $monthly_contribution = get_user_meta($user_id, 'monthly_contribution', true);
