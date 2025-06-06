@@ -34,56 +34,6 @@ get_header();
         </div>
     </section>
 
-    <!-- Registration Steps Section -->
-    <section class="section bg-light">
-        <div class="container">
-            <div class="text-center mb-5 fade-in">
-                <h2 class="section-title">Registration Process</h2>
-                <p class="section-subtitle">Complete the following steps to become a member</p>
-            </div>
-            
-            <div class="registration-steps fade-in">
-                <div class="step-progress">
-                    <div class="step-progress-bar" data-progress="25"></div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="step-item active">
-                            <div class="step-number">1</div>
-                            <h3 class="step-title">Personal Information</h3>
-                            <p class="step-description">Fill in your basic personal details</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="step-item">
-                            <div class="step-number">2</div>
-                            <h3 class="step-title">Contact Details</h3>
-                            <p class="step-description">Provide your contact information</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="step-item">
-                            <div class="step-number">3</div>
-                            <h3 class="step-title">Account Setup</h3>
-                            <p class="step-description">Choose your account preferences</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="step-item">
-                            <div class="step-number">4</div>
-                            <h3 class="step-title">Verification</h3>
-                            <p class="step-description">Verify your identity and submit</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Registration Form Section -->
     <section class="section">
         <div class="container">
@@ -91,25 +41,28 @@ get_header();
                 <div class="col-lg-8">
                     <div class="auth-card fade-in">
                         <div class="auth-header text-center">
-                            <h2>Step 1: Personal Information</h2>
-                            <p class="text-muted">Please provide your personal details</p>
+                            <h2>Register</h2>
+                            <p class="text-muted">Please provide your details to become a member</p>
                         </div>
                         
                         <div class="auth-body">
-                            <form id="registrationForm" class="auth-form" action="#" method="post">
+                            <?php do_action('daystar_before_registration_form'); ?>
+                            <form id="registrationForm" class="auth-form" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
+                                <input type="hidden" name="action" value="daystar_register_member">
+                                <input type="hidden" name="registration_nonce" value="<?php echo wp_create_nonce('daystar_registration_nonce'); ?>">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                            <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="first_name" name="first_name" required>
                                             <div class="invalid-feedback">Please enter your first name</div>
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                            <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="last_name" name="last_name" required>
                                             <div class="invalid-feedback">Please enter your last name</div>
                                         </div>
                                     </div>
@@ -118,16 +71,16 @@ get_header();
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="idNumber" class="form-label">ID/Passport Number <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="idNumber" name="idNumber" required>
+                                            <label for="id_number" class="form-label">ID/Passport Number <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="id_number" name="id_number" required>
                                             <div class="invalid-feedback">Please enter your ID/Passport number</div>
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="dateOfBirth" class="form-label">Date of Birth <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
+                                            <label for="date_of_birth" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
                                             <div class="invalid-feedback">Please enter your date of birth</div>
                                         </div>
                                     </div>
@@ -151,16 +104,73 @@ get_header();
                                     </div>
                                     <div class="invalid-feedback">Please select your gender</div>
                                 </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="marital_status" class="form-label">Marital Status <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="marital_status" name="marital_status" required>
+                                        <option value="" selected disabled>Select your marital status</option>
+                                        <option value="single">Single</option>
+                                        <option value="married">Married</option>
+                                        <option value="divorced">Divorced</option>
+                                        <option value="widowed">Widowed</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select your marital status</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                                            <input type="email" class="form-control" id="email" name="email" required>
+                                            <div class="invalid-feedback">Please enter your email address</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                                            <div class="invalid-feedback">Please enter your phone number</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="alt_phone" class="form-label">Alternative Phone Number</label>
+                                    <input type="tel" class="form-control" id="alt_phone" name="alt_phone">
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="physical_address" class="form-label">Physical Address <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="physical_address" name="physical_address" rows="3" required></textarea>
+                                    <div class="invalid-feedback">Please enter your physical address</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="city" name="city" required>
+                                            <div class="invalid-feedback">Please enter your city</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="postal_code" class="form-label">Postal Code <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="postal_code" name="postal_code" required>
+                                            <div class="invalid-feedback">Please enter your postal code</div>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="form-group mb-3">
-                                    <label for="occupation" class="form-label">Occupation <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="occupation" name="occupation" required>
+                                    <label for="job_title" class="form-label">Occupation <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="job_title" name="job_title" required>
                                     <div class="invalid-feedback">Please enter your occupation</div>
                                 </div>
                                 
                                 <div class="form-group mb-3">
-                                    <label for="employmentStatus" class="form-label">Employment Status <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="employmentStatus" name="employmentStatus" required>
+                                    <label for="employment_status" class="form-label">Employment Status <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="employment_status" name="employment_status" required>
                                         <option value="" selected disabled>Select your employment status</option>
                                         <option value="employed">Employed</option>
                                         <option value="self-employed">Self-Employed</option>
@@ -171,18 +181,79 @@ get_header();
                                     </select>
                                     <div class="invalid-feedback">Please select your employment status</div>
                                 </div>
+
+                                <div id="employerDetails" style="display: none;">
+                                    <div class="form-group mb-3">
+                                        <label for="employer" class="form-label">Employer <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="employer" name="employer">
+                                        <div class="invalid-feedback">Please enter your employer</div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="employment_duration" class="form-label">Employment Duration (Years) <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="employment_duration" name="employment_duration" min="0">
+                                        <div class="invalid-feedback">Please enter your employment duration</div>
+                                    </div>
+                                </div>
                                 
                                 <div class="form-group mb-3">
-                                    <label for="monthlyIncome" class="form-label">Monthly Income (KSh) <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="monthlyIncome" name="monthlyIncome" required>
-                                        <option value="" selected disabled>Select your income range</option>
-                                        <option value="below-20000">Below 20,000</option>
-                                        <option value="20000-50000">20,000 - 50,000</option>
-                                        <option value="50001-100000">50,001 - 100,000</option>
-                                        <option value="100001-200000">100,001 - 200,000</option>
-                                        <option value="above-200000">Above 200,000</option>
-                                    </select>
-                                    <div class="invalid-feedback">Please select your monthly income range</div>
+                                    <label for="monthly_income" class="form-label">Monthly Income (KSh) <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="monthly_income" name="monthly_income" required min="0" step="any">
+                                    <div class="invalid-feedback">Please enter your monthly income</div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="kra_pin" class="form-label">KRA PIN <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="kra_pin" name="kra_pin" required>
+                                    <div class="invalid-feedback">Please enter your KRA PIN</div>
+                                </div>
+
+                                <hr class="my-4">
+                                <h3 class="mb-3">Account Credentials</h3>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="username" name="username" required>
+                                            <div class="invalid-feedback">Please choose a username</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                                            <input type="password" class="form-control" id="password" name="password" required>
+                                            <div class="invalid-feedback">Please enter a password</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="confirm_password" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                            <div class="invalid-feedback">Please confirm your password</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4">
+                                <h3 class="mb-3">Initial Contributions</h3>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="initial_contribution" class="form-label">Initial Share Contribution (Min KSh 1,000) <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="initial_contribution" name="initial_contribution" required min="1000">
+                                            <div class="invalid-feedback">Minimum initial contribution is KSh 1,000</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="monthly_contribution" class="form-label">Monthly Savings Contribution (Min KSh 500) <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="monthly_contribution" name="monthly_contribution" required min="500">
+                                            <div class="invalid-feedback">Minimum monthly contribution is KSh 500</div>
+                                        </div>
+                                    </div>
                                 </div>
                                 
                                 <div class="form-check mb-4">
@@ -195,7 +266,7 @@ get_header();
                                 
                                 <div class="form-group d-flex justify-content-between">
                                     <a href="<?php echo esc_url(home_url('/')); ?>" class="btn btn-outline-secondary">Cancel</a>
-                                    <button type="submit" class="btn btn-primary">Continue to Step 2</button>
+                                    <button type="submit" class="btn btn-primary">Register</button>
                                 </div>
                             </form>
                         </div>
@@ -373,41 +444,57 @@ get_header();
     </section>
 </main>
 
-<!-- Registration Form Validation Script -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Form validation
-    const registrationForm = document.getElementById('registrationForm');
-    
-    if (registrationForm) {
-        registrationForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            if (!this.checkValidity()) {
-                event.stopPropagation();
-                this.classList.add('was-validated');
-                return;
+    const employmentStatus = document.getElementById('employment_status');
+    const employerDetails = document.getElementById('employerDetails');
+    const employerInput = document.getElementById('employer');
+    const employmentDurationInput = document.getElementById('employment_duration');
+
+    if (employmentStatus) {
+        employmentStatus.addEventListener('change', function() {
+            if (this.value === 'employed' || this.value === 'business-owner') {
+                employerDetails.style.display = 'block';
+                employerInput.required = true;
+                employmentDurationInput.required = true;
+            } else {
+                employerDetails.style.display = 'none';
+                employerInput.required = false;
+                employmentDurationInput.required = false;
             }
-            
-            // Form is valid, show loading state
-            const submitButton = this.querySelector('button[type="submit"]');
-            const originalText = submitButton.innerHTML;
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
-            
-            // Simulate API call (in a real implementation, this would be an actual API call)
-            setTimeout(function() {
-                // For demo purposes, redirect to step 2
-                window.location.href = '<?php echo esc_url(home_url('register-step-2')); ?>';
-            }, 2000);
         });
     }
-    
-    // Password strength meter (if needed in future steps)
+
+    // Basic form validation (can be enhanced)
+    const registrationForm = document.getElementById('registrationForm');
+    if (registrationForm) {
+        registrationForm.addEventListener('submit', function(event) {
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                // Highlight errors or provide messages
+                // For now, relying on browser's default validation UI
+            }
+            this.classList.add('was-validated'); // Bootstrap validation styling
+
+            // Password confirmation validation
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            if (password !== confirmPassword) {
+                event.preventDefault();
+                event.stopPropagation();
+                document.getElementById('confirm_password').setCustomValidity("Passwords do not match.");
+                // Add visual feedback for password mismatch
+            } else {
+                document.getElementById('confirm_password').setCustomValidity("");
+            }
+        });
+    }
+     // Password strength meter (if needed in future steps)
     const passwordInput = document.getElementById('password');
-    const passwordStrength = document.getElementById('passwordStrength');
+    // const passwordStrength = document.getElementById('passwordStrength'); // No password strength element in this form yet
     
-    if (passwordInput && passwordStrength) {
+    if (passwordInput) { // Removed passwordStrength check as it's not in the form
         passwordInput.addEventListener('input', function() {
             const password = this.value;
             let strength = 0;
@@ -418,6 +505,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (password.match(/[0-9]+/)) strength += 1;
             if (password.match(/[^a-zA-Z0-9]+/)) strength += 1;
             
+            // Example: Update a non-existent strength indicator or log to console
+            // console.log("Password strength: " + strength);
+            // If you add a password strength indicator element, uncomment and adapt the switch statement below
+            /*
             switch (strength) {
                 case 0:
                 case 1:
@@ -435,6 +526,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     passwordStrength.textContent = 'Strong';
                     break;
             }
+            */
         });
     }
 });
