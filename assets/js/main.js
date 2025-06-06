@@ -181,21 +181,21 @@
         
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
-            
-            // Add/remove scrolled class
-            if (currentScroll > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            // Hide/show header on scroll
-            if (currentScroll > lastScroll && currentScroll > 500) {
-                header.classList.add('header-hidden');
-            } else {
-                header.classList.remove('header-hidden');
-            }
-            
+            if (header) { // Ensure header exists
+                // Add/remove scrolled class
+                if (currentScroll > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+
+                // Hide/show header on scroll
+                if (currentScroll > lastScroll && currentScroll > 500) {
+                    header.classList.add('header-hidden');
+                } else {
+                    header.classList.remove('header-hidden');
+                }
+            } // End if (header)
             lastScroll = currentScroll;
         });
     });
@@ -256,11 +256,12 @@
     function handleScroll(scrollPos) {
         // Handle scroll-based animations efficiently
         const header = document.querySelector('nav.navbar.sticky-top'); // This header is locally scoped
-        // Check this local header - Removed based on instructions assuming selector is now correct
-        if (scrollPos > 100) {
-            header.classList.add('fixed-header');
-        } else {
-            header.classList.remove('fixed-header');
+        if (header) { // Check this local header
+            if (scrollPos > 100) {
+                header.classList.add('fixed-header');
+            } else {
+                header.classList.remove('fixed-header');
+            }
         }
     }
 
@@ -426,21 +427,23 @@
         
         // Handle scroll events
         window.addEventListener('scroll', () => {
-            // Removed if(header) check
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            if (header) { // Ensure header exists
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
             }
         });
 
         // Handle mobile menu toggle
-        // Assuming menuToggle will be found with the new selector
-        menuToggle.addEventListener('click', () => {
-            if (mainNav) { // Keep inner check for mainNav as it's a separate element
-                mainNav.classList.toggle('toggled');
-            }
-        });
+        if (menuToggle) { // Ensure menuToggle exists
+            menuToggle.addEventListener('click', () => {
+                if (mainNav) { // Keep inner check for mainNav as it's a separate element
+                    mainNav.classList.toggle('toggled');
+                }
+            });
+        }
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
