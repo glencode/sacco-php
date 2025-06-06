@@ -206,14 +206,14 @@ function sacco_php_scripts() {	// Base theme style
 	wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', array(), '5.15.4', 'all');
 	
 	// Theme base styles
-	wp_enqueue_style('sacco-php-base', get_template_directory_uri() . '/assets/css/style.css', array('bootstrap'), _S_VERSION . '.' . time(), 'all');
+	// wp_enqueue_style('sacco-php-base', get_template_directory_uri() . '/assets/css/style.css', array('bootstrap'), _S_VERSION . '.' . time(), 'all');
 	
 	// Modern effects and enhancements (these should override other styles)
-	wp_enqueue_style('sacco-php-modern-effects', get_template_directory_uri() . '/css/modern-effects.css', array('sacco-php-base'), _S_VERSION . '.' . time(), 'all');
+	// wp_enqueue_style('sacco-php-modern-effects', get_template_directory_uri() . '/css/modern-effects.css', array('sacco-php-base'), _S_VERSION . '.' . time(), 'all');
 	wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css', array(), '5.1.3', 'all');
 	
 	// Enqueue Glassmorphism CSS
-	wp_enqueue_style('sacco-glassmorphism', get_template_directory_uri() . '/assets/css/glassmorphism.css', array(), _S_VERSION);
+	// wp_enqueue_style('sacco-glassmorphism', get_template_directory_uri() . '/assets/css/glassmorphism.css', array(), _S_VERSION);
 	
 	// Enqueue Google Fonts
 	wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap', array(), null);
@@ -225,10 +225,10 @@ function sacco_php_scripts() {	// Base theme style
 	wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css', array(), '8.0.0', 'all');
 	
 	// Enqueue Custom CSS
-	wp_enqueue_style('sacco-php-custom', get_template_directory_uri() . '/assets/css/style.css', array('bootstrap'), _S_VERSION, 'all');
+	// wp_enqueue_style('sacco-php-custom', get_template_directory_uri() . '/assets/css/style.css', array('bootstrap'), _S_VERSION, 'all');
 	
 	// Enqueue modern effects stylesheet
-    wp_enqueue_style('sacco-php-modern-effects', get_template_directory_uri() . '/assets/css/modern-effects.css', array(), _S_VERSION);
+    // wp_enqueue_style('sacco-php-modern-effects', get_template_directory_uri() . '/assets/css/modern-effects.css', array(), _S_VERSION);
 	
 	// Enqueue jQuery and Bootstrap first
 	wp_enqueue_script('jquery');
@@ -1945,7 +1945,7 @@ function daystar_enqueue_custom_styles_and_scripts() {
     // Enqueue custom CSS with version parameter for cache busting
     wp_enqueue_style(
         'daystar-custom-styles',
-        get_template_directory_uri() . '/assets/css/daystar-styles.css',
+        get_template_directory_uri() . '/assets/css/modern-main.css',
         array(),
         time() // Use current timestamp to force cache refresh
     );

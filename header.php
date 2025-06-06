@@ -28,8 +28,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/main.css">
-    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/daystar-styles.css">
     
     <?php wp_head(); ?>
     
