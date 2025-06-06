@@ -183,17 +183,21 @@
             const currentScroll = window.pageYOffset;
             
             // Add/remove scrolled class
-            if (currentScroll > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            if (header) {
+                if (currentScroll > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
             }
             
             // Hide/show header on scroll
-            if (currentScroll > lastScroll && currentScroll > 500) {
-                header.classList.add('header-hidden');
-            } else {
-                header.classList.remove('header-hidden');
+            if (header) {
+                if (currentScroll > lastScroll && currentScroll > 500) {
+                    header.classList.add('header-hidden');
+                } else {
+                    header.classList.remove('header-hidden');
+                }
             }
             
             lastScroll = currentScroll;
@@ -255,8 +259,8 @@
 
     function handleScroll(scrollPos) {
         // Handle scroll-based animations efficiently
-        const header = document.querySelector('.site-header');
-        if (header) {
+        const header = document.querySelector('.site-header'); // This header is locally scoped
+        if (header) { // Check this local header
             if (scrollPos > 100) {
                 header.classList.add('fixed-header');
             } else {
@@ -427,23 +431,29 @@
         
         // Handle scroll events
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            if (header) {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
             }
         });
 
         // Handle mobile menu toggle
-        menuToggle?.addEventListener('click', () => {
-            mainNav.classList.toggle('toggled');
-        });
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                if (mainNav) {
+                    mainNav.classList.toggle('toggled');
+                }
+            });
+        }
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (mainNav.classList.contains('toggled') && 
+            if (mainNav && mainNav.classList.contains('toggled') &&
                 !e.target.closest('.main-navigation') && 
-                !e.target.closest('.menu-toggle')) {
+                (!menuToggle || !menuToggle.contains(e.target))) {
                 mainNav.classList.remove('toggled');
             }
         });
