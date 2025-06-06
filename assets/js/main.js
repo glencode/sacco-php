@@ -176,7 +176,7 @@
         });
 
         // Navbar scroll effect
-        const header = document.querySelector('.site-header');
+        const header = document.querySelector('nav.navbar.sticky-top');
         let lastScroll = 0;
         
         window.addEventListener('scroll', () => {
@@ -255,13 +255,12 @@
 
     function handleScroll(scrollPos) {
         // Handle scroll-based animations efficiently
-        const header = document.querySelector('.site-header');
-        if (header) {
-            if (scrollPos > 100) {
-                header.classList.add('fixed-header');
-            } else {
-                header.classList.remove('fixed-header');
-            }
+        const header = document.querySelector('nav.navbar.sticky-top'); // This header is locally scoped
+        // Check this local header - Removed based on instructions assuming selector is now correct
+        if (scrollPos > 100) {
+            header.classList.add('fixed-header');
+        } else {
+            header.classList.remove('fixed-header');
         }
     }
 
@@ -421,12 +420,13 @@
 
     // Scroll behavior and mobile menu functionality
     document.addEventListener('DOMContentLoaded', () => {
-        const header = document.querySelector('.site-header');
-        const menuToggle = document.querySelector('.menu-toggle');
-        const mainNav = document.querySelector('.main-navigation');
+        const header = document.querySelector('nav.navbar.sticky-top');
+        const menuToggle = document.querySelector('.navbar-toggler');
+        const mainNav = document.querySelector('#navbarMain');
         
         // Handle scroll events
         window.addEventListener('scroll', () => {
+            // Removed if(header) check
             if (window.scrollY > 50) {
                 header.classList.add('scrolled');
             } else {
@@ -435,15 +435,18 @@
         });
 
         // Handle mobile menu toggle
-        menuToggle?.addEventListener('click', () => {
-            mainNav.classList.toggle('toggled');
+        // Assuming menuToggle will be found with the new selector
+        menuToggle.addEventListener('click', () => {
+            if (mainNav) { // Keep inner check for mainNav as it's a separate element
+                mainNav.classList.toggle('toggled');
+            }
         });
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (mainNav.classList.contains('toggled') && 
-                !e.target.closest('.main-navigation') && 
-                !e.target.closest('.menu-toggle')) {
+            if (mainNav && mainNav.classList.contains('toggled') &&
+                !e.target.closest('#navbarMain') && // Adjusted selector
+                (!menuToggle || !menuToggle.contains(e.target))) { // Keep menuToggle check here as it's part of the logic
                 mainNav.classList.remove('toggled');
             }
         });
