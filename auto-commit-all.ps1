@@ -1,4 +1,4 @@
-$repoPath = "C:\Users\sdyac\Local Sites\sacco-php\app\public\wp-content\themes\sacco-php"  # Current project root
+$repoPath = "C:\Users\sdyac\Local Sites\sacco-php\app\public\wp-content\themes\daystar-website-fixes"  # Current project root
 $branchName = "main"  # Or whatever branch you’re working on
 
 Set-Location $repoPath

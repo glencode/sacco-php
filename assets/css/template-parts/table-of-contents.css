@@ -1,0 +1,85 @@
+/* Table of Contents Styles */
+.table-of-contents {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--glass-border-color);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--box-shadow);
+}
+
+.toc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.toc-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dark-neutral);
+}
+
+.toc-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.toc-toggle:hover {
+    transform: scale(1.1);
+}
+
+.toc-content {
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.toc-content.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toc-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.toc-list ol {
+    list-style: none;
+    padding-left: 1.5rem;
+}
+
+.toc-link {
+    display: inline-block;
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.25rem 0;
+    transition: color 0.3s ease;
+}
+
+.toc-link:hover {
+    color: var(--primary-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-of-contents {
+        padding: 1rem;
+    }
+    
+    .toc-title {
+        font-size: 1.1rem;
+    }
+}

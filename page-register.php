@@ -9,7 +9,15 @@
  */
 
 get_header();
+
+// Add necessary JavaScript variables
 ?>
+<script type="text/javascript">
+    var ajaxurl = '<?php echo esc_url(admin_url('admin-ajax.php')); ?>';
+    var homeUrl = '<?php echo esc_url(home_url()); ?>';
+</script>
+
+<?php wp_enqueue_script('jquery'); ?>
 
 <main id="primary" class="site-main register-page">
     <!-- Page Header -->
@@ -46,10 +54,13 @@ get_header();
                         </div>
                         
                         <div class="auth-body">
-                            <?php do_action('daystar_before_registration_form'); ?>
-                            <form id="registrationForm" class="auth-form" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
-                                <input type="hidden" name="action" value="daystar_register_member">
-                                <input type="hidden" name="registration_nonce" value="<?php echo wp_create_nonce('daystar_registration_nonce'); ?>">
+                            <?php do_action('daystar_before_registration_form'); ?>                            <form id="registrationForm" class="auth-form needs-validation" novalidate>
+                                <?php wp_nonce_field('daystar_register_member_nonce', 'security'); ?>
+                                <input type="hidden" name="action" value="daystar_register_member">                                <!-- Display form validation errors -->
+                                <div class="alert alert-danger d-none" id="registrationErrors"></div>
+                                <!-- Display success message -->
+                                <div class="alert alert-success d-none" id="registrationSuccess"></div>
+                                
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
@@ -256,17 +267,130 @@ get_header();
                                     </div>
                                 </div>
                                 
-                                <div class="form-check mb-4">
-                                    <input class="form-check-input" type="checkbox" id="termsAgreement" name="termsAgreement" required>
-                                    <label class="form-check-label" for="termsAgreement">
-                                        I agree to the <a href="<?php echo esc_url(home_url('terms-and-conditions')); ?>" target="_blank">Terms and Conditions</a> and <a href="<?php echo esc_url(home_url('privacy-policy')); ?>" target="_blank">Privacy Policy</a>
-                                    </label>
-                                    <div class="invalid-feedback">You must agree to the terms and conditions</div>
+                                <hr class="my-4">
+                                <h3 class="mb-3">Bank Information</h3>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="bank_name" class="form-label">Bank Name <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="bank_name" name="bank_name" required>
+                                        <option value="" selected disabled>Select your bank</option>
+                                        <option value="equity">Equity Bank</option>
+                                        <option value="kcb">KCB Bank</option>
+                                        <option value="cooperative">Co-operative Bank</option>
+                                        <option value="stanchart">Standard Chartered</option>
+                                        <option value="absa">ABSA Bank</option>
+                                        <option value="dtb">Diamond Trust Bank</option>
+                                        <option value="ncba">NCBA Bank</option>
+                                        <option value="family">Family Bank</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select your bank</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="bank_branch" class="form-label">Branch Name <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="bank_branch" name="bank_branch" required>
+                                            <div class="invalid-feedback">Please enter your bank branch</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="account_number" class="form-label">Account Number <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="account_number" name="account_number" required>
+                                            <div class="invalid-feedback">Please enter your account number</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4">
+                                <h3 class="mb-3">Required Documents</h3>
+                                <p class="text-muted mb-3">Please scan and upload clear copies of the following documents:</p>
+
+                                <div class="document-upload-section">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label for="id_doc" class="form-label">National ID/Passport <span class="text-danger">*</span></label>
+                                                <input type="file" class="form-control" id="id_doc" name="id_doc" accept=".pdf,.jpg,.jpeg,.png" required>
+                                                <div class="form-text">Maximum file size: 5MB</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label for="photo" class="form-label">Passport Photo <span class="text-danger">*</span></label>
+                                                <input type="file" class="form-control" id="photo" name="photo" accept=".jpg,.jpeg,.png" required>
+                                                <div class="form-text">Recent passport-sized photograph</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label for="proof_of_residence" class="form-label">Proof of Residence <span class="text-danger">*</span></label>
+                                                <input type="file" class="form-control" id="proof_of_residence" name="proof_of_residence" accept=".pdf,.jpg,.jpeg,.png" required>
+                                                <div class="form-text">Utility bill or lease agreement</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label for="income_proof" class="form-label">Proof of Income <span class="text-danger">*</span></label>
+                                                <input type="file" class="form-control" id="income_proof" name="income_proof" accept=".pdf,.jpg,.jpeg,.png" required>
+                                                <div class="form-text">Latest payslip or 3 months bank statements</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="kra_cert" class="form-label">KRA PIN Certificate <span class="text-danger">*</span></label>
+                                        <input type="file" class="form-control" id="kra_cert" name="kra_cert" accept=".pdf,.jpg,.jpeg,.png" required>
+                                        <div class="form-text">PDF or image format</div>
+                                    </div>
+                                </div>
+
+                                <div class="document-requirements alert alert-info mt-3">
+                                    <h4 class="alert-heading h5">Document Requirements:</h4>
+                                    <ul class="mb-0">
+                                        <li>All documents must be clear and legible</li>
+                                        <li>File size should not exceed 5MB per document</li>
+                                        <li>Accepted formats: PDF, JPG, JPEG, PNG</li>
+                                        <li>Original documents must be presented at a branch for verification</li>
+                                    </ul>
+                                </div>
+
+                                <hr class="my-4">
+                                <div class="form-checks mb-4">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="declaration" name="declaration" required>
+                                        <label class="form-check-label" for="declaration">
+                                            I declare that all information provided is true and accurate
+                                        </label>
+                                        <div class="invalid-feedback">You must confirm this declaration</div>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="consent" name="consent" required>
+                                        <label class="form-check-label" for="consent">
+                                            I consent to credit reference bureau checks
+                                        </label>
+                                        <div class="invalid-feedback">Consent is required for registration</div>
+                                    </div>                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="terms_agreement" name="terms_agreement" required>
+                                        <label class="form-check-label" for="terms_agreement">
+                                            I agree to the <a href="<?php echo esc_url(home_url('terms-and-conditions')); ?>" target="_blank">Terms and Conditions</a> and <a href="<?php echo esc_url(home_url('privacy-policy')); ?>" target="_blank">Privacy Policy</a>
+                                        </label>
+                                        <div class="invalid-feedback">You must agree to the terms and conditions</div>
+                                    </div>
                                 </div>
                                 
                                 <div class="form-group d-flex justify-content-between">
                                     <a href="<?php echo esc_url(home_url('/')); ?>" class="btn btn-outline-secondary">Cancel</a>
-                                    <button type="submit" class="btn btn-primary">Register</button>
+                                    <button type="submit" class="btn btn-primary" id="registerSubmit">
+                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                        Register
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -451,6 +575,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const employerInput = document.getElementById('employer');
     const employmentDurationInput = document.getElementById('employment_duration');
 
+    // Handle employment status conditional fields
     if (employmentStatus) {
         employmentStatus.addEventListener('change', function() {
             if (this.value === 'employed' || this.value === 'business-owner') {
@@ -465,68 +590,70 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Basic form validation (can be enhanced)
-    const registrationForm = document.getElementById('registrationForm');
-    if (registrationForm) {
-        registrationForm.addEventListener('submit', function(event) {
-            if (!this.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-                // Highlight errors or provide messages
-                // For now, relying on browser's default validation UI
-            }
-            this.classList.add('was-validated'); // Bootstrap validation styling
-
-            // Password confirmation validation
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm_password').value;
-            if (password !== confirmPassword) {
-                event.preventDefault();
-                event.stopPropagation();
-                document.getElementById('confirm_password').setCustomValidity("Passwords do not match.");
-                // Add visual feedback for password mismatch
-            } else {
-                document.getElementById('confirm_password').setCustomValidity("");
-            }
-        });
-    }
-     // Password strength meter (if needed in future steps)
-    const passwordInput = document.getElementById('password');
-    // const passwordStrength = document.getElementById('passwordStrength'); // No password strength element in this form yet
+    // Form submission handling
+    const form = document.getElementById('registrationForm');
+    const submitBtn = document.getElementById('registerSubmit');
+    const errorsDiv = document.getElementById('registrationErrors');
+    const successDiv = document.getElementById('registrationSuccess');
     
-    if (passwordInput) { // Removed passwordStrength check as it's not in the form
-        passwordInput.addEventListener('input', function() {
-            const password = this.value;
-            let strength = 0;
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            if (password.length >= 8) strength += 1;
-            if (password.match(/[a-z]+/)) strength += 1;
-            if (password.match(/[A-Z]+/)) strength += 1;
-            if (password.match(/[0-9]+/)) strength += 1;
-            if (password.match(/[^a-zA-Z0-9]+/)) strength += 1;
+            // Reset error state
+            errorsDiv.classList.add('d-none');
+            successDiv.classList.add('d-none');
+            errorsDiv.innerHTML = '';
             
-            // Example: Update a non-existent strength indicator or log to console
-            // console.log("Password strength: " + strength);
-            // If you add a password strength indicator element, uncomment and adapt the switch statement below
-            /*
-            switch (strength) {
-                case 0:
-                case 1:
-                    passwordStrength.className = 'password-strength weak';
-                    passwordStrength.textContent = 'Weak';
-                    break;
-                case 2:
-                case 3:
-                    passwordStrength.className = 'password-strength medium';
-                    passwordStrength.textContent = 'Medium';
-                    break;
-                case 4:
-                case 5:
-                    passwordStrength.className = 'password-strength strong';
-                    passwordStrength.textContent = 'Strong';
-                    break;
-            }
-            */
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+            
+            // Create FormData
+            const formData = new FormData(form);
+            
+            // Log form data for debugging (remove in production)
+            console.log('Sending form data:', Object.fromEntries(formData));
+            
+            // Send AJAX request
+            jQuery.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log('Registration response:', response);
+                    
+                    if (response.success) {
+                        successDiv.classList.remove('d-none');
+                        successDiv.innerHTML = 'Registration successful! Redirecting...';
+                        
+                        // Hide form on success
+                        form.style.display = 'none';
+                        
+                        setTimeout(function() {
+                            window.location.href = `${homeUrl}/registration-success/?member=${encodeURIComponent(response.data.member_number)}`;
+                        }, 1500);
+                    } else {
+                        errorsDiv.classList.remove('d-none');
+                        errorsDiv.innerHTML = response.data?.message || 'Registration failed. Please try again.';
+                        
+                        // Reset submit button
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Register';
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Registration error:', {xhr, status, error});
+                    errorsDiv.classList.remove('d-none');
+                    errorsDiv.innerHTML = 'An error occurred. Please try again.';
+                    
+                    // Reset submit button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Register';
+                }
+            });
         });
     }
 });

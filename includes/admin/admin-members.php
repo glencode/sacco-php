@@ -59,206 +59,205 @@ function daystar_render_admin_members_page() {
     }
     
     // Get current filter/status
-    $status = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'all';
-    
-    // Get members based on status
-    $members = daystar_get_members_by_status($status);
-    
-    // Display notices
-    if (isset($_GET['approved'])) {
-        echo '<div class="notice notice-success is-dismissible"><p>Member approved successfully.</p></div>';
-    } elseif (isset($_GET['rejected'])) {
-        echo '<div class="notice notice-warning is-dismissible"><p>Member rejected.</p></div>';
-    } elseif (isset($_GET['updated'])) {
-        echo '<div class="notice notice-success is-dismissible"><p>Member updated successfully.</p></div>';
-    }
+    $status = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'active';
     
     ?>
     <div class="wrap">
-        <h1 class="wp-heading-inline"><?php echo esc_html(get_admin_page_title()); ?></h1>
-        <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&action=add'); ?>" class="page-title-action">Add New</a>
+        <h1 class="wp-heading-inline">Member Management</h1>
         <hr class="wp-header-end">
         
-        <ul class="subsubsub">
-            <li>
-                <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&status=all'); ?>" <?php echo $status == 'all' ? 'class="current"' : ''; ?>>
-                    All <span class="count">(<?php echo daystar_get_member_count('all'); ?>)</span>
-                </a> |
-            </li>
-            <li>
-                <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&status=active'); ?>" <?php echo $status == 'active' ? 'class="current"' : ''; ?>>
-                    Active <span class="count">(<?php echo daystar_get_member_count('active'); ?>)</span>
-                </a> |
-            </li>
-            <li>
-                <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&status=pending'); ?>" <?php echo $status == 'pending' ? 'class="current"' : ''; ?>>
-                    Pending <span class="count">(<?php echo daystar_get_member_count('pending'); ?>)</span>
-                </a> |
-            </li>
-            <li>
-                <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&status=inactive'); ?>" <?php echo $status == 'inactive' ? 'class="current"' : ''; ?>>
-                    Inactive <span class="count">(<?php echo daystar_get_member_count('inactive'); ?>)</span>
-                </a>
-            </li>
-        </ul>
+        <?php
+        // Show status messages
+        if (isset($_GET['approved'])) {
+            echo '<div class="notice notice-success"><p>Member has been approved successfully.</p></div>';
+        }
+        if (isset($_GET['rejected'])) {
+            echo '<div class="notice notice-warning"><p>Member application has been rejected.</p></div>';
+        }
+        if (isset($_GET['updated'])) {
+            echo '<div class="notice notice-success"><p>Member details updated successfully.</p></div>';
+        }
+        ?>
         
-        <form id="members-filter" method="get">
-            <input type="hidden" name="page" value="daystar-admin-members">
-            
-            <div class="tablenav top">
-                <div class="alignleft actions bulkactions">
-                    <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
-                    <select name="action" id="bulk-action-selector-top">
-                        <option value="-1">Bulk Actions</option>
-                        <option value="approve">Approve</option>
-                        <option value="deactivate">Deactivate</option>
-                        <option value="activate">Activate</option>
-                    </select>
-                    <input type="submit" id="doaction" class="button action" value="Apply">
-                </div>
-                
-                <div class="alignleft actions">
-                    <label for="filter-by-date" class="screen-reader-text">Filter by date</label>
-                    <select name="filter_date" id="filter-by-date">
-                        <option value="">All dates</option>
-                        <option value="today">Today</option>
-                        <option value="this_week">This week</option>
-                        <option value="this_month">This month</option>
-                    </select>
-                    
-                    <input type="submit" name="filter_action" id="post-query-submit" class="button" value="Filter">
-                </div>
-                
-                <div class="tablenav-pages">
-                    <span class="displaying-num"><?php echo count($members); ?> items</span>
-                    <!-- Pagination would go here in a real implementation -->
-                </div>
+        <nav class="nav-tab-wrapper wp-clearfix">
+            <a href="<?php echo admin_url('admin.php?page=daystar-admin-members'); ?>" 
+               class="nav-tab <?php echo $status === 'active' ? 'nav-tab-active' : ''; ?>">
+                Active Members
+            </a>
+            <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&status=pending'); ?>" 
+               class="nav-tab <?php echo $status === 'pending' ? 'nav-tab-active' : ''; ?>">
+                Pending Approvals
+                <?php 
+                $pending_count = daystar_get_members_count('pending');
+                if ($pending_count > 0) {
+                    echo '<span class="awaiting-mod count-' . $pending_count . '"><span class="pending-count">' . $pending_count . '</span></span>';
+                }
+                ?>
+            </a>
+            <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&status=suspended'); ?>" 
+               class="nav-tab <?php echo $status === 'suspended' ? 'nav-tab-active' : ''; ?>">
+                Suspended Members
+            </a>
+        </nav>
+        
+        <div class="tablenav top">
+            <div class="alignleft actions">
+                <select name="filter_action" id="filter-by-date">
+                    <option value="">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="this-week">This Week</option>
+                    <option value="this-month">This Month</option>
+                </select>
+                <input type="submit" name="filter_action" id="filter-submit" class="button" value="Filter">
             </div>
-            
-            <table class="wp-list-table widefat fixed striped">
-                <thead>
-                    <tr>
-                        <td id="cb" class="manage-column column-cb check-column">
-                            <input id="cb-select-all-1" type="checkbox">
-                        </td>
-                        <th scope="col" class="manage-column column-member_number">Member Number</th>
-                        <th scope="col" class="manage-column column-name">Name</th>
-                        <th scope="col" class="manage-column column-email">Email</th>
-                        <th scope="col" class="manage-column column-phone">Phone</th>
-                        <th scope="col" class="manage-column column-contributions">Contributions</th>
-                        <th scope="col" class="manage-column column-join_date">Join Date</th>
-                        <th scope="col" class="manage-column column-status">Status</th>
-                    </tr>
-                </thead>
-                
-                <tbody id="the-list">
-                    <?php if (!empty($members)) : ?>
-                        <?php foreach ($members as $member) : ?>
-                            <tr>
-                                <th scope="row" class="check-column">
-                                    <input type="checkbox" name="members[]" value="<?php echo esc_attr($member['id']); ?>">
-                                </th>
-                                <td class="member_number column-member_number">
-                                    <strong>
-                                        <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&action=view&id=' . $member['id']); ?>">
-                                            <?php echo esc_html($member['member_number']); ?>
-                                        </a>
-                                    </strong>
-                                    <div class="row-actions">
-                                        <span class="view">
-                                            <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&action=view&id=' . $member['id']); ?>">View</a> |
-                                        </span>
-                                        <span class="edit">
-                                            <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&action=edit&id=' . $member['id']); ?>">Edit</a>
-                                            <?php if ($member['status'] == 'pending') : ?>
-                                                |
-                                            <?php endif; ?>
-                                        </span>
-                                        <?php if ($member['status'] == 'pending') : ?>
-                                            <span class="approve">
-                                                <a href="<?php echo wp_nonce_url(admin_url('admin.php?page=daystar-admin-members&action=approve&id=' . $member['id']), 'approve_member_' . $member['id']); ?>">Approve</a> |
-                                            </span>
-                                            <span class="reject">
-                                                <a href="<?php echo wp_nonce_url(admin_url('admin.php?page=daystar-admin-members&action=reject&id=' . $member['id']), 'reject_member_' . $member['id']); ?>">Reject</a>
-                                            </span>
-                                        <?php endif; ?>
-                                    </div>
-                                </td>
-                                <td class="name column-name"><?php echo esc_html($member['name']); ?></td>
-                                <td class="email column-email"><?php echo esc_html($member['email']); ?></td>
-                                <td class="phone column-phone"><?php echo esc_html($member['phone']); ?></td>
-                                <td class="contributions column-contributions">KES <?php echo number_format($member['contributions'], 2); ?></td>
-                                <td class="join_date column-join_date"><?php echo date('M j, Y', strtotime($member['join_date'])); ?></td>
-                                <td class="status column-status">
-                                    <span class="member-status status-<?php echo esc_attr($member['status']); ?>">
-                                        <?php echo ucfirst(esc_html($member['status'])); ?>
-                                    </span>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="8">No members found.</td>
-                        </tr>
+            <div class="tablenav-pages">
+                <!-- Pagination will go here -->
+            </div>
+        </div>
+        
+        <table class="wp-list-table widefat fixed striped table-view-list members">
+            <thead>
+                <tr>
+                    <th scope="col" class="manage-column column-member-number">Member Number</th>
+                    <th scope="col" class="manage-column column-name">Name</th>
+                    <th scope="col" class="manage-column column-email">Email</th>
+                    <th scope="col" class="manage-column column-phone">Phone</th>
+                    <th scope="col" class="manage-column column-registration-date">Registration Date</th>
+                    <?php if ($status === 'pending'): ?>
+                        <th scope="col" class="manage-column column-documents">Documents</th>
+                        <th scope="col" class="manage-column column-contribution">Initial Contribution</th>
+                    <?php else: ?>
+                        <th scope="col" class="manage-column column-balance">Account Balance</th>
+                        <th scope="col" class="manage-column column-last-contribution">Last Contribution</th>
                     <?php endif; ?>
-                </tbody>
+                    <th scope="col" class="manage-column column-actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="the-list">
+                <?php
+                // Get members based on status
+                $members = daystar_get_members_by_status($status);
                 
-                <tfoot>
+                if (!empty($members)) {
+                    foreach ($members as $member) {
+                        ?>
+                        <tr>
+                            <td class="column-member-number">
+                                <?php echo esc_html($member['member_number']); ?>
+                            </td>
+                            <td class="column-name">
+                                <strong>
+                                    <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&action=view&id=' . $member['ID']); ?>">
+                                        <?php echo esc_html($member['name']); ?>
+                                    </a>
+                                </strong>
+                            </td>
+                            <td class="column-email">
+                                <a href="mailto:<?php echo esc_attr($member['email']); ?>">
+                                    <?php echo esc_html($member['email']); ?>
+                                </a>
+                            </td>
+                            <td class="column-phone">
+                                <?php echo esc_html($member['phone']); ?>
+                            </td>
+                            <td class="column-registration-date">
+                                <?php echo esc_html(date('M j, Y', strtotime($member['registration_date']))); ?>
+                            </td>
+                            <?php if ($status === 'pending'): ?>
+                                <td class="column-documents">
+                                    <?php 
+                                    $doc_count = daystar_get_member_document_count($member['ID']);
+                                    echo sprintf(
+                                        '<span class="document-count">%d/5</span>',
+                                        $doc_count
+                                    ); 
+                                    if ($doc_count > 0) {
+                                        echo ' <a href="#" class="view-documents">View</a>';
+                                    }
+                                    ?>
+                                </td>
+                                <td class="column-contribution">
+                                    <?php 
+                                    echo 'KSh ' . number_format($member['initial_contribution'], 2);
+                                    if ($member['contribution_status'] === 'paid') {
+                                        echo ' <span class="status-paid">Paid</span>';
+                                    }
+                                    ?>
+                                </td>
+                            <?php else: ?>
+                                <td class="column-balance">
+                                    KSh <?php echo number_format($member['account_balance'], 2); ?>
+                                </td>
+                                <td class="column-last-contribution">
+                                    <?php 
+                                    if (!empty($member['last_contribution_date'])) {
+                                        echo esc_html(date('M j, Y', strtotime($member['last_contribution_date'])));
+                                    } else {
+                                        echo '—';
+                                    }
+                                    ?>
+                                </td>
+                            <?php endif; ?>
+                            <td class="column-actions">
+                                <div class="row-actions">
+                                    <span class="view">
+                                        <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&action=view&id=' . $member['ID']); ?>">
+                                            View
+                                        </a>
+                                        |
+                                    </span>
+                                    <span class="edit">
+                                        <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&action=edit&id=' . $member['ID']); ?>">
+                                            Edit
+                                        </a>
+                                        <?php if ($status === 'pending'): ?>
+                                            |
+                                    </span>
+                                    <span class="approve">
+                                        <a href="<?php echo wp_nonce_url(admin_url('admin.php?page=daystar-admin-members&action=approve&id=' . $member['ID']), 'approve_member_' . $member['ID']); ?>" 
+                                           onclick="return confirm('Are you sure you want to approve this member?');">
+                                            Approve
+                                        </a>
+                                        |
+                                    </span>
+                                    <span class="reject">
+                                        <a href="<?php echo wp_nonce_url(admin_url('admin.php?page=daystar-admin-members&action=reject&id=' . $member['ID']), 'reject_member_' . $member['ID']); ?>" 
+                                           onclick="return confirm('Are you sure you want to reject this member application?');" 
+                                           class="submitdelete">
+                                            Reject
+                                        </a>
+                                        <?php endif; ?>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                } else {
+                    ?>
                     <tr>
-                        <td class="manage-column column-cb check-column">
-                            <input id="cb-select-all-2" type="checkbox">
+                        <td colspan="8" style="text-align: center;">
+                            <?php 
+                            if ($status === 'pending') {
+                                echo 'No pending member applications.';
+                            } else {
+                                echo 'No members found.';
+                            }
+                            ?>
                         </td>
-                        <th scope="col" class="manage-column column-member_number">Member Number</th>
-                        <th scope="col" class="manage-column column-name">Name</th>
-                        <th scope="col" class="manage-column column-email">Email</th>
-                        <th scope="col" class="manage-column column-phone">Phone</th>
-                        <th scope="col" class="manage-column column-contributions">Contributions</th>
-                        <th scope="col" class="manage-column column-join_date">Join Date</th>
-                        <th scope="col" class="manage-column column-status">Status</th>
                     </tr>
-                </tfoot>
-            </table>
-            
-            <div class="tablenav bottom">
-                <div class="alignleft actions bulkactions">
-                    <label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label>
-                    <select name="action2" id="bulk-action-selector-bottom">
-                        <option value="-1">Bulk Actions</option>
-                        <option value="approve">Approve</option>
-                        <option value="deactivate">Deactivate</option>
-                        <option value="activate">Activate</option>
-                    </select>
-                    <input type="submit" id="doaction2" class="button action" value="Apply">
-                </div>
-                
-                <div class="tablenav-pages">
-                    <span class="displaying-num"><?php echo count($members); ?> items</span>
-                    <!-- Pagination would go here in a real implementation -->
-                </div>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+        
+        <div class="tablenav bottom">
+            <div class="tablenav-pages">
+                <!-- Pagination will go here -->
             </div>
-        </form>
+        </div>
     </div>
-    
-    <style>
-        .member-status {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-weight: bold;
-        }
-        .status-active {
-            background-color: #dff0d8;
-            color: #3c763d;
-        }
-        .status-pending {
-            background-color: #fcf8e3;
-            color: #8a6d3b;
-        }
-        .status-inactive {
-            background-color: #f2dede;
-            color: #a94442;
-        }
-    </style>
     <?php
 }
 
@@ -290,7 +289,7 @@ function daystar_render_member_details_page($member_id) {
             <div class="member-actions">
                 <a href="<?php echo admin_url('admin.php?page=daystar-admin-members&action=edit&id=' . $member_id); ?>" class="button">Edit Member</a>
                 
-                <?php if ($member['status'] == 'pending') : ?>
+                <?php if ($member['status'] === 'pending' || get_user_meta($member_id, 'member_status', true) === 'pending') : ?>
                     <a href="<?php echo wp_nonce_url(admin_url('admin.php?page=daystar-admin-members&action=approve&id=' . $member_id), 'approve_member_' . $member_id); ?>" class="button button-primary">Approve Member</a>
                     <a href="<?php echo wp_nonce_url(admin_url('admin.php?page=daystar-admin-members&action=reject&id=' . $member_id), 'reject_member_' . $member_id); ?>" class="button">Reject Member</a>
                 <?php elseif ($member['status'] == 'active') : ?>
@@ -848,211 +847,119 @@ function daystar_render_member_edit_page($member_id) {
 /**
  * Get members by status
  */
-function daystar_get_members_by_status($status = 'all') {
-    // In a real implementation, query the database for users with 'member' role and specified status
-    // For now, we'll return sample data for demonstration purposes
-    
-    $members = array(
-        array(
-            'id' => 1,
-            'member_number' => 'DST00123',
-            'name' => 'John Doe',
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => 'john.doe@example.com',
-            'phone' => '+254712345678',
-            'id_number' => '12345678',
-            'dob' => '1985-05-15',
-            'gender' => 'male',
-            'address' => '123 Main St, Apartment 4B',
-            'city' => 'Nairobi',
-            'county' => 'Nairobi',
-            'postal_code' => '00100',
-            'employer' => 'ABC Company',
-            'occupation' => 'Software Developer',
-            'monthly_income' => 80000,
-            'join_date' => '2024-01-15',
-            'status' => 'active',
-            'contributions' => 75000,
-            'share_capital' => 10000,
-            'registration_fee_paid' => true,
-            'next_of_kin_name' => 'Jane Doe',
-            'next_of_kin_relationship' => 'Spouse',
-            'next_of_kin_phone' => '+254723456789',
-            'next_of_kin_email' => 'jane.doe@example.com',
-            'bank_name' => 'ABC Bank',
-            'bank_branch' => 'Main Branch',
-            'bank_account_number' => '1234567890'
-        ),
-        array(
-            'id' => 2,
-            'member_number' => 'DST00456',
-            'name' => 'Jane Smith',
-            'first_name' => 'Jane',
-            'last_name' => 'Smith',
-            'email' => 'jane.smith@example.com',
-            'phone' => '+254723456789',
-            'id_number' => '23456789',
-            'dob' => '1990-08-22',
-            'gender' => 'female',
-            'address' => '456 Park Ave',
-            'city' => 'Nairobi',
-            'county' => 'Nairobi',
-            'postal_code' => '00200',
-            'employer' => 'XYZ Corporation',
-            'occupation' => 'Marketing Manager',
-            'monthly_income' => 95000,
-            'join_date' => '2024-02-20',
-            'status' => 'active',
-            'contributions' => 60000,
-            'share_capital' => 10000,
-            'registration_fee_paid' => true,
-            'next_of_kin_name' => 'John Smith',
-            'next_of_kin_relationship' => 'Spouse',
-            'next_of_kin_phone' => '+254712345678',
-            'next_of_kin_email' => 'john.smith@example.com',
-            'bank_name' => 'XYZ Bank',
-            'bank_branch' => 'Central Branch',
-            'bank_account_number' => '2345678901'
-        ),
-        array(
-            'id' => 3,
-            'member_number' => 'DST00789',
-            'name' => 'Robert Johnson',
-            'first_name' => 'Robert',
-            'last_name' => 'Johnson',
-            'email' => 'robert.johnson@example.com',
-            'phone' => '+254734567890',
-            'id_number' => '34567890',
-            'dob' => '1978-11-10',
-            'gender' => 'male',
-            'address' => '789 Oak St',
-            'city' => 'Mombasa',
-            'county' => 'Mombasa',
-            'postal_code' => '80100',
-            'employer' => 'Self-employed',
-            'occupation' => 'Business Owner',
-            'monthly_income' => 120000,
-            'join_date' => '2024-03-05',
-            'status' => 'active',
-            'contributions' => 90000,
-            'share_capital' => 15000,
-            'registration_fee_paid' => true,
-            'next_of_kin_name' => 'Mary Johnson',
-            'next_of_kin_relationship' => 'Spouse',
-            'next_of_kin_phone' => '+254745678901',
-            'next_of_kin_email' => 'mary.johnson@example.com',
-            'bank_name' => 'DEF Bank',
-            'bank_branch' => 'Mombasa Branch',
-            'bank_account_number' => '3456789012'
-        ),
-        array(
-            'id' => 4,
-            'member_number' => 'DST00555',
-            'name' => 'Alice Brown',
-            'first_name' => 'Alice',
-            'last_name' => 'Brown',
-            'email' => 'alice.brown@example.com',
-            'phone' => '+254756789012',
-            'id_number' => '45678901',
-            'dob' => '1992-04-18',
-            'gender' => 'female',
-            'address' => '555 Elm St',
-            'city' => 'Kisumu',
-            'county' => 'Kisumu',
-            'postal_code' => '40100',
-            'employer' => 'GHI Ltd',
-            'occupation' => 'Accountant',
-            'monthly_income' => 70000,
-            'join_date' => '2024-04-10',
-            'status' => 'pending',
-            'contributions' => 0,
-            'share_capital' => 5000,
-            'registration_fee_paid' => true,
-            'next_of_kin_name' => 'David Brown',
-            'next_of_kin_relationship' => 'Brother',
-            'next_of_kin_phone' => '+254767890123',
-            'next_of_kin_email' => 'david.brown@example.com',
-            'bank_name' => 'GHI Bank',
-            'bank_branch' => 'Kisumu Branch',
-            'bank_account_number' => '4567890123'
-        ),
-        array(
-            'id' => 5,
-            'member_number' => 'DST00222',
-            'name' => 'Michael Green',
-            'first_name' => 'Michael',
-            'last_name' => 'Green',
-            'email' => 'michael.green@example.com',
-            'phone' => '+254778901234',
-            'id_number' => '56789012',
-            'dob' => '1983-09-30',
-            'gender' => 'male',
-            'address' => '222 Pine St',
-            'city' => 'Nakuru',
-            'county' => 'Nakuru',
-            'postal_code' => '20100',
-            'employer' => 'JKL Corporation',
-            'occupation' => 'Engineer',
-            'monthly_income' => 85000,
-            'join_date' => '2024-05-22',
-            'status' => 'pending',
-            'contributions' => 0,
-            'share_capital' => 5000,
-            'registration_fee_paid' => false,
-            'next_of_kin_name' => 'Sarah Green',
-            'next_of_kin_relationship' => 'Spouse',
-            'next_of_kin_phone' => '+254789012345',
-            'next_of_kin_email' => 'sarah.green@example.com',
-            'bank_name' => 'JKL Bank',
-            'bank_branch' => 'Nakuru Branch',
-            'bank_account_number' => '5678901234'
-        ),
-        array(
-            'id' => 6,
-            'member_number' => 'DST00333',
-            'name' => 'Susan Wilson',
-            'first_name' => 'Susan',
-            'last_name' => 'Wilson',
-            'email' => 'susan.wilson@example.com',
-            'phone' => '+254790123456',
-            'id_number' => '67890123',
-            'dob' => '1975-12-05',
-            'gender' => 'female',
-            'address' => '333 Cedar St',
-            'city' => 'Eldoret',
-            'county' => 'Uasin Gishu',
-            'postal_code' => '30100',
-            'employer' => 'MNO Industries',
-            'occupation' => 'HR Manager',
-            'monthly_income' => 90000,
-            'join_date' => '2023-11-15',
-            'status' => 'inactive',
-            'contributions' => 45000,
-            'share_capital' => 10000,
-            'registration_fee_paid' => true,
-            'next_of_kin_name' => 'James Wilson',
-            'next_of_kin_relationship' => 'Spouse',
-            'next_of_kin_phone' => '+254701234567',
-            'next_of_kin_email' => 'james.wilson@example.com',
-            'bank_name' => 'MNO Bank',
-            'bank_branch' => 'Eldoret Branch',
-            'bank_account_number' => '6789012345'
-        ),
+function daystar_get_members_by_status($status = 'active') {
+    $args = array(
+        'role__in' => array('member', 'pending_member'),
+        'number' => -1
     );
     
-    // Filter members by status if not 'all'
+    // Add status filter if not requesting all members
     if ($status !== 'all') {
-        $filtered_members = array();
-        foreach ($members as $member) {
-            if ($member['status'] === $status) {
-                $filtered_members[] = $member;
-            }
+        $args['meta_key'] = 'member_status';
+        $args['meta_value'] = $status;
+    }
+    
+    $user_query = new WP_User_Query($args);
+    $members = array();
+    
+    if (!empty($user_query->get_results())) {
+        foreach ($user_query->get_results() as $user) {
+            // Basic user data
+            $member_data = array(
+                'ID' => $user->ID,
+                'name' => $user->display_name,
+                'email' => $user->user_email,
+                'member_number' => get_user_meta($user->ID, 'member_number', true),
+                'phone' => get_user_meta($user->ID, 'phone', true),
+                'registration_date' => get_user_meta($user->ID, 'registration_date', true),
+                'status' => get_user_meta($user->ID, 'member_status', true) ?: 'pending',
+                
+                // Personal Information
+                'id_number' => get_user_meta($user->ID, 'id_number', true) ?: '',
+                'dob' => get_user_meta($user->ID, 'date_of_birth', true) ?: '1970-01-01',
+                'gender' => get_user_meta($user->ID, 'gender', true) ?: '',
+                
+                // Address Information
+                'address' => get_user_meta($user->ID, 'address', true) ?: '',
+                'city' => get_user_meta($user->ID, 'city', true) ?: '',
+                'county' => get_user_meta($user->ID, 'county', true) ?: '',
+                'postal_code' => get_user_meta($user->ID, 'postal_code', true) ?: '',
+                
+                // Employment Information
+                'employer' => get_user_meta($user->ID, 'employer', true) ?: '',
+                'occupation' => get_user_meta($user->ID, 'occupation', true) ?: '',
+                'monthly_income' => floatval(get_user_meta($user->ID, 'monthly_income', true)) ?: 0.00,
+                
+                // Membership Information
+                'join_date' => get_user_meta($user->ID, 'join_date', true) ?: '1970-01-01',
+                'contributions' => floatval(get_user_meta($user->ID, 'total_contributions', true)) ?: 0.00,
+                'share_capital' => floatval(get_user_meta($user->ID, 'share_capital', true)) ?: 0.00,
+                'registration_fee_paid' => get_user_meta($user->ID, 'registration_fee_paid', true) ? 'Paid' : 'Not Paid',
+                
+                // Next of Kin
+                'next_of_kin_name' => get_user_meta($user->ID, 'next_of_kin_name', true) ?: '',
+                'next_of_kin_relationship' => get_user_meta($user->ID, 'next_of_kin_relationship', true) ?: '',
+                'next_of_kin_phone' => get_user_meta($user->ID, 'next_of_kin_phone', true) ?: '',
+                'next_of_kin_email' => get_user_meta($user->ID, 'next_of_kin_email', true) ?: '',
+                
+                // Bank Information
+                'bank_name' => get_user_meta($user->ID, 'bank_name', true) ?: '',
+                'bank_branch' => get_user_meta($user->ID, 'bank_branch', true) ?: '',
+                'bank_account_number' => get_user_meta($user->ID, 'bank_account_number', true) ?: '',
+                
+                // Additional fields for list view
+                'initial_contribution' => floatval(get_user_meta($user->ID, 'initial_contribution', true)) ?: 0.00,
+                'contribution_status' => get_user_meta($user->ID, 'contribution_status', true) ?: '',
+                'account_balance' => floatval(get_user_meta($user->ID, 'account_balance', true)) ?: 0.00,
+                'last_contribution_date' => get_user_meta($user->ID, 'last_contribution_date', true) ?: ''
+            );
+            
+            $members[] = $member_data;
         }
-        return $filtered_members;
     }
     
     return $members;
+}
+
+/**
+ * Get count of members by status
+ */
+function daystar_get_members_count($status = 'active') {
+    $args = array(
+        'role' => $status === 'pending' ? 'pending_member' : 'member',
+        'meta_key' => 'member_status',
+        'meta_value' => $status,
+        'count_total' => true,
+    );
+    
+    $user_query = new WP_User_Query($args);
+    return $user_query->get_total();
+}
+
+/**
+ * Get member document count with caching
+ */
+function daystar_get_member_document_count($user_id) {
+    // Try to get from cache first
+    $cache_key = 'member_doc_count_' . $user_id;
+    $doc_count = wp_cache_get($cache_key);
+    
+    if ($doc_count === false) {
+        $args = array(
+            'post_type' => 'member_document',
+            'author' => $user_id,
+            'post_status' => 'private',
+            'posts_per_page' => -1
+        );
+        
+        $query = new WP_Query($args);
+        $doc_count = $query->found_posts;
+        
+        // Cache the result for 1 hour
+        wp_cache_set($cache_key, $doc_count, '', HOUR_IN_SECONDS);
+    }
+    
+    return $doc_count;
 }
 
 /**
@@ -1062,7 +969,8 @@ function daystar_get_member_by_id($member_id) {
     $members = daystar_get_members_by_status('all');
     
     foreach ($members as $member) {
-        if ($member['id'] == $member_id) {
+        // Convert both IDs to integers for reliable comparison
+        if ((int)$member['ID'] === (int)$member_id) {
             return $member;
         }
     }
@@ -1081,18 +989,72 @@ function daystar_get_member_count($status = 'all') {
 /**
  * Approve member
  */
-function daystar_approve_member($member_id) {
-    // In a real implementation, update the user meta to set status to 'active'
-    // For now, we'll just return true for demonstration purposes
+function daystar_approve_member($user_id) {
+    $user = get_userdata($user_id);
+    if (!$user) {
+        return false;
+    }
+
+    // Update user role and status
+    $user->remove_role('pending_member');
+    $user->add_role('member');
+    update_user_meta($user_id, 'member_status', 'active');
+    update_user_meta($user_id, 'verification_date', current_time('mysql'));
+    update_user_meta($user_id, 'verified_by', get_current_user_id());
+
+    // Send approval email
+    $subject = 'Daystar SACCO Membership Approved';
+    $message = "Dear {$user->display_name},\n\n";
+    $message .= "Congratulations! Your membership application has been approved.\n\n";
+    $message .= "Member Number: " . get_user_meta($user_id, 'member_number', true) . "\n";
+    $message .= "You can now log in to your member dashboard to access all member features.\n\n";
+    $message .= "Next Steps:\n";
+    $message .= "1. Make your initial contribution if you haven't already\n";
+    $message .= "2. Set up your monthly contribution schedule\n";
+    $message .= "3. Explore available savings and loan products\n\n";
+    $message .= "Login here: " . home_url('login') . "\n\n";
+    $message .= "Best regards,\nDaystar SACCO Team";
+
+    wp_mail($user->user_email, $subject, $message);
+
+    // Send SMS notification
+    $phone = get_user_meta($user_id, 'phone', true);
+    $sms_message = "Congratulations! Your Daystar SACCO membership has been approved. Login to your account to get started.";
+    daystar_send_sms($phone, $sms_message);
+
     return true;
 }
 
 /**
  * Reject member
  */
-function daystar_reject_member($member_id) {
-    // In a real implementation, update the user meta to set status to 'rejected'
-    // For now, we'll just return true for demonstration purposes
+function daystar_reject_member($user_id) {
+    $user = get_userdata($user_id);
+    if (!$user) {
+        return false;
+    }
+
+    // Update user status
+    update_user_meta($user_id, 'member_status', 'rejected');
+    update_user_meta($user_id, 'rejection_date', current_time('mysql'));
+    update_user_meta($user_id, 'rejected_by', get_current_user_id());
+
+    // Send rejection email
+    $subject = 'Daystar SACCO Membership Application Status';
+    $message = "Dear {$user->display_name},\n\n";
+    $message .= "We regret to inform you that your membership application has been reviewed and cannot be approved at this time.\n\n";
+    $message .= "Common reasons for rejection include:\n";
+    $message .= "- Incomplete or invalid documentation\n";
+    $message .= "- Not meeting eligibility criteria\n";
+    $message .= "- Insufficient information provided\n\n";
+    $message .= "You may submit a new application after addressing these potential issues.\n\n";
+    $message .= "If you need clarification or assistance, please contact our support team:\n";
+    $message .= "Email: support@daystar.co.ke\n";
+    $message .= "Phone: +254 XXX XXX XXX\n\n";
+    $message .= "Best regards,\nDaystar SACCO Team";
+
+    wp_mail($user->user_email, $subject, $message);
+
     return true;
 }
 

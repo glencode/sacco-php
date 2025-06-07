@@ -7,19 +7,9 @@
  * @package Daystar
  */
 
-// Ensure only logged-in members can access this page
-if (!is_user_logged_in()) {
-    wp_redirect(home_url('/login?redirect_to=' . urlencode(home_url('/member-dashboard'))));
-    exit;
-}
+require_once get_template_directory() . '/includes/auth-helper.php';
 
-$current_user = wp_get_current_user();
-
-// Check if user is a member
-if (!in_array('member', $current_user->roles)) {
-    wp_redirect(home_url('/'));
-    exit;
-}
+$current_user = daystar_check_member_access(home_url('/member-dashboard'));
 
 // Get member data
 $user_id = $current_user->ID;

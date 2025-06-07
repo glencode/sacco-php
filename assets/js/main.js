@@ -175,29 +175,31 @@
             });
         });
 
-        // Navbar scroll effect
+        // Navbar scroll effect - FIXED WITH NULL CHECKS
         const header = document.querySelector('.site-header');
-        let lastScroll = 0;
-        
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
+        if (header) { // Add null check here
+            let lastScroll = 0;
             
-            // Add/remove scrolled class
-            if (currentScroll > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            // Hide/show header on scroll
-            if (currentScroll > lastScroll && currentScroll > 500) {
-                header.classList.add('header-hidden');
-            } else {
-                header.classList.remove('header-hidden');
-            }
-            
-            lastScroll = currentScroll;
-        });
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                
+                // Add/remove scrolled class
+                if (currentScroll > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                // Hide/show header on scroll
+                if (currentScroll > lastScroll && currentScroll > 500) {
+                    header.classList.add('header-hidden');
+                } else {
+                    header.classList.remove('header-hidden');
+                }
+                
+                lastScroll = currentScroll;
+            });
+        }
     });
 
     function initLazyLoading() {
@@ -380,20 +382,18 @@
         // Handle resize operations here
     }, 250);
 
-    window.addEventListener('resize', optimizedResize);
-
-    // Resource hint preloading
+    window.addEventListener('resize', optimizedResize);    // Resource hint preloading - preload modern-main.css instead of style.css
     function preloadResources() {
         const resources = [
-            { type: 'style', url: '/wp-content/themes/sacco-php/style.css' },
-            { type: 'script', url: '/wp-content/themes/sacco-php/js/navigation.js' },
+            { type: 'style', url: '/wp-content/themes/daystar-website-fixes/assets/css/modern-main.css' },
+            { type: 'style', url: '/wp-content/themes/daystar-website-fixes/assets/css/member-portal.css' },
             // Add other critical resources
         ];
 
         resources.forEach(resource => {
             const link = document.createElement('link');
-            link.rel = resource.type === 'style' ? 'preload' : 'prefetch';
-            link.as = resource.type === 'style' ? 'style' : 'script';
+            link.rel = 'preload';
+            link.as = 'style';
             link.href = resource.url;
             document.head.appendChild(link);
         });
@@ -419,34 +419,38 @@
     // Initialize on page load
     preloadResources();
 
-    // Scroll behavior and mobile menu functionality
+    // Scroll behavior and mobile menu functionality - FIXED WITH NULL CHECKS
     document.addEventListener('DOMContentLoaded', () => {
         const header = document.querySelector('.site-header');
         const menuToggle = document.querySelector('.menu-toggle');
         const mainNav = document.querySelector('.main-navigation');
         
-        // Handle scroll events
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
+        // Handle scroll events - Add null check for header
+        if (header) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
 
-        // Handle mobile menu toggle
-        menuToggle?.addEventListener('click', () => {
-            mainNav.classList.toggle('toggled');
-        });
+        // Handle mobile menu toggle - Add null checks
+        if (menuToggle && mainNav) {
+            menuToggle.addEventListener('click', () => {
+                mainNav.classList.toggle('toggled');
+            });
 
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (mainNav.classList.contains('toggled') && 
-                !e.target.closest('.main-navigation') && 
-                !e.target.closest('.menu-toggle')) {
-                mainNav.classList.remove('toggled');
-            }
-        });
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (mainNav.classList.contains('toggled') && 
+                    !e.target.closest('.main-navigation') && 
+                    !e.target.closest('.menu-toggle')) {
+                    mainNav.classList.remove('toggled');
+                }
+            });
+        }
     });
 
 })(jQuery);
@@ -466,7 +470,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Add sticky navbar functionality (basic example)
+    // Add sticky navbar functionality (basic example) - FIXED WITH NULL CHECKS
     const navbar = document.querySelector('.navbar'); // Adjust selector if needed
     if (navbar && navbar.classList.contains('sticky-top')) {
         let sticky = navbar.offsetTop;

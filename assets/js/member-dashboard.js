@@ -21,6 +21,7 @@ class DaystarMemberDashboard {
         this.initializeContributionChart();
         this.initializeNotifications();
         this.initializeQuickActions();
+        this.initializeDocumentUploads(); // Add document upload initialization
     }
     
     /**
@@ -542,6 +543,77 @@ class DaystarMemberDashboard {
                 </div>
             `;
         }
+    }
+    
+    /**
+     * Initialize document uploads
+     */
+    static initializeDocumentUploads() {
+        const uploadButtons = document.querySelectorAll('.document-upload-card button');
+        
+        uploadButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const card = this.closest('.document-upload-card');
+                const input = card.querySelector('input[type="file"]');
+                const documentType = card.querySelector('h4').textContent.trim();
+                
+                if (!input.files || !input.files[0]) {
+                    alert('Please select a file to upload');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('action', 'daystar_upload_document');
+                formData.append('security', daystarData.documentUploadNonce);
+                formData.append('document', input.files[0]);
+                formData.append('document_type', documentType);
+
+                // Show loading state
+                button.disabled = true;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+
+                fetch(daystarData.ajaxurl, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        const successDiv = document.createElement('div');
+                        successDiv.className = 'alert alert-success mt-2';
+                        successDiv.textContent = 'Document uploaded successfully';
+                        card.appendChild(successDiv);
+                        
+                        // Clear input
+                        input.value = '';
+                        
+                        // Update document count if available
+                        const countElement = document.querySelector('.document-count');
+                        if (countElement) {
+                            const [current, total] = countElement.textContent.split('/');
+                            countElement.textContent = `${parseInt(current) + 1}/${total}`;
+                        }
+
+                        // Remove success message after 3 seconds
+                        setTimeout(() => successDiv.remove(), 3000);
+                    } else {
+                        alert(data.data || 'Upload failed. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Upload error:', error);
+                    alert('Upload failed. Please try again.');
+                })
+                .finally(() => {
+                    // Reset button state
+                    button.disabled = false;
+                    button.textContent = 'Upload';
+                });
+            });
+        });
     }
 }
 

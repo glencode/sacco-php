@@ -44,7 +44,7 @@ function daystar_add_main_admin_menu() {
         "daystar_render_admin_members_page"
     );
     
-    // Loan Management (placeholder, actual page in admin-loans.php)
+    // Loan Management
     add_submenu_page(
         "daystar-admin-dashboard",
         "Loans",

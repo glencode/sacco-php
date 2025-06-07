@@ -1,0 +1,84 @@
+/* Pending Approval View Styles */
+.pending-icon {
+    color: #ffc107;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-around;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.step-item {
+    text-align: center;
+    padding: 1rem;
+    flex: 1;
+    min-width: 200px;
+    margin: 1rem;
+}
+
+.step-icon {
+    width: 60px;
+    height: 60px;
+    background: #f8f9fa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    color: #007bff;
+    font-size: 1.5rem;
+}
+
+.document-upload-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.document-upload-card h4 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.support-info {
+    background: #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.support-info a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.support-info a:hover {
+    text-decoration: underline;
+}
+
+.member-info {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+.member-info p {
+    margin-bottom: 0.5rem;
+}
+
+.member-info p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .steps {
+        flex-direction: column;
+    }
+    
+    .step-item {
+        margin: 1rem 0;
+    }
+}

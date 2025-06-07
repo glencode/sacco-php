@@ -49,20 +49,27 @@ get_header();
                         </div>
                         
                         <div class="auth-body">
-                            <form id="loginForm" class="auth-form" action="#" method="post">
+                            <form id="loginForm" class="auth-form needs-validation" novalidate>
+                                <?php wp_nonce_field('daystar_login', 'login_nonce'); ?>
+                                <?php 
+                                // Preserve the redirect_to parameter if it exists
+                                $redirect_to = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : home_url('/member-dashboard');
+                                ?>
+                                <input type="hidden" name="redirect_to" value="<?php echo esc_url($redirect_to); ?>">
+                                
                                 <div class="form-group mb-3">
-                                    <label for="memberNumber" class="form-label">Member Number</label>
+                                    <label for="member_number" class="form-label">Member Number or Email</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fas fa-user" aria-hidden="true"></i></span>
-                                        <input type="text" class="form-control" id="memberNumber" name="memberNumber" placeholder="Enter your member number" required>
+                                        <input type="text" class="form-control" id="member_number" name="member_number" placeholder="Enter your member number or email" required>
                                     </div>
-                                    <div class="invalid-feedback">Please enter your member number</div>
+                                    <div class="invalid-feedback">Please enter your member number or email</div>
                                 </div>
                                 
                                 <div class="form-group mb-3">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <label for="password" class="form-label">Password</label>
-                                        <a href="<?php echo esc_url(home_url('forgot-password')); ?>" class="small">Forgot Password?</a>
+                                        <a href="<?php echo esc_url(home_url('password-reset')); ?>" class="small">Forgot Password?</a>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fas fa-lock" aria-hidden="true"></i></span>
@@ -87,10 +94,16 @@ get_header();
                                 </div>
                             </form>
                             
+                            <?php if (isset($_GET['login_error'])): ?>
+                            <div class="alert alert-danger mt-3">
+                                <?php echo esc_html(urldecode($_GET['login_error'])); ?>
+                            </div>
+                            <?php endif; ?>
+                            
                             <div class="auth-divider">
                                 <span>or</span>
                             </div>
-                            
+
                             <div class="social-login">
                                 <button class="btn btn-outline-secondary w-100 mb-3">
                                     <i class="fab fa-google me-2" aria-hidden="true"></i> Sign in with Google
@@ -141,61 +154,10 @@ get_header();
     </section>
 </main>
 
-<!-- Login Form Validation Script -->
+<!-- Login Form Initialization -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Form validation
-    const loginForm = document.getElementById('loginForm');
-    
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            if (!this.checkValidity()) {
-                event.stopPropagation();
-                this.classList.add('was-validated');
-                return;
-            }
-            
-            // Form is valid, show loading state
-            const submitButton = this.querySelector('button[type="submit"]');
-            const originalText = submitButton.innerHTML;
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Signing in...';
-            
-            // Simulate API call (in a real implementation, this would be an actual API call)
-            setTimeout(function() {
-                // For demo purposes, show success message
-                const formMessage = loginForm.querySelector('.form-message');
-                formMessage.innerHTML = '<div class="alert alert-success">Login successful! Redirecting to dashboard...</div>';
-                
-                // Redirect to dashboard after a short delay
-                setTimeout(function() {
-                    window.location.href = '<?php echo esc_url(home_url('member-dashboard')); ?>';
-                }, 1500);
-            }, 2000);
-        });
-    }
-    
-    // Password visibility toggle
-    const togglePassword = document.querySelector('.toggle-password');
-    
-    if (togglePassword) {
-        togglePassword.addEventListener('click', function() {
-            const passwordInput = document.getElementById('password');
-            const icon = this.querySelector('i');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
-    }
+    initLoginForm();
 });
 </script>
 
