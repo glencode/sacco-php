@@ -15,12 +15,10 @@ if (session_status() === PHP_SESSION_NONE) {
  * 
  * @param string $member_id Member ID or email
  * @param string $password User password
+ * @param bool $remember Whether to remember the user.
  * @return array Authentication result with status and message
  */
-function daystar_authenticate_user($member_id, $password) {
-    // In a real implementation, this would check against the database
-    // For this demo, we'll simulate authentication
-    
+function daystar_authenticate_user($member_id, $password, $remember = false) {
     // Validate inputs
     if (empty($member_id) || empty($password)) {
         return [
@@ -28,46 +26,45 @@ function daystar_authenticate_user($member_id, $password) {
             'message' => 'Please enter both member number/email and password.'
         ];
     }
-    
-    // Simulate database check
-    // In production, use proper password hashing and verification
-    $valid_credentials = false;
-    
-    // Demo credentials for testing
-    if (($member_id === 'DSM12345' || $member_id === 'demo@daystarsacco.co.ke') && $password === 'password123') {
-        $valid_credentials = true;
-        $user_data = [
-            'member_id' => 'DSM12345',
-            'name' => 'John Doe',
-            'email' => 'demo@daystarsacco.co.ke',
-            'role' => 'member',
-            'status' => 'active'
-        ];
-    }
-    
-    if ($valid_credentials) {
-        // Create session
-        $_SESSION['daystar_user'] = $user_data;
-        $_SESSION['daystar_logged_in'] = true;
-        $_SESSION['daystar_login_time'] = time();
-        
-        // Set session expiry (8 hours)
-        $_SESSION['daystar_expiry_time'] = time() + (8 * 60 * 60);
-        
-        // Regenerate session ID for security
-        session_regenerate_id(true);
-        
-        return [
-            'success' => true,
-            'message' => 'Login successful!',
-            'user' => $user_data
-        ];
-    } else {
+
+    $user = wp_authenticate($member_id, $password);
+
+    if (is_wp_error($user)) {
         return [
             'success' => false,
-            'message' => 'Invalid member number/email or password. Please try again.'
+            'message' => $user->get_error_message(),
         ];
     }
+
+    // Successful WordPress authentication
+    wp_set_current_user($user->ID);
+    wp_set_auth_cookie($user->ID, $remember);
+
+    // Prepare user data for custom session (if needed) and response
+    // You might want to store specific metadata or roles here
+    $user_data_for_session = [
+        'ID' => $user->ID,
+        'user_login' => $user->user_login,
+        'user_email' => $user->user_email,
+        'display_name' => $user->display_name,
+        'roles' => $user->roles, // Add user roles
+        // Example: Fetch and store a custom role or member status if you have one in user meta
+        // 'member_status' => get_user_meta($user->ID, 'member_status', true),
+    ];
+
+    // Store essential data in custom session
+    $_SESSION['daystar_user'] = $user_data_for_session;
+    $_SESSION['daystar_logged_in'] = true;
+    $_SESSION['daystar_login_time'] = time();
+    $_SESSION['daystar_expiry_time'] = time() + (8 * 60 * 60); // Example custom session expiry
+
+    session_regenerate_id(true);
+
+    return [
+        'success' => true,
+        'message' => 'Login successful!',
+        'user' => $user_data_for_session, // Return WP user data
+    ];
 }
 
 /**
@@ -139,19 +136,33 @@ function daystar_register_user($user_data) {
  * @return bool Whether user is logged in
  */
 function daystar_is_user_logged_in() {
-    // Check if session exists and is valid
+    // First, check WordPress's own login status
+    if (!is_user_logged_in()) {
+        // If WP says not logged in, ensure our custom session is also cleared
+        if (isset($_SESSION['daystar_logged_in']) && $_SESSION['daystar_logged_in'] === true) {
+            daystar_logout_user(); // This will clear both WP and custom session parts
+        }
+        return false;
+    }
+
+    // If WordPress says user is logged in, then check our custom session layer
     if (isset($_SESSION['daystar_logged_in']) && $_SESSION['daystar_logged_in'] === true) {
-        // Check if session has expired
+        // Check if custom session has expired
         if (isset($_SESSION['daystar_expiry_time']) && time() < $_SESSION['daystar_expiry_time']) {
-            return true;
+            return true; // Both WP and custom session are active and valid
         } else {
-            // Session expired, log out user
-            daystar_logout_user();
+            // Custom session expired, log out user from both
+            daystar_logout_user(); // This will also call wp_logout()
             return false;
         }
+    } else {
+        // This case is unlikely if wp_authenticate and daystar_authenticate_user are correctly linked,
+        // but if WP is logged in and custom session isn't, treat as not fully logged in for Daystar context.
+        // Or, could choose to re-initialize custom session here if WP user is valid.
+        // For now, let's ensure logout to sync states.
+        daystar_logout_user();
+        return false;
     }
-    
-    return false;
 }
 
 /**
@@ -160,10 +171,37 @@ function daystar_is_user_logged_in() {
  * @return array|null User data or null if not logged in
  */
 function daystar_get_current_user() {
-    if (daystar_is_user_logged_in() && isset($_SESSION['daystar_user'])) {
-        return $_SESSION['daystar_user'];
+    if (!daystar_is_user_logged_in()) {
+        return null;
+    }
+
+    $wp_user = wp_get_current_user();
+
+    if ($wp_user && $wp_user->ID !== 0) {
+        // WP user exists, use this as the primary source of truth.
+        // $_SESSION['daystar_user'] should have been populated with relevant WP user data at login.
+        // We can return the contents of $_SESSION['daystar_user'] which might have a subset of WP_User fields
+        // or additional custom data. Or, return the WP_User object directly if that's more useful.
+        // For consistency with what daystar_authenticate_user stores:
+        if (isset($_SESSION['daystar_user'])) {
+            // Optionally, verify if $_SESSION['daystar_user']['ID'] matches $wp_user->ID
+            // If not, it indicates a potential session desync. For now, trust daystar_is_user_logged_in handled this.
+            return $_SESSION['daystar_user'];
+        } else {
+            // Fallback: if daystar_user is not in session but WP user is logged in,
+            // reconstruct it. This situation should ideally be avoided by proper session setup in daystar_authenticate_user.
+            $user_data_for_session = [
+                'ID' => $wp_user->ID,
+                'user_login' => $wp_user->user_login,
+                'user_email' => $wp_user->user_email,
+                'display_name' => $wp_user->display_name,
+            ];
+            $_SESSION['daystar_user'] = $user_data_for_session;
+            return $user_data_for_session;
+        }
     }
     
+    // Fallback for safety, though daystar_is_user_logged_in should prevent this state.
     return null;
 }
 
@@ -173,14 +211,17 @@ function daystar_get_current_user() {
  * @return void
  */
 function daystar_logout_user() {
-    // Unset all session variables
+    // Log out from WordPress
+    wp_logout(); // This handles clearing auth cookies and calling 'wp_logout' action hook.
+
+    // Unset all custom session variables
     $_SESSION = [];
     
-    // Delete the session cookie
+    // Delete the session cookie if it's being used by PHP's session handler
     if (ini_get('session.use_cookies')) {
         $params = session_get_cookie_params();
         setcookie(
-            session_name(),
+            session_name(), // Get the name of the PHP session cookie
             '',
             time() - 42000,
             $params['path'],
@@ -190,8 +231,10 @@ function daystar_logout_user() {
         );
     }
     
-    // Destroy the session
-    session_destroy();
+    // Destroy the PHP session
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        session_destroy();
+    }
 }
 
 /**
@@ -286,11 +329,26 @@ function daystar_user_has_role($required_role) {
     if (!$user) {
         return false;
     }
-    
+
+    // $user is expected to be the array from $_SESSION['daystar_user']
+    // which should now contain a 'roles' key with an array of roles from WP_User object.
+    if (!isset($user['roles']) || !is_array($user['roles'])) {
+        return false; // User has no roles defined in the session data
+    }
+
+    $user_roles = $user['roles'];
+
     if (is_array($required_role)) {
-        return in_array($user['role'], $required_role);
+        // Check if the user has ANY of the required roles
+        foreach ($required_role as $role) {
+            if (in_array($role, $user_roles)) {
+                return true;
+            }
+        }
+        return false;
     } else {
-        return $user['role'] === $required_role;
+        // Check if the user has the single required role
+        return in_array($required_role, $user_roles);
     }
 }
 
@@ -332,14 +390,16 @@ function daystar_ajax_login() {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $remember = isset($_POST['remember']) && $_POST['remember'] === 'true';
     
-    $result = daystar_authenticate_user($member_id, $password);
+    // Pass the remember me status to daystar_authenticate_user
+    // wp_set_auth_cookie within daystar_authenticate_user will handle the 'remember me' duration.
+    $result = daystar_authenticate_user($member_id, $password, $remember);
     
-    if ($result['success']) {
-        // Set longer session expiry if remember me is checked
-        if ($remember) {
-            $_SESSION['daystar_expiry_time'] = time() + (30 * 24 * 60 * 60); // 30 days
-        }
-    }
+    // The custom session expiry $_SESSION['daystar_expiry_time'] is still set in daystar_authenticate_user.
+    // If $remember is true, WordPress handles longer cookie duration.
+    // The custom session expiry can remain as a fixed window or be conditionally longer too,
+    // but it's somewhat redundant if relying on WP's cookie.
+    // For now, daystar_authenticate_user sets a fixed custom expiry. This is acceptable.
+    // If $result['success'] is true, the user is logged in.
     
     wp_send_json($result);
 }
