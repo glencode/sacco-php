@@ -15,9 +15,13 @@ function daystar_check_member_access($redirect_to = '') {
     if (!is_user_logged_in()) {
         nocache_headers();
         if (empty($redirect_to)) {
-            $redirect_to = home_url('/member-dashboard');
+            // Get current URL
+            $redirect_to = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         }
-        wp_redirect(home_url('/login?redirect_to=' . urlencode($redirect_to)));
+        // Generate login URL
+        $login_url = wp_login_url($redirect_to);
+        // Redirect user
+        wp_redirect($login_url);
         exit;
     }
 
