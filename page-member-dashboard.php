@@ -155,7 +155,48 @@ get_header();
             </div>
         </div>
     </div>
-    <?php else: ?>
+    <?php elseif ($member_status === 'rejected'): ?>
+    <!-- Rejected Application View -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center p-5">
+                        <div class="status-icon mb-4">
+                            <i class="fas fa-times-circle fa-4x text-danger"></i>
+                        </div>
+                        <h2>Application Not Approved</h2>
+                        <p class="lead mb-4">We regret to inform you that your membership application has been reviewed and was not approved at this time.</p>
+                        <p>Common reasons for non-approval include incomplete documentation or not meeting eligibility criteria. Please ensure all required documents were submitted correctly and that you meet our membership requirements.</p>
+                        <p>If you have questions or believe this is an error, please contact our support team:</p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:support@daystar.co.ke">support@daystar.co.ke</a></p>
+                        <p><a href="<?php echo wp_logout_url(home_url('/login/')); ?>" class="btn btn-primary mt-3">Logout</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php elseif ($member_status === 'suspended'): ?>
+    <!-- Suspended Account View -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center p-5">
+                        <div class="status-icon mb-4">
+                            <i class="fas fa-ban fa-4x text-danger"></i>
+                        </div>
+                        <h2>Account Suspended</h2>
+                        <p class="lead mb-4">Your account is currently suspended.</p>
+                        <p>Please contact administrator for further assistance.</p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:support@daystar.co.ke">support@daystar.co.ke</a></p>
+                         <p><a href="<?php echo wp_logout_url(home_url('/login/')); ?>" class="btn btn-primary mt-3">Logout</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php else: // Primarily for 'active' status ?>
     <!-- Regular Dashboard View -->
     <div class="dashboard-container">
         <div class="container-fluid">

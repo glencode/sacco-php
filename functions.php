@@ -1494,6 +1494,29 @@ function daystar_enqueue_login_scripts() {
 }
 add_action('wp_enqueue_scripts', 'daystar_enqueue_login_scripts');
 
+/**
+ * Enqueue registration form scripts
+ */
+function daystar_enqueue_registration_scripts() {
+    if (is_page_template('page-register.php')) {
+        wp_enqueue_script(
+            'daystar-member-registration',
+            get_template_directory_uri() . '/assets/js/member-registration.js',
+            array('jquery', 'jquery-validation'), // Added jquery-validation dependency
+            _S_VERSION, // Use theme version
+            true
+        );
+
+        wp_localize_script('daystar-member-registration', 'daystarRegistrationData', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'homeUrl' => home_url('/'),
+            'registrationNonce' => wp_create_nonce('daystar_register_member_nonce'),
+            'securityNonceName' => 'security'
+        ));
+    }
+}
+add_action('wp_enqueue_scripts', 'daystar_enqueue_registration_scripts');
+
 // Redirect users after login based on their role
 function daystar_login_redirect($redirect_to, $request, $user) {
     // Check if there's an error
@@ -1535,6 +1558,13 @@ function daystar_add_member_role() {
             'read' => true,
             'edit_posts' => false,
             'delete_posts' => false,
+        ));
+    }
+
+    // Create pending_member role if it doesn't exist
+    if (!get_role('pending_member')) {
+        add_role('pending_member', 'Pending Member', array(
+            'read' => true,
         ));
     }
 }
