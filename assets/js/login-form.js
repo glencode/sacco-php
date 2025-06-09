@@ -24,16 +24,15 @@ function initLoginForm() {
 
         // Get redirect URL and nonce
         const redirectInput = this.querySelector('input[name="redirect_to"]');
-        const nonceInput = this.querySelector('input[name="login_nonce"]');
         const redirectTo = redirectInput ? redirectInput.value : '';
 
         // Prepare form data
         const formData = new FormData(this);
-        formData.append('action', 'daystar_login');        // Nonce is already included in formData from form fields
-        // No need to manually append it
+        formData.append('action', 'daystar_login');
+        formData.append('login_nonce', daystar_ajax.login_nonce);
 
         // Send AJAX request
-        fetch(daystarData.ajaxurl, {
+        fetch(daystar_ajax.ajaxurl, {
             method: 'POST',
             body: formData,
             credentials: 'same-origin'
@@ -45,15 +44,27 @@ function initLoginForm() {
                 messageDiv.innerHTML = '<div class="alert alert-success">Login successful! Redirecting...</div>';
                 
                 // Redirect to appropriate page
-                const redirectUrl = response.data && response.data.redirect_to 
-                    ? response.data.redirect_to 
-                    : (redirectTo || daystarData.dashboardUrl);
+                let redirectUrl = '';
                 
-                window.location.href = redirectUrl;
+                if (response.data && response.data.redirect_to) {
+                    redirectUrl = response.data.redirect_to;
+                } else if (redirectTo) {
+                    redirectUrl = redirectTo;
+                } else {
+                    // Default fallback
+                    redirectUrl = window.location.origin + '/member-dashboard/';
+                }
+                
+                // Small delay to show success message
+                setTimeout(function() {
+                    window.location.href = redirectUrl;
+                }, 500);
+                
             } else {
-                // Show error message                let errorMessage = 'Login failed. Please try again.';
-                if (response.data) {
-                    errorMessage = response.data.message || errorMessage;
+                // Show error message
+                let errorMessage = 'Login failed. Please try again.';
+                if (response.data && response.data.message) {
+                    errorMessage = response.data.message;
                 }
                 
                 messageDiv.innerHTML = '<div class="alert alert-danger">' + errorMessage.replace(/(<([^>]+)>)/gi, "") + '</div>';
@@ -87,3 +98,8 @@ function initLoginForm() {
         });
     }
 }
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initLoginForm();
+});

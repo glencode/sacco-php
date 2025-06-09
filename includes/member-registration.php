@@ -176,17 +176,23 @@ function daystar_process_registration() {
             'role' => 'pending_member'
         );
         
-        $user_id = wp_insert_user($user_data);
+        $user_id = wp_insert_user($user_data); // First and ONLY user creation
         
         if (is_wp_error($user_id)) {
             wp_send_json_error(array(
-                'message' => $user_id->get_error_message()
+                'message' => 'Error creating user: ' . $user_id->get_error_message()
             ));
             wp_die();
         }
         
         // Generate member number (DST + current year + random 5 digits)
         $member_number = 'DST' . date('Y') . str_pad(wp_rand(1, 99999), 5, '0', STR_PAD_LEFT);
+        // Ensure member_number is unique as well, though less critical than username
+        // (Consider adding a check if member_numbers need to be strictly unique across all time)
+
+        // User is already created with 'pending_member' role. 
+        // The 'member' role will be assigned upon admin approval.
+        // No need to call wp_insert_user again or manually add/remove roles here.
         
         // Save member metadata
         $meta_fields = array(
@@ -357,11 +363,7 @@ function daystar_check_user_status($user, $username, $password) {
     if ($user && in_array('member', $user->roles)) {
         $member_status = get_user_meta($user->ID, 'member_status', true);
         
-        // If member status is pending, prevent login
-        if ($member_status === 'pending') {
-            return new WP_Error('account_pending', __('Your account is pending approval. Please check your email for updates.'));
-        }
-        
+
         // If member status is suspended, prevent login
         if ($member_status === 'suspended') {
             return new WP_Error('account_suspended', __('Your account has been suspended. Please contact the administrator.'));

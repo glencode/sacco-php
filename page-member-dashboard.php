@@ -8,11 +8,12 @@
  */
 
 require_once get_template_directory() . '/includes/auth-helper.php';
+require_once get_template_directory() . '/includes/member-data.php';
 
 // Do access check before any output
 $current_user = daystar_check_member_access();
 
-// Get member data
+// Get real member data
 $user_id = $current_user->ID;
 $member_number = get_user_meta($user_id, 'member_number', true);
 $member_status = get_user_meta($user_id, 'member_status', true);
@@ -23,58 +24,10 @@ $monthly_contribution = get_user_meta($user_id, 'monthly_contribution', true);
 // Format dates
 $formatted_reg_date = date('F j, Y', strtotime($registration_date));
 
-// Get contribution data (this would normally come from a database)
-// For demo purposes, we'll create sample data
-$contributions = array(
-    array(
-        'date' => '2025-05-01',
-        'amount' => 5000,
-        'method' => 'M-Pesa',
-        'reference' => 'MP123456789',
-        'status' => 'completed'
-    ),
-    array(
-        'date' => '2025-04-01',
-        'amount' => 5000,
-        'method' => 'M-Pesa',
-        'reference' => 'MP987654321',
-        'status' => 'completed'
-    ),
-    array(
-        'date' => '2025-03-01',
-        'amount' => 5000,
-        'method' => 'Bank Transfer',
-        'reference' => 'BT123456',
-        'status' => 'completed'
-    )
-);
-
-// Get loan data (this would normally come from a database)
-// For demo purposes, we'll create sample data
-$loans = array(
-    array(
-        'id' => 'L2025001',
-        'type' => 'Development Loan',
-        'amount' => 100000,
-        'date_issued' => '2025-01-15',
-        'term' => 24,
-        'interest_rate' => 12,
-        'monthly_payment' => 4707.35,
-        'balance' => 75000,
-        'status' => 'active'
-    ),
-    array(
-        'id' => 'L2024050',
-        'type' => 'Emergency Loan',
-        'amount' => 50000,
-        'date_issued' => '2024-10-05',
-        'term' => 12,
-        'interest_rate' => 10,
-        'monthly_payment' => 4387.50,
-        'balance' => 25000,
-        'status' => 'active'
-    )
-);
+// Get real contribution and loan data
+$contributions = daystar_get_member_contributions($user_id);
+$loans = daystar_get_member_loans($user_id);
+$account_balance = daystar_get_member_balance($user_id);
 
 get_header();
 ?>
@@ -394,7 +347,7 @@ get_header();
                                             <div class="account-summary">
                                                 <div class="summary-item">
                                                     <div class="summary-label">Total Contributions</div>
-                                                    <div class="summary-value">KES 75,000.00</div>
+                                                    <div class="summary-value">KES <?php echo number_format($total_contributions, 2); ?></div>
                                                 </div>
                                                 <div class="summary-item">
                                                     <div class="summary-label">Share Capital</div>
@@ -402,11 +355,11 @@ get_header();
                                                 </div>
                                                 <div class="summary-item">
                                                     <div class="summary-label">Total Loans</div>
-                                                    <div class="summary-value">KES 150,000.00</div>
+                                                    <div class="summary-value">KES <?php echo number_format($total_loans, 2); ?></div>
                                                 </div>
                                                 <div class="summary-item">
                                                     <div class="summary-label">Loan Balance</div>
-                                                    <div class="summary-value">KES 100,000.00</div>
+                                                    <div class="summary-value">KES <?php echo number_format($loan_balance, 2); ?></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -572,7 +525,7 @@ get_header();
                                             <div class="col-md-4">
                                                 <div class="summary-box">
                                                     <h6>Total Contributions</h6>
-                                                    <div class="summary-amount">KES 75,000.00</div>
+                                                    <div class="summary-amount">KES <?php echo number_format($total_contributions, 2); ?></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -637,13 +590,13 @@ get_header();
                                             <div class="col-md-4">
                                                 <div class="summary-box">
                                                     <h6>Total Loan Amount</h6>
-                                                    <div class="summary-amount">KES 150,000.00</div>
+                                                    <div class="summary-amount">KES <?php echo number_format($total_loans, 2); ?></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="summary-box">
                                                     <h6>Outstanding Balance</h6>
-                                                    <div class="summary-amount">KES 100,000.00</div>
+                                                    <div class="summary-amount">KES <?php echo number_format($loan_balance, 2); ?></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">

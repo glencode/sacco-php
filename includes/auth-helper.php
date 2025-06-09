@@ -15,23 +15,26 @@ function daystar_check_member_access($redirect_to = '') {
     if (!is_user_logged_in()) {
         nocache_headers();
         if (empty($redirect_to)) {
-            // Get current URL
             $redirect_to = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         }
-        // Generate login URL
-        $login_url = wp_login_url($redirect_to);
-        // Redirect user
+        $login_url = home_url('/login/?redirect_to=' . urlencode($redirect_to));
         wp_redirect($login_url);
         exit;
     }
 
     $current_user = wp_get_current_user();
 
-    // Check if user is a member or pending member
-    if (!in_array('member', $current_user->roles) && !in_array('pending_member', $current_user->roles)) {
-        nocache_headers();
-        wp_redirect(home_url('/'));
-        exit;
+    // Check if user has member, pending_member role OR member capability
+    if (!in_array('member', $current_user->roles) && !in_array('pending_member', $current_user->roles) && !user_can($current_user, 'member') && !in_array('administrator', $current_user->roles)) {
+        // If user is a subscriber, try to upgrade them to member
+        if (in_array('subscriber', $current_user->roles)) {
+            $current_user->add_role('member');
+            // Don't redirect, let them access the dashboard
+        } else {
+            nocache_headers();
+            wp_redirect(home_url('/'));
+            exit;
+        }
     }
 
     return $current_user;

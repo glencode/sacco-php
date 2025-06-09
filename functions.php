@@ -1408,7 +1408,8 @@ add_action('admin_notices', 'sacco_php_custom_dashboard_welcome');
  * Redirect subscriber accounts to front end
  */
 function sacco_php_redirect_subscriber() {
-    if ( current_user_can('subscriber') && !is_admin() ) {
+    // Only redirect subscribers who are NOT members from admin areas
+    if ( current_user_can('subscriber') && !current_user_can('member') && is_admin() && !is_ajax() ) {
         wp_redirect( home_url() );
         exit;
     }
@@ -1484,10 +1485,175 @@ function daystar_enqueue_login_scripts() {
         true
     );
 
-    wp_localize_script('daystar-login-form', 'daystarData', array(
+    wp_localize_script('daystar-login-form', 'daystar_ajax', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
         'dashboardUrl' => home_url('/member-dashboard'),
-        'homeUrl' => home_url()
+        'homeUrl' => home_url(),
+        'login_nonce' => wp_create_nonce('daystar_login')
     ));
 }
 add_action('wp_enqueue_scripts', 'daystar_enqueue_login_scripts');
+
+// Redirect users after login based on their role
+function daystar_login_redirect($redirect_to, $request, $user) {
+    // Check if there's an error
+    if (isset($user->errors) && !empty($user->errors)) {
+        return $redirect_to;
+    }
+
+    // Check if user has a role
+    if (isset($user->roles) && is_array($user->roles)) {
+        // Admin users go to admin dashboard
+        if (in_array('administrator', $user->roles)) {
+            return admin_url();
+        }
+        
+        // Members go to member dashboard
+        if (in_array('member', $user->roles)) {
+            return home_url('/member-dashboard/');
+        }
+    }
+    
+    // Default redirect for other users
+    return home_url('/member-dashboard/');
+}
+add_filter('login_redirect', 'daystar_login_redirect', 10, 3);
+
+// Prevent access to wp-admin for non-admin users
+function daystar_restrict_admin_access() {
+    if (is_admin() && !current_user_can('administrator') && !(defined('DOING_AJAX') && DOING_AJAX)) {
+        wp_redirect(home_url('/member-dashboard/'));
+        exit;
+    }
+}
+add_action('admin_init', 'daystar_restrict_admin_access');
+
+// Create member role if it doesn't exist
+function daystar_add_member_role() {
+    if (!get_role('member')) {
+        add_role('member', 'Member', array(
+            'read' => true,
+            'edit_posts' => false,
+            'delete_posts' => false,
+        ));
+    }
+}
+add_action('init', 'daystar_add_member_role');
+
+// Custom login URL rewrite
+function daystar_custom_login_init() {
+    add_rewrite_rule('^login/?$', 'index.php?pagename=login', 'top');
+    add_rewrite_rule('^member-dashboard/?$', 'index.php?pagename=member-dashboard', 'top');
+}
+add_action('init', 'daystar_custom_login_init');
+
+// Flush rewrite rules on theme activation
+function daystar_flush_rewrite_rules() {
+    daystar_custom_login_init();
+    flush_rewrite_rules();
+}
+register_activation_hook(__FILE__, 'daystar_flush_rewrite_rules');
+
+// Handle logout and redirect
+function daystar_logout_redirect() {
+    wp_redirect(home_url('/login/'));
+    exit;
+}
+add_action('wp_logout', 'daystar_logout_redirect');
+
+// Ensure member dashboard page exists on theme activation
+function daystar_create_required_pages() {
+    // Create member dashboard page
+    $dashboard_page = get_page_by_path('member-dashboard');
+    if (!$dashboard_page) {
+        $page_id = wp_insert_post(array(
+            'post_title' => 'Member Dashboard',
+            'post_name' => 'member-dashboard',
+            'post_content' => '',
+            'post_status' => 'publish',
+            'post_type' => 'page',
+            'post_author' => 1
+        ));
+        
+        if ($page_id) {
+            update_post_meta($page_id, '_wp_page_template', 'page-member-dashboard.php');
+        }
+    }
+}
+add_action('after_setup_theme', 'daystar_create_required_pages');
+
+// Custom authentication function for member numbers
+function daystar_authenticate_member($user, $username, $password) {
+    // If WordPress already authenticated the user, return it
+    if ($user instanceof WP_User) {
+        return $user;
+    }
+
+    // Check if the username looks like a member number (starts with DSM or is numeric)
+    if (preg_match('/^(DSM\d+|\d+)$/', $username)) {
+        // Look for user by member number in user meta
+        $users = get_users(array(
+            'meta_key' => 'member_number',
+            'meta_value' => $username,
+            'number' => 1
+        ));
+
+        if (!empty($users)) {
+            $user = $users[0];
+            // Verify password
+            if (wp_check_password($password, $user->user_pass, $user->ID)) {
+                return $user;
+            }
+        }
+    }
+
+    return $user;
+}
+add_filter('authenticate', 'daystar_authenticate_member', 30, 3);
+
+/**
+ * Create database tables for SACCO functionality
+ */
+function daystar_create_database_tables() {
+    global $wpdb;
+    
+    $charset_collate = $wpdb->get_charset_collate();
+    
+    // Contributions table
+    $contributions_table = $wpdb->prefix . 'daystar_contributions';
+    $contributions_sql = "CREATE TABLE {$contributions_table} (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        user_id bigint(20) NOT NULL,
+        amount decimal(10,2) NOT NULL,
+        contribution_date datetime DEFAULT CURRENT_TIMESTAMP,
+        payment_method varchar(50) NOT NULL,
+        reference_number varchar(100),
+        status varchar(20) DEFAULT 'pending',
+        created_at datetime DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        KEY user_id (user_id)
+    ) {$charset_collate};";
+    
+    // Loans table
+    $loans_table = $wpdb->prefix . 'daystar_loans';
+    $loans_sql = "CREATE TABLE {$loans_table} (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        user_id bigint(20) NOT NULL,
+        loan_type varchar(50) NOT NULL,
+        amount decimal(10,2) NOT NULL,
+        interest_rate decimal(5,2) NOT NULL,
+        term_months int(11) NOT NULL,
+        monthly_payment decimal(10,2) NOT NULL,
+        balance decimal(10,2) NOT NULL,
+        loan_date datetime DEFAULT CURRENT_TIMESTAMP,
+        status varchar(20) DEFAULT 'active',
+        created_at datetime DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        KEY user_id (user_id)
+    ) {$charset_collate};";
+    
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($contributions_sql);
+    dbDelta($loans_sql);
+}
+add_action('after_setup_theme', 'daystar_create_database_tables');
