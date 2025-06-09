@@ -110,10 +110,12 @@ jQuery(document).ready(function($) {
         
         // Add action to form data
         formData.append('action', 'daystar_register_member');
+        // Add nonce to form data
+        formData.append(daystarRegistrationData.securityNonceName, daystarRegistrationData.registrationNonce);
         
         // Submit form via AJAX
         $.ajax({
-            url: daystarRegistration.ajaxurl,
+            url: daystarRegistrationData.ajaxurl, // Use localized data
             type: 'POST',
             data: formData,
             processData: false,
@@ -127,7 +129,7 @@ jQuery(document).ready(function($) {
                     
                     // Redirect to success page
                     setTimeout(function() {
-                        window.location.href = `${daystarRegistration.homeUrl}/registration-success/?member=${encodeURIComponent(response.data.member_number)}`;
+                        window.location.href = `${daystarRegistrationData.homeUrl}/registration-success/?member=${encodeURIComponent(response.data.member_number)}`; // Use localized data
                     }, 1500);
                 } else {
                     errorsDiv.removeClass('d-none').html(response.data.message);
