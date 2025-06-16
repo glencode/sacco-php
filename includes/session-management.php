@@ -27,12 +27,42 @@ function daystar_authenticate_user($member_id, $password, $remember = false) {
         ];
     }
 
-    $user = wp_authenticate($member_id, $password);
+    // First, try to find user by member number if it's not an email
+    $user = null;
+    if (!is_email($member_id)) {
+        // Look for user by member_number in user meta
+        $users = get_users(array(
+            'meta_key' => 'member_number',
+            'meta_value' => $member_id,
+            'number' => 1
+        ));
+        
+        if (!empty($users)) {
+            $found_user = $users[0];
+            // Now authenticate using the WordPress username and password
+            $user = wp_authenticate($found_user->user_login, $password);
+        } else {
+            // Member number not found, try as username/email
+            $user = wp_authenticate($member_id, $password);
+        }
+    } else {
+        // It's an email, authenticate directly
+        $user = wp_authenticate($member_id, $password);
+    }
 
     if (is_wp_error($user)) {
         return [
             'success' => false,
             'message' => $user->get_error_message(),
+        ];
+    }
+
+    // Check member status before allowing login
+    $member_status = get_user_meta($user->ID, 'member_status', true);
+    if (!empty($member_status) && in_array($member_status, ['suspended', 'rejected'])) {
+        return [
+            'success' => false,
+            'message' => 'Your account is currently ' . $member_status . '. Please contact support for assistance.',
         ];
     }
 
@@ -49,7 +79,7 @@ function daystar_authenticate_user($member_id, $password, $remember = false) {
         'display_name' => $user->display_name,
         'roles' => $user->roles, // Add user roles
         // Example: Fetch and store a custom role or member status if you have one in user meta
-        // 'member_status' => get_user_meta($user->ID, 'member_status', true),
+        'member_status' => get_user_meta($user->ID, 'member_status', true),
     ];
 
     // Store essential data in custom session
@@ -156,12 +186,28 @@ function daystar_is_user_logged_in() {
             return false;
         }
     } else {
-        // This case is unlikely if wp_authenticate and daystar_authenticate_user are correctly linked,
-        // but if WP is logged in and custom session isn't, treat as not fully logged in for Daystar context.
-        // Or, could choose to re-initialize custom session here if WP user is valid.
-        // For now, let's ensure logout to sync states.
-        daystar_logout_user();
-        return false;
+        // WordPress is logged in but custom session isn't set
+        // Re-initialize custom session for existing WordPress user
+        $wp_user = wp_get_current_user();
+        if ($wp_user && $wp_user->ID !== 0) {
+            $user_data_for_session = [
+                'ID' => $wp_user->ID,
+                'user_login' => $wp_user->user_login,
+                'user_email' => $wp_user->user_email,
+                'display_name' => $wp_user->display_name,
+                'roles' => $wp_user->roles,
+                'member_status' => get_user_meta($wp_user->ID, 'member_status', true),
+            ];
+            
+            $_SESSION['daystar_user'] = $user_data_for_session;
+            $_SESSION['daystar_logged_in'] = true;
+            $_SESSION['daystar_login_time'] = time();
+            $_SESSION['daystar_expiry_time'] = time() + (8 * 60 * 60);
+            
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
@@ -384,9 +430,9 @@ function daystar_require_role($required_role, $redirect_url = '/login') {
  */
 function daystar_ajax_login() {
     // Check nonce for security
-    check_ajax_referer('daystar_login_nonce', 'security');
+    check_ajax_referer('daystar_login', 'login_nonce');
     
-    $member_id = isset($_POST['member_id']) ? sanitize_text_field($_POST['member_id']) : '';
+    $member_id = isset($_POST['member_number']) ? sanitize_text_field($_POST['member_number']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $remember = isset($_POST['remember']) && $_POST['remember'] === 'true';
     
@@ -401,7 +447,20 @@ function daystar_ajax_login() {
     // For now, daystar_authenticate_user sets a fixed custom expiry. This is acceptable.
     // If $result['success'] is true, the user is logged in.
     
-    wp_send_json($result);
+    if ($result['success']) {
+        // Get redirect URL from POST data or use default
+        $redirect_to = isset($_POST['redirect_to']) ? esc_url_raw($_POST['redirect_to']) : home_url('/member-dashboard/');
+        
+        wp_send_json_success([
+            'message' => $result['message'],
+            'user' => $result['user'],
+            'redirect_to' => $redirect_to
+        ]);
+    } else {
+        wp_send_json_error([
+            'message' => $result['message']
+        ]);
+    }
 }
 
 /**
@@ -409,7 +468,7 @@ function daystar_ajax_login() {
  */
 function daystar_ajax_register() {
     // Check nonce for security
-    check_ajax_referer('daystar_register_nonce', 'security');
+    check_ajax_referer('daystar_register_member_nonce', 'registrationNonce');
     
     // Sanitize and collect user data
     $user_data = [

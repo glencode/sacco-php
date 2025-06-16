@@ -51,23 +51,40 @@
     
     // Initialize all Swiper sliders
     function initSliders() {
-        // Hero slider on front page
+        // Hero slider on front page with content switching
         if ($('.hero-slider').length) {
-            new Swiper('.hero-slider', {
-                loop: true,
-                autoplay: {
-                    delay: 5000,
-                    disableOnInteraction: false,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-            });
+            try {
+                const heroSwiper = new Swiper('.hero-slider', {
+                    loop: true,
+                    autoplay: {
+                        delay: 5000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    on: {
+                        slideChange: function() {
+                            // Switch slide content
+                            const activeIndex = this.realIndex;
+                            $('.slide-content').removeClass('active');
+                            $(`.slide-content[data-slide="${activeIndex}"]`).addClass('active');
+                        },
+                        init: function() {
+                            // Initialize first slide content
+                            $('.slide-content').removeClass('active');
+                            $('.slide-content[data-slide="0"]').addClass('active');
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Hero slider initialization failed:', error);
+            }
         }
         
         // Testimonials slider
@@ -116,6 +133,51 @@
             });
         });
     }
+    
+    // Member button functionality
+    function initMemberButton() {
+        $('.member-login-btn').on('click', function(e) {
+            e.preventDefault();
+            
+            try {
+                // Check if user is logged in
+                if (typeof wp !== 'undefined' && wp.ajax) {
+                    // WordPress AJAX call to check login status
+                    $.ajax({
+                        url: wp.ajax.settings.url,
+                        type: 'POST',
+                        data: {
+                            action: 'check_member_status',
+                            nonce: wp.ajax.settings.nonce
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                // Redirect to member portal
+                                window.location.href = response.data.redirect_url || '/member-portal';
+                            } else {
+                                // Show login modal or redirect to login
+                                window.location.href = '/wp-login.php';
+                            }
+                        },
+                        error: function() {
+                            // Fallback to login page
+                            window.location.href = '/wp-login.php';
+                        }
+                    });
+                } else {
+                    // Fallback if WordPress AJAX is not available
+                    window.location.href = '/wp-login.php';
+                }
+            } catch (error) {
+                console.error('Member button error:', error);
+                // Fallback to login page
+                window.location.href = '/wp-login.php';
+            }
+        });
+    }
+    
+    // Initialize member functionality
+    initMemberButton();
     
     // Add smooth scrolling to all links with .scroll-link class
     $('.scroll-link').on('click', function(e) {
@@ -385,17 +447,33 @@
     window.addEventListener('resize', optimizedResize);    // Resource hint preloading - preload modern-main.css instead of style.css
     function preloadResources() {
         const resources = [
-            { type: 'style', url: '/wp-content/themes/daystar-website-fixes/assets/css/modern-main.css' },
-            { type: 'style', url: '/wp-content/themes/daystar-website-fixes/assets/css/member-portal.css' },
+            { type: 'style', url: window.location.origin + '/wp-content/themes/daystar-website-fixes/assets/css/modern-main.css' },
+            { type: 'style', url: window.location.origin + '/wp-content/themes/daystar-website-fixes/assets/css/member-portal.css' },
             // Add other critical resources
         ];
 
         resources.forEach(resource => {
+            // Check if stylesheet is already loaded
+            const existingLink = document.querySelector(`link[href="${resource.url}"]`);
+            if (existingLink) return;
+            
             const link = document.createElement('link');
             link.rel = 'preload';
             link.as = 'style';
             link.href = resource.url;
+            // Remove crossOrigin for same-origin resources to avoid credentials mode mismatch
+            
+            // Create a separate stylesheet link
+            const styleLink = document.createElement('link');
+            styleLink.rel = 'stylesheet';
+            styleLink.href = resource.url;
+            styleLink.media = 'print';
+            styleLink.onload = function() {
+                this.media = 'all';
+            };
+            
             document.head.appendChild(link);
+            document.head.appendChild(styleLink);
         });
     }
 

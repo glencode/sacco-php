@@ -351,6 +351,10 @@ function daystar_verify_member() {
         update_user_meta($user_id, 'verification_date', current_time('mysql'));
         update_user_meta($user_id, 'verified_by', $current_user->ID);
         
+        // Change user role from pending_member to member
+        $user->remove_role('pending_member');
+        $user->add_role('member');
+        
         // Send approval email to member
         $subject = 'Your Daystar Co-op Membership has been Approved';
         $message = "Dear {$user->first_name},\n\n";

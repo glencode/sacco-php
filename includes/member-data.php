@@ -55,3 +55,37 @@ function daystar_get_member_balance($user_id) {
 
     return $balance;
 }
+
+/**
+ * Get member's notifications
+ */
+function daystar_get_member_notifications($user_id, $limit = 10) {
+    global $wpdb;
+    
+    $table_name = $wpdb->prefix . 'daystar_notifications';
+    
+    return $wpdb->get_results($wpdb->prepare(
+        "SELECT * FROM {$table_name} WHERE user_id = %d ORDER BY created_at DESC LIMIT %d",
+        $user_id,
+        $limit
+    ));
+}
+
+/**
+ * Get unread notifications count
+ */
+function daystar_get_unread_notifications_count($user_id) {
+    global $wpdb;
+    
+    $table_name = $wpdb->prefix . 'daystar_notifications';
+    
+    return (int) $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM {$table_name} WHERE user_id = %d AND is_read = 0",
+        $user_id
+    ));
+}
+
+// Notification functions are handled in includes/dashboard-notifications.php
+// - daystar_mark_notification_read()
+// - daystar_mark_all_notifications_read()
+// - daystar_add_notification()

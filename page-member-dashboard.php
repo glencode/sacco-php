@@ -29,16 +29,53 @@ $contributions = daystar_get_member_contributions($user_id);
 $loans = daystar_get_member_loans($user_id);
 $account_balance = daystar_get_member_balance($user_id);
 
+// Calculate totals for dashboard display
+$total_contributions = 0;
+if ($contributions) {
+    foreach ($contributions as $contribution) {
+        if ($contribution->status === 'completed') {
+            $total_contributions += (float)$contribution->amount;
+        }
+    }
+}
+
+$total_loans = 0;
+$loan_balance = 0;
+if ($loans) {
+    foreach ($loans as $loan) {
+        $total_loans += (float)$loan->amount;
+        $loan_balance += (float)($loan->balance ?? $loan->amount); // Use balance if available, otherwise full amount
+    }
+}
+
+// Get share capital from user meta (fallback to default)
+$share_capital = get_user_meta($user_id, 'share_capital', true) ?: 50000;
+
+// Ensure all variables have default values
+$total_contributions = $total_contributions ?: 0;
+$total_loans = $total_loans ?: 0;
+$loan_balance = $loan_balance ?: 0;
+$monthly_contribution = $monthly_contribution ?: 0;
+$initial_contribution = $initial_contribution ?: 0;
+
+// Get notifications
+$notifications = daystar_get_member_notifications($user_id, 5);
+$unread_count = daystar_get_unread_notifications_count($user_id);
+
 get_header();
 ?>
 
 <main id="primary" class="site-main dashboard-page">
+    <div class="container">
+        <div class="dashboard-header text-center">
+            <h1 class="dashboard-title">Member Dashboard</h1>
+        </div>
+    
     <?php if ($member_status === 'pending'): ?>
     <!-- Pending Approval View -->
-    <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="card shadow-sm">
+                <div class="glass-card">
                     <div class="card-body text-center p-5">
                         <div class="pending-icon mb-4">
                             <i class="fas fa-clock fa-4x text-warning"></i>
@@ -178,10 +215,9 @@ get_header();
     </div>
     <?php elseif ($member_status === 'suspended'): ?>
     <!-- Suspended Account View -->
-    <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="card shadow-sm">
+                <div class="glass-card">
                     <div class="card-body text-center p-5">
                         <div class="status-icon mb-4">
                             <i class="fas fa-ban fa-4x text-danger"></i>
@@ -270,44 +306,36 @@ get_header();
                                 <div class="member-nav">
                                     <div class="notification-bell">
                                         <i class="fa fa-bell"></i>
-                                        <span class="notification-badge">3</span>
+                                        <span class="notification-badge"><?php echo $unread_count; ?></span>
                                         
                                         <div class="notification-dropdown">
                                             <div class="notification-header">
                                                 <h6>Notifications</h6>
-                                                <a href="#" class="mark-all-read">Mark all as read</a>
+                                                <a href="#" class="mark-all-read" onclick="markAllNotificationsRead()">Mark all as read</a>
                                             </div>
                                             <div class="notification-body">
-                                                <div class="notification-item unread">
-                                                    <div class="notification-icon bg-primary">
-                                                        <i class="fa fa-money-bill"></i>
+                                                <?php if (!empty($notifications)) : ?>
+                                                    <?php foreach ($notifications as $notification) : ?>
+                                                        <div class="notification-item <?php echo $notification->is_read ? '' : 'unread'; ?>">
+                                                            <div class="notification-icon bg-<?php echo $notification->type === 'contribution' ? 'primary' : ($notification->type === 'loan' ? 'success' : 'info'); ?>">
+                                                                <i class="fa fa-<?php echo $notification->type === 'contribution' ? 'money-bill' : ($notification->type === 'loan' ? 'check-circle' : 'info-circle'); ?>"></i>
+                                                            </div>
+                                                            <div class="notification-content">
+                                                                <p><?php echo esc_html($notification->message); ?></p>
+                                                                <small><?php echo human_time_diff(strtotime($notification->created_at), current_time('timestamp')) . ' ago'; ?></small>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php else : ?>
+                                                    <div class="notification-item">
+                                                        <div class="notification-content">
+                                                            <p>No notifications yet.</p>
+                                                        </div>
                                                     </div>
-                                                    <div class="notification-content">
-                                                        <p>Your contribution of KES 5,000 has been received.</p>
-                                                        <small>2 hours ago</small>
-                                                    </div>
-                                                </div>
-                                                <div class="notification-item unread">
-                                                    <div class="notification-icon bg-success">
-                                                        <i class="fa fa-check-circle"></i>
-                                                    </div>
-                                                    <div class="notification-content">
-                                                        <p>Your loan application has been approved.</p>
-                                                        <small>Yesterday</small>
-                                                    </div>
-                                                </div>
-                                                <div class="notification-item">
-                                                    <div class="notification-icon bg-info">
-                                                        <i class="fa fa-info-circle"></i>
-                                                    </div>
-                                                    <div class="notification-content">
-                                                        <p>Annual General Meeting scheduled for June 15, 2025.</p>
-                                                        <small>3 days ago</small>
-                                                    </div>
-                                                </div>
+                                                <?php endif; ?>
                                             </div>
                                             <div class="notification-footer">
-                                                <a href="#" class="view-all">View all notifications</a>
+                                                <a href="#notifications" class="view-all" data-toggle="tab">View all notifications</a>
                                             </div>
                                         </div>
                                     </div>
@@ -355,7 +383,7 @@ get_header();
                         <!-- Dashboard Overview -->
                         <div class="tab-pane fade show active" id="dashboard-overview">
                             <!-- Member Info Card -->
-                            <div class="card member-info-card mb-4">
+                            <div class="glass-card member-info-card mb-4">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -392,7 +420,7 @@ get_header();
                                                 </div>
                                                 <div class="summary-item">
                                                     <div class="summary-label">Share Capital</div>
-                                                    <div class="summary-value">KES 50,000.00</div>
+                                                    <div class="summary-value">KES <?php echo number_format($share_capital, 2); ?></div>
                                                 </div>
                                                 <div class="summary-item">
                                                     <div class="summary-label">Total Loans</div>
@@ -411,7 +439,7 @@ get_header();
                             <!-- Dashboard Stats -->
                             <div class="row">
                                 <div class="col-md-6 col-lg-3 mb-4">
-                                    <div class="card dashboard-stat-card">
+                                    <div class="glass-card dashboard-stat-card">
                                         <div class="card-body">
                                             <div class="stat-icon bg-primary">
                                                 <i class="fa fa-money-bill-wave"></i>
@@ -426,7 +454,7 @@ get_header();
                                 </div>
                                 
                                 <div class="col-md-6 col-lg-3 mb-4">
-                                    <div class="card dashboard-stat-card">
+                                    <div class="glass-card dashboard-stat-card">
                                         <div class="card-body">
                                             <div class="stat-icon bg-success">
                                                 <i class="fa fa-chart-line"></i>
@@ -441,7 +469,7 @@ get_header();
                                 </div>
                                 
                                 <div class="col-md-6 col-lg-3 mb-4">
-                                    <div class="card dashboard-stat-card">
+                                    <div class="glass-card dashboard-stat-card">
                                         <div class="card-body">
                                             <div class="stat-icon bg-info">
                                                 <i class="fa fa-hand-holding-usd"></i>
@@ -456,7 +484,7 @@ get_header();
                                 </div>
                                 
                                 <div class="col-md-6 col-lg-3 mb-4">
-                                    <div class="card dashboard-stat-card">
+                                    <div class="glass-card dashboard-stat-card">
                                         <div class="card-body">
                                             <div class="stat-icon bg-warning">
                                                 <i class="fa fa-calendar-alt"></i>
@@ -474,7 +502,7 @@ get_header();
                             <!-- Charts Row -->
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <div class="card">
+                                    <div class="glass-card">
                                         <div class="card-header">
                                             <h5 class="card-title">Contribution History</h5>
                                         </div>
@@ -485,7 +513,7 @@ get_header();
                                 </div>
                                 
                                 <div class="col-md-6 mb-4">
-                                    <div class="card">
+                                    <div class="glass-card">
                                         <div class="card-header">
                                             <h5 class="card-title">Loan Balance</h5>
                                         </div>
@@ -556,7 +584,7 @@ get_header();
                         
                         <!-- Contributions Tab -->
                         <div class="tab-pane fade" id="contributions">
-                            <div class="card">
+                            <div class="glass-card">
                                 <div class="card-header">
                                     <h5 class="card-title">Contribution History</h5>
                                 </div>
@@ -621,7 +649,7 @@ get_header();
                         
                         <!-- Loans Tab -->
                         <div class="tab-pane fade" id="loans">
-                            <div class="card">
+                            <div class="glass-card">
                                 <div class="card-header">
                                     <h5 class="card-title">My Loans</h5>
                                 </div>
@@ -652,7 +680,7 @@ get_header();
                                     <?php if (!empty($loans)) : ?>
                                         <?php foreach ($loans as $loan) : ?>
                                             <div class="loan-item mb-4">
-                                                <div class="card">
+                                                <div class="glass-card">
                                                     <div class="card-header">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <h6 class="mb-0"><?php echo esc_html($loan['type']); ?> - <?php echo esc_html($loan['id']); ?></h6>
@@ -787,7 +815,7 @@ get_header();
                         
                         <!-- Loan Application Tab -->
                         <div class="tab-pane fade" id="loan-application">
-                            <div class="card">
+                            <div class="glass-card">
                                 <div class="card-header">
                                     <h5 class="card-title">Loan Application</h5>
                                 </div>
@@ -925,7 +953,7 @@ get_header();
                         
                         <!-- Make Payment Tab -->
                         <div class="tab-pane fade" id="make-payment">
-                            <div class="card">
+                            <div class="glass-card">
                                 <div class="card-header">
                                     <h5 class="card-title">Make Payment</h5>
                                 </div>
@@ -984,7 +1012,7 @@ get_header();
                         
                         <!-- Account Settings Tab -->
                         <div class="tab-pane fade" id="account-settings">
-                            <div class="card">
+                            <div class="glass-card">
                                 <div class="card-header">
                                     <h5 class="card-title">Account Settings</h5>
                                     <ul class="nav nav-tabs card-header-tabs mt-3" id="account-settings-tabs" role="tablist">

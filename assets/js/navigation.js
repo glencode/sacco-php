@@ -5,9 +5,9 @@
  * navigation support for dropdown menus.
  */
 
-// Enhanced navigation functionality
+// Enhanced navigation functionality with modern multi-level support
 (function() {
-    const siteNavigation = document.getElementById('site-navigation');
+    const siteNavigation = document.getElementById('site-navigation') || document.querySelector('.main-navigation');
     const button = siteNavigation?.querySelector('.menu-toggle');
     const closeButton = siteNavigation?.querySelector('.mobile-menu-close');
     const menu = siteNavigation?.querySelector('ul');

@@ -208,8 +208,11 @@ function sacco_php_scripts() {    // Modern main CSS - load this first as it con
     // Font Awesome
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', array(), '5.15.4', 'all');
     
+    // Navigation styles
+    wp_enqueue_style('daystar-navigation', get_template_directory_uri() . '/assets/css/navigation.css', array('sacco-php-modern-main'), _S_VERSION);
+    
     // Swiper CSS
-    wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css', array(), '8.0.0', 'all');
+    wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0', 'all');
       // AOS CSS
     wp_enqueue_style('aos-css', 'https://unpkg.com/aos@2.3.1/dist/aos.css', array(), '2.3.1');
     
@@ -224,8 +227,8 @@ function sacco_php_scripts() {    // Modern main CSS - load this first as it con
     // Bootstrap JS
     wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.1.3', true);
     
-    // Swiper JS
-    wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js', array('jquery'), '8.0.0', true);
+    // Swiper JS - Updated to latest stable version
+    wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array('jquery'), '11.0.0', true);
     
     // Chart.js
     wp_enqueue_script('chart-js', 'https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js', array(), '3.7.1', true);
@@ -239,12 +242,22 @@ function sacco_php_scripts() {    // Modern main CSS - load this first as it con
     // UI/UX Enhancements
     wp_enqueue_script('sacco-enhancements', get_template_directory_uri() . '/assets/js/enhancements.js', array('jquery', 'aos-js'), _S_VERSION, true);
     
+    // Navigation functionality
+    wp_enqueue_script('daystar-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array('jquery'), _S_VERSION, true);
+    
     // Main custom JS (depends on all other scripts)
     wp_enqueue_script('sacco-php-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'bootstrap-js', 'swiper-js', 'chart-js', 'aos-js', 'sacco-glassmorphism', 'sacco-enhancements'), _S_VERSION, true);
 
-    // Front page specific JS
+    // Front page specific styles and JS
     if (is_front_page()) {
+        wp_enqueue_style('sacco-php-front-page-css', get_template_directory_uri() . '/assets/css/front-page.css', array('sacco-php-modern-main'), _S_VERSION);
         wp_enqueue_script('sacco-php-front-page', get_template_directory_uri() . '/assets/js/front-page.js', array('sacco-php-main'), _S_VERSION, true);
+        
+        // Localize script for AJAX calls
+        wp_localize_script('sacco-php-front-page', 'daystar_ajax', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('daystar_ajax_nonce')
+        ));
     }
 
     // Comments script
@@ -1145,6 +1158,26 @@ function sacco_php_product_page_styles() {
     if (is_page_template('page-about.php')) {
         wp_enqueue_style('sacco-about', get_template_directory_uri() . '/assets/css/about.css', array(), _S_VERSION);
     }
+    
+    // Credit Policy Page
+    if (is_page_template('page-credit-policy.php')) {
+        wp_enqueue_style('sacco-credit-policy', get_template_directory_uri() . '/assets/css/page-credit-policy.css', array(), _S_VERSION);
+    }
+    
+    // Enhanced Loan Application Page
+    if (is_page_template('page-loan-application-enhanced.php')) {
+        wp_enqueue_style('sacco-loan-application-enhanced', get_template_directory_uri() . '/page-loan-application-enhanced.css', array(), _S_VERSION);
+    }
+    
+    // Loan Dashboard Page
+    if (is_page_template('page-loan-dashboard.php')) {
+        wp_enqueue_style('sacco-loan-dashboard', get_template_directory_uri() . '/page-loan-dashboard.css', array(), _S_VERSION);
+    }
+    
+    // Member Profile Page
+    if (is_page_template('page-member-profile.php')) {
+        wp_enqueue_style('sacco-member-profile', get_template_directory_uri() . '/assets/css/page-member-profile.css', array(), _S_VERSION);
+    }
 }
 add_action('wp_enqueue_scripts', 'sacco_php_product_page_styles');
 
@@ -1227,6 +1260,8 @@ endif;
 // Load custom theme functionalities from the includes directory
 $theme_includes_path = get_template_directory() . '/includes/';
 
+require_once $theme_includes_path . 'database-setup.php';
+require_once $theme_includes_path . 'member-data.php';
 require_once $theme_includes_path . 'session-management.php';
 require_once $theme_includes_path . 'member-registration.php';
 require_once $theme_includes_path . 'member-profile.php';
@@ -1326,23 +1361,43 @@ function daystar_enqueue_member_dashboard_scripts() {
         return;
     }
 
+    // Enqueue CSS
+    wp_enqueue_style('daystar-member-dashboard-css', 
+        get_template_directory_uri() . '/assets/css/member-dashboard.css',
+        array(),
+        '1.0.0'
+    );
+
+    // Enqueue JS
     wp_enqueue_script('daystar-member-dashboard', 
         get_template_directory_uri() . '/assets/js/member-dashboard.js',
         array('jquery'),
         '1.0.0',
         true
     );
+    
+    wp_enqueue_script('daystar-notifications', 
+        get_template_directory_uri() . '/assets/js/notifications.js',
+        array('jquery'),
+        '1.0.0',
+        true
+    );
 
     // Add localization data for AJAX
-    wp_localize_script('daystar-member-dashboard', 'daystarData', array(
-        'ajaxurl' => admin_url('admin-ajax.php'),
+    wp_localize_script('daystar-notifications', 'daystarData', array(
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('daystar_notifications_nonce'),
+        'userId' => get_current_user_id(),
         'documentUploadNonce' => wp_create_nonce('daystar_document_upload')
     ));
 }
 add_action('wp_enqueue_scripts', 'daystar_enqueue_member_dashboard_scripts');
 
+// AJAX handlers for notifications are handled in includes/dashboard-notifications.php
+
 require_once get_template_directory() . '/includes/auth-helper.php';
 require_once get_template_directory() . '/includes/login-handler.php';
+require_once get_template_directory() . '/ajax-handlers.php';
 
 /**
  * Customizations for the WordPress admin area
@@ -1531,8 +1586,8 @@ function daystar_login_redirect($redirect_to, $request, $user) {
             return admin_url();
         }
         
-        // Members go to member dashboard
-        if (in_array('member', $user->roles)) {
+        // Members and pending members go to member dashboard
+        if (in_array('member', $user->roles) || in_array('pending_member', $user->roles)) {
             return home_url('/member-dashboard/');
         }
     }
@@ -1545,8 +1600,11 @@ add_filter('login_redirect', 'daystar_login_redirect', 10, 3);
 // Prevent access to wp-admin for non-admin users
 function daystar_restrict_admin_access() {
     if (is_admin() && !current_user_can('administrator') && !(defined('DOING_AJAX') && DOING_AJAX)) {
-        wp_redirect(home_url('/member-dashboard/'));
-        exit;
+        // Allow members and pending members to access member dashboard
+        if (current_user_can('member') || in_array('pending_member', wp_get_current_user()->roles)) {
+            wp_redirect(home_url('/member-dashboard/'));
+            exit;
+        }
     }
 }
 add_action('admin_init', 'daystar_restrict_admin_access');
@@ -1556,6 +1614,7 @@ function daystar_add_member_role() {
     if (!get_role('member')) {
         add_role('member', 'Member', array(
             'read' => true,
+            'member' => true,
             'edit_posts' => false,
             'delete_posts' => false,
         ));
@@ -1565,7 +1624,19 @@ function daystar_add_member_role() {
     if (!get_role('pending_member')) {
         add_role('pending_member', 'Pending Member', array(
             'read' => true,
+            'member' => true,
         ));
+    }
+    
+    // Update existing roles to ensure they have the member capability
+    $member_role = get_role('member');
+    if ($member_role && !$member_role->has_cap('member')) {
+        $member_role->add_cap('member');
+    }
+    
+    $pending_member_role = get_role('pending_member');
+    if ($pending_member_role && !$pending_member_role->has_cap('member')) {
+        $pending_member_role->add_cap('member');
     }
 }
 add_action('init', 'daystar_add_member_role');
@@ -1641,49 +1712,59 @@ function daystar_authenticate_member($user, $username, $password) {
 }
 add_filter('authenticate', 'daystar_authenticate_member', 30, 3);
 
-/**
- * Create database tables for SACCO functionality
- */
-function daystar_create_database_tables() {
-    global $wpdb;
+// Database tables are created via includes/database-setup.php
+// The function daystar_create_database_tables() is defined there and called via after_setup_theme hook
+
+// AJAX handler for member status check
+function check_member_status_ajax() {
+    // Verify nonce for security
+    if (!wp_verify_nonce($_POST['nonce'], 'wp_ajax_nonce')) {
+        wp_die('Security check failed');
+    }
     
-    $charset_collate = $wpdb->get_charset_collate();
+    $response = array();
     
-    // Contributions table
-    $contributions_table = $wpdb->prefix . 'daystar_contributions';
-    $contributions_sql = "CREATE TABLE {$contributions_table} (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        user_id bigint(20) NOT NULL,
-        amount decimal(10,2) NOT NULL,
-        contribution_date datetime DEFAULT CURRENT_TIMESTAMP,
-        payment_method varchar(50) NOT NULL,
-        reference_number varchar(100),
-        status varchar(20) DEFAULT 'pending',
-        created_at datetime DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (id),
-        KEY user_id (user_id)
-    ) {$charset_collate};";
+    if (is_user_logged_in()) {
+        $current_user = wp_get_current_user();
+        $member_number = get_user_meta($current_user->ID, 'member_number', true);
+        
+        if ($member_number) {
+            // User is a logged-in member
+            $response['success'] = true;
+            $response['data'] = array(
+                'redirect_url' => home_url('/member-dashboard/'),
+                'member_number' => $member_number,
+                'user_name' => $current_user->display_name
+            );
+        } else {
+            // User is logged in but not a member
+            $response['success'] = false;
+            $response['data'] = array(
+                'message' => 'User is not a registered member'
+            );
+        }
+    } else {
+        // User is not logged in
+        $response['success'] = false;
+        $response['data'] = array(
+            'message' => 'User not logged in'
+        );
+    }
     
-    // Loans table
-    $loans_table = $wpdb->prefix . 'daystar_loans';
-    $loans_sql = "CREATE TABLE {$loans_table} (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        user_id bigint(20) NOT NULL,
-        loan_type varchar(50) NOT NULL,
-        amount decimal(10,2) NOT NULL,
-        interest_rate decimal(5,2) NOT NULL,
-        term_months int(11) NOT NULL,
-        monthly_payment decimal(10,2) NOT NULL,
-        balance decimal(10,2) NOT NULL,
-        loan_date datetime DEFAULT CURRENT_TIMESTAMP,
-        status varchar(20) DEFAULT 'active',
-        created_at datetime DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (id),
-        KEY user_id (user_id)
-    ) {$charset_collate};";
-    
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($contributions_sql);
-    dbDelta($loans_sql);
+    wp_send_json($response);
 }
-add_action('after_setup_theme', 'daystar_create_database_tables');
+add_action('wp_ajax_check_member_status', 'check_member_status_ajax');
+add_action('wp_ajax_nopriv_check_member_status', 'check_member_status_ajax');
+
+// Localize AJAX for frontend
+ function daystar_localize_ajax() {
+     wp_localize_script('jquery', 'wp', array(
+         'ajax' => array(
+             'settings' => array(
+                 'url' => admin_url('admin-ajax.php'),
+                 'nonce' => wp_create_nonce('wp_ajax_nonce')
+             )
+         )
+     ));
+ }
+ add_action('wp_enqueue_scripts', 'daystar_localize_ajax');

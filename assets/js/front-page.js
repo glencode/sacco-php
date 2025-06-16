@@ -34,6 +34,317 @@ function ensureDependencies() {
     initializePage();
 }
 
+// Modern Hero Slider with Glassmorphism
+const modernHeroSlider = {
+    currentSlide: 0,
+    slides: [],
+    autoplayInterval: null,
+    autoplayDelay: 5000,
+
+    init: function() {
+        this.slides = document.querySelectorAll('.hero-slide');
+        if (this.slides.length > 1) {
+            this.createNavigation();
+            this.bindEvents();
+            this.startAutoplay();
+        }
+        this.initQuickActions();
+    },
+
+    createNavigation: function() {
+        const heroSection = document.querySelector('.hero-section');
+        const navContainer = document.createElement('div');
+        navContainer.className = 'hero-nav';
+        
+        for (let i = 0; i < this.slides.length; i++) {
+            const dot = document.createElement('div');
+            dot.className = `hero-dot ${i === 0 ? 'active' : ''}`;
+            dot.setAttribute('data-slide', i);
+            navContainer.appendChild(dot);
+        }
+        
+        heroSection.appendChild(navContainer);
+    },
+
+    bindEvents: function() {
+        const self = this;
+        
+        // Dot navigation
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('hero-dot')) {
+                const slideIndex = parseInt(e.target.getAttribute('data-slide'));
+                self.goToSlide(slideIndex);
+            }
+        });
+
+        // Pause on hover
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+            heroSection.addEventListener('mouseenter', () => self.stopAutoplay());
+            heroSection.addEventListener('mouseleave', () => self.startAutoplay());
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.which === 37) { // Left arrow
+                self.previousSlide();
+            } else if (e.which === 39) { // Right arrow
+                self.nextSlide();
+            }
+        });
+    },
+
+    goToSlide: function(index) {
+        if (index === this.currentSlide) return;
+
+        // Remove active class from current slide and dot
+        this.slides[this.currentSlide].classList.remove('active');
+        const currentDot = document.querySelector(`.hero-dot[data-slide="${this.currentSlide}"]`);
+        if (currentDot) currentDot.classList.remove('active');
+
+        // Update current slide
+        this.currentSlide = index;
+
+        // Add active class to new slide and dot
+        this.slides[this.currentSlide].classList.add('active');
+        const newDot = document.querySelector(`.hero-dot[data-slide="${this.currentSlide}"]`);
+        if (newDot) newDot.classList.add('active');
+    },
+
+    nextSlide: function() {
+        const nextIndex = (this.currentSlide + 1) % this.slides.length;
+        this.goToSlide(nextIndex);
+    },
+
+    previousSlide: function() {
+        const prevIndex = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
+        this.goToSlide(prevIndex);
+    },
+
+    startAutoplay: function() {
+        const self = this;
+        this.autoplayInterval = setInterval(function() {
+            self.nextSlide();
+        }, this.autoplayDelay);
+    },
+
+    stopAutoplay: function() {
+        if (this.autoplayInterval) {
+            clearInterval(this.autoplayInterval);
+            this.autoplayInterval = null;
+        }
+    },
+
+    initQuickActions: function() {
+        const quickActionItems = document.querySelectorAll('.quick-action-item');
+        quickActionItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                modernHeroSlider.handleQuickAction(action);
+            });
+        });
+    },
+
+    handleQuickAction: function(action) {
+        const actions = {
+            'login': '/login',
+            'register': '/register',
+            'calculator': '/loan-calculator',
+            'contact': '/contact',
+            'products': '/products-services',
+            'about': '/about'
+        };
+        
+        if (actions[action]) {
+            window.location.href = actions[action];
+        }
+    }
+};
+
+// Statistics Counter Animation
+const statsCounter = {
+    init: function() {
+        this.bindScrollEvent();
+    },
+
+    bindScrollEvent: function() {
+        const self = this;
+        window.addEventListener('scroll', function() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(function(element) {
+                if (!element.classList.contains('counted') && self.isInViewport(element)) {
+                    self.animateCounter(element);
+                    element.classList.add('counted');
+                }
+            });
+        });
+    },
+
+    isInViewport: function(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    },
+
+    animateCounter: function(element) {
+        const target = parseInt(element.getAttribute('data-count')) || parseInt(element.textContent.replace(/[^0-9]/g, ''));
+        const duration = 2000;
+        const increment = target / (duration / 16);
+        let current = 0;
+
+        const timer = setInterval(function() {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current).toLocaleString();
+        }, 16);
+    }
+};
+
+// Dynamic Content Loader
+const dynamicContentLoader = {
+    init: function() {
+        this.loadHeroSlides();
+        this.loadStats();
+        this.loadServices();
+    },
+
+    loadHeroSlides: function() {
+        if (typeof daystar_ajax !== 'undefined') {
+            fetch(daystar_ajax.ajax_url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    action: 'get_hero_slides',
+                    nonce: daystar_ajax.nonce
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.slides) {
+                    this.updateHeroSlides(data.data.slides);
+                }
+            })
+            .catch(error => console.log('Failed to load hero slides:', error));
+        }
+    },
+
+    updateHeroSlides: function(slides) {
+        const heroSlider = document.querySelector('.hero-slider');
+        if (!heroSlider) return;
+        
+        heroSlider.innerHTML = '';
+
+        slides.forEach((slide, index) => {
+            const slideElement = document.createElement('div');
+            slideElement.className = `hero-slide ${index === 0 ? 'active' : ''}`;
+            slideElement.style.backgroundImage = `url('${slide.image}')`;
+            
+            slideElement.innerHTML = `
+                <div class="hero-slide-content">
+                    <h2>${slide.title}</h2>
+                    <p>${slide.description}</p>
+                </div>
+            `;
+            
+            heroSlider.appendChild(slideElement);
+        });
+
+        // Reinitialize slider
+        modernHeroSlider.init();
+    },
+
+    loadStats: function() {
+        if (typeof daystar_ajax !== 'undefined') {
+            fetch(daystar_ajax.ajax_url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    action: 'get_homepage_stats',
+                    nonce: daystar_ajax.nonce
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.updateStats(data.data);
+                }
+            })
+            .catch(error => console.log('Failed to load stats:', error));
+        }
+    },
+
+    updateStats: function(stats) {
+        if (stats.members) {
+            const membersElement = document.querySelector('.stat-number[data-stat="members"]');
+            if (membersElement) membersElement.setAttribute('data-count', stats.members);
+        }
+        if (stats.loans_disbursed) {
+            const loansElement = document.querySelector('.stat-number[data-stat="loans"]');
+            if (loansElement) loansElement.setAttribute('data-count', stats.loans_disbursed);
+        }
+        if (stats.total_savings) {
+            const savingsElement = document.querySelector('.stat-number[data-stat="savings"]');
+            if (savingsElement) savingsElement.setAttribute('data-count', stats.total_savings);
+        }
+        if (stats.years_serving) {
+            const yearsElement = document.querySelector('.stat-number[data-stat="years"]');
+            if (yearsElement) yearsElement.setAttribute('data-count', stats.years_serving);
+        }
+    },
+
+    loadServices: function() {
+        if (typeof daystar_ajax !== 'undefined') {
+            fetch(daystar_ajax.ajax_url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    action: 'get_featured_services',
+                    nonce: daystar_ajax.nonce
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.services) {
+                    this.updateServices(data.data.services);
+                }
+            })
+            .catch(error => console.log('Failed to load services:', error));
+        }
+    },
+
+    updateServices: function(services) {
+        const servicesGrid = document.querySelector('.services-grid');
+        if (!servicesGrid) return;
+        
+        servicesGrid.innerHTML = '';
+
+        services.forEach(service => {
+            const serviceCard = document.createElement('div');
+            serviceCard.className = 'service-card animate-on-scroll';
+            serviceCard.innerHTML = `
+                <i class="service-icon ${service.icon}"></i>
+                <h3 class="service-title">${service.title}</h3>
+                <p class="service-description">${service.description}</p>
+                <a href="${service.link}" class="service-link">Learn More →</a>
+            `;
+            servicesGrid.appendChild(serviceCard);
+        });
+    }
+};
+
 // Helper function to load scripts dynamically
 function loadScript(url, callback) {
     var script = document.createElement('script');
@@ -45,6 +356,41 @@ function loadScript(url, callback) {
 
 // Initialize page functionality
 function initializePage() {
+    console.log('Initializing front page...');
+    
+    // Initialize AOS (Animate On Scroll)
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+    }
+    
+    // Initialize modern hero slider
+    modernHeroSlider.init();
+    
+    // Initialize statistics counter
+    statsCounter.init();
+    
+    // Load dynamic content
+    dynamicContentLoader.init();
+    
+    // Initialize scroll animations
+    initScrollAnimations();
+    
+    // Initialize parallax effects
+    initParallaxEffects();
+    
+    // Initialize smooth scrolling
+    initSmoothScrolling();
+    
+    // Initialize glassmorphism effects
+    initGlassmorphismEffects();
+    
+    console.log('Front page initialization complete');
+    
     // Initialize when document is ready
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize AOS with enhanced settings
@@ -56,133 +402,195 @@ function initializePage() {
             easing: 'ease-out-cubic'
         });
 
-        // Enhanced Hero Slider
-        const heroSwiper = new Swiper('.hero-slider', {
-            slidesPerView: 1,
-            spaceBetween: 0,
-            loop: true,
-            autoplay: {
-                delay: 6000,
-                disableOnInteraction: false,
-            },
-            effect: 'fade',
-            fadeEffect: {
-                crossFade: true
-            },
-            speed: 1500,
-            parallax: true,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-                renderBullet: function (index, className) {
-                    return '<span class="' + className + '"><span class="bullet-inner"></span></span>';
+        // Enhanced Hero Slider - Fixed loop warning
+        const heroSlides = document.querySelectorAll('.hero-slider .swiper-slide');
+        if (heroSlides.length > 0) {
+            const heroSwiper = new Swiper('.hero-slider', {
+                slidesPerView: 1,
+                spaceBetween: 0,
+                loop: heroSlides.length > 1, // Only enable loop if more than 1 slide
+                autoplay: heroSlides.length > 1 ? {
+                    delay: 6000,
+                    disableOnInteraction: false,
+                } : false,
+                effect: 'fade',
+                fadeEffect: {
+                    crossFade: true
                 },
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            on: {
-                init: function() {
-                    this.el.addEventListener('mouseenter', () => {
-                        this.autoplay.stop();
-                    });
-                    this.el.addEventListener('mouseleave', () => {
-                        this.autoplay.start();
-                    });
+                speed: 1500,
+                parallax: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    renderBullet: function (index, className) {
+                        return '<span class="' + className + '"><span class="bullet-inner"></span></span>';
+                    },
                 },
-                slideChangeTransitionStart: function () {
-                    const activeSlide = this.slides[this.activeIndex];
-                    const elements = activeSlide.querySelectorAll('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]');
-                    elements.forEach(el => {
-                        el.style.opacity = '0';
-                        el.style.transform = 'translate3d(0, 50px, 0)';
-                    });
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
                 },
-                slideChangeTransitionEnd: function () {
-                    const activeSlide = this.slides[this.activeIndex];
-                    const elements = activeSlide.querySelectorAll('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]');
-                    elements.forEach((el, index) => {
-                        setTimeout(() => {
-                            el.style.opacity = '1';
-                            el.style.transform = 'translate3d(0, 0, 0)';
-                            el.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s cubic-bezier(0.4, 0, 0.2, 1)';
-                        }, index * 200);
-                    });
+                on: {
+                    init: function() {
+                        if (this.autoplay && heroSlides.length > 1) {
+                            this.el.addEventListener('mouseenter', () => {
+                                this.autoplay.stop();
+                            });
+                            this.el.addEventListener('mouseleave', () => {
+                                this.autoplay.start();
+                            });
+                        }
+                    },
+                    slideChangeTransitionStart: function () {
+                        const activeSlide = this.slides[this.activeIndex];
+                        const elements = activeSlide.querySelectorAll('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]');
+                        elements.forEach(el => {
+                            el.style.opacity = '0';
+                            el.style.transform = 'translate3d(0, 50px, 0)';
+                        });
+                    },
+                    slideChangeTransitionEnd: function () {
+                        const activeSlide = this.slides[this.activeIndex];
+                        const elements = activeSlide.querySelectorAll('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]');
+                        elements.forEach((el, index) => {
+                            setTimeout(() => {
+                                el.style.opacity = '1';
+                                el.style.transform = 'translate3d(0, 0, 0)';
+                                el.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                            }, index * 200);
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
 
-        // Partners Slider
-        const partnersSwiper = new Swiper('.partners-slider', {
-            slidesPerView: 2,
-            spaceBetween: 30,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 3,
-                },
-                768: {
-                    slidesPerView: 4,
-                },
-                1024: {
-                    slidesPerView: 5,
-                },
-            }
-        });
+        // Partners Slider - Fixed loop warning
+        const partnerSlides = document.querySelectorAll('.partners-slider .swiper-slide');
+        if (partnerSlides.length > 0) {
+            const partnersSwiper = new Swiper('.partners-slider', {
+                slidesPerView: 2,
+                spaceBetween: 30,
+                loop: partnerSlides.length > 5, // Only enable loop if more slides than max view
+                autoplay: partnerSlides.length > 2 ? {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                } : false,
+                breakpoints: {
+                    640: {
+                        slidesPerView: 3,
+                    },
+                    768: {
+                        slidesPerView: 4,
+                    },
+                    1024: {
+                        slidesPerView: 5,
+                    },
+                }
+            });
+        }
 
-        // Enhanced Testimonials Slider
-        const testimonialsSlider = new Swiper('.testimonials-slider', {
-            slidesPerView: 1,
-            spaceBetween: 30,
-            loop: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            effect: 'fade',
-            fadeEffect: {
-                crossFade: true
-            },
-            speed: 1000,
-            pagination: {
-                el: '.testimonials-pagination',
-                clickable: true,
-                renderBullet: function (index, className) {
-                    return `<span class="${className}"></span>`;
+        // Enhanced Testimonials Slider - Fixed loop warning
+        const testimonialSlides = document.querySelectorAll('.testimonials-slider .swiper-slide');
+        if (testimonialSlides.length > 0) {
+            const testimonialsSlider = new Swiper('.testimonials-slider', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: testimonialSlides.length > 1, // Only enable loop if more than 1 slide
+                autoplay: testimonialSlides.length > 1 ? {
+                    delay: 6000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                } : false,
+                effect: 'coverflow',
+                coverflowEffect: {
+                    rotate: 15,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 1,
+                    slideShadows: true,
                 },
-            },
-            breakpoints: {
-                768: {
-                    slidesPerView: 2,
-                    effect: 'slide'
+                speed: 800,
+                centeredSlides: true,
+                navigation: {
+                    nextEl: '.testimonials-next',
+                    prevEl: '.testimonials-prev',
                 },
-                1024: {
-                    slidesPerView: 3,
-                    effect: 'slide'
+                pagination: {
+                    el: '.testimonials-pagination',
+                    clickable: true,
+                    dynamicBullets: true,
+                    renderBullet: function (index, className) {
+                        return `<span class="${className}"></span>`;
+                    },
+                },
+                breakpoints: {
+                    480: {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+                        effect: 'slide'
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 25,
+                        effect: 'slide'
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                        effect: 'slide'
+                    }
+                },
+                on: {
+                    init: function () {
+                        // Add enhanced class to all testimonial cards
+                        this.slides.forEach(slide => {
+                            const card = slide.querySelector('.testimonial-card');
+                            if (card) {
+                                card.classList.add('enhanced');
+                            }
+                        });
+                    },
+                    slideChange: function () {
+                        // Add enhanced animations
+                        const activeSlide = this.slides[this.activeIndex];
+                        if (activeSlide) {
+                            const content = activeSlide.querySelectorAll('.testimonial-content, .testimonial-author, .testimonial-rating');
+                            content.forEach((el, index) => {
+                                el.style.opacity = '0';
+                                el.style.transform = 'translateY(30px)';
+                                setTimeout(() => {
+                                    el.style.opacity = '1';
+                                    el.style.transform = 'translateY(0)';
+                                    el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                                }, index * 150);
+                            });
+                        }
+                    },
+                    transitionStart: function () {
+                        // Add quote icon animation
+                        this.slides.forEach(slide => {
+                            const quoteIcon = slide.querySelector('.testimonial-quote-icon');
+                            if (quoteIcon) {
+                                quoteIcon.style.transform = 'scale(0.8) rotate(-10deg)';
+                                quoteIcon.style.opacity = '0.5';
+                            }
+                        });
+                    },
+                    transitionEnd: function () {
+                        // Reset quote icon animation
+                        const activeSlide = this.slides[this.activeIndex];
+                        if (activeSlide) {
+                            const quoteIcon = activeSlide.querySelector('.testimonial-quote-icon');
+                            if (quoteIcon) {
+                                quoteIcon.style.transform = 'scale(1) rotate(0deg)';
+                                quoteIcon.style.opacity = '0.2';
+                                quoteIcon.style.transition = 'all 0.4s ease';
+                            }
+                        }
+                    }
                 }
-            },
-            on: {
-                slideChange: function () {
-                    // Add fade-in animation to active slide content
-                    const activeSlide = this.slides[this.activeIndex];
-                    const content = activeSlide.querySelectorAll('.testimonial-text, .testimonial-author');
-                    content.forEach((el, index) => {
-                        el.style.opacity = '0';
-                        el.style.transform = 'translateY(20px)';
-                        setTimeout(() => {
-                            el.style.opacity = '1';
-                            el.style.transform = 'translateY(0)';
-                            el.style.transition = 'all 0.5s ease';
-                        }, index * 200);
-                    });
-                }
-            }
-        });
+            });
+        }
 
         // Stats Counter Animation
         function animateNumber(element, final, duration = 2000) {
@@ -423,6 +831,72 @@ function initializePage() {
         
         // Initialize intersection observer for animations
         initIntersectionObserver();
+    });
+}
+
+// Scroll animations for elements
+function initScrollAnimations() {
+    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    animatedElements.forEach(element => {
+        observer.observe(element);
+    });
+}
+
+// Parallax effects for hero section
+function initParallaxEffects() {
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const parallaxElements = document.querySelectorAll('.parallax-element');
+        
+        parallaxElements.forEach(element => {
+            const speed = element.dataset.speed || 0.5;
+            const yPos = -(scrolled * speed);
+            element.style.transform = `translateY(${yPos}px)`;
+        });
+    });
+}
+
+// Smooth scrolling for anchor links
+function initSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            if (href && href !== '#' && href.length > 1) {
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
+}
+
+// Glassmorphism effect on scroll
+function initGlassmorphismEffects() {
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const quickActionsPanel = document.querySelector('.quick-actions-panel');
+        
+        if (quickActionsPanel) {
+            const opacity = Math.min(0.95, 0.7 + (scrolled / 1000));
+            quickActionsPanel.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+        }
     });
 }
 

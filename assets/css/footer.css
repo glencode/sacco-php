@@ -1,0 +1,389 @@
+/**
+ * Footer Styles for Daystar Multi-Purpose Co-op Society Ltd.
+ * Professional footer design with consistent branding
+ */
+
+/* Main Footer */
+.site-footer {
+    background: linear-gradient(135deg, var(--primary-color, #005A9C) 0%, #003d6b 100%);
+    color: #ffffff;
+    padding: 3rem 0 1rem;
+    margin-top: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.site-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="footerGrain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="0.5" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23footerGrain)"/></svg>') repeat;
+    pointer-events: none;
+}
+
+/* Footer Content */
+.footer-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Footer Widgets */
+.footer-widget {
+    margin-bottom: 2rem;
+}
+
+.footer-widget h3 {
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.footer-widget h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--secondary-color, #FFC107);
+    border-radius: 2px;
+}
+
+.footer-widget p {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.footer-widget ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-widget ul li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.footer-widget ul li::before {
+    content: '\f105';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--secondary-color, #FFC107);
+}
+
+.footer-widget ul li a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-widget ul li a:hover {
+    color: var(--secondary-color, #FFC107);
+    padding-left: 0.5rem;
+}
+
+/* Contact Information */
+.contact-info {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contact-info li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding: 0;
+}
+
+.contact-info li::before {
+    display: none;
+}
+
+.contact-info li i {
+    color: var(--secondary-color, #FFC107);
+    font-size: 1.1rem;
+    margin-right: 1rem;
+    margin-top: 0.25rem;
+    min-width: 20px;
+}
+
+.contact-info li span {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
+}
+
+/* Social Media Links */
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.social-links a:hover {
+    background-color: var(--secondary-color, #FFC107);
+    color: var(--primary-color, #005A9C);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
+}
+
+/* Newsletter Signup */
+.newsletter-form {
+    margin-top: 1.5rem;
+}
+
+.newsletter-form .input-group {
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.newsletter-form .form-control {
+    border: none;
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(255, 255, 255, 0.95);
+    color: var(--text-color, #212529);
+}
+
+.newsletter-form .form-control:focus {
+    box-shadow: none;
+    background-color: #ffffff;
+}
+
+.newsletter-form .btn {
+    background-color: var(--secondary-color, #FFC107);
+    border-color: var(--secondary-color, #FFC107);
+    color: var(--primary-color, #005A9C);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.newsletter-form .btn:hover {
+    background-color: #e0a800;
+    transform: translateX(-2px);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 1.5rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.footer-bottom a {
+    color: var(--secondary-color, #FFC107);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom a:hover {
+    color: #ffffff;
+}
+
+/* Footer Logo */
+.footer-logo {
+    max-width: 200px;
+    margin-bottom: 1.5rem;
+}
+
+.footer-logo img {
+    max-width: 100%;
+    height: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+
+/* Quick Links Grid */
+.quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.quick-links-grid a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quick-links-grid a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--secondary-color, #FFC107);
+    transform: translateY(-2px);
+}
+
+.quick-links-grid a i {
+    margin-right: 0.75rem;
+    color: var(--secondary-color, #FFC107);
+    font-size: 1.1rem;
+    min-width: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 767.98px) {
+    .site-footer {
+        padding: 2rem 0 1rem;
+        margin-top: 2rem;
+    }
+    
+    .footer-widget {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .footer-widget h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .quick-links-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-info li {
+        justify-content: center;
+        text-align: left;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .footer-widget h3 {
+        font-size: 1.1rem;
+    }
+    
+    .social-links a {
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+    
+    .newsletter-form .input-group {
+        flex-direction: column;
+        border-radius: 8px;
+    }
+    
+    .newsletter-form .form-control {
+        border-radius: 8px 8px 0 0;
+        margin-bottom: -1px;
+    }
+    
+    .newsletter-form .btn {
+        border-radius: 0 0 8px 8px;
+    }
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color, #005A9C);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0, 90, 156, 0.3);
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background-color: var(--secondary-color, #FFC107);
+    color: var(--primary-color, #005A9C);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+}
+
+/* Footer Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.footer-widget {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.footer-widget:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.footer-widget:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.footer-widget:nth-child(4) {
+    animation-delay: 0.3s;
+}
