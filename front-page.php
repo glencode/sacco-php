@@ -14,14 +14,14 @@ get_header();
         <!-- Hero Background Slider -->
         <div class="hero-slider swiper">
             <div class="swiper-wrapper">
-                <!-- Default slides - will be replaced by dynamic content -->
-                <div class="swiper-slide hero-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/hero-bg-1.jpeg')">
+                <!-- Dynamic slides with proper background images -->
+                <div class="swiper-slide hero-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/hero-bg-1.jpeg');">
                     <div class="hero-overlay"></div>
                 </div>
-                <div class="swiper-slide hero-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/hero-bg-2.jpg')">
+                <div class="swiper-slide hero-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/hero-bg-2.jpg');">
                     <div class="hero-overlay"></div>
                 </div>
-                <div class="swiper-slide hero-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/hero-bg-3.jpg')">
+                <div class="swiper-slide hero-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/hero-bg-3.jpg');">
                     <div class="hero-overlay"></div>
                 </div>
             </div>
@@ -47,94 +47,15 @@ get_header();
                 
                 <!-- Navigation Items -->
                 <div class="collapse navbar-collapse hero-nav-menu" id="heroNavbarMain">
-                    <ul class="navbar-nav ms-auto hero-main-menu">
-                        <li class="nav-item">
-                            <a class="nav-link <?php echo is_front_page() ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/')); ?>">Home</a>
-                        </li>
-                        
-                        <li class="nav-item dropdown has-submenu">
-                            <a class="nav-link dropdown-toggle <?php echo is_page('about-us') || is_page('our-history') || is_page('management-team') || is_page('board-of-directors') ? 'active' : ''; ?>" href="#" id="heroAboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                About Us
-                                <i class="fas fa-chevron-down submenu-indicator"></i>
-                            </a>
-                            <ul class="dropdown-menu hero-submenu" aria-labelledby="heroAboutDropdown">
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('about-us')); ?>">About Us</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('our-history')); ?>">Our History</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('management-team')); ?>">Management Team</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('board-of-directors')); ?>">Board of Directors</a></li>
-                            </ul>
-                        </li>
-                        
-                        <li class="nav-item dropdown has-submenu mega-menu">
-                            <a class="nav-link dropdown-toggle <?php echo is_page('products-services') || is_page('development-loans') || is_page('school-fees-loans') || is_page('emergency-loans') || is_page('special-loans') || is_page('super-saver-loans') || is_page('salary-advance') ? 'active' : ''; ?>" href="#" id="heroProductsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Products & Services
-                                <i class="fas fa-chevron-down submenu-indicator"></i>
-                            </a>
-                            <ul class="dropdown-menu hero-submenu mega-menu-content" aria-labelledby="heroProductsDropdown">
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('products-services')); ?>">All Products & Services</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header">Loan Products</h6></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('development-loans')); ?>">Development Loans</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('school-fees-loans')); ?>">School Fees Loans</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('emergency-loans')); ?>">Emergency Loans</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('special-loans')); ?>">Special Loans</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('super-saver-loans')); ?>">Super Saver Loans</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('salary-advance')); ?>">Salary Advance</a></li>
-                            </ul>
-                        </li>
-                        
-                        <li class="nav-item dropdown has-submenu">
-                            <a class="nav-link dropdown-toggle <?php echo is_page('membership') || is_page('how-to-join') || is_page('membership-benefits') ? 'active' : ''; ?>" href="#" id="heroMembershipDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Membership
-                                <i class="fas fa-chevron-down submenu-indicator"></i>
-                            </a>
-                            <ul class="dropdown-menu hero-submenu" aria-labelledby="heroMembershipDropdown">
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('membership')); ?>">Membership</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('how-to-join')); ?>">How to Join</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('membership-benefits')); ?>">Membership Benefits</a></li>
-                            </ul>
-                        </li>
-                        
-                        <li class="nav-item dropdown has-submenu">
-                            <a class="nav-link dropdown-toggle" href="#" id="heroCalculatorsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Calculators
-                                <i class="fas fa-chevron-down submenu-indicator"></i>
-                            </a>
-                            <ul class="dropdown-menu hero-submenu" aria-labelledby="heroCalculatorsDropdown">
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('loan-calculator')); ?>">Loan Calculator</a></li>
-                                <li><a class="dropdown-item" href="<?php echo esc_url(home_url('savings-calculator')); ?>">Savings Calculator</a></li>
-                            </ul>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo esc_url(home_url('contact-us')); ?>">Contact Us</a>
-                        </li>
-                        
-                        <!-- Enhanced Member Button -->
-                        <?php if (is_user_logged_in()): ?>
-                            <?php $current_user = wp_get_current_user(); ?>
-                            <li class="nav-item dropdown member-dropdown">
-                                <a class="nav-link dropdown-toggle member-btn" href="#" id="heroMemberDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user-circle"></i>
-                                    <span class="member-name"><?php echo esc_html($current_user->display_name); ?></span>
-                                </a>
-                                <ul class="dropdown-menu hero-submenu member-menu" aria-labelledby="heroMemberDropdown">
-                                    <li><a class="dropdown-item" href="<?php echo esc_url(home_url('member-dashboard')); ?>"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="<?php echo esc_url(home_url('my-account')); ?>"><i class="fas fa-user-cog"></i> My Account</a></li>
-                                    <li><a class="dropdown-item" href="<?php echo esc_url(home_url('my-loans')); ?>"><i class="fas fa-money-bill-wave"></i> My Loans</a></li>
-                                    <li><a class="dropdown-item" href="<?php echo esc_url(home_url('my-savings')); ?>"><i class="fas fa-piggy-bank"></i> My Savings</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="<?php echo wp_logout_url(home_url()); ?>"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                                </ul>
-                            </li>
-                        <?php else: ?>
-                            <li class="nav-item">
-                                <a class="nav-link member-login-btn" href="<?php echo esc_url(home_url('login')); ?>">
-                                    <i class="fas fa-sign-in-alt"></i> Member Login
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
+                    <?php
+                    wp_nav_menu(array(
+                        'theme_location' => 'primary',
+                        'menu_class' => 'navbar-nav ms-auto hero-main-menu',
+                        'container' => false,
+                        'fallback_cb' => false,
+                        'walker' => new WP_Bootstrap_Navwalker(),
+                    ));
+                    ?>
                 </div>
             </div>
         </nav>

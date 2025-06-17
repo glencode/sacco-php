@@ -1,37 +1,59 @@
 // Ensure critical dependencies are available
+let dependenciesLoaded = {
+    jquery: typeof jQuery !== 'undefined',
+    swiper: typeof Swiper !== 'undefined',
+    aos: typeof AOS !== 'undefined'
+};
+let initializationDone = false;
+
+function attemptInitialization() {
+    if (dependenciesLoaded.jquery && dependenciesLoaded.swiper && dependenciesLoaded.aos && !initializationDone) {
+        console.log('All dependencies confirmed. Initializing page and Swiper...');
+        initializePage();
+        initializeSwiper();
+        initializationDone = true; // Set flag to prevent re-initialization
+    }
+}
+
 function ensureDependencies() {
     // Check if jQuery is loaded
-    if (typeof jQuery === 'undefined') {
+    if (!dependenciesLoaded.jquery) {
         console.warn('jQuery not loaded, attempting to load from CDN');
         loadScript('https://code.jquery.com/jquery-3.6.0.min.js', function() {
             console.log('jQuery loaded successfully');
-            initializePage();
+            dependenciesLoaded.jquery = true;
+            attemptInitialization();
         });
-        return;
+    } else {
+        attemptInitialization(); // Attempt init if already loaded
     }
 
     // Check if Swiper is loaded
-    if (typeof Swiper === 'undefined') {
+    if (!dependenciesLoaded.swiper) {
         console.warn('Swiper not loaded, attempting to load from CDN');
         loadScript('https://unpkg.com/swiper@8/swiper-bundle.min.js', function() {
             console.log('Swiper loaded successfully');
-            initializePage();
+            dependenciesLoaded.swiper = true;
+            attemptInitialization();
         });
-        return;
+    } else {
+        attemptInitialization(); // Attempt init if already loaded
     }
 
     // Check if AOS is loaded
-    if (typeof AOS === 'undefined') {
+    if (!dependenciesLoaded.aos) {
         console.warn('AOS not loaded, attempting to load from CDN');
         loadScript('https://unpkg.com/aos@2.3.1/dist/aos.js', function() {
             console.log('AOS loaded successfully');
-            initializePage();
+            dependenciesLoaded.aos = true;
+            attemptInitialization();
         });
-        return;
+    } else {
+        attemptInitialization(); // Attempt init if already loaded
     }
 
-    // If all dependencies are loaded, initialize the page
-    initializePage();
+    // Initial attempt in case all are already loaded synchronously
+    attemptInitialization();
 }
 
 // Modern Hero Slider with Glassmorphism
@@ -368,9 +390,6 @@ function initializePage() {
         });
     }
     
-    // Initialize modern hero slider
-    modernHeroSlider.init();
-    
     // Initialize statistics counter
     statsCounter.init();
     
@@ -390,343 +409,346 @@ function initializePage() {
     initGlassmorphismEffects();
     
     console.log('Front page initialization complete');
-    
-    // Initialize when document is ready
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize AOS with enhanced settings
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 100,
-            delay: 100,
-            easing: 'ease-out-cubic'
-        });
+}
 
-        // Enhanced Hero Slider - Fixed loop warning
-        const heroSlides = document.querySelectorAll('.hero-slider .swiper-slide');
-        if (heroSlides.length > 0) {
-            const heroSwiper = new Swiper('.hero-slider', {
-                slidesPerView: 1,
-                spaceBetween: 0,
-                loop: heroSlides.length > 1, // Only enable loop if more than 1 slide
-                autoplay: heroSlides.length > 1 ? {
-                    delay: 6000,
-                    disableOnInteraction: false,
-                } : false,
-                effect: 'fade',
-                fadeEffect: {
-                    crossFade: true
+// Enhanced Swiper initialization function
+function initializeSwiper() {
+    // Enhanced Hero Slider - Fixed loop warning
+    const heroSlides = document.querySelectorAll('.hero-slider .swiper-slide');
+    if (heroSlides.length > 0) {
+        const heroSwiper = new Swiper('.hero-slider', {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: heroSlides.length > 1, // Only enable loop if more than 1 slide
+            autoplay: heroSlides.length > 1 ? {
+                delay: 6000,
+                disableOnInteraction: false,
+            } : false,
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            },
+            speed: 1500,
+            parallax: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                renderBullet: function (index, className) {
+                    return '<span class="' + className + '"><span class="bullet-inner"></span></span>';
                 },
-                speed: 1500,
-                parallax: true,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                    renderBullet: function (index, className) {
-                        return '<span class="' + className + '"><span class="bullet-inner"></span></span>';
-                    },
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                on: {
-                    init: function() {
-                        if (this.autoplay && heroSlides.length > 1) {
-                            this.el.addEventListener('mouseenter', () => {
-                                this.autoplay.stop();
-                            });
-                            this.el.addEventListener('mouseleave', () => {
-                                this.autoplay.start();
-                            });
-                        }
-                    },
-                    slideChangeTransitionStart: function () {
-                        const activeSlide = this.slides[this.activeIndex];
-                        const elements = activeSlide.querySelectorAll('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]');
-                        elements.forEach(el => {
-                            el.style.opacity = '0';
-                            el.style.transform = 'translate3d(0, 50px, 0)';
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            on: {
+                init: function() {
+                    if (this.autoplay && heroSlides.length > 1) {
+                        this.el.addEventListener('mouseenter', () => {
+                            this.autoplay.stop();
                         });
-                    },
-                    slideChangeTransitionEnd: function () {
-                        const activeSlide = this.slides[this.activeIndex];
-                        const elements = activeSlide.querySelectorAll('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]');
-                        elements.forEach((el, index) => {
-                            setTimeout(() => {
-                                el.style.opacity = '1';
-                                el.style.transform = 'translate3d(0, 0, 0)';
-                                el.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s cubic-bezier(0.4, 0, 0.2, 1)';
-                            }, index * 200);
+                        this.el.addEventListener('mouseleave', () => {
+                            this.autoplay.start();
                         });
                     }
-                }
-            });
-        }
-
-        // Partners Slider - Fixed loop warning
-        const partnerSlides = document.querySelectorAll('.partners-slider .swiper-slide');
-        if (partnerSlides.length > 0) {
-            const partnersSwiper = new Swiper('.partners-slider', {
-                slidesPerView: 2,
-                spaceBetween: 30,
-                loop: partnerSlides.length > 5, // Only enable loop if more slides than max view
-                autoplay: partnerSlides.length > 2 ? {
-                    delay: 3000,
-                    disableOnInteraction: false,
-                } : false,
-                breakpoints: {
-                    640: {
-                        slidesPerView: 3,
-                    },
-                    768: {
-                        slidesPerView: 4,
-                    },
-                    1024: {
-                        slidesPerView: 5,
-                    },
-                }
-            });
-        }
-
-        // Enhanced Testimonials Slider - Fixed loop warning
-        const testimonialSlides = document.querySelectorAll('.testimonials-slider .swiper-slide');
-        if (testimonialSlides.length > 0) {
-            const testimonialsSlider = new Swiper('.testimonials-slider', {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: testimonialSlides.length > 1, // Only enable loop if more than 1 slide
-                autoplay: testimonialSlides.length > 1 ? {
-                    delay: 6000,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true,
-                } : false,
-                effect: 'coverflow',
-                coverflowEffect: {
-                    rotate: 15,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 1,
-                    slideShadows: true,
                 },
-                speed: 800,
-                centeredSlides: true,
-                navigation: {
-                    nextEl: '.testimonials-next',
-                    prevEl: '.testimonials-prev',
+                slideChangeTransitionStart: function () {
+                    const activeSlide = this.slides[this.activeIndex];
+                    const elements = activeSlide.querySelectorAll('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]');
+                    elements.forEach(el => {
+                        el.style.opacity = '0';
+                        el.style.transform = 'translate3d(0, 50px, 0)';
+                    });
                 },
-                pagination: {
-                    el: '.testimonials-pagination',
-                    clickable: true,
-                    dynamicBullets: true,
-                    renderBullet: function (index, className) {
-                        return `<span class="${className}"></span>`;
-                    },
-                },
-                breakpoints: {
-                    480: {
-                        slidesPerView: 1,
-                        spaceBetween: 20,
-                        effect: 'slide'
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 25,
-                        effect: 'slide'
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 30,
-                        effect: 'slide'
-                    }
-                },
-                on: {
-                    init: function () {
-                        // Add enhanced class to all testimonial cards
-                        this.slides.forEach(slide => {
-                            const card = slide.querySelector('.testimonial-card');
-                            if (card) {
-                                card.classList.add('enhanced');
-                            }
-                        });
-                    },
-                    slideChange: function () {
-                        // Add enhanced animations
-                        const activeSlide = this.slides[this.activeIndex];
-                        if (activeSlide) {
-                            const content = activeSlide.querySelectorAll('.testimonial-content, .testimonial-author, .testimonial-rating');
-                            content.forEach((el, index) => {
-                                el.style.opacity = '0';
-                                el.style.transform = 'translateY(30px)';
-                                setTimeout(() => {
-                                    el.style.opacity = '1';
-                                    el.style.transform = 'translateY(0)';
-                                    el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                                }, index * 150);
-                            });
-                        }
-                    },
-                    transitionStart: function () {
-                        // Add quote icon animation
-                        this.slides.forEach(slide => {
-                            const quoteIcon = slide.querySelector('.testimonial-quote-icon');
-                            if (quoteIcon) {
-                                quoteIcon.style.transform = 'scale(0.8) rotate(-10deg)';
-                                quoteIcon.style.opacity = '0.5';
-                            }
-                        });
-                    },
-                    transitionEnd: function () {
-                        // Reset quote icon animation
-                        const activeSlide = this.slides[this.activeIndex];
-                        if (activeSlide) {
-                            const quoteIcon = activeSlide.querySelector('.testimonial-quote-icon');
-                            if (quoteIcon) {
-                                quoteIcon.style.transform = 'scale(1) rotate(0deg)';
-                                quoteIcon.style.opacity = '0.2';
-                                quoteIcon.style.transition = 'all 0.4s ease';
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Stats Counter Animation
-        function animateNumber(element, final, duration = 2000) {
-            let start = 0;
-            const increment = final > 1000 ? 10 : 1;
-            const stepTime = Math.abs(Math.floor(duration / (final / increment)));
-            
-            const timer = setInterval(() => {
-                start += increment;
-                element.textContent = start.toLocaleString();
-                
-                if (start >= final) {
-                    element.textContent = final.toLocaleString();
-                    clearInterval(timer);
-                }
-            }, stepTime);
-        }
-
-        // Initialize counters when they come into view
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (entry.target.classList.contains('stat-number')) {
-                        const finalValue = parseInt(entry.target.dataset.value, 10);
-                        animateNumber(entry.target, finalValue);
-                    }
-                    entry.target.classList.add('animated');
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        // Observe elements
-        document.querySelectorAll('.stat-number').forEach(
-            stat => statsObserver.observe(stat)
-        );
-
-        // Progress bar animation
-        document.querySelectorAll('.stat-progress .progress-bar').forEach(bar => {
-            const width = bar.style.width;
-            bar.style.width = '0';
-            setTimeout(() => {
-                bar.style.width = width;
-            }, 500);
-        });
-
-        // Floating Quick Nav Shadow on Scroll
-        const quickNav = document.querySelector('.floating-quick-nav');
-        if (quickNav) {
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    quickNav.classList.add('shadow-lg');
-                } else {
-                    quickNav.classList.remove('shadow-lg');
-                }
-            });
-        }
-
-        // Feature Cards hover effect with enhanced interaction
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.querySelector('.feature-hover').style.opacity = '1';
-                this.querySelector('.feature-hover').style.transform = 'translateY(0)';
-                
-                const icon = this.querySelector('.feature-icon');
-                icon.style.transform = 'rotateY(360deg)';
-            });
-
-            card.addEventListener('mouseleave', function() {
-                this.querySelector('.feature-hover').style.opacity = '0';
-                this.querySelector('.feature-hover').style.transform = 'translateY(20px)';
-                
-                const icon = this.querySelector('.feature-icon');
-                icon.style.transform = 'rotateY(0deg)';
-            });
-        });
-
-        // Parallax effect for hero section
-        const heroSection = document.querySelector('.hero-section');
-        if (heroSection) {
-            window.addEventListener('scroll', () => {
-                const scrolled = window.pageYOffset;
-                heroSection.style.transform = `translateY(${scrolled * 0.4}px)`;
-            });
-        }
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                slideChangeTransitionEnd: function () {
+                    const activeSlide = this.slides[this.activeIndex];
+                    const elements = activeSlide.querySelectorAll('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]');
+                    elements.forEach((el, index) => {
+                        setTimeout(() => {
+                            el.style.opacity = '1';
+                            el.style.transform = 'translate3d(0, 0, 0)';
+                            el.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                        }, index * 200);
                     });
                 }
-            });
+            }
         });
+    }
 
-        // Initialize preloader
-        const preloader = document.querySelector('.preloader');
-        if (preloader) {
-            window.addEventListener('load', function() {
-                preloader.classList.add('fade-out');
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 500);
-            });
-        }
+    // Partners Slider - Fixed loop warning
+    const partnerSlides = document.querySelectorAll('.partners-slider .swiper-slide');
+    if (partnerSlides.length > 0) {
+        const partnersSwiper = new Swiper('.partners-slider', {
+            slidesPerView: 2,
+            spaceBetween: 30,
+            loop: partnerSlides.length > 5, // Only enable loop if more slides than max view
+            autoplay: partnerSlides.length > 2 ? {
+                delay: 3000,
+                disableOnInteraction: false,
+            } : false,
+            breakpoints: {
+                640: {
+                    slidesPerView: 3,
+                },
+                768: {
+                    slidesPerView: 4,
+                },
+                1024: {
+                    slidesPerView: 5,
+                },
+            }
+        });
+    }
 
-        // Lazy load images
-        const lazyImages = document.querySelectorAll('img[data-src]');
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.add('fade-in');
-                    observer.unobserve(img);
+    // Enhanced Testimonials Slider - Fixed loop warning
+    const testimonialSlides = document.querySelectorAll('.testimonials-slider .swiper-slide');
+    if (testimonialSlides.length > 0) {
+        const testimonialsSlider = new Swiper('.testimonials-slider', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: testimonialSlides.length > 1, // Only enable loop if more than 1 slide
+            autoplay: testimonialSlides.length > 1 ? {
+                delay: 6000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            } : false,
+            effect: 'coverflow',
+            coverflowEffect: {
+                rotate: 15,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+            },
+            speed: 800,
+            centeredSlides: true,
+            navigation: {
+                nextEl: '.testimonials-next',
+                prevEl: '.testimonials-prev',
+            },
+            pagination: {
+                el: '.testimonials-pagination',
+                clickable: true,
+                dynamicBullets: true,
+                renderBullet: function (index, className) {
+                    return `<span class="${className}"></span>`;
+                },
+            },
+            breakpoints: {
+                480: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    effect: 'slide'
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 25,
+                    effect: 'slide'
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                    effect: 'slide'
                 }
-            });
+            },
+            on: {
+                init: function () {
+                    // Add enhanced class to all testimonial cards
+                    this.slides.forEach(slide => {
+                        const card = slide.querySelector('.testimonial-card');
+                        if (card) {
+                            card.classList.add('enhanced');
+                        }
+                    });
+                },
+                slideChange: function () {
+                    // Add enhanced animations
+                    const activeSlide = this.slides[this.activeIndex];
+                    if (activeSlide) {
+                        const content = activeSlide.querySelectorAll('.testimonial-content, .testimonial-author, .testimonial-rating');
+                        content.forEach((el, index) => {
+                            el.style.opacity = '0';
+                            el.style.transform = 'translateY(30px)';
+                            setTimeout(() => {
+                                el.style.opacity = '1';
+                                el.style.transform = 'translateY(0)';
+                                el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                            }, index * 150);
+                        });
+                    }
+                },
+                transitionStart: function () {
+                    // Add quote icon animation
+                    this.slides.forEach(slide => {
+                        const quoteIcon = slide.querySelector('.testimonial-quote-icon');
+                        if (quoteIcon) {
+                            quoteIcon.style.transform = 'scale(0.8) rotate(-10deg)';
+                            quoteIcon.style.opacity = '0.5';
+                        }
+                    });
+                },
+                transitionEnd: function () {
+                    // Reset quote icon animation
+                    const activeSlide = this.slides[this.activeIndex];
+                    if (activeSlide) {
+                        const quoteIcon = activeSlide.querySelector('.testimonial-quote-icon');
+                        if (quoteIcon) {
+                            quoteIcon.style.transform = 'scale(1) rotate(0deg)';
+                            quoteIcon.style.opacity = '0.2';
+                            quoteIcon.style.transition = 'all 0.4s ease';
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Stats Counter Animation
+    function animateNumber(element, final, duration = 2000) {
+        let start = 0;
+        const increment = final > 1000 ? 10 : 1;
+        const stepTime = Math.abs(Math.floor(duration / (final / increment)));
+        
+        const timer = setInterval(() => {
+            start += increment;
+            element.textContent = start.toLocaleString();
+            
+            if (start >= final) {
+                element.textContent = final.toLocaleString();
+                clearInterval(timer);
+            }
+        }, stepTime);
+    }
+
+    // Initialize counters when they come into view
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (entry.target.classList.contains('stat-number')) {
+                    const finalValue = parseInt(entry.target.dataset.value, 10);
+                    animateNumber(entry.target, finalValue);
+                }
+                entry.target.classList.add('animated');
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements
+    document.querySelectorAll('.stat-number').forEach(
+        stat => statsObserver.observe(stat)
+    );
+
+    // Progress bar animation
+    document.querySelectorAll('.stat-progress .progress-bar').forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 500);
+    });
+
+    // Floating Quick Nav Shadow on Scroll
+    const quickNav = document.querySelector('.floating-quick-nav');
+    if (quickNav) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                quickNav.classList.add('shadow-lg');
+            } else {
+                quickNav.classList.remove('shadow-lg');
+            }
+        });
+    }
+
+    // Feature Cards hover effect with enhanced interaction
+    document.querySelectorAll('.feature-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            const featureHover = this.querySelector('.feature-hover');
+            if (featureHover) {
+                featureHover.style.opacity = '1';
+                featureHover.style.transform = 'translateY(0)';
+            }
+            
+            const icon = this.querySelector('.feature-icon');
+            if (icon) {
+                icon.style.transform = 'rotateY(360deg)';
+            }
         });
 
-        lazyImages.forEach(img => imageObserver.observe(img));
+        card.addEventListener('mouseleave', function() {
+            const featureHover = this.querySelector('.feature-hover');
+            if (featureHover) {
+                featureHover.style.opacity = '0';
+                featureHover.style.transform = 'translateY(20px)';
+            }
+            
+            const icon = this.querySelector('.feature-icon');
+            if (icon) {
+                icon.style.transform = 'rotateY(0deg)';
+            }
+        });
+    });
 
-        // Header scroll behavior
-        let lastScroll = 0;
-        const header = document.querySelector('.site-header');
-        
+    // Parallax effect for hero section
+    const heroSection = document.querySelector('.hero-section');
+    if (heroSection) {
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            heroSection.style.transform = `translateY(${scrolled * 0.4}px)`;
+        });
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Initialize preloader
+    const preloader = document.querySelector('.preloader');
+    if (preloader) {
+        window.addEventListener('load', function() {
+            preloader.classList.add('fade-out');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        });
+    }
+
+    // Lazy load images
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.add('fade-in');
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    lazyImages.forEach(img => imageObserver.observe(img));
+
+    // Header scroll behavior
+    let lastScroll = 0;
+    const header = document.querySelector('.site-header');
+    
+    if (header) {
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
             
@@ -747,91 +769,91 @@ function initializePage() {
             
             lastScroll = currentScroll;
         });
+    }
 
-        // Performance optimizations
-        // Debounce scroll and resize events
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
+    // Performance optimizations
+    // Debounce scroll and resize events
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
                 clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
+                func(...args);
             };
-        }
-
-        // Efficient scroll handler
-        const debouncedScroll = debounce(() => {
-            const scrolled = window.pageYOffset;
-            
-            // Update floating nav opacity
-            const floatingNav = document.querySelector('.floating-quick-nav');
-            if (floatingNav) {
-                floatingNav.style.opacity = scrolled > 100 ? '0.9' : '1';
-            }
-            
-            // Update parallax elements
-            document.querySelectorAll('.parallax').forEach(element => {
-                const speed = element.dataset.speed || 0.5;
-                element.style.transform = `translateY(${scrolled * speed}px)`;
-            });
-        }, 10);
-
-        window.addEventListener('scroll', debouncedScroll);
-
-        // Dynamic content loading for infinite scroll sections
-        const loadMoreContent = async (container, page) => {
-            try {
-                const response = await fetch(`/wp-json/wp/v2/posts?page=${page}&per_page=6`);
-                const posts = await response.json();
-                
-                posts.forEach(post => {
-                    const postElement = createPostElement(post);
-                    container.appendChild(postElement);
-                });
-                
-                return posts.length > 0;
-            } catch (error) {
-                console.error('Error loading more content:', error);
-                return false;
-            }
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
         };
+    }
 
-        // Initialize infinite scroll if container exists
-        const contentContainer = document.querySelector('.infinite-scroll-container');
-        if (contentContainer) {
-            let currentPage = 1;
-            let isLoading = false;
+    // Efficient scroll handler
+    const debouncedScroll = debounce(() => {
+        const scrolled = window.pageYOffset;
+        
+        // Update floating nav opacity
+        const floatingNav = document.querySelector('.floating-quick-nav');
+        if (floatingNav) {
+            floatingNav.style.opacity = scrolled > 100 ? '0.9' : '1';
+        }
+        
+        // Update parallax elements
+        document.querySelectorAll('.parallax').forEach(element => {
+            const speed = element.dataset.speed || 0.5;
+            element.style.transform = `translateY(${scrolled * speed}px)`;
+        });
+    }, 10);
+
+    window.addEventListener('scroll', debouncedScroll);
+
+    // Dynamic content loading for infinite scroll sections
+    const loadMoreContent = async (container, page) => {
+        try {
+            const response = await fetch(`/wp-json/wp/v2/posts?page=${page}&per_page=6`);
+            const posts = await response.json();
             
-            const infiniteScrollObserver = new IntersectionObserver(async (entries) => {
-                if (entries[0].isIntersecting && !isLoading) {
-                    isLoading = true;
-                    const hasMore = await loadMoreContent(contentContainer, ++currentPage);
-                    isLoading = false;
-                    
-                    if (!hasMore) {
-                        infiniteScrollObserver.disconnect();
-                    }
-                }
+            posts.forEach(post => {
+                const postElement = createPostElement(post);
+                container.appendChild(postElement);
             });
             
-            infiniteScrollObserver.observe(document.querySelector('.infinite-scroll-trigger'));
+            return posts.length > 0;
+        } catch (error) {
+            console.error('Error loading more content:', error);
+            return false;
         }
-    });
+    };
 
-    // Dynamic content loading
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize dynamic loading for testimonials
-        initDynamicTestimonials();
+    // Initialize infinite scroll if container exists
+    const contentContainer = document.querySelector('.infinite-scroll-container');
+    if (contentContainer) {
+        let currentPage = 1;
+        let isLoading = false;
         
-        // Initialize dynamic loading for products
-        initDynamicProducts();
+        const infiniteScrollObserver = new IntersectionObserver(async (entries) => {
+            if (entries[0].isIntersecting && !isLoading) {
+                isLoading = true;
+                const hasMore = await loadMoreContent(contentContainer, ++currentPage);
+                isLoading = false;
+                
+                if (!hasMore) {
+                    infiniteScrollObserver.disconnect();
+                }
+            }
+        });
         
-        // Initialize intersection observer for animations
-        initIntersectionObserver();
-    });
+        const scrollTrigger = document.querySelector('.infinite-scroll-trigger');
+        if (scrollTrigger) {
+            infiniteScrollObserver.observe(scrollTrigger);
+        }
+    }
+
+    // Initialize dynamic loading for testimonials
+    initDynamicTestimonials();
+    
+    // Initialize dynamic loading for products
+    initDynamicProducts();
+    
+    // Initialize intersection observer for animations
+    initIntersectionObserver();
 }
 
 // Scroll animations for elements
@@ -1016,13 +1038,6 @@ function createProductElement(product) {
 }
 
 function initIntersectionObserver() {
-    // Initialize AOS
-    AOS.init({
-        duration: 800,
-        once: true,
-        offset: 100
-    });
-
     // Lazy load images
     const lazyImages = document.querySelectorAll('img[loading="lazy"]');
     const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -1053,16 +1068,37 @@ function initIntersectionObserver() {
     animatedElements.forEach(element => elementObserver.observe(element));
 }
 
-// Handle preloader
-window.addEventListener('load', function() {
-    const preloader = document.querySelector('.preloader');
-    if (preloader) {
-        preloader.classList.add('preloader-hidden');
-        setTimeout(() => {
-            preloader.style.display = 'none';
-        }, 500);
+// Consolidated preloader handling - replaces the existing preloader code
+function handlePreloader() {
+    const preloader = document.getElementById('preloader');
+    if (!preloader) return;
+    
+    // Function to safely remove preloader
+    function removePreloader() {
+        if (preloader && preloader.style.display !== 'none') {
+            preloader.classList.add('fade-out');
+            setTimeout(() => {
+                if (preloader) {
+                    preloader.style.display = 'none';
+                    preloader.remove(); // Completely remove from DOM
+                }
+            }, 500);
+        }
     }
-});
+    
+    // Remove preloader when page is fully loaded
+    if (document.readyState === 'complete') {
+        removePreloader();
+    } else {
+        window.addEventListener('load', removePreloader);
+    }
+    
+    // Fallback: remove after 3 seconds maximum
+    setTimeout(removePreloader, 3000);
+}
 
-// Run dependency check when DOM is ready
-document.addEventListener('DOMContentLoaded', ensureDependencies);
+// Initialize when document is ready
+document.addEventListener('DOMContentLoaded', function() {
+    handlePreloader(); // Add this line
+    ensureDependencies();
+});

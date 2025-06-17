@@ -126,13 +126,7 @@
 <script src="<?php echo get_template_directory_uri(); ?>/assets/js/enhancements.js"></script>
 
 <script>
-    // Initialize animations
     document.addEventListener('DOMContentLoaded', function() {
-        // Preloader
-        setTimeout(function() {
-            document.getElementById('preloader').style.display = 'none';
-        }, 500);
-        
         // Fade-in animations
         const fadeElements = document.querySelectorAll('.fade-in');
         const observer = new IntersectionObserver((entries) => {

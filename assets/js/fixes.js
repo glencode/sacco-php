@@ -68,18 +68,18 @@ document.addEventListener('DOMContentLoaded', function() {
     whatsappButton.setAttribute('aria-label', 'Contact us on WhatsApp');
     document.body.appendChild(whatsappButton);
     
-    // Fix for preloader
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        window.addEventListener('load', function() {
-            preloader.style.display = 'none';
-        });
-        
-        // Fallback to hide preloader after 3 seconds
-        setTimeout(function() {
-            preloader.style.display = 'none';
-        }, 3000);
-    }
+    // Fix for preloader - REMOVE THIS ENTIRE BLOCK
+    // const preloader = document.getElementById('preloader');
+    // if (preloader) {
+    //     window.addEventListener('load', function() {
+    //         preloader.style.display = 'none';
+    //     });
+    //     
+    //     // Fallback to hide preloader after 3 seconds
+    //     setTimeout(function() {
+    //         preloader.style.display = 'none';
+    //     }, 3000);
+    // }
     
     // Fix for scroll animations
     const fadeElements = document.querySelectorAll('.fade-in');

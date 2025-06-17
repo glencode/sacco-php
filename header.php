@@ -92,7 +92,8 @@
     </div>
 </div>
 
-<!-- Main Navigation -->
+<!-- Main Navigation - Hide on Front Page -->
+<?php if (!is_front_page()): ?>
 <nav class="navbar navbar-expand-lg navbar-light sticky-top main-navigation" id="site-navigation">
     <div class="container">
         <!-- Logo -->
@@ -204,5 +205,6 @@
         </div>
     </div>
 </nav>
+<?php endif; ?>
 
 <div id="content" class="site-content">
