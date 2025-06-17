@@ -1,61 +1,3 @@
-// Ensure critical dependencies are available
-let dependenciesLoaded = {
-    jquery: typeof jQuery !== 'undefined',
-    swiper: typeof Swiper !== 'undefined',
-    aos: typeof AOS !== 'undefined'
-};
-let initializationDone = false;
-
-function attemptInitialization() {
-    if (dependenciesLoaded.jquery && dependenciesLoaded.swiper && dependenciesLoaded.aos && !initializationDone) {
-        console.log('All dependencies confirmed. Initializing page and Swiper...');
-        initializePage();
-        initializeSwiper();
-        initializationDone = true; // Set flag to prevent re-initialization
-    }
-}
-
-function ensureDependencies() {
-    // Check if jQuery is loaded
-    if (!dependenciesLoaded.jquery) {
-        console.warn('jQuery not loaded, attempting to load from CDN');
-        loadScript('https://code.jquery.com/jquery-3.6.0.min.js', function() {
-            console.log('jQuery loaded successfully');
-            dependenciesLoaded.jquery = true;
-            attemptInitialization();
-        });
-    } else {
-        attemptInitialization(); // Attempt init if already loaded
-    }
-
-    // Check if Swiper is loaded
-    if (!dependenciesLoaded.swiper) {
-        console.warn('Swiper not loaded, attempting to load from CDN');
-        loadScript('https://unpkg.com/swiper@8/swiper-bundle.min.js', function() {
-            console.log('Swiper loaded successfully');
-            dependenciesLoaded.swiper = true;
-            attemptInitialization();
-        });
-    } else {
-        attemptInitialization(); // Attempt init if already loaded
-    }
-
-    // Check if AOS is loaded
-    if (!dependenciesLoaded.aos) {
-        console.warn('AOS not loaded, attempting to load from CDN');
-        loadScript('https://unpkg.com/aos@2.3.1/dist/aos.js', function() {
-            console.log('AOS loaded successfully');
-            dependenciesLoaded.aos = true;
-            attemptInitialization();
-        });
-    } else {
-        attemptInitialization(); // Attempt init if already loaded
-    }
-
-    // Initial attempt in case all are already loaded synchronously
-    attemptInitialization();
-}
-
 // Modern Hero Slider with Glassmorphism
 const modernHeroSlider = {
     currentSlide: 0,
@@ -366,15 +308,6 @@ const dynamicContentLoader = {
         });
     }
 };
-
-// Helper function to load scripts dynamically
-function loadScript(url, callback) {
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-    script.onload = callback;
-    document.head.appendChild(script);
-}
 
 // Initialize page functionality
 function initializePage() {
@@ -1100,5 +1033,6 @@ function handlePreloader() {
 // Initialize when document is ready
 document.addEventListener('DOMContentLoaded', function() {
     handlePreloader(); // Add this line
-    ensureDependencies();
+    initializePage();
+    initializeSwiper();
 });

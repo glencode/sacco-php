@@ -1358,4 +1358,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 
 /* --- End Responsiveness & Browser Compatibility Adjustments --- */
 
-[end of assets/css/modern-main.css]
+/* Preloader fade-out animation */
+#preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-out, visibility 0s linear 0.5s;
+}
