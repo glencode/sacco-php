@@ -136,8 +136,8 @@ class DaystarMemberDashboard {
                 
                 loanData.activeLoans.forEach(loan => {
                     activeLoansHtml += `
-                        <div class="loan-item card mb-3">
-                            <div class="card-body">
+                        <div class="loan-item glass-card mb-3">
+                        <div class="card-body">
                                 <h5 class="card-title">${loan.type} <span class="badge ${loan.status === 'Current' ? 'bg-success' : 'bg-warning'}">${loan.status}</span></h5>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -223,7 +223,7 @@ class DaystarMemberDashboard {
         const loanEligibilityContainer = loanSummary.querySelector('.loan-eligibility');
         if (loanEligibilityContainer) {
             let eligibilityHtml = `
-                <div class="card">
+                <div class="glass-card">
                     <div class="card-body">
                         <h5 class="card-title">Loan Eligibility</h5>
                         <p><strong>Maximum Eligible Amount:</strong> KSh ${loanData.eligibility.maxEligibleAmount.toLocaleString()}</p>

@@ -1,1361 +1,1013 @@
-/* --- Global Styles --- */
+/**
+ * Enhanced Modern Main CSS with Glassmorphism and Advanced Effects
+ * Complete redesign with transparent sections and modern animations
+ */
 
-/* Import Google Fonts (Poppins & Roboto are already enqueued in functions.php, so this is for reference) */
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap'); */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap');
 
+/* CSS Variables for consistent theming - Oceanic Theme */
 :root {
-    --primary-color: #005A9C; /* Placeholder Blue */
-    --secondary-color: #FFC107; /* Placeholder Gold */
-    --accent-color: #E91E63; /* Placeholder Pink - for specific accents if needed */
-    --light-neutral: #F8F9FA;
-    --dark-neutral: #343A40;
-    --text-color: #212529;
-    --body-bg: #FFFFFF; /* White background */
-    --glass-bg: rgba(255, 255, 255, 0.25); /* Glassmorphism background */
-    --glass-border-color: rgba(255, 255, 255, 0.5);
-    --border-radius: 0.25rem; /* Standard border radius */
-    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Primary Oceanic Colors */
+    --primary-blue: #006994;
+    --primary-blue-light: rgba(0, 105, 148, 0.8);
+    --primary-blue-dark: #004d6b;
+    --accent-teal: #20B2AA;
+    --accent-coral: #FF7F7F;
+    --accent-seafoam: #40E0D0;
+    --deep-ocean: #003366;
+    --ocean-mist: #B0E0E6;
+    
+    /* Glassmorphism Colors */
+    --glass-white: rgba(255, 255, 255, 0.1);
+    --glass-white-strong: rgba(255, 255, 255, 0.2);
+    --glass-ocean: rgba(0, 105, 148, 0.1);
+    --glass-ocean-strong: rgba(0, 105, 148, 0.2);
+    --glass-teal: rgba(32, 178, 170, 0.1);
+    
+    /* Background Colors - Oceanic Gradients */
+    --bg-primary: linear-gradient(135deg, #006994 0%, #20B2AA 100%);
+    --bg-secondary: linear-gradient(135deg, #40E0D0 0%, #006994 100%);
+    --bg-hero: linear-gradient(135deg, rgba(0, 105, 148, 0.9) 0%, rgba(32, 178, 170, 0.8) 100%);
+    --bg-ocean-depth: linear-gradient(135deg, #003366 0%, #006994 50%, #20B2AA 100%);
+    
+    /* Text Colors */
+    --text-primary: #2c3e50;
+    --text-secondary: #7f8c8d;
+    --text-light: rgba(255, 255, 255, 0.9);
+    --text-white: #ffffff;
+    
+    /* Shadows */
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.15);
+    --shadow-heavy: 0 15px 35px rgba(0, 0, 0, 0.2);
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.1);
+    
+    /* Borders */
+    --border-glass: 1px solid rgba(255, 255, 255, 0.2);
+    --border-radius: 12px;
+    --border-radius-large: 20px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--body-bg);
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    overflow-x: hidden;
+    position: relative;
 }
 
-/* Headings */
+/* Global Background Pattern - Oceanic Theme */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(32, 178, 170, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(0, 105, 148, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(64, 224, 208, 0.05) 0%, transparent 70%),
+        linear-gradient(45deg, transparent 40%, rgba(176, 224, 230, 0.05) 50%, transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 0.75em;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.75rem; }
-h4 { font-size: 1.5rem; }
-h5 { font-size: 1.25rem; }
-h6 { font-size: 1rem; }
-
-/* Links */
-a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: color 0.3s ease, opacity 0.3s ease;
+h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
 }
 
-a:hover, a:focus {
-    color: var(--secondary-color);
-    text-decoration: underline;
-    opacity: 0.85;
+h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
 }
 
-/* Paragraphs */
+h3 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+h4 {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
 p {
     margin-bottom: 1rem;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.7;
 }
 
-/* Basic Container (adjust as per theme's structure if needed) */
+a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-blue-dark);
+    text-decoration: none;
+}
+
+/* Container and Layout */
 .container {
-    width: 90%;
-    max-width: 1200px; /* Max width for larger screens */
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 15px;
-    padding-right: 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-/* Buttons */
+.container-fluid {
+    padding: 0 20px;
+}
+
+/* Enhanced Buttons */
 .btn {
-    display: inline-block;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    border: 1px solid transparent;
-    padding: 0.75rem 1.5rem; /* Generous padding */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 30px;
     font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
     border-radius: var(--border-radius);
-    transition: all 0.3s ease;
-    text-decoration: none; /* Remove underline from button links */
+    cursor: pointer;
+    transition: var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: var(--transition-medium);
+}
+
+.btn:hover::before {
+    left: 100%;
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
-    color: #fff;
-    border-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+    color: var(--text-white);
+    box-shadow: var(--shadow-medium);
 }
 
-.btn-primary:hover, .btn-primary:focus {
-    background-color: #004B80; /* darken(var(--primary-color), 10%) */
-    border-color: #004B80; /* darken(var(--primary-color), 10%) */
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    text-decoration: none; /* Ensure no underline on hover */
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 105, 148, 0.3);
+    color: var(--text-white);
 }
 
 .btn-secondary {
-    background-color: var(--secondary-color);
-    color: var(--dark-neutral); /* Text color that contrasts with gold */
-    border-color: var(--secondary-color);
+    background: var(--glass-white);
+    color: var(--text-primary);
+    border: var(--border-glass);
+    backdrop-filter: blur(20px);
 }
 
-.btn-secondary:hover, .btn-secondary:focus {
-    background-color: #E0A800; /* darken(var(--secondary-color), 10%) */
-    border-color: #E0A800; /* darken(var(--secondary-color), 10%) */
-    color: var(--dark-neutral);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    text-decoration: none; /* Ensure no underline on hover */
+.btn-secondary:hover {
+    background: var(--glass-white-strong);
+    transform: translateY(-2px);
+    color: var(--text-primary);
 }
 
-.btn-outline-primary {
-    background-color: transparent;
-    color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.btn-outline-primary:hover, .btn-outline-primary:focus {
-    background-color: var(--primary-color);
-    color: #fff;
-    text-decoration: none; /* Ensure no underline on hover */
-}
-
-
-/* Forms */
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="password"],
-input[type="search"],
-input[type="number"],
-input[type="url"],
-textarea,
-select {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    color: var(--text-color);
-    background-color: #fff;
-    border: 1px solid #ced4da; /* Standard Bootstrap border color */
-    border-radius: var(--border-radius);
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    box-sizing: border-box; /* Ensure padding doesn't increase width */
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="tel"]:focus,
-input[type="password"]:focus,
-input[type="search"]:focus,
-input[type="number"]:focus,
-input[type="url"]:focus,
-textarea:focus,
-select:focus {
-    border-color: var(--primary-color);
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 90, 156, 0.25); /* rgba(var(--primary-color-rgb, 0, 90, 156), 0.25) */
-}
-
-textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    font-family: 'Poppins', sans-serif;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-/* Utility class for Glassmorphism */
-.glassmorphism {
-    background: var(--glass-bg);
+.btn-outline {
+    background: transparent;
+    color: var(--text-white);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px); /* For Safari */
-    border-radius: calc(var(--border-radius) * 2); /* Slightly larger radius for glass effect */
-    border: 1px solid var(--glass-border-color);
-    box-shadow: var(--box-shadow);
-    padding: 20px; /* Default padding, can be overridden */
 }
 
-/* Accessibility: Skip to content link */
-.skip-to-content {
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: var(--text-white);
+}
+
+/* Enhanced Navigation - TRANSPARENT CLEAN DESIGN */
+.main-navigation,
+.hero-navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    border-bottom: none !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    padding: 15px 0;
+    box-shadow: none !important;
+}
+
+.main-navigation.scrolled,
+.hero-navbar.scrolled {
+    background: rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    padding: 10px 0;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-white) !important;
+    transition: var(--transition-medium);
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    padding: 10px 15px !important;
+    transition: var(--transition-fast);
+    position: relative;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
     position: absolute;
-    left: -9999px;
-    top: auto;
-    width: 1px;
-    height: 1px;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #20B2AA;
+    transition: var(--transition-medium);
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+    width: 80%;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #40E0D0 !important;
+    transform: translateY(-2px);
+    background: transparent !important;
+}
+
+/* Enhanced Dropdown Menus */
+.dropdown-menu {
+    background: rgba(0, 90, 156, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    margin-top: 10px;
+}
+
+.dropdown:hover .dropdown-menu {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+}
+
+.dropdown-item {
+    color: rgba(255, 255, 255, 0.9) !important;
+    transition: all 0.2s ease !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    margin: 2px 8px !important;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-white) !important;
+    transform: translateX(5px) !important;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
-    z-index: -9999;
+    background: var(--bg-hero);
 }
 
-.skip-to-content:focus,
-.skip-to-content:active {
-    color: #fff;
-    background-color: var(--primary-color);
-    left: auto;
-    top: auto;
-    width: auto;
-    height: auto;
-    overflow: auto;
-    padding: 15px;
-    text-align: center;
-    z-index: 99999; /* Ensure it's on top of everything */
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+    pointer-events: none;
 }
 
-/* Basic Table Styling (can be enhanced by Bootstrap or specific component styles) */
-table {
+.hero-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-    background-color: #fff; /* Ensure tables have a background if page bg is transparent/image */
+    height: 100%;
+    z-index: 1;
 }
 
-th, td {
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid #dee2e6; /* Light grey border */
+.hero-slide {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero-slide::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 90, 156, 0.4);
+    z-index: 1;
+}
+
+/* Hero Content Container with Glassmorphism */
+.hero-content-container {
+    position: absolute;
+    top: 50%;
+    left: 80px;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 24px !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    padding: 60px 40px;
+    max-width: 600px;
+    width: calc(100% - 300px);
     text-align: left;
+    animation: fadeInUp 1s ease-out;
 }
 
-thead th {
-    vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6; /* Heavier border for header */
-    font-family: 'Poppins', sans-serif;
+.hero-content-container h1 {
+    color: var(--text-white);
+    margin-bottom: 20px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.hero-content-container p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Quick Actions Panel */
+.quick-actions-panel {
+    position: absolute;
+    right: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+    background: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(30px) !important;
+    -webkit-backdrop-filter: blur(30px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 20px !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    padding: 25px 15px;
+    width: 200px;
+    animation: slideInRight 0.8s ease-out;
+}
+
+.quick-actions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.quick-actions-title {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.1rem;
     font-weight: 600;
-    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-tbody tr:nth-of-type(odd) {
-    background-color: var(--light-neutral); /* Zebra striping for readability */
+.quick-action-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    gap: 10px;
 }
 
-tbody tr:hover {
-    background-color: #e9ecef; /* Light hover effect */
+.quick-action-item i {
+    font-size: 1.2rem;
+    width: 20px;
+    text-align: center;
 }
 
-/* Preloader Style - ensure it's centered and visible */
-#preloader {
+.quick-action-item span {
+    font-weight: 500;
+}
+
+.quick-action-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 90, 156, 0.3);
+    color: rgba(255, 255, 255, 1);
+}
+
+/* Statistics Section */
+.statistics-section {
+    padding: 100px 0;
+    background: rgba(0, 90, 156, 0.1);
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.statistics-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.stat-item {
+    background: rgba(0, 90, 156, 0.1) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: var(--border-radius) !important;
+    transition: all 0.3s ease !important;
+    padding: 40px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-item::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transform: rotate(45deg);
+    transition: var(--transition-slow);
+    opacity: 0;
+}
+
+.stat-item:hover::before {
+    opacity: 1;
+    animation: shimmer 1.5s ease-in-out;
+}
+
+.stat-item:hover {
+    transform: translateY(-8px) scale(1.02) !important;
+    box-shadow: 0 12px 40px rgba(0, 90, 156, 0.2) !important;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--accent-orange);
+    display: block;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Service Cards */
+.service-card,
+.product-card {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 16px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::after,
+.product-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(0, 90, 156, 0.1) 100%);
+    opacity: 0;
+    transition: var(--transition-medium);
+    pointer-events: none;
+}
+
+.service-card:hover::after,
+.product-card:hover::after {
+    opacity: 1;
+}
+
+.service-card:hover,
+.product-card:hover {
+    transform: translateY(-8px) scale(1.02) !important;
+    box-shadow: 0 12px 40px rgba(0, 90, 156, 0.2) !important;
+}
+
+.service-icon,
+.product-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #006994, #20B2AA);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: var(--text-white);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Semi-transparent Sections */
+.section-transparent {
+    background: rgba(0, 90, 156, 0.1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    padding: 80px 0;
+}
+
+.section-transparent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(0, 90, 156, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Floating Elements */
+.floating-element {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    animation: float 15s infinite linear;
+}
+
+/* Swiper Customizations */
+.swiper-pagination-bullet {
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(10px) !important;
+    width: 12px !important;
+    height: 12px !important;
+    margin: 0 5px !important;
+    transition: var(--transition-medium) !important;
+}
+
+.swiper-pagination-bullet-active {
+    background: rgba(255, 255, 255, 0.9) !important;
+    transform: scale(1.2) !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    margin-top: -25px !important;
+    transition: var(--transition-medium) !important;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: scale(1.1) !important;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 18px !important;
+    color: var(--text-white) !important;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed !important;
+    bottom: 30px !important;
+    right: 30px !important;
+    width: 50px !important;
+    height: 50px !important;
+    background: rgba(0, 90, 156, 0.9) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    z-index: 1000 !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: var(--shadow-medium) !important;
+}
+
+.back-to-top:hover {
+    background: var(--primary-blue) !important;
+    transform: translateY(-3px) scale(1.1) !important;
+    box-shadow: var(--shadow-heavy) !important;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px) translateY(-50%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) translateY(-50%);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(0px) rotate(360deg);
+        opacity: 0.7;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Animation Classes */
+.animate-in {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .quick-actions-panel {
+        right: 20px;
+        width: 180px;
+        padding: 20px 12px;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero-content-container {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        width: calc(100% - 40px);
+        max-width: none;
+        margin: 20px;
+        padding: 50px 35px;
+        text-align: center;
+    }
+    
+    .quick-actions-panel {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        width: calc(100% - 40px);
+        margin: 20px auto;
+        padding: 20px;
+    }
+    
+    .quick-actions-grid {
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    
+    .quick-action-item {
+        width: auto;
+        min-width: 120px;
+        margin: 5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-content-container {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        width: calc(100% - 20px);
+        margin: 10px;
+        padding: 40px 25px;
+        text-align: center;
+    }
+    
+    .hero-content-container h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-content-container p {
+        font-size: 1.1rem;
+    }
+    
+    .quick-actions-panel {
+        width: calc(100% - 20px);
+        margin: 10px auto;
+        padding: 15px;
+    }
+    
+    .quick-actions-grid {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .quick-action-item {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .stat-item {
+        margin-bottom: 20px;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .service-card,
+    .product-card {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .hero-content-container {
+        padding: 25px 15px;
+        border-radius: var(--border-radius);
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .quick-actions-panel {
+        padding: 15px;
+    }
+    
+    .back-to-top {
+        width: 45px !important;
+        height: 45px !important;
+        bottom: 20px !important;
+        right: 20px !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .hero-section,
+    .quick-actions-panel,
+    .back-to-top,
+    .floating-element {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .section-transparent {
+        background: white !important;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    :root {
+        --glass-white: rgba(255, 255, 255, 0.3);
+        --glass-blue: rgba(0, 90, 156, 0.3);
+    }
+    
+    .hero-content-container,
+    .quick-actions-panel,
+    .stat-item,
+    .service-card,
+    .product-card {
+        border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .floating-element {
+        animation: none !important;
+    }
+}
+
+/* Focus Styles for Accessibility */
+.btn:focus,
+.nav-link:focus,
+.dropdown-item:focus,
+.quick-action-item:focus {
+    outline: 2px solid var(--accent-orange);
+    outline-offset: 2px;
+}
+
+/* Loading States */
+.loading {
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--body-bg); /* Or a semi-transparent overlay */
-    z-index: 999999; /* Very high z-index */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: rgba(0, 90, 156, 0.1);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
 }
 
-#preloader .spinner-border {
-    width: 3rem;
-    height: 3rem;
-    color: var(--primary-color); /* Use primary color for the spinner */
+/* Utility Classes */
+.text-glass {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Responsive Images */
-img, video, embed, object {
-    max-width: 100%;
-    height: auto;
-    display: block; /* Helps remove extra space below images */
+.bg-glass {
+    background: var(--glass-white);
+    backdrop-filter: blur(20px);
+    border: var(--border-glass);
 }
 
-/* WordPress Core Alignments */
-.alignleft {
-    float: left;
-    margin-right: 1.5em;
-    margin-bottom: 1em; /* Add some bottom margin */
+.shadow-glass {
+    box-shadow: var(--shadow-glass);
 }
 
-.alignright {
-    float: right;
-    margin-left: 1.5em;
-    margin-bottom: 1em; /* Add some bottom margin */
+.border-glass {
+    border: var(--border-glass);
 }
 
-.aligncenter {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 1em; /* Add some bottom margin */
+.transition-smooth {
+    transition: var(--transition-medium);
 }
 
-.alignwide {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 1000px; /* Example, adjust as needed */
-}
-
-.alignfull {
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-    max-width: 100vw;
-    width: 100vw;
-}
-
-/* Clear floats */
-.clear:before,
-.clear:after,
-.entry-content:before,
-.entry-content:after,
-.comment-content:before,
-.comment-content:after,
-.site-header:before,
-.site-header:after,
-.site-content:before,
-.site-content:after,
-.site-footer:before,
-.site-footer:after {
-    content: "";
-    display: table;
-    table-layout: fixed;
-}
-
-.clear:after,
-.entry-content:after,
-.comment-content:after,
-.site-header:after,
-.site-content:after,
-.site-footer:after {
-    clear: both;
-}
-
-/* Basic List Styling */
-ul, ol {
-    margin-bottom: 1rem;
-    padding-left: 1.5em; /* Indent lists */
-}
-
-li > ul,
-li > ol {
-    margin-bottom: 0;
-    margin-left: 1.5em; /* Indent nested lists */
-}
-
-/* Add some more specific global styles for common WordPress elements */
-.screen-reader-text {
-	border: 0;
-	clip: rect(1px, 1px, 1px, 1px);
-	clip-path: inset(50%);
-	height: 1px;
-	margin: -1px;
-	overflow: hidden;
-	padding: 0;
-	position: absolute !important;
-	width: 1px;
-	word-wrap: normal !important; /* Many screen reader and browser combinations announce broken words as they would appear visually. */
-}
-
-/* --- End Global Styles --- */
-
-/* --- Navigation Styles --- */
-
-/* Top Bar */
-.top-bar {
-    background-color: var(--dark-neutral); /* Darker background for top bar */
-    color: var(--light-neutral);
-    padding: 0.5rem 0;
-    font-size: 0.9rem;
-}
-
-.top-bar a {
-    color: var(--light-neutral);
-    transition: color 0.3s ease;
-}
-
-.top-bar a:hover, .top-bar a:focus {
-    color: var(--secondary-color);
-    text-decoration: none;
-}
-
-.top-bar .list-inline-item:not(:last-child) {
-    margin-right: 1rem;
-}
-
-.top-bar .dropdown-menu { /* Style for quick links dropdown in top bar */
-    background-color: var(--dark-neutral);
-    border-color: var(--primary-color);
-}
-
-.top-bar .dropdown-item {
-    color: var(--light-neutral);
-    font-family: 'Roboto', sans-serif; /* Ensure consistent font */
-}
-
-.top-bar .dropdown-item:hover, .top-bar .dropdown-item:focus {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-
-/* Main Navigation */
-.navbar { /* The main navigation bar */
-    background-color: #fff; /* Default white background */
-    padding: 1rem 0;
-    box-shadow: var(--box-shadow);
-    transition: background-color 0.3s ease, padding 0.3s ease;
-}
-
-.navbar.sticky-top {
-    /* Styles for when it becomes sticky - can add glassmorphism here */
-    /* For glassmorphism when sticky:
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--glass-border-color);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    padding: 0.75rem 0; /* Slightly reduce padding when sticky */
-    */
-}
-
-.navbar-brand img {
-    max-height: 50px; /* Adjust as needed based on logo size */
-    transition: max-height 0.3s ease;
-}
-
-/* Reduce logo size slightly when navbar is sticky and smaller */
-.navbar.sticky-top .navbar-brand img {
-    /* max-height: 40px; */
-}
-
-.navbar-nav .nav-link {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    color: var(--dark-neutral);
-    padding: 0.5rem 1rem;
-    margin: 0 0.25rem;
-    border-radius: var(--border-radius);
-    transition: color 0.3s ease, background-color 0.3s ease;
-}
-
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link:focus,
-.navbar-nav .nav-link.active { /* Style for active page link */
-    color: var(--primary-color);
-    background-color: rgba(0, 90, 156, 0.05); /* Light primary background */
-}
-
-/* Dropdown Menus */
-.navbar-nav .dropdown-menu {
-    background-color: #fff;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 0.5rem 0;
-    margin-top: 0.5rem; /* Add some space between toggle and menu */
-}
-
-.navbar-nav .dropdown-item {
-    font-family: 'Roboto', sans-serif;
-    color: var(--dark-neutral);
-    padding: 0.5rem 1.5rem;
-    transition: color 0.3s ease, background-color 0.3s ease;
-}
-
-.navbar-nav .dropdown-item:hover,
-.navbar-nav .dropdown-item:focus {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-.navbar-nav .dropdown-divider {
-    border-top-color: rgba(0,0,0,0.08);
-}
-
-.navbar-nav .dropdown-header {
-    color: var(--primary-color);
-    font-weight: 600;
-    padding: 0.5rem 1.5rem;
-    font-size: 0.9rem;
-}
-
-/* Member Login Button in Navbar */
-.navbar .btn-primary { /* Targeting the login button specifically if it's within .navbar */
-    padding: 0.5rem 1rem; /* Slightly smaller padding for navbar button */
-    font-size: 0.9rem;
-}
-
-/* Mobile Navigation */
-.navbar-toggler {
-    border-color: var(--primary-color);
-}
-
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 90, 156, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); /* Custom color for toggler icon */
-}
-
-/* Styling for the collapsed menu container when it's open */
-.navbar-collapse.show, .navbar-collapse.collapsing {
-    background-color: #fff;
-    padding: 1rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    margin-top: 0.5rem;
-}
-
-@media (max-width: 991.98px) { /* Bootstrap's lg breakpoint */
-    .navbar-nav .nav-link {
-        padding: 0.75rem 0.5rem; /* Adjust padding for mobile */
-        display: block; /* Ensure links take full width */
-        margin-bottom: 0.25rem;
-    }
-
-    .navbar-nav .dropdown-menu {
-        box-shadow: none;
-        border: none;
-        margin-top: 0;
-        padding-left: 1rem; /* Indent dropdown items slightly */
-    }
-
-    .navbar .btn-primary { /* Login button in mobile */
-        display: block;
-        width: 100%;
-        margin-top: 1rem;
-    }
-}
-
-/* --- End Navigation Styles --- */
-/* --- Page-Specific Styling & Effects --- */
-
-/* General Content Area Styling */
-.site-content { /* Or your theme's main content wrapper ID/class */
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-}
-
-.content-area { /* Common class for primary content columns */
-    /* Add any specific padding or margins if needed */
-}
-
-.widget-area { /* Common class for sidebars */
-    /* Add any specific padding or margins if needed */
-}
-
-/* Article/Post Styling */
-article, .post {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    background-color: #fff;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-article:hover, .post:hover {
-    /* Example hover effect for content blocks/cards */
-    /* transform: translateY(-5px); */
-    /* box-shadow: 0 8px 20px rgba(0,0,0,0.12); */
-}
-
-.entry-header {
-    margin-bottom: 1rem;
-}
-
-.entry-title { /* Title of a post or page */
-    color: var(--primary-color);
-    font-size: 2rem; /* Adjust as needed */
-}
-
-.entry-title a {
-    color: inherit; /* Titles that are links should inherit color */
-    text-decoration: none;
-}
-
-.entry-title a:hover {
-    color: var(--secondary-color);
-}
-
-.entry-meta {
-    font-size: 0.85rem;
-    color: #6c757d; /* Bootstrap's text-muted color */
-    margin-bottom: 1rem;
-}
-
-.entry-meta a {
-    color: #6c757d;
-}
-
-.entry-meta a:hover {
-    color: var(--primary-color);
-}
-
-.entry-content p,
-.entry-content ul,
-.entry-content ol,
-.entry-content blockquote {
-    margin-bottom: 1em;
-}
-
-.entry-content ul, .entry-content ol {
-    padding-left: 1.5em;
-}
-
-.entry-content blockquote {
-    border-left: 4px solid var(--primary-color);
-    padding-left: 1em;
-    font-style: italic;
-    color: #555;
-    background-color: var(--light-neutral);
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-}
-
-.entry-content img.aligncenter {
-    margin-bottom: 1em; /* Ensure centered images have bottom margin */
-}
-.entry-content img.alignleft, .entry-content img.alignright {
-     margin-bottom: 0.5em; /* Adjust bottom margin for floated images */
-}
-
-
-/* Example: Hero Section Styling (can be applied to front-page.php or other templates) */
-.hero-section {
-    padding: 4rem 0;
-    background-color: var(--primary-color); /* Or use an image */
-    color: #fff;
-    text-align: center;
-}
-
-.hero-section.glass-effect { /* Example of combining with glassmorphism */
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); /* Example gradient */
-    position: relative;
-    overflow: hidden; /* Important for pseudo-elements if used for glass layers */
-}
-/* If .hero-section.glass-effect is used on an element that itself should be glass: */
-/* .hero-section.glass-effect {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border-color);
-    box-shadow: var(--box-shadow);
-    color: var(--text-color); /* Text color might need to change for readability */
-/* } */
-
-
-.hero-section h1 {
-    color: #fff;
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.hero-section p {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-}
-
-/* Call to Action Section Example */
-.cta-section {
-    padding: 3rem 0;
-    background-color: var(--light-neutral);
-    text-align: center;
-}
-
-.cta-section h2 {
-    margin-bottom: 1rem;
-}
-
-.cta-section p {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-}
-
-/* Card styles for displaying items like products, news, etc. */
-.card-custom {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden; /* To contain image if needed */
-    margin-bottom: 1.5rem; /* Spacing between cards */
-}
-
-.card-custom:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-.card-custom-img-top {
-    width: 100%;
-    height: 200px; /* Fixed height for card images */
-    object-fit: cover; /* Crop images to fit */
-}
-
-.card-custom-body {
-    padding: 1.5rem;
-}
-
-.card-custom-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 0.75rem;
-}
-
-.card-custom-text {
-    font-size: 0.95rem;
-    color: #555;
-    margin-bottom: 1rem;
-}
-
-.card-custom .btn {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-}
-
-
-/* Scroll Effects (AOS) - These are utility classes from the library */
-/* No specific CSS needed here unless you want to override AOS defaults. */
-/* Ensure AOS is initialized in your JavaScript. */
-/* Example: [data-aos="fade-up"], [data-aos="zoom-in"] */
-
-
-/* Hover effects - more specific ones */
-.hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
 .hover-lift:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
 }
 
-.hover-opacity a:hover, a.hover-opacity:hover { /* Apply to parent or link itself */
-    opacity: 0.75;
+.hover-scale:hover {
+    transform: scale(1.05);
 }
 
-
-/* --- End Page-Specific Styling & Effects --- */
-/* --- Member Area Styling --- */
-
-/* Common styles for Login, Registration, and other forms in member area */
-.custom-login-form,
-.custom-registration-form,
-.mpesa-payment-form,
-.member-dashboard { /* Added member-dashboard for general wrapper */
-    max-width: 500px; /* Adjust as needed */
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-}
-
-.custom-login-form h2,
-.custom-registration-form h2,
-.mpesa-payment-form h2,
-.member-dashboard h2 { /* Common heading style */
-    text-align: center;
-    color: var(--primary-color);
-    margin-bottom: 1.5rem;
-}
-
-.custom-login-form p,
-.custom-registration-form p,
-.mpesa-payment-form p {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #6c757d;
-}
-
-.form-group {
-    margin-bottom: 1.25rem;
-}
-
-.form-group label {
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    color: var(--dark-neutral);
-}
-
-.form-control { /* Ensuring Bootstrap's .form-control benefits from our global input styling */
-    display: block;
-    width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--text-color);
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    appearance: none; /* For select elements */
-    border-radius: var(--border-radius);
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-
-.form-control:focus {
-    border-color: var(--primary-color);
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 90, 156, 0.25);
-}
-
-.form-text.text-muted {
-    font-size: 0.875em;
-    color: #6c757d;
-}
-
-.btn-block { /* For buttons that take full width */
-    display: block;
-    width: 100%;
-}
-
-/* WordPress Login Page Customization (styles for /wp-login.php if daystar_custom_login_page is active) */
-body.login {
-    background-color: var(--light-neutral) !important; /* Override WordPress default */
-}
-
-.login #login h1 a { /* The logo on WP login page */
-    background-image: url('../images/daystar multipurpose logo.png'); /* Ensure this path is correct */
-    background-size: contain;
-    width: 200px; /* Adjust as needed */
-    height: 80px; /* Adjust as needed */
-    margin-bottom: 1rem;
-}
-
-.login #loginform {
-    background: #fff;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 2rem;
-}
-
-.login #nav, .login #backtoblog {
-    text-align: center;
-}
-
-.login #nav a, .login #backtoblog a {
-    color: var(--primary-color);
-}
-
-.login #nav a:hover, .login #backtoblog a:hover {
-    color: var(--secondary-color);
-}
-
-/* Custom Registration Page Fields (wp-login.php action=register) */
-#registerform .form-field {
-    margin-bottom: 1rem;
-}
-#registerform label {
-    font-weight: 500;
-}
-#registerform .required {
-    color: var(--accent-color);
-}
-
-
-/* Member Dashboard Specifics */
-.member-dashboard {
-    max-width: 100%; /* Dashboard can be wider */
-    padding: 1.5rem; /* Adjust padding for dashboard context */
-}
-
-.dashboard-welcome h2 {
-    text-align: left; /* Align dashboard welcome left */
-    margin-bottom: 0.5rem;
-}
-.dashboard-welcome p {
-    text-align: left;
-    margin-bottom: 1.5rem;
-}
-
-/* Dashboard Tabs (Bootstrap Navs) */
-.member-dashboard .nav-tabs {
-    margin-bottom: 1.5rem;
-    border-bottom-color: var(--primary-color);
-}
-
-.member-dashboard .nav-tabs .nav-link {
-    color: var(--dark-neutral);
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
-    font-weight: 500;
-    padding: 0.75rem 1.25rem;
-}
-
-.member-dashboard .nav-tabs .nav-link.active,
-.member-dashboard .nav-tabs .nav-link:hover,
-.member-dashboard .nav-tabs .nav-link:focus {
-    color: var(--primary-color);
-    background-color: var(--light-neutral);
-    border-color: var(--primary-color) var(--primary-color) var(--light-neutral);
-}
-
-.member-dashboard .tab-content {
-    padding: 1.5rem;
-    background-color: var(--light-neutral);
-    border: 1px solid var(--primary-color);
-    border-top: none;
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
-}
-
-/* Dashboard Cards */
-.dashboard-cards .card {
-    border: none;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    margin-bottom: 1.5rem;
-    background-color: #fff; /* Ensure cards are white */
-}
-
-.dashboard-cards .card-body {
-    padding: 1.5rem;
-}
-
-.dashboard-cards .card-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.dashboard-cards .card-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--dark-neutral);
-    margin-bottom: 1rem;
-}
-
-/* Recent Transactions Table in Dashboard */
-.recent-transactions h4 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-}
-.recent-transactions .table {
-    background-color: #fff; /* Ensure table background is white */
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-    overflow: hidden; /* For rounded corners on table */
-}
-.recent-transactions .table thead th {
-    background-color: var(--primary-color);
-    color: #fff;
-    border-bottom-width: 0; /* Remove default bottom border */
-}
-.recent-transactions .table .badge { /* For status badges */
-    font-size: 0.85em;
-    padding: 0.4em 0.7em;
-}
-
-/* Profile Tab in Dashboard */
-#profile h4 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-}
-#profile p {
-    font-size: 1rem;
-    color: var(--dark-neutral);
-    text-align: left; /* Override centered p from form common styles */
-}
-#profile p strong {
-    color: var(--primary-color);
-}
-
-/* M-Pesa Payment Form Specifics */
-.mpesa-payment-form .input-group-text { /* For KSh and phone icon */
-    background-color: var(--light-neutral);
-    border-color: #ced4da;
-}
-
-.mpesa-payment-form .payment-info {
-    margin-top: 2rem;
-    padding: 1rem;
-    background-color: var(--light-neutral);
-    border-radius: var(--border-radius);
-    font-size: 0.9rem;
-}
-.mpesa-payment-form .payment-info h5 {
-    color: var(--primary-color);
-    margin-bottom: 0.75rem;
-}
-.mpesa-payment-form .payment-info ol {
-    padding-left: 1.2rem;
-}
-
-.mpesa-payment-form .fa-lock {
-    color: var(--secondary-color);
-}
-
-/* Payment Status Page */
-.payment-status {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-}
-.payment-status h2 {
-    text-align: center;
-    color: var(--primary-color);
-    margin-bottom: 1.5rem;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
 }
-.payment-status .alert {
-    text-align: center;
-    padding: 1rem;
-}
-.payment-status .alert p {
-    margin-bottom: 0.5rem;
-}
-.payment-status .spinner-border { /* From Bootstrap, ensure color */
-    color: var(--primary-color);
-}
-.payment-status .payment-details h4 {
-    color: var(--primary-color);
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-}
-.payment-status .table th {
-    width: 30%; /* Adjust for status page table */
-}
-
-/* Alert messages (general styling for .alert, can be used by shortcodes) */
-.alert {
-    padding: 1rem 1.25rem;
-    margin-bottom: 1rem;
-    border: 1px solid transparent;
-    border-radius: var(--border-radius);
-}
-.alert-warning {
-    color: #856404;
-    background-color: #fff3cd;
-    border-color: #ffeeba;
-}
-.alert-info {
-    color: #0c5460;
-    background-color: #d1ecf1;
-    border-color: #bee5eb;
-}
-.alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-}
-.alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-}
-.alert a {
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-
-/* --- End Member Area Styling --- */
-/* --- Footer Styling --- */
-
-.footer {
-    background-color: var(--dark-neutral); /* Dark background for footer */
-    color: rgba(255, 255, 255, 0.8); /* Light text color, slightly transparent */
-    padding: 3rem 0 0; /* Padding at the top, bottom padding will be handled by .footer-bottom */
-    font-size: 0.95rem;
-}
-
-.footer h4 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.2rem;
-    color: #fff; /* White headings in footer */
-    margin-bottom: 1.25rem;
-    position: relative;
-    padding-bottom: 0.5rem;
-}
-
-/* Underline effect for footer headings */
-.footer h4::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 40px;
-    height: 2px;
-    background-color: var(--secondary-color); /* Accent color for underline */
-}
-
-.footer p {
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 0.75rem;
-}
-
-.footer-logo img {
-    max-height: 60px; /* As per inline style, but good to have in CSS */
-    margin-bottom: 1rem; /* Spacing below logo in footer */
-}
-
-/* Footer Links (Quick Links, Loan Products) */
-.footer-links {
-    list-style: none;
-    padding-left: 0;
-}
-
-.footer-links li {
-    margin-bottom: 0.6rem;
-}
-
-.footer-links a {
-    color: rgba(255, 255, 255, 0.75);
-    text-decoration: none;
-    transition: color 0.3s ease, padding-left 0.3s ease;
-}
-
-.footer-links a:hover, .footer-links a:focus {
-    color: var(--secondary-color);
-    padding-left: 5px; /* Slight indent on hover */
-    text-decoration: none; /* Remove default underline */
-}
-
-/* Social Links */
-.social-links {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 1.5rem;
-}
-
-.social-links li {
-    display: inline-block;
-    margin-right: 0.75rem;
-}
-
-.social-links a {
-    display: inline-flex; /* Use flex for centering icon */
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 1.1rem;
-    text-decoration: none;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-}
 
-.social-links a:hover, .social-links a:focus {
-    background-color: var(--secondary-color);
-    color: var(--dark-neutral);
-    transform: scale(1.1);
+::-webkit-scrollbar-track {
+    background: rgba(0, 90, 156, 0.1);
 }
 
-/* Contact Information in Footer */
-.footer-contact-item {
-    display: flex;
-    align-items: flex-start; /* Align icon and text to the top */
-    margin-bottom: 1rem;
-    color: rgba(255, 255, 255, 0.75);
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 90, 156, 0.5);
+    border-radius: 4px;
 }
 
-.footer-contact-icon {
-    flex-shrink: 0; /* Prevent icon from shrinking */
-    width: 30px; /* Width for the icon container */
-    margin-right: 0.75rem;
-    font-size: 1.2rem; /* Size of the icon itself */
-    color: var(--secondary-color); /* Accent color for icons */
-    text-align: center; /* Center icon if it's smaller than width */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 90, 156, 0.7);
 }
-.footer-contact-item p {
-    margin-bottom: 0.25rem; /* Smaller margin for contact details lines */
-    line-height: 1.5;
-}
-
-/* Footer Bottom */
-.footer-bottom {
-    background-color: rgba(0, 0, 0, 0.2); /* Slightly darker shade for separation */
-    padding: 1.5rem 0;
-    margin-top: 2rem;
-    font-size: 0.9rem;
-}
-
-.footer-bottom p {
-    margin-bottom: 0;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.footer-bottom a {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-bottom a:hover, .footer-bottom a:focus {
-    color: var(--secondary-color);
-    text-decoration: underline;
-}
-
-/* Back to Top Button */
-.back-to-top {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    display: none; /* Hidden by default, shown by JS */
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    color: #fff;
-    text-align: center;
-    line-height: 44px; /* Vertically center icon */
-    font-size: 1.2rem;
-    z-index: 999;
-    transition: background-color 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
-    opacity: 0;
-    visibility: hidden;
-}
-
-.back-to-top.show { /* Class added by JS to show the button */
-    display: block;
-    opacity: 0.8;
-    visibility: visible;
-}
-
-.back-to-top:hover, .back-to-top:focus {
-    background-color: var(--secondary-color);
-    color: var(--dark-neutral);
-    opacity: 1;
-}
-
-/* Ensure jQuery and Bootstrap JS are loaded AFTER custom scripts if they depend on them.
-   The current order in footer.php (Bootstrap -> jQuery -> main.js -> enhancements.js) might be problematic
-   if main.js or enhancements.js use jQuery or Bootstrap APIs without DOMContentLoaded deferral.
-   However, the inline script in footer.php uses DOMContentLoaded, which is good.
-   The `daystar-custom-scripts` (main.js) is also enqueued in footer (true argument).
-*/
-
-/* --- End Footer Styling --- */
-/* --- Responsiveness & Browser Compatibility Adjustments --- */
-
-/* Box Sizing for all elements - often helps with layout consistency */
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-/* Fluid Images and Videos by default (if not already covered) */
-img, video, embed, object {
-    max-width: 100%;
-    height: auto;
-    display: block; /* Helps remove extra space below images */
-}
-
-/* Basic responsive typography adjustments */
-/* Consider using clamp() for fluid typography if broader browser support isn't an issue,
-   or more detailed media queries for font sizes. */
-@media (max-width: 767.98px) { /* Small devices (phones) */
-    body {
-        font-size: 15px; /* Slightly smaller base font for small screens */
-    }
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.75rem; }
-    h3 { font-size: 1.5rem; }
-
-    .container {
-        width: 95%; /* More width on small screens */
-    }
-
-    /* Reduce padding on some sections for smaller screens */
-    .site-content,
-    .hero-section,
-    .cta-section {
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
-    }
-    .hero-section h1 { font-size: 2.25rem; }
-    .hero-section p { font-size: 1.1rem; }
-
-    .footer {
-        text-align: center; /* Center footer content on small screens */
-    }
-    .footer .row > div { /* Stack footer columns */
-        margin-bottom: 1.5rem;
-    }
-    .footer h4::after { /* Center the heading underline */
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    .footer-contact-item {
-        justify-content: center; /* Center contact items if footer is centered */
-    }
-    .social-links {
-        text-align: center; /* Center social links */
-    }
-    .footer-bottom .row > div {
-        text-align: center !important; /* Override text-md-end */
-        margin-bottom: 0.5rem;
-    }
-}
-
-@media (max-width: 575.98px) { /* Extra small devices */
-    .top-bar {
-        font-size: 0.8rem;
-        text-align: center;
-    }
-    .top-bar .list-inline-item {
-        display: block;
-        margin-bottom: 0.5rem;
-        margin-right: 0;
-    }
-    .top-bar .text-md-end {
-        text-align: center !important;
-    }
-}
-
-/* Utility classes for showing/hiding content based on screen size (Bootstrap-like) */
-.d-none { display: none !important; }
-@media (min-width: 576px) { .d-sm-block { display: block !important; } .d-sm-none { display: none !important; } }
-@media (min-width: 768px) { .d-md-block { display: block !important; } .d-md-none { display: none !important; } }
-@media (min-width: 992px) { .d-lg-block { display: block !important; } .d-lg-none { display: none !important; } }
-@media (min-width: 1200px) { .d-xl-block { display: block !important; } .d-xl-none { display: none !important; } }
-
-
-/* Fix for potential issues with -webkit-backdrop-filter on some backgrounds */
-/* This is a more advanced consideration: if glassmorphism causes issues on certain complex backgrounds,
-   you might need to ensure the element *behind* the glassmorphic element doesn't have transforms
-   or will-change properties that could interfere with the filter rendering.
-   Or, provide a more solid fallback for browsers where backdrop-filter is buggy.
-*/
-/* Example:
-@supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-  .glassmorphism {
-    background-color: rgba(255, 255, 255, 0.85); // More opaque fallback
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-}
-*/
-
-/* Ensure :focus-visible is styled for accessibility if default outlines are removed */
-/* Most modern browsers handle this well, but if you explicitly remove outlines:
-button:focus, input:focus, select:focus, textarea:focus, a:focus {
-  outline: none; // If you do this...
-}
-*/
-/* Then ensure you have clear :focus-visible styles:
-button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
-  outline: 2px solid var(--primary-color); // Or your preferred focus style
-  outline-offset: 2px;
-}
-*/
-/* Our current input:focus styles should provide good visibility. */
-
-
-/* --- End Responsiveness & Browser Compatibility Adjustments --- */
-
-[end of assets/css/modern-main.css]

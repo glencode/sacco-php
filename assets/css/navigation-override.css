@@ -1,0 +1,167 @@
+/**
+ * NAVIGATION OVERRIDE - MAXIMUM SPECIFICITY
+ * This file removes all white containers and colored borders from navigation
+ * AND fixes positioning to overlap properly within hero section
+ */
+
+/* HEADER POSITIONING FIX - OVERLAP WITHIN HERO */
+html body .main-navigation,
+html body .hero-navbar,
+html body .site-header,
+html body header.main-navigation {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    width: 100% !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 20px 0 !important;
+    margin: 0 !important;
+}
+
+/* ENSURE HERO SECTION ALLOWS HEADER OVERLAP */
+html body .hero-section,
+html body .hero-container,
+html body .hero-content {
+    position: relative !important;
+    z-index: 1 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* SCROLLED STATE - SUBTLE BACKGROUND */
+html body .main-navigation.scrolled,
+html body .hero-navbar.scrolled {
+    position: fixed !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    padding: 12px 0 !important;
+}
+
+/* NUCLEAR OPTION - REMOVE ALL NAVIGATION BACKGROUNDS AND BORDERS */
+html body .main-navigation,
+html body .main-navigation .navbar,
+html body .main-navigation .navbar-expand-lg,
+html body .main-navigation .container,
+html body .main-navigation .container-fluid,
+html body .main-navigation .navbar-nav,
+html body .main-navigation .main-menu,
+html body .main-navigation .nav-menu,
+html body .main-navigation .navbar-collapse,
+html body .main-navigation #navbarMain,
+html body .hero-navbar,
+html body .site-header,
+html body header.main-navigation {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* REMOVE ALL NAV ITEM CONTAINERS AND BORDERS */
+html body .main-navigation .nav-item,
+html body .main-navigation .navbar-nav .nav-item,
+html body .main-navigation .main-menu .nav-item,
+html body .main-navigation .nav-link,
+html body .main-navigation .navbar-nav .nav-link,
+html body .main-navigation .main-menu .nav-link,
+html body .main-navigation .nav-item .nav-link {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    outline: none !important;
+    margin: 0 !important;
+    padding: 8px 12px !important;
+}
+
+/* REMOVE PSEUDO ELEMENTS THAT MIGHT CREATE BORDERS */
+html body .main-navigation .nav-item::before,
+html body .main-navigation .nav-item::after,
+html body .main-navigation .nav-link::before,
+html body .main-navigation .nav-link::after,
+html body .main-navigation .navbar-nav .nav-item::before,
+html body .main-navigation .navbar-nav .nav-item::after,
+html body .main-navigation .navbar-nav .nav-link::before,
+html body .main-navigation .navbar-nav .nav-link::after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+/* FORCE TRANSPARENT NAVIGATION TEXT */
+html body .main-navigation .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+}
+
+html body .main-navigation .nav-link:hover {
+    color: #40E0D0 !important;
+    background: transparent !important;
+    border: none !important;
+    transform: translateY(-1px) !important;
+}
+
+/* REMOVE ANY ACTIVE STATE STYLING */
+html body .main-navigation .nav-link.active {
+    background: transparent !important;
+    border: none !important;
+    color: #20B2AA !important;
+}
+
+/* ENSURE DROPDOWN MENUS ARE CLEAN */
+html body .main-navigation .dropdown-menu {
+    background: rgba(0, 0, 0, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+html body .main-navigation .dropdown-item {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+html body .main-navigation .dropdown-item:hover {
+    background: rgba(32, 178, 170, 0.2) !important;
+    color: #40E0D0 !important;
+}
+
+/* FORCE REMOVE ANY GLASSMORPHISM EFFECTS */
+html body .main-navigation *,
+html body .main-navigation *::before,
+html body .main-navigation *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+

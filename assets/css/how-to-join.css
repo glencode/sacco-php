@@ -1,0 +1,137 @@
+/* How to Join Page Custom Styles */
+:root {
+    --primary-dark: #213448;
+    --primary-blue: #547792;
+    --primary-light: #94b4c1;
+    --accent-yellow: #ecefca;
+}
+body, .site-main {
+    background: var(--accent-yellow);
+    color: var(--primary-dark);
+}
+
+/* Parallax Section */
+.parallax-bg {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1;
+}
+.page-header.bg-light.parallax-bg {
+    background-image: linear-gradient(rgba(33,52,72,0.7), rgba(84,119,146,0.7)), url('../images/how-to-join-hero.jpg');
+    color: #fff;
+}
+
+.section-title, .page-title {
+    color: var(--primary-dark);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.section-subtitle {
+    color: var(--primary-blue);
+}
+
+/* Card Styles */
+.benefit-card, .eligibility-card, .join-step, .submission-method {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(33,52,72,0.08);
+    border: 1px solid var(--primary-light);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.benefit-card:hover, .eligibility-card:hover, .join-step:hover, .submission-method:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(33,52,72,0.16);
+}
+.benefit-icon, .eligibility-icon {
+    color: var(--primary-blue);
+    background: var(--accent-yellow);
+    border-radius: 50%;
+    padding: 16px;
+    display: inline-block;
+}
+
+/* Button Styles */
+.btn-primary, .btn-light, .btn-lg, .btn-gradient {
+    background: linear-gradient(90deg, var(--primary-blue), var(--primary-dark));
+    color: #fff !important;
+    border: none;
+    border-radius: 30px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(33,52,72,0.10);
+}
+.btn-primary:hover, .btn-light:hover, .btn-gradient:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-blue));
+    color: #ecefca !important;
+    transform: translateY(-2px) scale(1.04);
+}
+.btn-outline-primary {
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    background: transparent;
+    border-radius: 30px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+.btn-outline-primary:hover {
+    background: var(--primary-blue);
+    color: #fff;
+    transform: translateY(-2px) scale(1.04);
+}
+.btn-outline-light {
+    border: 2px solid #fff;
+    color: #fff;
+    background: transparent;
+    border-radius: 30px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+.btn-outline-light:hover {
+    background: #fff;
+    color: var(--primary-dark);
+    transform: translateY(-2px) scale(1.04);
+}
+
+/* Step Number Styling */
+.step-number {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-blue);
+    color: white;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Timeline connector */
+.join-process .join-step {
+    position: relative;
+}
+.join-process .join-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: calc(2% + 30px);
+    width: 3px;
+    height: 30px;
+    background-color: var(--primary-blue);
+    z-index: 0;
+}
+@media (max-width: 991px) {
+    .parallax-bg {
+        background-attachment: scroll;
+    }
+}
+@media (max-width: 767px) {
+    .join-process .join-step:not(:last-child)::after {
+        display: none;
+    }
+}

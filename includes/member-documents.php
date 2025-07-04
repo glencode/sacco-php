@@ -90,7 +90,7 @@ add_action('init', 'daystar_register_document_types_taxonomy');
  * Handle document upload
  */
 function daystar_handle_document_upload() {
-    check_ajax_referer('daystar_upload_document_nonce', 'security');
+    check_ajax_referer('daystar_document_upload', 'security');
 
     if (!is_user_logged_in()) {
         wp_send_json_error('Not authorized');

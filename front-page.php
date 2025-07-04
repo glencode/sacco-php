@@ -9,77 +9,209 @@ get_header();
 ?>
 
 <main id="primary" class="site-main">
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="hero-content fade-in">
-                        <h1>Empowering Your Financial Journey</h1>
-                        <p>Daystar Multi-Purpose Co-op Society Ltd. offers tailored financial solutions to help you achieve your goals. Join our community of members building a brighter financial future together.</p>
-                        <div class="hero-buttons">
-                            <a href="<?php echo esc_url(home_url('how-to-join')); ?>" class="btn btn-secondary btn-lg me-3">Become a Member</a>
-                            <a href="<?php echo esc_url(home_url('products-services')); ?>" class="btn btn-outline-light btn-lg">Explore Our Services</a>
-                        </div>
+    <!-- Full-Screen Hero Section with Integrated Navigation -->
+    <section class="hero-section parallax-element" data-speed="0.5">
+        <!-- Hero Background Slider -->
+        <div class="hero-slider swiper">
+            <div class="swiper-wrapper">
+                <!-- Default slides - will be replaced by dynamic content -->
+                <div class="swiper-slide hero-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/hero-bg-1.jpeg')">
+                    <div class="hero-overlay"></div>
+                </div>
+                <div class="swiper-slide hero-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/hero-bg-2.jpg')">
+                    <div class="hero-overlay"></div>
+                </div>
+                <div class="swiper-slide hero-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/hero-bg-3.jpg')">
+                    <div class="hero-overlay"></div>
+                </div>
+            </div>
+            <!-- Swiper Pagination -->
+            <div class="swiper-pagination"></div>
+            <!-- Swiper Navigation -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+        
+        <!-- Navigation is now handled by header.php for consistency -->
+        
+        <!-- Hero Content with Slide-Specific Text -->
+        <div class="hero-content-container hero-content-repositioned">
+            <div class="hero-text-content">
+                <div class="slide-content" data-slide="0">
+                    <h1 class="hero-title">Empowering Your Financial Journey</h1>
+                    <p class="hero-subtitle">Join our community of members building a brighter financial future together.</p>
+                    <div class="hero-cta">
+                        <a href="<?php echo esc_url(home_url('how-to-join')); ?>" class="btn btn-primary">Join Now</a>
+                        <a href="<?php echo esc_url(home_url('products-services')); ?>" class="btn btn-secondary">Our Services</a>
                     </div>
                 </div>
-                <div class="col-lg-6 d-none d-lg-block">
-                    <div class="hero-image fade-in">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/hero-image.png" alt="Daystar Co-op members" class="img-fluid rounded-lg">
+                <div class="slide-content" data-slide="1">
+                    <h1 class="hero-title">Flexible Loan Solutions</h1>
+                    <p class="hero-subtitle">Access competitive loans for development, education, and emergency needs with flexible repayment terms.</p>
+                    <div class="hero-cta">
+                        <a href="<?php echo esc_url(home_url('loan-application')); ?>" class="btn btn-primary">Apply for Loan</a>
+                        <a href="<?php echo esc_url(home_url('loan-calculator')); ?>" class="btn btn-secondary">Calculate Loan</a>
                     </div>
+                </div>
+                <div class="slide-content" data-slide="2">
+                    <h1 class="hero-title">Secure Savings Plans</h1>
+                    <p class="hero-subtitle">Grow your wealth with our attractive savings accounts and investment opportunities.</p>
+                    <div class="hero-cta">
+                        <a href="<?php echo esc_url(home_url('savings-accounts')); ?>" class="btn btn-primary">Start Saving</a>
+                        <a href="<?php echo esc_url(home_url('savings-calculator')); ?>" class="btn btn-secondary">Calculate Savings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Enhanced Glassmorphic Quick Actions Panel -->
+        <div class="quick-actions-panel enhanced">
+            <h3 class="quick-actions-title">Quick Actions</h3>
+            <div class="quick-actions-grid">
+                <div class="quick-action-item" data-action="login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Member Login</span>
+                </div>
+                <div class="quick-action-item" data-action="calculator">
+                    <i class="fas fa-calculator"></i>
+                    <span>Loan Calculator</span>
+                </div>
+                <div class="quick-action-item" data-action="register">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Join Now</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hero Navigation will be added by JavaScript -->
+    </section>
+    
+    <!-- Sections with Ocean Background Overlay -->
+    <div class="homepage-sections-bg" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/oceanbackground.jpeg'); background-size: cover; background-position: center; background-attachment: fixed; position: relative;">
+        <!-- Ocean Background Overlay -->
+        <div class="ocean-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(2px); z-index: 1;"></div>
+        
+        <!-- Statistics Section -->
+        <section class="stats-section animate-on-scroll" style="position: relative; z-index: 2;">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" data-stat="members" data-count="2500">0</div>
+                        <div class="stat-label">Active Members</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-stat="loans" data-count="15000000">0</div>
+                    <div class="stat-label">Loans Disbursed (KSh)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-stat="savings" data-count="50000000">0</div>
+                    <div class="stat-label">Total Savings (KSh)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-stat="years" data-count="15">0</div>
+                    <div class="stat-label">Years Serving</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Membership Requirements Section -->
-    <section class="section bg-light">
+    <!-- Featured Services Section -->
+    <section class="services-section" style="position: relative; z-index: 2;">
         <div class="container">
-            <div class="text-center mb-5 fade-in">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Our Services</h2>
+                <p class="section-subtitle">Comprehensive financial solutions tailored to your needs</p>
+            </div>
+            
+            <div class="services-grid">
+                <!-- Default services - will be replaced by dynamic content -->
+                <div class="service-card animate-on-scroll">
+                    <i class="service-icon fas fa-piggy-bank"></i>
+                    <h3 class="service-title">Savings Accounts</h3>
+                    <p class="service-description">Secure your future with our competitive savings accounts offering attractive interest rates.</p>
+                    <a href="/savings" class="service-link">Learn More →</a>
+                </div>
+                
+                <div class="service-card animate-on-scroll">
+                    <i class="service-icon fas fa-hand-holding-usd"></i>
+                    <h3 class="service-title">Personal Loans</h3>
+                    <p class="service-description">Access quick and affordable personal loans for your immediate financial needs.</p>
+                    <a href="/loans" class="service-link">Learn More →</a>
+                </div>
+                
+                <div class="service-card animate-on-scroll">
+                    <i class="service-icon fas fa-home"></i>
+                    <h3 class="service-title">Development Loans</h3>
+                    <p class="service-description">Build your dream home or invest in property with our development loan products.</p>
+                    <a href="/development-loans" class="service-link">Learn More →</a>
+                </div>
+                
+                <div class="service-card animate-on-scroll">
+                    <i class="service-icon fas fa-graduation-cap"></i>
+                    <h3 class="service-title">Education Loans</h3>
+                    <p class="service-description">Invest in education with our flexible school fees and education financing options.</p>
+                    <a href="/education-loans" class="service-link">Learn More →</a>
+                </div>
+                
+                <div class="service-card animate-on-scroll">
+                    <i class="service-icon fas fa-shield-alt"></i>
+                    <h3 class="service-title">Emergency Loans</h3>
+                    <p class="service-description">Quick access to emergency funds when you need them most, with minimal documentation.</p>
+                    <a href="/emergency-loans" class="service-link">Learn More →</a>
+                </div>
+                
+                <div class="service-card animate-on-scroll">
+                    <i class="service-icon fas fa-chart-line"></i>
+                    <h3 class="service-title">Investment Plans</h3>
+                    <p class="service-description">Grow your wealth with our diverse investment opportunities and financial planning services.</p>
+                    <a href="/investments" class="service-link">Learn More →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Membership Requirements Section -->
+    <section class="membership-section animate-on-scroll" style="position: relative; z-index: 2;">
+        <div class="container">
+            <div class="section-header">
                 <h2 class="section-title">Membership Requirements</h2>
                 <p class="section-subtitle">Join our cooperative society and enjoy exclusive benefits</p>
             </div>
             
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="feature-card fade-in">
-                        <div class="feature-icon">
-                            <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                        </div>
-                        <h3>6 Months Membership</h3>
-                        <p>To be eligible for loans, you must be a member for at least 6 months with consistent contributions.</p>
+            <div class="requirements-grid">
+                <div class="requirement-card animate-on-scroll">
+                    <div class="requirement-icon">
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
+                    <h3>6 Months Membership</h3>
+                    <p>To be eligible for loans, you must be a member for at least 6 months with consistent contributions.</p>
                 </div>
                 
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="feature-card fade-in">
-                        <div class="feature-icon">
-                            <i class="fas fa-money-bill-wave" aria-hidden="true"></i>
-                        </div>
-                        <h3>Minimum Contribution</h3>
-                        <p>Contribute consistently not less than KSh 12,000 (KSh 2,000 × 6 months) to qualify for loans.</p>
+                <div class="requirement-card animate-on-scroll">
+                    <div class="requirement-icon">
+                        <i class="fas fa-money-bill-wave"></i>
                     </div>
+                    <h3>Minimum Contribution</h3>
+                    <p>Contribute consistently not less than KSh 12,000 (KSh 2,000 × 6 months) to qualify for loans.</p>
                 </div>
                 
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="feature-card fade-in">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-pie" aria-hidden="true"></i>
-                        </div>
-                        <h3>Share Capital</h3>
-                        <p>Own a minimum of KSh 5,000 as share capital (250 shares worth KSh 200 each).</p>
+                <div class="requirement-card animate-on-scroll">
+                    <div class="requirement-icon">
+                        <i class="fas fa-chart-pie"></i>
                     </div>
+                    <h3>Share Capital</h3>
+                    <p>Own a minimum of KSh 5,000 as share capital (250 shares worth KSh 200 each).</p>
                 </div>
             </div>
             
-            <div class="text-center mt-4 fade-in">
-                <a href="<?php echo esc_url(home_url('how-to-join')); ?>" class="btn btn-primary">Learn How to Join</a>
+            <div class="text-center mt-5">
+                <a href="<?php echo esc_url(home_url('how-to-join')); ?>" class="btn btn-primary btn-lg">Learn How to Join</a>
             </div>
         </div>
     </section>
 
     <!-- Loan Products Section -->
-    <section class="section">
+    <section class="section" style="position: relative; z-index: 2;">
         <div class="container">
             <div class="text-center mb-5 fade-in">
                 <h2 class="section-title">Our Loan Products</h2>
@@ -196,7 +328,7 @@ get_header();
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/special-loan.jpg" alt="Special Loan" class="img-fluid rounded-lg shadow">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/special-loan.jpeg" alt="Special Loan" class="img-fluid rounded-lg shadow">
                             </div>
                         </div>
                     </div>
@@ -242,7 +374,7 @@ get_header();
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/salary-advance.jpg" alt="Salary Advance" class="img-fluid rounded-lg shadow">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/salary-advance.jpeg" alt="Salary Advance" class="img-fluid rounded-lg shadow">
                             </div>
                         </div>
                     </div>
@@ -252,7 +384,7 @@ get_header();
     </section>
 
     <!-- Why Choose Us Section -->
-    <section class="section bg-light">
+    <section class="section bg-light" style="position: relative; z-index: 2;">
         <div class="container">
             <div class="text-center mb-5 fade-in">
                 <h2 class="section-title">Why Choose Daystar Co-op</h2>
@@ -304,7 +436,7 @@ get_header();
     </section>
 
     <!-- Loan Calculator Preview Section -->
-    <section class="section">
+    <section class="section" style="position: relative; z-index: 2;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
@@ -319,96 +451,206 @@ get_header();
                 </div>
                 <div class="col-lg-6">
                     <div class="calculator-preview fade-in">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/calculator-preview.png" alt="Loan Calculator Preview" class="img-fluid rounded-lg shadow">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/calculator-preview.jpeg" alt="Loan Calculator Preview" class="img-fluid rounded-lg shadow">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="section bg-light">
+    <!-- Enhanced Dynamic Testimonials Section -->
+    <section class="section testimonials-section bg-light" style="position: relative; z-index: 2;">
         <div class="container">
             <div class="text-center mb-5 fade-in">
                 <h2 class="section-title">Member Testimonials</h2>
                 <p class="section-subtitle">What our members say about us</p>
             </div>
             
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-rating">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                        </div>
-                        <div class="testimonial-content">
-                            <p>"The Development Loan from Daystar Co-op helped me build my dream home. The application process was straightforward, and the repayment terms were very manageable."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="testimonial-author-img">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial1.jpg" alt="John Mwangi">
+            <?php
+            // Query testimonials from custom post type
+            $testimonials_query = new WP_Query(array(
+                'post_type' => 'testimonial',
+                'posts_per_page' => 6,
+                'post_status' => 'publish',
+                'orderby' => 'menu_order',
+                'order' => 'ASC'
+            ));
+            
+            if ($testimonials_query->have_posts()) : ?>
+            <div class="testimonials-slider swiper">
+                <div class="swiper-wrapper">
+                    <?php while ($testimonials_query->have_posts()) : $testimonials_query->the_post();
+                        $rating = get_field('testimonial_rating') ?: 5;
+                        $member_since = get_field('member_since') ?: '';
+                        $position = get_field('position') ?: '';
+                    ?>
+                    <div class="swiper-slide">
+                        <div class="testimonial-card enhanced fade-in">
+                            <div class="testimonial-quote-icon">
+                                <i class="fas fa-quote-right"></i>
                             </div>
-                            <div class="testimonial-author-info">
-                                <h5>John Mwangi</h5>
-                                <p>Member since 2018</p>
+                            <div class="testimonial-rating">
+                                <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                    <?php if ($i <= floor($rating)) : ?>
+                                        <i class="fas fa-star" aria-hidden="true"></i>
+                                    <?php elseif ($i <= $rating) : ?>
+                                        <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                                    <?php else : ?>
+                                        <i class="far fa-star" aria-hidden="true"></i>
+                                    <?php endif; ?>
+                                <?php endfor; ?>
+                            </div>
+                            <div class="testimonial-content">
+                                <p>"<?php echo wp_trim_words(get_the_content(), 30, '...'); ?>"</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="testimonial-author-img">
+                                    <?php if (has_post_thumbnail()) : ?>
+                                        <?php the_post_thumbnail('thumbnail', array('alt' => get_the_title())); ?>
+                                    <?php else : ?>
+                                        <div class="testimonial-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="testimonial-author-info">
+                                    <h5><?php the_title(); ?></h5>
+                                    <?php if ($position) : ?>
+                                        <p class="position"><?php echo esc_html($position); ?></p>
+                                    <?php endif; ?>
+                                    <?php if ($member_since) : ?>
+                                        <p class="member-since">Member since <?php echo esc_html($member_since); ?></p>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <?php endwhile; ?>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="testimonials-navigation">
+                    <div class="swiper-button-prev testimonials-prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="swiper-button-next testimonials-next">
+                        <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
                 
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-rating">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                        </div>
-                        <div class="testimonial-content">
-                            <p>"As a parent, the School Fees Loan has been a lifesaver. It's helped me provide quality education for my children without financial strain. I'm grateful for Daystar Co-op's support."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="testimonial-author-img">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial2.jpg" alt="Mary Wambui">
-                            </div>
-                            <div class="testimonial-author-info">
-                                <h5>Mary Wambui</h5>
-                                <p>Member since 2016</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-rating">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star-half-alt" aria-hidden="true"></i>
-                        </div>
-                        <div class="testimonial-content">
-                            <p>"The Emergency Loan came through for me during a medical crisis. The quick processing and compassionate service made a difficult time much easier to handle."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="testimonial-author-img">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial3.jpg" alt="David Ochieng">
-                            </div>
-                            <div class="testimonial-author-info">
-                                <h5>David Ochieng</h5>
-                                <p>Member since 2019</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Pagination -->
+                <div class="swiper-pagination testimonials-pagination"></div>
             </div>
+            
+            <?php else : ?>
+            <!-- Fallback static testimonials if no dynamic content -->
+            <div class="testimonials-slider swiper">
+                <div class="swiper-wrapper">
+                    <!-- Static fallback testimonials -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-card enhanced">
+                            <div class="testimonial-quote-icon">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="testimonial-content">
+                                <p>"Daystar SACCO has transformed my financial life. Their loan services are quick and reliable, and the savings plans have helped me achieve my goals faster than I ever imagined."</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="testimonial-author-img">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial-1.jpg" alt="Sarah Wanjiku">
+                                </div>
+                                <div class="testimonial-author-info">
+                                    <h5>Sarah Wanjiku</h5>
+                                    <p class="position">Small Business Owner</p>
+                                    <p class="member-since">Member since 2019</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="swiper-slide">
+                        <div class="testimonial-card enhanced">
+                            <div class="testimonial-quote-icon">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="testimonial-content">
+                                <p>"The customer service at Daystar SACCO is exceptional. They guided me through every step of my home loan application, making the process smooth and stress-free."</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="testimonial-author-img">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial-2.jpg" alt="John Kamau">
+                                </div>
+                                <div class="testimonial-author-info">
+                                    <h5>John Kamau</h5>
+                                    <p class="position">Teacher</p>
+                                    <p class="member-since">Member since 2020</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="swiper-slide">
+                        <div class="testimonial-card enhanced">
+                            <div class="testimonial-quote-icon">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="testimonial-content">
+                                <p>"I've been with Daystar SACCO for over 5 years, and their commitment to member welfare is unmatched. The dividends and interest rates are competitive and fair."</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="testimonial-author-img">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial-3.jpg" alt="Grace Muthoni">
+                                </div>
+                                <div class="testimonial-author-info">
+                                    <h5>Grace Muthoni</h5>
+                                    <p class="position">Nurse</p>
+                                    <p class="member-since">Member since 2018</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="testimonials-navigation">
+                    <div class="swiper-button-prev testimonials-prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="swiper-button-next testimonials-next">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="swiper-pagination testimonials-pagination"></div>
+            </div>
+            <?php endif; ?>
+            
+            <?php wp_reset_postdata(); ?>
         </div>
     </section>
+    </div> <!-- End homepage-sections-bg -->
 
     <!-- CTA Section -->
     <section class="cta-section">

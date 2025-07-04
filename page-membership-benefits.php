@@ -12,9 +12,106 @@
 get_header();
 ?>
 
+<style>
+:root {
+    --primary-dark: #213448;
+    --primary-blue: #547792;
+    --primary-light: #94b4c1;
+    --accent-yellow: #ecefca;
+}
+body, .site-main {
+    background: var(--accent-yellow);
+    color: var(--primary-dark);
+}
+
+/* Parallax Section */
+.parallax-bg {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1;
+}
+.page-header.bg-light.parallax-bg {
+    background-image: linear-gradient(rgba(33,52,72,0.7), rgba(84,119,146,0.7)), url('<?php echo get_template_directory_uri(); ?>/img/benefits-placeholder.jpg');
+    color: #fff;
+}
+
+.section-title, .page-title {
+    color: var(--primary-dark);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.section-subtitle {
+    color: var(--primary-blue);
+}
+
+/* Card Styles */
+.benefit-card, .testimonial-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(33,52,72,0.08);
+    border: 1px solid var(--primary-light);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.benefit-card:hover, .testimonial-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(33,52,72,0.16);
+}
+.benefit-icon {
+    color: var(--primary-blue);
+    background: var(--accent-yellow);
+    border-radius: 50%;
+    padding: 16px;
+    display: inline-block;
+}
+
+/* Button Styles */
+.btn-primary, .btn-light, .btn-lg, .btn-gradient {
+    background: linear-gradient(90deg, var(--primary-blue), var(--primary-dark));
+    color: #fff !important;
+    border: none;
+    border-radius: 30px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(33,52,72,0.10);
+}
+.btn-primary:hover, .btn-light:hover, .btn-gradient:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-blue));
+    color: #ecefca !important;
+    transform: translateY(-2px) scale(1.04);
+}
+
+/* Table Styles */
+.comparison-table {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(33,52,72,0.08);
+}
+.comparison-table th, .comparison-table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+.comparison-table thead {
+    background: var(--primary-blue);
+    color: #fff;
+}
+.comparison-table tbody tr:nth-child(even) {
+    background: var(--accent-yellow);
+}
+
+/* Parallax fix for mobile */
+@media (max-width: 991px) {
+    .parallax-bg {
+        background-attachment: scroll;
+    }
+}
+</style>
+
 <main id="primary" class="site-main">
 
-	<section class="page-header bg-light py-5">
+	<section class="page-header bg-light py-5 parallax-bg">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 text-center">
@@ -183,9 +280,8 @@ get_header();
 			</div>
 		</div>
 	</section>
-	
 	<?php endwhile; ?>
-	
+
 	<section class="member-testimonials-section py-5">
 		<div class="container">
 			<div class="row mb-5">
@@ -349,4 +445,4 @@ get_header();
 
 <?php
 get_footer(); 
-?> 
+?>

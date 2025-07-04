@@ -208,8 +208,17 @@ function sacco_php_scripts() {    // Modern main CSS - load this first as it con
     // Font Awesome
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', array(), '5.15.4', 'all');
     
+    // Enhanced Navigation styles with glassmorphism
+    wp_enqueue_style('daystar-navigation', get_template_directory_uri() . '/assets/css/navigation.css', array('sacco-php-modern-main'), '1.0.1');
+    
+    // Navigation Override - Remove white containers and colored borders
+    wp_enqueue_style('daystar-navigation-override', get_template_directory_uri() . '/assets/css/navigation-override.css', array('daystar-navigation'), '1.0.0');
+    
+    // Footer Redesign - Complete oceanic theme footer
+    wp_enqueue_style('daystar-footer-redesign', get_template_directory_uri() . '/assets/css/footer-redesign.css', array('sacco-php-modern-main'), '1.0.0');
+    
     // Swiper CSS
-    wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css', array(), '8.0.0', 'all');
+    wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0', 'all');
       // AOS CSS
     wp_enqueue_style('aos-css', 'https://unpkg.com/aos@2.3.1/dist/aos.css', array(), '2.3.1');
     
@@ -224,8 +233,8 @@ function sacco_php_scripts() {    // Modern main CSS - load this first as it con
     // Bootstrap JS
     wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.1.3', true);
     
-    // Swiper JS
-    wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js', array('jquery'), '8.0.0', true);
+    // Swiper JS - Updated to latest stable version
+    wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array('jquery'), '11.0.0', true);
     
     // Chart.js
     wp_enqueue_script('chart-js', 'https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js', array(), '3.7.1', true);
@@ -233,18 +242,21 @@ function sacco_php_scripts() {    // Modern main CSS - load this first as it con
     // AOS JS
     wp_enqueue_script('aos-js', 'https://unpkg.com/aos@2.3.1/dist/aos.js', array(), '2.3.1', true);
 
-    // Glassmorphism effects
-    wp_enqueue_script('sacco-glassmorphism', get_template_directory_uri() . '/assets/js/glassmorphism.js', array('jquery'), _S_VERSION, true);
-
-    // UI/UX Enhancements
-    wp_enqueue_script('sacco-enhancements', get_template_directory_uri() . '/assets/js/enhancements.js', array('jquery', 'aos-js'), _S_VERSION, true);
+    // Their functionality is now integrated into main.js and front-page.js
     
     // Main custom JS (depends on all other scripts)
-    wp_enqueue_script('sacco-php-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'bootstrap-js', 'swiper-js', 'chart-js', 'aos-js', 'sacco-glassmorphism', 'sacco-enhancements'), _S_VERSION, true);
+    wp_enqueue_script('sacco-php-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'bootstrap-js', 'swiper-js', 'chart-js', 'aos-js'), _S_VERSION, true);
 
-    // Front page specific JS
+    // Front page specific styles and JS
     if (is_front_page()) {
+        wp_enqueue_style('sacco-php-front-page-css', get_template_directory_uri() . '/assets/css/front-page.css', array('sacco-php-modern-main'), _S_VERSION);
         wp_enqueue_script('sacco-php-front-page', get_template_directory_uri() . '/assets/js/front-page.js', array('sacco-php-main'), _S_VERSION, true);
+        
+        // Localize script for AJAX calls
+        wp_localize_script('sacco-php-front-page', 'daystar_ajax', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('daystar_ajax_nonce')
+        ));
     }
 
     // Comments script
@@ -264,6 +276,26 @@ function sacco_php_scripts() {    // Modern main CSS - load this first as it con
 
     if (is_page('downloads')) {
         wp_enqueue_style('page-downloads-styles', get_template_directory_uri() . '/assets/css/pages/page-downloads.css', array('sacco-php-modern-main'), _S_VERSION);
+    }
+
+    if (is_page_template('page-delegates.php')) {
+        wp_enqueue_style('page-delegates-styles', get_template_directory_uri() . '/assets/css/pages/page-delegates.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_script('page-delegates-script', get_template_directory_uri() . '/assets/js/page-delegates.js', array('jquery', 'aos-js'), _S_VERSION, true);
+    }
+
+    if (is_page_template('page-management-team.php')) {
+        wp_enqueue_style('page-management-team-styles', get_template_directory_uri() . '/assets/css/pages/page-management-team.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_script('page-delegates-script', get_template_directory_uri() . '/assets/js/page-delegates.js', array('jquery', 'aos-js'), _S_VERSION, true);
+    }
+
+    if (is_page_template('page-supervisory-committee.php')) {
+        wp_enqueue_style('page-supervisory-committee-styles', get_template_directory_uri() . '/assets/css/pages/page-supervisory-committee.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_script('page-delegates-script', get_template_directory_uri() . '/assets/js/page-delegates.js', array('jquery', 'aos-js'), _S_VERSION, true);
+    }
+
+    if (is_page_template('page-our-history.php')) {
+        wp_enqueue_style('page-our-history-styles', get_template_directory_uri() . '/assets/css/pages/page-our-history.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_script('page-our-history-script', get_template_directory_uri() . '/assets/js/pages/page-our-history.js', array('jquery', 'aos-js'), _S_VERSION, true);
     }
 
     if (is_singular('product') || is_singular('loan') || is_singular('savings')) {
@@ -976,6 +1008,531 @@ function sacco_php_register_savings_category_taxonomy() {
 }
 add_action( 'init', 'sacco_php_register_savings_category_taxonomy', 0 );
 
+// Register Custom Post Type for Board of Directors
+function sacco_php_register_board_director_cpt() {
+
+	$labels = array(
+		'name'                  => _x( 'Board of Directors', 'Post Type General Name', 'sacco-php' ),
+		'singular_name'         => _x( 'Board Member', 'Post Type Singular Name', 'sacco-php' ),
+		'menu_name'             => __( 'Board of Directors', 'sacco-php' ),
+		'name_admin_bar'        => __( 'Board Member', 'sacco-php' ),
+		'archives'              => __( 'Board Member Archives', 'sacco-php' ),
+		'attributes'            => __( 'Board Member Attributes', 'sacco-php' ),
+		'parent_item_colon'     => __( 'Parent Board Member:', 'sacco-php' ),
+		'all_items'             => __( 'All Board Members', 'sacco-php' ),
+		'add_new_item'          => __( 'Add New Board Member', 'sacco-php' ),
+		'add_new'               => __( 'Add New', 'sacco-php' ),
+		'new_item'              => __( 'New Board Member', 'sacco-php' ),
+		'edit_item'             => __( 'Edit Board Member', 'sacco-php' ),
+		'update_item'           => __( 'Update Board Member', 'sacco-php' ),
+		'view_item'             => __( 'View Board Member', 'sacco-php' ),
+		'view_items'            => __( 'View Board Members', 'sacco-php' ),
+		'search_items'          => __( 'Search Board Member', 'sacco-php' ),
+		'not_found'             => __( 'Not found', 'sacco-php' ),
+		'not_found_in_trash'    => __( 'Not found in Trash', 'sacco-php' ),
+		'featured_image'        => __( 'Board Member Photo', 'sacco-php' ),
+		'set_featured_image'    => __( 'Set board member photo', 'sacco-php' ),
+		'remove_featured_image' => __( 'Remove board member photo', 'sacco-php' ),
+		'use_featured_image'    => __( 'Use as board member photo', 'sacco-php' ),
+		'insert_into_item'      => __( 'Insert into board member', 'sacco-php' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this board member', 'sacco-php' ),
+		'items_list'            => __( 'Board Members list', 'sacco-php' ),
+		'items_list_navigation' => __( 'Board Members list navigation', 'sacco-php' ),
+		'filter_items_list'     => __( 'Filter board members list', 'sacco-php' ),
+	);
+	$args = array(
+		'label'                 => __( 'Board Member', 'sacco-php' ),
+		'description'           => __( 'Board of Directors members', 'sacco-php' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'editor', 'thumbnail', 'page-attributes', 'custom-fields' ),
+		'taxonomies'            => array(),
+		'hierarchical'          => false,
+		'public'                => false,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 12,
+		'menu_icon'             => 'dashicons-groups',
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => false,
+		'can_export'            => true,
+		'has_archive'           => false,
+		'exclude_from_search'   => true,
+		'publicly_queryable'    => false,
+		'capability_type'       => 'post',
+		'show_in_rest'          => true,
+	);
+	register_post_type( 'board_director', $args );
+
+}
+add_action( 'init', 'sacco_php_register_board_director_cpt', 0 );
+
+// Meta Boxes for Board Director CPT
+function sacco_php_register_board_director_meta_boxes() {
+    add_meta_box(
+        'board_director_details_meta_box',
+        __('Board Member Details', 'sacco-php'),
+        'sacco_php_board_director_meta_box_callback',
+        'board_director',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes_board_director', 'sacco_php_register_board_director_meta_boxes');
+
+function sacco_php_board_director_meta_box_callback($post) {
+    wp_nonce_field('sacco_php_board_director_meta_box', 'sacco_php_board_director_meta_box_nonce');
+
+    $position = get_post_meta($post->ID, '_board_position', true);
+    $qualifications = get_post_meta($post->ID, '_qualifications', true);
+    $experience = get_post_meta($post->ID, '_experience', true);
+    $linkedin = get_post_meta($post->ID, '_linkedin_url', true);
+    $email = get_post_meta($post->ID, '_email', true);
+    $phone = get_post_meta($post->ID, '_phone', true);
+    $tenure_start = get_post_meta($post->ID, '_tenure_start', true);
+    $tenure_end = get_post_meta($post->ID, '_tenure_end', true);
+
+    ?>
+    <table class="form-table">
+        <tr>
+            <th><label for="board_position"><?php _e('Position:', 'sacco-php'); ?></label></th>
+            <td><input type="text" id="board_position" name="board_position" value="<?php echo esc_attr($position); ?>" class="widefat" placeholder="e.g., Chairman, Vice Chairman, Secretary"></td>
+        </tr>
+        <tr>
+            <th><label for="qualifications"><?php _e('Qualifications:', 'sacco-php'); ?></label></th>
+            <td><textarea id="qualifications" name="qualifications" class="widefat" rows="3" placeholder="Educational background and professional qualifications"><?php echo esc_textarea($qualifications); ?></textarea></td>
+        </tr>
+        <tr>
+            <th><label for="experience"><?php _e('Experience:', 'sacco-php'); ?></label></th>
+            <td><textarea id="experience" name="experience" class="widefat" rows="4" placeholder="Professional experience and expertise"><?php echo esc_textarea($experience); ?></textarea></td>
+        </tr>
+        <tr>
+            <th><label for="email"><?php _e('Email:', 'sacco-php'); ?></label></th>
+            <td><input type="email" id="email" name="email" value="<?php echo esc_attr($email); ?>" class="widefat" placeholder="email@example.com"></td>
+        </tr>
+        <tr>
+            <th><label for="phone"><?php _e('Phone:', 'sacco-php'); ?></label></th>
+            <td><input type="text" id="phone" name="phone" value="<?php echo esc_attr($phone); ?>" class="widefat" placeholder="+254 700 000 000"></td>
+        </tr>
+        <tr>
+            <th><label for="linkedin_url"><?php _e('LinkedIn URL:', 'sacco-php'); ?></label></th>
+            <td><input type="url" id="linkedin_url" name="linkedin_url" value="<?php echo esc_attr($linkedin); ?>" class="widefat" placeholder="https://linkedin.com/in/username"></td>
+        </tr>
+        <tr>
+            <th><label for="tenure_start"><?php _e('Tenure Start:', 'sacco-php'); ?></label></th>
+            <td><input type="date" id="tenure_start" name="tenure_start" value="<?php echo esc_attr($tenure_start); ?>" class="widefat"></td>
+        </tr>
+        <tr>
+            <th><label for="tenure_end"><?php _e('Tenure End (Optional):', 'sacco-php'); ?></label></th>
+            <td><input type="date" id="tenure_end" name="tenure_end" value="<?php echo esc_attr($tenure_end); ?>" class="widefat"></td>
+        </tr>
+    </table>
+    <?php
+}
+
+function sacco_php_save_board_director_meta_box_data($post_id) {
+    if (!isset($_POST['sacco_php_board_director_meta_box_nonce']) || !wp_verify_nonce($_POST['sacco_php_board_director_meta_box_nonce'], 'sacco_php_board_director_meta_box')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (isset($_POST['post_type']) && 'board_director' == $_POST['post_type']) {
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+    } else {
+        return;
+    }
+
+    $fields_to_save = [
+        '_board_position' => 'board_position',
+        '_qualifications' => 'qualifications',
+        '_experience' => 'experience',
+        '_email' => 'email',
+        '_phone' => 'phone',
+        '_linkedin_url' => 'linkedin_url',
+        '_tenure_start' => 'tenure_start',
+        '_tenure_end' => 'tenure_end',
+    ];
+
+    foreach ($fields_to_save as $meta_key => $post_field_name) {
+        if (isset($_POST[$post_field_name])) {
+            $value = $_POST[$post_field_name];
+            
+            if (in_array($post_field_name, ['qualifications', 'experience'])) {
+                $sanitized_value = sanitize_textarea_field($value);
+            } elseif (in_array($post_field_name, ['linkedin_url'])) {
+                $sanitized_value = esc_url_raw($value);
+            } elseif (in_array($post_field_name, ['email'])) {
+                $sanitized_value = sanitize_email($value);
+            } else {
+                $sanitized_value = sanitize_text_field($value);
+            }
+            
+            if (empty($sanitized_value)) {
+                delete_post_meta($post_id, $meta_key);
+            } else {
+                update_post_meta($post_id, $meta_key, $sanitized_value);
+            }
+        }
+    }
+}
+add_action('save_post_board_director', 'sacco_php_save_board_director_meta_box_data');
+
+// Register Custom Post Type for Management Team
+function sacco_php_register_management_team_cpt() {
+
+	$labels = array(
+		'name'                  => _x( 'Management Team', 'Post Type General Name', 'sacco-php' ),
+		'singular_name'         => _x( 'Management Member', 'Post Type Singular Name', 'sacco-php' ),
+		'menu_name'             => __( 'Management Team', 'sacco-php' ),
+		'name_admin_bar'        => __( 'Management Member', 'sacco-php' ),
+		'archives'              => __( 'Management Member Archives', 'sacco-php' ),
+		'attributes'            => __( 'Management Member Attributes', 'sacco-php' ),
+		'parent_item_colon'     => __( 'Parent Management Member:', 'sacco-php' ),
+		'all_items'             => __( 'All Management Members', 'sacco-php' ),
+		'add_new_item'          => __( 'Add New Management Member', 'sacco-php' ),
+		'add_new'               => __( 'Add New', 'sacco-php' ),
+		'new_item'              => __( 'New Management Member', 'sacco-php' ),
+		'edit_item'             => __( 'Edit Management Member', 'sacco-php' ),
+		'update_item'           => __( 'Update Management Member', 'sacco-php' ),
+		'view_item'             => __( 'View Management Member', 'sacco-php' ),
+		'view_items'            => __( 'View Management Members', 'sacco-php' ),
+		'search_items'          => __( 'Search Management Member', 'sacco-php' ),
+		'not_found'             => __( 'Not found', 'sacco-php' ),
+		'not_found_in_trash'    => __( 'Not found in Trash', 'sacco-php' ),
+		'featured_image'        => __( 'Management Member Photo', 'sacco-php' ),
+		'set_featured_image'    => __( 'Set management member photo', 'sacco-php' ),
+		'remove_featured_image' => __( 'Remove management member photo', 'sacco-php' ),
+		'use_featured_image'    => __( 'Use as management member photo', 'sacco-php' ),
+		'insert_into_item'      => __( 'Insert into management member', 'sacco-php' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this management member', 'sacco-php' ),
+		'items_list'            => __( 'Management Members list', 'sacco-php' ),
+		'items_list_navigation' => __( 'Management Members list navigation', 'sacco-php' ),
+		'filter_items_list'     => __( 'Filter management members list', 'sacco-php' ),
+	);
+	$args = array(
+		'label'                 => __( 'Management Member', 'sacco-php' ),
+		'description'           => __( 'Management team members', 'sacco-php' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'editor', 'thumbnail', 'page-attributes', 'custom-fields' ),
+		'taxonomies'            => array(),
+		'hierarchical'          => false,
+		'public'                => false,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 13,
+		'menu_icon'             => 'dashicons-businessman',
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => false,
+		'can_export'            => true,
+		'has_archive'           => false,
+		'exclude_from_search'   => true,
+		'publicly_queryable'    => false,
+		'capability_type'       => 'post',
+		'show_in_rest'          => true,
+	);
+	register_post_type( 'management_team', $args );
+
+}
+add_action( 'init', 'sacco_php_register_management_team_cpt', 0 );
+
+// Register Custom Post Type for Supervisory Committee
+function sacco_php_register_supervisory_committee_cpt() {
+
+	$labels = array(
+		'name'                  => _x( 'Supervisory Committee', 'Post Type General Name', 'sacco-php' ),
+		'singular_name'         => _x( 'Committee Member', 'Post Type Singular Name', 'sacco-php' ),
+		'menu_name'             => __( 'Supervisory Committee', 'sacco-php' ),
+		'name_admin_bar'        => __( 'Committee Member', 'sacco-php' ),
+		'archives'              => __( 'Committee Member Archives', 'sacco-php' ),
+		'attributes'            => __( 'Committee Member Attributes', 'sacco-php' ),
+		'parent_item_colon'     => __( 'Parent Committee Member:', 'sacco-php' ),
+		'all_items'             => __( 'All Committee Members', 'sacco-php' ),
+		'add_new_item'          => __( 'Add New Committee Member', 'sacco-php' ),
+		'add_new'               => __( 'Add New', 'sacco-php' ),
+		'new_item'              => __( 'New Committee Member', 'sacco-php' ),
+		'edit_item'             => __( 'Edit Committee Member', 'sacco-php' ),
+		'update_item'           => __( 'Update Committee Member', 'sacco-php' ),
+		'view_item'             => __( 'View Committee Member', 'sacco-php' ),
+		'view_items'            => __( 'View Committee Members', 'sacco-php' ),
+		'search_items'          => __( 'Search Committee Member', 'sacco-php' ),
+		'not_found'             => __( 'Not found', 'sacco-php' ),
+		'not_found_in_trash'    => __( 'Not found in Trash', 'sacco-php' ),
+		'featured_image'        => __( 'Committee Member Photo', 'sacco-php' ),
+		'set_featured_image'    => __( 'Set committee member photo', 'sacco-php' ),
+		'remove_featured_image' => __( 'Remove committee member photo', 'sacco-php' ),
+		'use_featured_image'    => __( 'Use as committee member photo', 'sacco-php' ),
+		'insert_into_item'      => __( 'Insert into committee member', 'sacco-php' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this committee member', 'sacco-php' ),
+		'items_list'            => __( 'Committee Members list', 'sacco-php' ),
+		'items_list_navigation' => __( 'Committee Members list navigation', 'sacco-php' ),
+		'filter_items_list'     => __( 'Filter committee members list', 'sacco-php' ),
+	);
+	$args = array(
+		'label'                 => __( 'Committee Member', 'sacco-php' ),
+		'description'           => __( 'Supervisory committee members', 'sacco-php' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'editor', 'thumbnail', 'page-attributes', 'custom-fields' ),
+		'taxonomies'            => array(),
+		'hierarchical'          => false,
+		'public'                => false,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 14,
+		'menu_icon'             => 'dashicons-search',
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => false,
+		'can_export'            => true,
+		'has_archive'           => false,
+		'exclude_from_search'   => true,
+		'publicly_queryable'    => false,
+		'capability_type'       => 'post',
+		'show_in_rest'          => true,
+	);
+	register_post_type( 'supervisory_committee', $args );
+
+}
+add_action( 'init', 'sacco_php_register_supervisory_committee_cpt', 0 );
+
+// Meta Boxes for Management Team CPT
+function sacco_php_register_management_team_meta_boxes() {
+    add_meta_box(
+        'management_team_details_meta_box',
+        __('Management Team Member Details', 'sacco-php'),
+        'sacco_php_management_team_meta_box_callback',
+        'management_team',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes_management_team', 'sacco_php_register_management_team_meta_boxes');
+
+function sacco_php_management_team_meta_box_callback($post) {
+    wp_nonce_field('sacco_php_management_team_meta_box', 'sacco_php_management_team_meta_box_nonce');
+
+    $position = get_post_meta($post->ID, '_management_position', true);
+    $department = get_post_meta($post->ID, '_department', true);
+    $qualifications = get_post_meta($post->ID, '_qualifications', true);
+    $experience = get_post_meta($post->ID, '_experience', true);
+    $responsibilities = get_post_meta($post->ID, '_responsibilities', true);
+    $linkedin = get_post_meta($post->ID, '_linkedin_url', true);
+    $email = get_post_meta($post->ID, '_email', true);
+    $phone = get_post_meta($post->ID, '_phone', true);
+    $join_date = get_post_meta($post->ID, '_join_date', true);
+
+    ?>
+    <table class="form-table">
+        <tr>
+            <th><label for="management_position"><?php _e('Position:', 'sacco-php'); ?></label></th>
+            <td><input type="text" id="management_position" name="management_position" value="<?php echo esc_attr($position); ?>" class="widefat" placeholder="e.g., Chief Executive Officer, General Manager"></td>
+        </tr>
+        <tr>
+            <th><label for="department"><?php _e('Department:', 'sacco-php'); ?></label></th>
+            <td><input type="text" id="department" name="department" value="<?php echo esc_attr($department); ?>" class="widefat" placeholder="e.g., Executive, Finance, Operations"></td>
+        </tr>
+        <tr>
+            <th><label for="qualifications"><?php _e('Qualifications:', 'sacco-php'); ?></label></th>
+            <td><textarea id="qualifications" name="qualifications" class="widefat" rows="3" placeholder="Educational background and professional qualifications"><?php echo esc_textarea($qualifications); ?></textarea></td>
+        </tr>
+        <tr>
+            <th><label for="experience"><?php _e('Experience:', 'sacco-php'); ?></label></th>
+            <td><textarea id="experience" name="experience" class="widefat" rows="4" placeholder="Professional experience and expertise"><?php echo esc_textarea($experience); ?></textarea></td>
+        </tr>
+        <tr>
+            <th><label for="responsibilities"><?php _e('Key Responsibilities:', 'sacco-php'); ?></label></th>
+            <td><textarea id="responsibilities" name="responsibilities" class="widefat" rows="4" placeholder="Main responsibilities and duties"><?php echo esc_textarea($responsibilities); ?></textarea></td>
+        </tr>
+        <tr>
+            <th><label for="email"><?php _e('Email:', 'sacco-php'); ?></label></th>
+            <td><input type="email" id="email" name="email" value="<?php echo esc_attr($email); ?>" class="widefat" placeholder="email@example.com"></td>
+        </tr>
+        <tr>
+            <th><label for="phone"><?php _e('Phone:', 'sacco-php'); ?></label></th>
+            <td><input type="text" id="phone" name="phone" value="<?php echo esc_attr($phone); ?>" class="widefat" placeholder="+254 700 000 000"></td>
+        </tr>
+        <tr>
+            <th><label for="linkedin_url"><?php _e('LinkedIn URL:', 'sacco-php'); ?></label></th>
+            <td><input type="url" id="linkedin_url" name="linkedin_url" value="<?php echo esc_attr($linkedin); ?>" class="widefat" placeholder="https://linkedin.com/in/username"></td>
+        </tr>
+        <tr>
+            <th><label for="join_date"><?php _e('Join Date:', 'sacco-php'); ?></label></th>
+            <td><input type="date" id="join_date" name="join_date" value="<?php echo esc_attr($join_date); ?>" class="widefat"></td>
+        </tr>
+    </table>
+    <?php
+}
+
+function sacco_php_save_management_team_meta_box_data($post_id) {
+    if (!isset($_POST['sacco_php_management_team_meta_box_nonce']) || !wp_verify_nonce($_POST['sacco_php_management_team_meta_box_nonce'], 'sacco_php_management_team_meta_box')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (isset($_POST['post_type']) && 'management_team' == $_POST['post_type']) {
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+    } else {
+        return;
+    }
+
+    $fields_to_save = [
+        '_management_position' => 'management_position',
+        '_department' => 'department',
+        '_qualifications' => 'qualifications',
+        '_experience' => 'experience',
+        '_responsibilities' => 'responsibilities',
+        '_email' => 'email',
+        '_phone' => 'phone',
+        '_linkedin_url' => 'linkedin_url',
+        '_join_date' => 'join_date',
+    ];
+
+    foreach ($fields_to_save as $meta_key => $post_field_name) {
+        if (isset($_POST[$post_field_name])) {
+            $value = $_POST[$post_field_name];
+            
+            if (in_array($post_field_name, ['qualifications', 'experience', 'responsibilities'])) {
+                $sanitized_value = sanitize_textarea_field($value);
+            } elseif (in_array($post_field_name, ['linkedin_url'])) {
+                $sanitized_value = esc_url_raw($value);
+            } elseif (in_array($post_field_name, ['email'])) {
+                $sanitized_value = sanitize_email($value);
+            } else {
+                $sanitized_value = sanitize_text_field($value);
+            }
+            
+            if (empty($sanitized_value)) {
+                delete_post_meta($post_id, $meta_key);
+            } else {
+                update_post_meta($post_id, $meta_key, $sanitized_value);
+            }
+        }
+    }
+}
+add_action('save_post_management_team', 'sacco_php_save_management_team_meta_box_data');
+
+// Meta Boxes for Supervisory Committee CPT
+function sacco_php_register_supervisory_committee_meta_boxes() {
+    add_meta_box(
+        'supervisory_committee_details_meta_box',
+        __('Supervisory Committee Member Details', 'sacco-php'),
+        'sacco_php_supervisory_committee_meta_box_callback',
+        'supervisory_committee',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes_supervisory_committee', 'sacco_php_register_supervisory_committee_meta_boxes');
+
+function sacco_php_supervisory_committee_meta_box_callback($post) {
+    wp_nonce_field('sacco_php_supervisory_committee_meta_box', 'sacco_php_supervisory_committee_meta_box_nonce');
+
+    $position = get_post_meta($post->ID, '_committee_position', true);
+    $qualifications = get_post_meta($post->ID, '_qualifications', true);
+    $experience = get_post_meta($post->ID, '_experience', true);
+    $responsibilities = get_post_meta($post->ID, '_responsibilities', true);
+    $linkedin = get_post_meta($post->ID, '_linkedin_url', true);
+    $email = get_post_meta($post->ID, '_email', true);
+    $phone = get_post_meta($post->ID, '_phone', true);
+    $tenure_start = get_post_meta($post->ID, '_tenure_start', true);
+    $tenure_end = get_post_meta($post->ID, '_tenure_end', true);
+
+    ?>
+    <table class="form-table">
+        <tr>
+            <th><label for="committee_position"><?php _e('Position:', 'sacco-php'); ?></label></th>
+            <td><input type="text" id="committee_position" name="committee_position" value="<?php echo esc_attr($position); ?>" class="widefat" placeholder="e.g., Chairman, Vice Chairman, Secretary"></td>
+        </tr>
+        <tr>
+            <th><label for="qualifications"><?php _e('Qualifications:', 'sacco-php'); ?></label></th>
+            <td><textarea id="qualifications" name="qualifications" class="widefat" rows="3" placeholder="Educational background and professional qualifications"><?php echo esc_textarea($qualifications); ?></textarea></td>
+        </tr>
+        <tr>
+            <th><label for="experience"><?php _e('Experience:', 'sacco-php'); ?></label></th>
+            <td><textarea id="experience" name="experience" class="widefat" rows="4" placeholder="Professional experience and expertise"><?php echo esc_textarea($experience); ?></textarea></td>
+        </tr>
+        <tr>
+            <th><label for="responsibilities"><?php _e('Key Responsibilities:', 'sacco-php'); ?></label></th>
+            <td><textarea id="responsibilities" name="responsibilities" class="widefat" rows="4" placeholder="Main responsibilities and duties in the committee"><?php echo esc_textarea($responsibilities); ?></textarea></td>
+        </tr>
+        <tr>
+            <th><label for="email"><?php _e('Email:', 'sacco-php'); ?></label></th>
+            <td><input type="email" id="email" name="email" value="<?php echo esc_attr($email); ?>" class="widefat" placeholder="email@example.com"></td>
+        </tr>
+        <tr>
+            <th><label for="phone"><?php _e('Phone:', 'sacco-php'); ?></label></th>
+            <td><input type="text" id="phone" name="phone" value="<?php echo esc_attr($phone); ?>" class="widefat" placeholder="+254 700 000 000"></td>
+        </tr>
+        <tr>
+            <th><label for="linkedin_url"><?php _e('LinkedIn URL:', 'sacco-php'); ?></label></th>
+            <td><input type="url" id="linkedin_url" name="linkedin_url" value="<?php echo esc_attr($linkedin); ?>" class="widefat" placeholder="https://linkedin.com/in/username"></td>
+        </tr>
+        <tr>
+            <th><label for="tenure_start"><?php _e('Tenure Start:', 'sacco-php'); ?></label></th>
+            <td><input type="date" id="tenure_start" name="tenure_start" value="<?php echo esc_attr($tenure_start); ?>" class="widefat"></td>
+        </tr>
+        <tr>
+            <th><label for="tenure_end"><?php _e('Tenure End (Optional):', 'sacco-php'); ?></label></th>
+            <td><input type="date" id="tenure_end" name="tenure_end" value="<?php echo esc_attr($tenure_end); ?>" class="widefat"></td>
+        </tr>
+    </table>
+    <?php
+}
+
+function sacco_php_save_supervisory_committee_meta_box_data($post_id) {
+    if (!isset($_POST['sacco_php_supervisory_committee_meta_box_nonce']) || !wp_verify_nonce($_POST['sacco_php_supervisory_committee_meta_box_nonce'], 'sacco_php_supervisory_committee_meta_box')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (isset($_POST['post_type']) && 'supervisory_committee' == $_POST['post_type']) {
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+    } else {
+        return;
+    }
+
+    $fields_to_save = [
+        '_committee_position' => 'committee_position',
+        '_qualifications' => 'qualifications',
+        '_experience' => 'experience',
+        '_responsibilities' => 'responsibilities',
+        '_email' => 'email',
+        '_phone' => 'phone',
+        '_linkedin_url' => 'linkedin_url',
+        '_tenure_start' => 'tenure_start',
+        '_tenure_end' => 'tenure_end',
+    ];
+
+    foreach ($fields_to_save as $meta_key => $post_field_name) {
+        if (isset($_POST[$post_field_name])) {
+            $value = $_POST[$post_field_name];
+            
+            if (in_array($post_field_name, ['qualifications', 'experience', 'responsibilities'])) {
+                $sanitized_value = sanitize_textarea_field($value);
+            } elseif (in_array($post_field_name, ['linkedin_url'])) {
+                $sanitized_value = esc_url_raw($value);
+            } elseif (in_array($post_field_name, ['email'])) {
+                $sanitized_value = sanitize_email($value);
+            } else {
+                $sanitized_value = sanitize_text_field($value);
+            }
+            
+            if (empty($sanitized_value)) {
+                delete_post_meta($post_id, $meta_key);
+            } else {
+                update_post_meta($post_id, $meta_key, $sanitized_value);
+            }
+        }
+    }
+}
+add_action('save_post_supervisory_committee', 'sacco_php_save_supervisory_committee_meta_box_data');
+
 /**
  * Enqueue scripts and styles for member portal, savings, and loans.
  */
@@ -1145,6 +1702,26 @@ function sacco_php_product_page_styles() {
     if (is_page_template('page-about.php')) {
         wp_enqueue_style('sacco-about', get_template_directory_uri() . '/assets/css/about.css', array(), _S_VERSION);
     }
+    
+    // Credit Policy Page
+    if (is_page_template('page-credit-policy.php')) {
+        wp_enqueue_style('sacco-credit-policy', get_template_directory_uri() . '/assets/css/page-credit-policy.css', array(), _S_VERSION);
+    }
+    
+    // Enhanced Loan Application Page
+    if (is_page_template('page-loan-application-enhanced.php')) {
+        wp_enqueue_style('sacco-loan-application-enhanced', get_template_directory_uri() . '/page-loan-application-enhanced.css', array(), _S_VERSION);
+    }
+    
+    // Loan Dashboard Page
+    if (is_page_template('page-loan-dashboard.php')) {
+        wp_enqueue_style('sacco-loan-dashboard', get_template_directory_uri() . '/page-loan-dashboard.css', array(), _S_VERSION);
+    }
+    
+    // Member Profile Page
+    if (is_page_template('page-member-profile.php')) {
+        wp_enqueue_style('sacco-member-profile', get_template_directory_uri() . '/assets/css/page-member-profile.css', array(), _S_VERSION);
+    }
 }
 add_action('wp_enqueue_scripts', 'sacco_php_product_page_styles');
 
@@ -1227,6 +1804,8 @@ endif;
 // Load custom theme functionalities from the includes directory
 $theme_includes_path = get_template_directory() . '/includes/';
 
+require_once $theme_includes_path . 'database-setup.php';
+require_once $theme_includes_path . 'member-data.php';
 require_once $theme_includes_path . 'session-management.php';
 require_once $theme_includes_path . 'member-registration.php';
 require_once $theme_includes_path . 'member-profile.php';
@@ -1299,6 +1878,78 @@ add_action('admin_post_nopriv_product_enquiry_submission', 'sacco_handle_product
 add_action('admin_post_product_enquiry_submission', 'sacco_handle_product_enquiry');
 
 /**
+ * Handle Contact Page Form Submission
+ */
+function sacco_handle_contact_page_submission() {
+    // Verify nonce
+    if (!isset($_POST['contact_page_nonce']) || !wp_verify_nonce($_POST['contact_page_nonce'], 'sacco_contact_page_form_nonce')) {
+        wp_safe_redirect(add_query_arg('form_status', 'nonce_error', wp_get_referer()));
+        exit;
+    }
+
+    // Sanitize POST data
+    $name = isset($_POST['contact_name']) ? sanitize_text_field($_POST['contact_name']) : '';
+    $email = isset($_POST['contact_email']) ? sanitize_email($_POST['contact_email']) : '';
+    $phone = isset($_POST['contact_phone']) ? sanitize_text_field($_POST['contact_phone']) : '';
+    $department = isset($_POST['contact_department']) ? sanitize_text_field($_POST['contact_department']) : '';
+    $subject = isset($_POST['contact_subject']) ? sanitize_text_field($_POST['contact_subject']) : '';
+    $message = isset($_POST['contact_message']) ? sanitize_textarea_field($_POST['contact_message']) : '';
+    $privacy_agreed = isset($_POST['contact_privacy']) && $_POST['contact_privacy'] === 'agree';
+
+    // Basic validation
+    if (empty($name) || empty($email) || empty($subject) || empty($message) || !is_email($email) || !$privacy_agreed) {
+        wp_safe_redirect(add_query_arg('form_status', 'error', wp_get_referer()));
+        exit;
+    }
+
+    // Prepare email
+    $admin_email = get_option('admin_email');
+    $email_subject = sprintf('[Contact Form] %s - %s', ucfirst($department), $subject);
+
+    $email_body = "New contact form submission:\n\n";
+    $email_body .= "Name: " . esc_html($name) . "\n";
+    $email_body .= "Email: " . esc_html($email) . "\n";
+    if (!empty($phone)) {
+        $email_body .= "Phone: " . esc_html($phone) . "\n";
+    }
+    $email_body .= "Department: " . esc_html(ucfirst($department)) . "\n";
+    $email_body .= "Subject: " . esc_html($subject) . "\n\n";
+    $email_body .= "Message:\n" . esc_html($message) . "\n\n";
+    $email_body .= "---\n";
+    $email_body .= "Submitted from: " . home_url() . "\n";
+    $email_body .= "Time: " . current_time('mysql') . "\n";
+
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'Reply-To: ' . $name . ' <' . $email . '>'
+    );
+
+    // Send email
+    if (wp_mail($admin_email, $email_subject, $email_body, $headers)) {
+        // Send auto-reply to user
+        $user_subject = 'Thank you for contacting Daystar Co-operative Society';
+        $user_message = "Dear " . esc_html($name) . ",\n\n";
+        $user_message .= "Thank you for contacting us. We have received your message and will respond within 24 hours.\n\n";
+        $user_message .= "Your message details:\n";
+        $user_message .= "Subject: " . esc_html($subject) . "\n";
+        $user_message .= "Department: " . esc_html(ucfirst($department)) . "\n\n";
+        $user_message .= "Best regards,\n";
+        $user_message .= "Daystar Multipurpose Co-operative Society Ltd\n";
+        $user_message .= "Email: info@daystarcoopsacco.com\n";
+        $user_message .= "Phone: +254 700 123 456";
+
+        wp_mail($email, $user_subject, $user_message, array('Content-Type: text/plain; charset=UTF-8'));
+
+        wp_safe_redirect(add_query_arg('form_status', 'success', wp_get_referer()));
+    } else {
+        wp_safe_redirect(add_query_arg('form_status', 'mail_error', wp_get_referer()));
+    }
+    exit;
+}
+add_action('admin_post_nopriv_contact_page_submission', 'sacco_handle_contact_page_submission');
+add_action('admin_post_contact_page_submission', 'sacco_handle_contact_page_submission');
+
+/**
  * Enqueue pending approval styles
  */
 function daystar_enqueue_pending_approval_styles() {
@@ -1326,23 +1977,43 @@ function daystar_enqueue_member_dashboard_scripts() {
         return;
     }
 
+    // Enqueue CSS
+    wp_enqueue_style('daystar-member-dashboard-css', 
+        get_template_directory_uri() . '/assets/css/member-dashboard.css',
+        array(),
+        '1.0.0'
+    );
+
+    // Enqueue JS
     wp_enqueue_script('daystar-member-dashboard', 
         get_template_directory_uri() . '/assets/js/member-dashboard.js',
         array('jquery'),
         '1.0.0',
         true
     );
+    
+    wp_enqueue_script('daystar-notifications', 
+        get_template_directory_uri() . '/assets/js/notifications.js',
+        array('jquery'),
+        '1.0.0',
+        true
+    );
 
     // Add localization data for AJAX
-    wp_localize_script('daystar-member-dashboard', 'daystarData', array(
-        'ajaxurl' => admin_url('admin-ajax.php'),
+    wp_localize_script('daystar-notifications', 'daystarData', array(
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('daystar_notifications_nonce'),
+        'userId' => get_current_user_id(),
         'documentUploadNonce' => wp_create_nonce('daystar_document_upload')
     ));
 }
 add_action('wp_enqueue_scripts', 'daystar_enqueue_member_dashboard_scripts');
 
+// AJAX handlers for notifications are handled in includes/dashboard-notifications.php
+
 require_once get_template_directory() . '/includes/auth-helper.php';
 require_once get_template_directory() . '/includes/login-handler.php';
+require_once get_template_directory() . '/ajax-handlers.php';
 
 /**
  * Customizations for the WordPress admin area
@@ -1531,8 +2202,8 @@ function daystar_login_redirect($redirect_to, $request, $user) {
             return admin_url();
         }
         
-        // Members go to member dashboard
-        if (in_array('member', $user->roles)) {
+        // Members and pending members go to member dashboard
+        if (in_array('member', $user->roles) || in_array('pending_member', $user->roles)) {
             return home_url('/member-dashboard/');
         }
     }
@@ -1545,8 +2216,11 @@ add_filter('login_redirect', 'daystar_login_redirect', 10, 3);
 // Prevent access to wp-admin for non-admin users
 function daystar_restrict_admin_access() {
     if (is_admin() && !current_user_can('administrator') && !(defined('DOING_AJAX') && DOING_AJAX)) {
-        wp_redirect(home_url('/member-dashboard/'));
-        exit;
+        // Allow members and pending members to access member dashboard
+        if (current_user_can('member') || in_array('pending_member', wp_get_current_user()->roles)) {
+            wp_redirect(home_url('/member-dashboard/'));
+            exit;
+        }
     }
 }
 add_action('admin_init', 'daystar_restrict_admin_access');
@@ -1556,6 +2230,7 @@ function daystar_add_member_role() {
     if (!get_role('member')) {
         add_role('member', 'Member', array(
             'read' => true,
+            'member' => true,
             'edit_posts' => false,
             'delete_posts' => false,
         ));
@@ -1565,7 +2240,19 @@ function daystar_add_member_role() {
     if (!get_role('pending_member')) {
         add_role('pending_member', 'Pending Member', array(
             'read' => true,
+            'member' => true,
         ));
+    }
+    
+    // Update existing roles to ensure they have the member capability
+    $member_role = get_role('member');
+    if ($member_role && !$member_role->has_cap('member')) {
+        $member_role->add_cap('member');
+    }
+    
+    $pending_member_role = get_role('pending_member');
+    if ($pending_member_role && !$pending_member_role->has_cap('member')) {
+        $pending_member_role->add_cap('member');
     }
 }
 add_action('init', 'daystar_add_member_role');
@@ -1641,49 +2328,59 @@ function daystar_authenticate_member($user, $username, $password) {
 }
 add_filter('authenticate', 'daystar_authenticate_member', 30, 3);
 
-/**
- * Create database tables for SACCO functionality
- */
-function daystar_create_database_tables() {
-    global $wpdb;
+// Database tables are created via includes/database-setup.php
+// The function daystar_create_database_tables() is defined there and called via after_setup_theme hook
+
+// AJAX handler for member status check
+function check_member_status_ajax() {
+    // Verify nonce for security
+    if (!wp_verify_nonce($_POST['nonce'], 'wp_ajax_nonce')) {
+        wp_die('Security check failed');
+    }
     
-    $charset_collate = $wpdb->get_charset_collate();
+    $response = array();
     
-    // Contributions table
-    $contributions_table = $wpdb->prefix . 'daystar_contributions';
-    $contributions_sql = "CREATE TABLE {$contributions_table} (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        user_id bigint(20) NOT NULL,
-        amount decimal(10,2) NOT NULL,
-        contribution_date datetime DEFAULT CURRENT_TIMESTAMP,
-        payment_method varchar(50) NOT NULL,
-        reference_number varchar(100),
-        status varchar(20) DEFAULT 'pending',
-        created_at datetime DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (id),
-        KEY user_id (user_id)
-    ) {$charset_collate};";
+    if (is_user_logged_in()) {
+        $current_user = wp_get_current_user();
+        $member_number = get_user_meta($current_user->ID, 'member_number', true);
+        
+        if ($member_number) {
+            // User is a logged-in member
+            $response['success'] = true;
+            $response['data'] = array(
+                'redirect_url' => home_url('/member-dashboard/'),
+                'member_number' => $member_number,
+                'user_name' => $current_user->display_name
+            );
+        } else {
+            // User is logged in but not a member
+            $response['success'] = false;
+            $response['data'] = array(
+                'message' => 'User is not a registered member'
+            );
+        }
+    } else {
+        // User is not logged in
+        $response['success'] = false;
+        $response['data'] = array(
+            'message' => 'User not logged in'
+        );
+    }
     
-    // Loans table
-    $loans_table = $wpdb->prefix . 'daystar_loans';
-    $loans_sql = "CREATE TABLE {$loans_table} (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        user_id bigint(20) NOT NULL,
-        loan_type varchar(50) NOT NULL,
-        amount decimal(10,2) NOT NULL,
-        interest_rate decimal(5,2) NOT NULL,
-        term_months int(11) NOT NULL,
-        monthly_payment decimal(10,2) NOT NULL,
-        balance decimal(10,2) NOT NULL,
-        loan_date datetime DEFAULT CURRENT_TIMESTAMP,
-        status varchar(20) DEFAULT 'active',
-        created_at datetime DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (id),
-        KEY user_id (user_id)
-    ) {$charset_collate};";
-    
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($contributions_sql);
-    dbDelta($loans_sql);
+    wp_send_json($response);
 }
-add_action('after_setup_theme', 'daystar_create_database_tables');
+add_action('wp_ajax_check_member_status', 'check_member_status_ajax');
+add_action('wp_ajax_nopriv_check_member_status', 'check_member_status_ajax');
+
+// Localize AJAX for frontend
+ function daystar_localize_ajax() {
+     wp_localize_script('jquery', 'wp', array(
+         'ajax' => array(
+             'settings' => array(
+                 'url' => admin_url('admin-ajax.php'),
+                 'nonce' => wp_create_nonce('wp_ajax_nonce')
+             )
+         )
+     ));
+ }
+ add_action('wp_enqueue_scripts', 'daystar_localize_ajax');

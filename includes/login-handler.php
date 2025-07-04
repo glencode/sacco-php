@@ -123,10 +123,11 @@ function daystar_handle_login() {
 }
 
 // Register the handler for both AJAX and non-AJAX requests
-add_action('admin_post_nopriv_daystar_login', 'daystar_handle_login');
-add_action('admin_post_daystar_login', 'daystar_handle_login');
-add_action('wp_ajax_nopriv_daystar_login', 'daystar_handle_login');
-add_action('wp_ajax_daystar_login', 'daystar_handle_login');
+// AJAX handlers are now in session-management.php
+// add_action('admin_post_nopriv_daystar_login', 'daystar_handle_login');
+// add_action('admin_post_daystar_login', 'daystar_handle_login');
+// add_action('wp_ajax_nopriv_daystar_login', 'daystar_handle_login');
+// add_action('wp_ajax_daystar_login', 'daystar_handle_login');
 
 /**
  * Check if member dashboard page exists, create if it doesn't

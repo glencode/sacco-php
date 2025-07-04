@@ -1,0 +1,602 @@
+/**
+ * Legal Pages Styles for Daystar Multi-Purpose Co-op Society Ltd.
+ * Professional styling for privacy policy, terms of service, and legal documents
+ */
+
+/* Legal Page Container */
+.legal-page {
+    padding: 2rem 0;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* Legal Hero Section */
+.legal-hero {
+    background: linear-gradient(135deg, var(--primary-color, #005A9C) 0%, #003d6b 100%);
+    color: #ffffff;
+    padding: 4rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+
+.legal-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="legalPattern" width="40" height="40" patternUnits="userSpaceOnUse"><rect x="15" y="15" width="10" height="10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/><circle cx="20" cy="20" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23legalPattern)"/></svg>') repeat;
+    pointer-events: none;
+}
+
+.legal-hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.legal-hero p {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+.legal-hero .last-updated {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    padding: 0.75rem 1.5rem;
+    display: inline-block;
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Legal Content Container */
+.legal-content {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 3rem;
+    border: 1px solid #e9ecef;
+}
+
+/* Table of Contents */
+.legal-toc {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 2.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.legal-toc h2 {
+    color: var(--primary-color, #005A9C);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.legal-toc h2 i {
+    color: var(--secondary-color, #FFC107);
+    font-size: 1.25rem;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0.75rem;
+}
+
+.toc-list li {
+    margin: 0;
+}
+
+.toc-list a {
+    display: block;
+    color: var(--primary-color, #005A9C);
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border: 1px solid transparent;
+    background: #ffffff;
+}
+
+.toc-list a:hover {
+    background: var(--primary-color, #005A9C);
+    color: #ffffff;
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 90, 156, 0.2);
+}
+
+.toc-list a::before {
+    content: '▶';
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* Legal Content Body */
+.legal-body {
+    padding: 3rem;
+    line-height: 1.8;
+}
+
+.legal-section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 100px;
+}
+
+.legal-section:last-child {
+    margin-bottom: 0;
+}
+
+.legal-section h2 {
+    color: var(--primary-color, #005A9C);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--secondary-color, #FFC107);
+}
+
+.legal-section h2::before {
+    content: attr(data-section);
+    position: absolute;
+    left: -3rem;
+    top: 0;
+    color: var(--secondary-color, #FFC107);
+    font-size: 1.5rem;
+    font-weight: 700;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: rgba(255, 193, 7, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--secondary-color, #FFC107);
+}
+
+.legal-section h3 {
+    color: var(--primary-color, #005A9C);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.legal-section h3::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 4px;
+    height: 1.5rem;
+    background: var(--secondary-color, #FFC107);
+    border-radius: 2px;
+}
+
+.legal-section h4 {
+    color: var(--primary-color, #005A9C);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.legal-section p {
+    color: var(--text-color, #212529);
+    margin-bottom: 1.5rem;
+    text-align: justify;
+    font-size: 1.05rem;
+}
+
+.legal-section ul,
+.legal-section ol {
+    color: var(--text-color, #212529);
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.legal-section li {
+    margin-bottom: 0.75rem;
+    line-height: 1.7;
+}
+
+.legal-section li::marker {
+    color: var(--primary-color, #005A9C);
+    font-weight: 600;
+}
+
+/* Highlight Boxes */
+.legal-highlight {
+    background: linear-gradient(135deg, rgba(0, 90, 156, 0.05) 0%, rgba(0, 90, 156, 0.02) 100%);
+    border: 2px solid rgba(0, 90, 156, 0.1);
+    border-left: 5px solid var(--primary-color, #005A9C);
+    border-radius: 10px;
+    padding: 2rem;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.legal-highlight::before {
+    content: '⚠';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: var(--primary-color, #005A9C);
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.legal-highlight h4 {
+    color: var(--primary-color, #005A9C);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+.legal-highlight p {
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+/* Warning Box */
+.legal-warning {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.05) 0%, rgba(220, 53, 69, 0.02) 100%);
+    border: 2px solid rgba(220, 53, 69, 0.1);
+    border-left: 5px solid #dc3545;
+    border-radius: 10px;
+    padding: 2rem;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.legal-warning::before {
+    content: '⚠';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: #dc3545;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.legal-warning h4 {
+    color: #dc3545;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+.legal-warning p {
+    margin-bottom: 0;
+    font-weight: 500;
+    color: #721c24;
+}
+
+/* Info Box */
+.legal-info {
+    background: linear-gradient(135deg, rgba(13, 202, 240, 0.05) 0%, rgba(13, 202, 240, 0.02) 100%);
+    border: 2px solid rgba(13, 202, 240, 0.1);
+    border-left: 5px solid #0dcaf0;
+    border-radius: 10px;
+    padding: 2rem;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.legal-info::before {
+    content: 'ℹ';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: #0dcaf0;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.legal-info h4 {
+    color: #0dcaf0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+.legal-info p {
+    margin-bottom: 0;
+    font-weight: 500;
+    color: #055160;
+}
+
+/* Contact Information */
+.legal-contact {
+    background: linear-gradient(135deg, var(--primary-color, #005A9C) 0%, #003d6b 100%);
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 3rem;
+    margin-top: 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.legal-contact::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="contactPattern" width="50" height="50" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23contactPattern)"/></svg>') repeat;
+    pointer-events: none;
+}
+
+.legal-contact h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.legal-contact p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.contact-item i {
+    font-size: 2rem;
+    color: var(--secondary-color, #FFC107);
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.contact-item h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.contact-item p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 1rem;
+}
+
+.contact-item a {
+    color: var(--secondary-color, #FFC107);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.contact-item a:hover {
+    color: #ffffff;
+}
+
+/* Back to Top */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-color, #005A9C) 0%, #003d6b 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 5px 20px rgba(0, 90, 156, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 90, 156, 0.4);
+}
+
+.back-to-top.show {
+    display: flex;
+}
+
+/* Print Styles */
+@media print {
+    .legal-hero,
+    .legal-toc,
+    .back-to-top {
+        display: none;
+    }
+    
+    .legal-content {
+        box-shadow: none;
+        border: none;
+    }
+    
+    .legal-body {
+        padding: 0;
+    }
+    
+    .legal-section h2::before {
+        display: none;
+    }
+    
+    .legal-section h2 {
+        padding-left: 0;
+    }
+    
+    .legal-section h3::before {
+        display: none;
+    }
+    
+    .legal-section h3 {
+        padding-left: 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+    .legal-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .toc-list {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .contact-info {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 767.98px) {
+    .legal-hero {
+        padding: 3rem 0;
+    }
+    
+    .legal-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .legal-body {
+        padding: 2rem;
+    }
+    
+    .legal-toc {
+        padding: 2rem;
+    }
+    
+    .legal-contact {
+        padding: 2rem;
+    }
+    
+    .toc-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .legal-section h2::before {
+        display: none;
+    }
+    
+    .legal-section h2 {
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .legal-hero h1 {
+        font-size: 1.75rem;
+    }
+    
+    .legal-hero p {
+        font-size: 1.1rem;
+    }
+    
+    .legal-body {
+        padding: 1.5rem;
+    }
+    
+    .legal-toc {
+        padding: 1.5rem;
+    }
+    
+    .legal-contact {
+        padding: 1.5rem;
+    }
+    
+    .legal-highlight,
+    .legal-warning,
+    .legal-info {
+        padding: 1.5rem;
+    }
+    
+    .contact-item {
+        padding: 1.5rem;
+    }
+    
+    .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+}

@@ -25,7 +25,7 @@ add_action('init', 'daystar_register_member_actions');
 function daystar_process_registration() {
     try {
         // Verify nonce
-        check_ajax_referer('daystar_register_member_nonce', 'security');
+        check_ajax_referer('daystar_register_member_nonce', 'registrationNonce');
         
         if (empty($_POST)) {
             throw new Exception('No data received');
@@ -354,19 +354,23 @@ add_action('daystar_before_registration_form', 'daystar_display_registration_err
  * Check if user is approved before login
  */
 function daystar_check_user_status($user, $username, $password) {
-    // Get user by username or email
-    if (!$user) {
-        $user = get_user_by('email', $username);
-    }
-    
-    // If user exists and has the member role
-    if ($user && in_array('member', $user->roles)) {
-        $member_status = get_user_meta($user->ID, 'member_status', true);
-        
-
-        // If member status is suspended, prevent login
-        if ($member_status === 'suspended') {
-            return new WP_Error('account_suspended', __('Your account has been suspended. Please contact the administrator.'));
+    // If WordPress already authenticated the user, use that
+    if ($user instanceof WP_User) {
+        // Check if user has member or pending_member role
+        if (in_array('member', $user->roles) || in_array('pending_member', $user->roles)) {
+            $member_status = get_user_meta($user->ID, 'member_status', true);
+            
+            // Block suspended and rejected members
+            if ($member_status === 'suspended') {
+                return new WP_Error('account_suspended', __('Your account has been suspended. Please contact the administrator.'));
+            }
+            
+            if ($member_status === 'rejected') {
+                return new WP_Error('account_rejected', __('Your membership application has been rejected. Please contact the administrator for more information.'));
+            }
+            
+            // Allow active and pending members to log in
+            // (pending members can log in but will see limited functionality)
         }
     }
     

@@ -29,7 +29,26 @@ function initLoginForm() {
         // Prepare form data
         const formData = new FormData(this);
         formData.append('action', 'daystar_login');
-        formData.append('login_nonce', daystar_ajax.login_nonce);
+        
+        // Handle remember me checkbox
+        const rememberCheckbox = this.querySelector('input[name="rememberMe"]');
+        if (rememberCheckbox && rememberCheckbox.checked) {
+            formData.append('remember', 'true');
+        }
+        
+        // Use the correct nonce field name that matches the handler
+        const nonceField = this.querySelector('input[name="login_nonce"]');
+        if (nonceField) {
+            formData.append('login_nonce', nonceField.value);
+        } else {
+            formData.append('login_nonce', daystar_ajax.login_nonce);
+        }
+
+        // Debug: Log form data
+        console.log('Form data being sent:');
+        for (let [key, value] of formData.entries()) {
+            console.log(key + ': ' + value);
+        }
 
         // Send AJAX request
         fetch(daystar_ajax.ajaxurl, {
@@ -37,8 +56,15 @@ function initLoginForm() {
             body: formData,
             credentials: 'same-origin'
         })
-        .then(response => response.json())
         .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(response => {
+            console.log('Login response:', response);
             if (response.success) {
                 // Show success message
                 messageDiv.innerHTML = '<div class="alert alert-success">Login successful! Redirecting...</div>';

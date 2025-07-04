@@ -1,0 +1,697 @@
+/* Supervisory Committee Page Styles */
+
+/* Main Page Background */
+.supervisory-committee-page {
+    position: relative;
+    min-height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    background: url('../../images/supervisorybg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    z-index: 1;
+}
+
+.supervisory-committee-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(30, 41, 59, 0.65); /* Dark overlay for readability */
+    z-index: 2;
+}
+
+.supervisory-committee-page > * {
+    position: relative;
+    z-index: 3;
+}
+
+/* Hero Section */
+.supervisory-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    color: white;
+    overflow: hidden;
+}
+
+.supervisory-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 3rem;
+    opacity: 0.95;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-stats {
+    margin-top: 4rem;
+}
+
+.stat-item {
+    padding: 2rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.stat-item h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.stat-item p {
+    font-size: 1rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.scroll-arrow {
+    width: 2px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.8);
+    position: relative;
+    animation: scroll-bounce 2s infinite;
+}
+
+.scroll-arrow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -4px;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid rgba(255, 255, 255, 0.8);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+    transform: rotate(45deg);
+}
+
+@keyframes scroll-bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Glass Card Effect for All Sections */
+.glass-card {
+    background: rgba(30, 41, 59, 0.92); /* Dark glass effect */
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 24px rgba(30, 41, 59, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    margin-bottom: 2rem;
+    padding: 2rem;
+}
+
+.glass-card .section-title {
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.glass-card p, .glass-card ul, .glass-card li {
+    color: #f8fafc;
+    font-size: 1.12rem;
+}
+
+.glass-card strong {
+    color: #60a5fa;
+    font-weight: 700;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    position: relative;
+    margin-bottom: 3rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    border-radius: 2px;
+}
+
+/* Introduction Section */
+.supervisory-intro {
+    padding: 4rem 0;
+}
+
+.intro-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.intro-content .lead {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #f8fafc;
+}
+
+/* Supervisory Grid */
+.supervisory-grid {
+    padding: 4rem 0;
+}
+
+.committee-card {
+    background: rgba(30, 41, 59, 0.92);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    transition: all 0.3s ease;
+    height: 100%;
+    position: relative;
+}
+
+.committee-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(30, 41, 59, 0.95);
+}
+
+.committee-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+.committee-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.committee-card:hover .committee-image img {
+    transform: scale(1.1);
+}
+
+.committee-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.committee-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(220, 38, 38, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.committee-card:hover .committee-overlay {
+    opacity: 1;
+}
+
+.committee-contact {
+    display: flex;
+    gap: 1rem;
+}
+
+.contact-btn {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.contact-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+    transform: scale(1.1);
+}
+
+.committee-info {
+    padding: 2rem;
+}
+
+.committee-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.committee-position {
+    font-size: 1rem;
+    color: #60a5fa;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.committee-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.committee-meta span {
+    font-size: 0.9rem;
+    color: #f8fafc;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.committee-meta i {
+    color: #60a5fa;
+}
+
+.committee-bio {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #f8fafc;
+    margin-bottom: 1rem;
+}
+
+.committee-details {
+    display: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.detail-section {
+    margin-bottom: 1rem;
+}
+
+.detail-section h6 {
+    color: #60a5fa;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-section p {
+    color: #f8fafc;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.toggle-details {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #60a5fa;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.toggle-details:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.toggle-details i {
+    transition: transform 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.toggle-details .hide-text {
+    display: none;
+}
+
+/* Committee Functions */
+.committee-functions {
+    padding: 4rem 0;
+}
+
+.function-item {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.function-item:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.function-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.function-item:hover .function-icon {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.function-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.function-item h4 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.function-item p {
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    margin: 0;
+    color: #f8fafc;
+}
+
+/* Audit Schedule */
+.audit-schedule {
+    padding: 4rem 0;
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.schedule-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.schedule-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+.schedule-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.schedule-icon i {
+    font-size: 1.5rem;
+    color: #60a5fa;
+}
+
+.schedule-item h4 {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.schedule-item p {
+    color: #f8fafc;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Powers and Authority */
+.powers-authority {
+    padding: 4rem 0;
+}
+
+.powers-authority h4 {
+    color: #60a5fa;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.powers-authority ul {
+    list-style: none;
+    padding: 0;
+}
+
+.powers-authority li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    padding-left: 2rem;
+}
+
+.powers-authority li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #60a5fa;
+    font-weight: bold;
+}
+
+.powers-authority li:last-child {
+    border-bottom: none;
+}
+
+/* Contact Committee Section */
+.contact-committee {
+    padding: 4rem 0;
+}
+
+.contact-committee .glass-card {
+    text-align: center;
+}
+
+.contact-committee .lead {
+    color: #f8fafc;
+}
+
+.contact-options {
+    margin-top: 2rem;
+}
+
+.whistleblower-notice {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 10px;
+}
+
+.whistleblower-notice p {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 0.95rem;
+}
+
+.whistleblower-notice i {
+    color: #22c55e;
+    margin-right: 0.5rem;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    border: none;
+    box-shadow: 0 5px 15px rgba(96, 165, 250, 0.3);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(96, 165, 250, 0.4);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.btn-outline-primary {
+    border: 2px solid #60a5fa;
+    color: #60a5fa;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-outline-primary:hover {
+    background: #60a5fa;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(96, 165, 250, 0.3);
+    border-color: #60a5fa;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .committee-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .schedule-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .function-item {
+        margin-bottom: 2rem;
+    }
+    
+    .contact-options .btn-lg {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .stat-item {
+        padding: 1.5rem 1rem;
+    }
+    
+    .stat-item h3 {
+        font-size: 2rem;
+    }
+    
+    .committee-info {
+        padding: 1.5rem;
+    }
+    
+    .schedule-item {
+        padding: 1.5rem;
+    }
+}
+
+/* Animation Classes */
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+/* Loading Animation */
+.supervisory-committee-page {
+    animation: pageLoad 0.8s ease-out;
+}
+
+@keyframes pageLoad {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

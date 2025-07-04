@@ -8,9 +8,146 @@
 get_header();
 ?>
 
+<style>
+/* Color Palette */
+:root {
+    --primary-dark: #213448;
+    --primary-blue: #547792;
+    --primary-light: #94b4c1;
+    --accent-yellow: #ecefca;
+}
+
+body, .membership-page {
+    background: var(--accent-yellow);
+    color: var(--primary-dark);
+}
+
+/* Parallax Section */
+.parallax-bg {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1;
+}
+
+.page-header.bg-gradient.parallax-bg {
+    background-image: linear-gradient(rgba(33,52,72,0.7), rgba(84,119,146,0.7)), url('<?php echo get_template_directory_uri(); ?>/assets/images/membership-hero.jpg');
+    color: #fff;
+}
+
+.section-title, .cta-title {
+    color: var(--primary-dark);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.section-subtitle, .cta-subtitle {
+    color: var(--primary-blue);
+}
+
+/* Card Styles */
+.feature-card, .benefit-card, .testimonial-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(33,52,72,0.08);
+    border: 1px solid var(--primary-light);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.feature-card:hover, .benefit-card:hover, .testimonial-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(33,52,72,0.16);
+}
+
+.benefit-icon, .feature-icon {
+    color: var(--primary-blue);
+    font-size: 2.2rem;
+    background: var(--accent-yellow);
+    border-radius: 50%;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: inline-block;
+}
+
+.step-item {
+    background: var(--primary-light);
+    border-radius: 14px;
+    padding: 24px 16px;
+    box-shadow: 0 2px 12px rgba(33,52,72,0.07);
+    transition: box-shadow 0.2s;
+}
+.step-item:hover {
+    box-shadow: 0 6px 24px rgba(33,52,72,0.13);
+}
+
+/* Button Styles */
+.btn-primary, .btn-gradient {
+    background: linear-gradient(90deg, var(--primary-blue), var(--primary-dark));
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(33,52,72,0.10);
+}
+.btn-primary:hover, .btn-gradient:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-blue));
+    color: #ecefca;
+    transform: translateY(-2px) scale(1.04);
+}
+.btn-outline-primary {
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    background: transparent;
+    border-radius: 30px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+.btn-outline-primary:hover {
+    background: var(--primary-blue);
+    color: #fff;
+    transform: translateY(-2px) scale(1.04);
+}
+.btn-outline-light {
+    border: 2px solid #fff;
+    color: #fff;
+    background: transparent;
+    border-radius: 30px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+.btn-outline-light:hover {
+    background: #fff;
+    color: var(--primary-dark);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.cta-section {
+    background: linear-gradient(90deg, var(--primary-blue) 60%, var(--primary-light));
+    color: #fff;
+    padding: 48px 0;
+    border-radius: 24px;
+    margin-top: 48px;
+    box-shadow: 0 4px 32px rgba(33,52,72,0.10);
+}
+.cta-title, .cta-subtitle {
+    color: #fff;
+}
+
+/* Parallax fix for mobile */
+@media (max-width: 991px) {
+    .parallax-bg {
+        background-attachment: scroll;
+    }
+}
+</style>
+
 <main id="primary" class="site-main membership-page">
-    <!-- Page Header -->
-    <section class="page-header bg-gradient">
+    <!-- Page Header with Parallax -->
+    <section class="page-header bg-gradient parallax-bg">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8">

@@ -12,9 +12,11 @@
 get_header();
 ?>
 
+<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/how-to-join.css?v=1.0">
+
 <main id="primary" class="site-main">
 
-	<section class="page-header bg-light py-5">
+	<section class="page-header bg-light py-5 parallax-bg">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 text-center">
@@ -441,44 +443,6 @@ get_header();
 
 </main><!-- #main -->
 
-<style>
-/* Step Number Styling */
-.step-number {
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	width: 60px;
-	height: 60px;
-	background-color: var(--bs-primary);
-	color: white;
-	border-radius: 50%;
-	font-size: 1.5rem;
-	font-weight: bold;
-}
-
-/* Timeline connector */
-.join-process .join-step {
-	position: relative;
-}
-
-.join-process .join-step:not(:last-child)::after {
-	content: '';
-	position: absolute;
-	top: 100%;
-	left: calc(2% + 30px);
-	width: 3px;
-	height: 30px;
-	background-color: var(--bs-primary);
-	z-index: 0;
-}
-
-@media (max-width: 767px) {
-	.join-process .join-step:not(:last-child)::after {
-		display: none;
-	}
-}
-</style>
-
 <?php
 get_footer(); 
-?> 
+?>

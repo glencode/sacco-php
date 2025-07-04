@@ -1,0 +1,730 @@
+/**
+ * Member Pages Styles for Daystar Multi-Purpose Co-op Society Ltd.
+ * Professional styling for member dashboard, profile, loan applications, etc.
+ */
+
+/* Member Page Container */
+.member-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+}
+
+/* Member Header */
+.member-header {
+    background: linear-gradient(135deg, var(--primary-color, #005A9C) 0%, #003d6b 100%);
+    color: #ffffff;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.member-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="memberPattern" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="0.5" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23memberPattern)"/></svg>') repeat;
+    pointer-events: none;
+}
+
+.member-welcome {
+    position: relative;
+    z-index: 1;
+}
+
+.member-welcome h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.member-welcome p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.member-id {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+/* Member Navigation Tabs */
+.member-nav {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.member-nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+}
+
+.member-nav-item {
+    flex: 1;
+    min-width: 150px;
+}
+
+.member-nav-link {
+    display: block;
+    padding: 1.25rem 1.5rem;
+    color: #666;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    position: relative;
+}
+
+.member-nav-link:hover {
+    color: var(--primary-color, #005A9C);
+    background-color: #f8f9fa;
+}
+
+.member-nav-link.active {
+    color: var(--primary-color, #005A9C);
+    background-color: #f8f9fa;
+    border-bottom-color: var(--primary-color, #005A9C);
+}
+
+.member-nav-link i {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Member Content */
+.member-content {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.tab-pane {
+    display: none;
+    padding: 2rem;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Dashboard Cards */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.dashboard-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 90, 156, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color, #005A9C), var(--secondary-color, #FFC107));
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-color, #005A9C), #003d6b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    color: var(--primary-color, #005A9C);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.card-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color, #212529);
+    margin-bottom: 0.5rem;
+}
+
+.card-subtitle {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Account Summary */
+.account-summary {
+    background: linear-gradient(135deg, var(--primary-color, #005A9C) 0%, #003d6b 100%);
+    color: #ffffff;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.account-summary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="summaryPattern" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23summaryPattern)"/></svg>') repeat;
+    pointer-events: none;
+}
+
+.account-summary h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.summary-item {
+    text-align: center;
+}
+
+.summary-item .amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary-color, #FFC107);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.summary-item .label {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Profile Form */
+.profile-form {
+    max-width: 800px;
+}
+
+.form-section {
+    margin-bottom: 3rem;
+}
+
+.form-section h3 {
+    color: var(--primary-color, #005A9C);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    color: var(--primary-color, #005A9C);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    color: var(--text-color, #212529);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color, #005A9C);
+    box-shadow: 0 0 0 3px rgba(0, 90, 156, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-group .required {
+    color: #dc3545;
+}
+
+/* File Upload */
+.file-upload {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 100%;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-upload-label {
+    display: block;
+    padding: 1rem 1.25rem;
+    border: 2px dashed #e9ecef;
+    border-radius: 10px;
+    text-align: center;
+    color: #666;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+.file-upload:hover .file-upload-label {
+    border-color: var(--primary-color, #005A9C);
+    color: var(--primary-color, #005A9C);
+    background-color: rgba(0, 90, 156, 0.05);
+}
+
+.file-upload-label i {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color, #005A9C);
+}
+
+/* Loan Application */
+.loan-calculator {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e9ecef;
+}
+
+.loan-calculator h4 {
+    color: var(--primary-color, #005A9C);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.calculator-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.calculator-result {
+    background: var(--primary-color, #005A9C);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.calculator-result .amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary-color, #FFC107);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.calculator-result .label {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Transaction History */
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.transaction-table th,
+.transaction-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.transaction-table th {
+    background-color: #f8f9fa;
+    color: var(--primary-color, #005A9C);
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+}
+
+.transaction-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.transaction-type {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.transaction-type.deposit {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.transaction-type.withdrawal {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.transaction-type.loan {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.transaction-amount.positive {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.transaction-amount.negative {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 0.875rem 2rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color, #005A9C) 0%, #003d6b 100%);
+    color: #ffffff;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--secondary-color, #FFC107) 0%, #e0a800 100%);
+    color: #212529;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary-color, #005A9C);
+    border: 2px solid var(--primary-color, #005A9C);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline:hover {
+    background: var(--primary-color, #005A9C);
+    color: #ffffff;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.status-badge.active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-badge.pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.suspended {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-badge.approved {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Notifications */
+.notifications-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-item {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--primary-color, #005A9C);
+    transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.notification-item.unread {
+    background: #fff3cd;
+    border-left-color: var(--secondary-color, #FFC107);
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.notification-title {
+    color: var(--primary-color, #005A9C);
+    font-weight: 600;
+    margin: 0;
+}
+
+.notification-date {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.notification-message {
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #666;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: var(--primary-color, #005A9C);
+    margin-bottom: 1rem;
+    display: block;
+    opacity: 0.5;
+}
+
+.empty-state h4 {
+    color: var(--primary-color, #005A9C);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+    .member-welcome h1 {
+        font-size: 2rem;
+    }
+    
+    .dashboard-cards {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    
+    .summary-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    
+    .action-buttons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .member-page {
+        padding: 1rem 0;
+    }
+    
+    .member-header {
+        padding: 1.5rem 0;
+    }
+    
+    .member-welcome h1 {
+        font-size: 1.75rem;
+    }
+    
+    .member-nav-list {
+        flex-direction: column;
+    }
+    
+    .member-nav-item {
+        min-width: auto;
+    }
+    
+    .member-nav-link {
+        padding: 1rem;
+        text-align: left;
+    }
+    
+    .member-nav-link i {
+        display: inline-block;
+        margin-right: 0.5rem;
+        margin-bottom: 0;
+    }
+    
+    .tab-pane {
+        padding: 1.5rem;
+    }
+    
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .calculator-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .member-header {
+        padding: 1rem 0;
+    }
+    
+    .member-welcome h1 {
+        font-size: 1.5rem;
+    }
+    
+    .tab-pane {
+        padding: 1rem;
+    }
+    
+    .dashboard-card {
+        padding: 1.5rem;
+    }
+    
+    .account-summary {
+        padding: 1.5rem;
+    }
+    
+    .loan-calculator {
+        padding: 1.5rem;
+    }
+    
+    .transaction-table {
+        font-size: 0.9rem;
+    }
+    
+    .transaction-table th,
+    .transaction-table td {
+        padding: 0.75rem 0.5rem;
+    }
+}

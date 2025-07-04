@@ -16,6 +16,7 @@ class DaystarMemberDashboard {
         if (!dashboard) return;
         
         // Initialize dashboard components
+        this.initializeTabs();
         this.initializeAccountSummary();
         this.initializeLoanSummary();
         this.initializeContributionChart();
@@ -25,137 +26,241 @@ class DaystarMemberDashboard {
     }
     
     /**
+     * Initialize tab functionality
+     */
+    static initializeTabs() {
+        const tabLinks = document.querySelectorAll('.nav-tabs .nav-link');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        
+        tabLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all tabs and panes
+                tabLinks.forEach(l => l.classList.remove('active'));
+                tabPanes.forEach(p => {
+                    p.classList.remove('active', 'show');
+                    p.style.display = 'none';
+                });
+                
+                // Add active class to clicked tab
+                link.classList.add('active');
+                
+                // Show corresponding tab pane
+                const targetId = link.getAttribute('data-bs-target') || link.getAttribute('href');
+                if (targetId) {
+                    const targetPane = document.querySelector(targetId);
+                    if (targetPane) {
+                        targetPane.classList.add('active', 'show');
+                        targetPane.style.display = 'block';
+                    }
+                }
+            });
+        });
+        
+        // Show first tab by default
+        if (tabLinks.length > 0) {
+            tabLinks[0].click();
+        }
+    }
+    
+    /**
      * Initialize account summary section
      */
-    static initializeAccountSummary() {
+    static async initializeAccountSummary() {
         const accountSummary = document.getElementById('account-summary');
         if (!accountSummary) return;
         
-        // In a real implementation, this would fetch data from the server
-        // For this demo, we'll use sample data
-        const accountData = {
-            totalContributions: 250000,
-            shareCapital: 15000,
-            availableBalance: 235000,
-            lastContribution: {
-                amount: 12000,
-                date: '2025-05-15'
-            },
-            memberSince: '2023-11-10',
-            membershipStatus: 'Active'
-        };
-        
-        // Update account summary with data
-        const contributionsElement = accountSummary.querySelector('.total-contributions');
-        if (contributionsElement) {
-            contributionsElement.textContent = `KSh ${accountData.totalContributions.toLocaleString()}`;
-        }
-        
-        const shareCapitalElement = accountSummary.querySelector('.share-capital');
-        if (shareCapitalElement) {
-            shareCapitalElement.textContent = `KSh ${accountData.shareCapital.toLocaleString()}`;
-        }
-        
-        const availableBalanceElement = accountSummary.querySelector('.available-balance');
-        if (availableBalanceElement) {
-            availableBalanceElement.textContent = `KSh ${accountData.availableBalance.toLocaleString()}`;
-        }
-        
-        const lastContributionElement = accountSummary.querySelector('.last-contribution');
-        if (lastContributionElement) {
-            const date = new Date(accountData.lastContribution.date);
-            lastContributionElement.textContent = `KSh ${accountData.lastContribution.amount.toLocaleString()} on ${date.toLocaleDateString()}`;
-        }
-        
-        const memberSinceElement = accountSummary.querySelector('.member-since');
-        if (memberSinceElement) {
-            const date = new Date(accountData.memberSince);
-            memberSinceElement.textContent = date.toLocaleDateString();
-        }
-        
-        const membershipStatusElement = accountSummary.querySelector('.membership-status');
-        if (membershipStatusElement) {
-            membershipStatusElement.textContent = accountData.membershipStatus;
-            
-            // Add status indicator
-            if (accountData.membershipStatus === 'Active') {
-                membershipStatusElement.classList.add('text-success');
-            } else {
-                membershipStatusElement.classList.add('text-danger');
+        try {
+            // Fetch real account data from WordPress AJAX
+            const response = await fetch(daystar_ajax.ajax_url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    action: 'get_member_dashboard_data',
+                    nonce: daystar_ajax.nonce
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch account data');
             }
+
+            const data = await response.json();
+            
+            if (data.success) {
+                const accountData = data.data;
+                
+                // Update account summary with real data
+                const contributionsElement = accountSummary.querySelector('.total-contributions');
+                if (contributionsElement) {
+                    contributionsElement.textContent = `KSh ${parseFloat(accountData.total_contributions || 0).toLocaleString()}`;
+                }
+                
+                const availableBalanceElement = accountSummary.querySelector('.available-balance');
+                if (availableBalanceElement) {
+                    availableBalanceElement.textContent = `KSh ${parseFloat(accountData.balance || 0).toLocaleString()}`;
+                }
+                
+                // Update other elements if they exist
+                const balanceElement = document.querySelector('.account-balance .balance-amount');
+                if (balanceElement) {
+                    balanceElement.textContent = `KSh ${parseFloat(accountData.balance || 0).toLocaleString()}`;
+                }
+
+                const contributionElement = document.querySelector('.contribution-amount');
+                if (contributionElement) {
+                    contributionElement.textContent = `KSh ${parseFloat(accountData.total_contributions || 0).toLocaleString()}`;
+                }
+
+                const loanElement = document.querySelector('.loan-amount');
+                if (loanElement) {
+                    loanElement.textContent = `KSh ${parseFloat(accountData.total_loans || 0).toLocaleString()}`;
+                }
+
+                const savingsElement = document.querySelector('.savings-amount');
+                if (savingsElement) {
+                    savingsElement.textContent = `KSh ${parseFloat(accountData.balance || 0).toLocaleString()}`;
+                }
+            } else {
+                console.error('Error fetching account data:', data.data);
+                this.showFallbackAccountData();
+            }
+        } catch (error) {
+            console.error('Error fetching account data:', error);
+            this.showFallbackAccountData();
+        }
+    }
+    
+    /**
+     * Show fallback data when API fails
+     */
+    static showFallbackAccountData() {
+        const fallbackData = {
+            balance: 0,
+            contributions: 0,
+            loans: 0
+        };
+
+        // Update with fallback data
+        const contributionsElement = document.querySelector('.total-contributions');
+        if (contributionsElement) {
+            contributionsElement.textContent = `KSh ${fallbackData.contributions.toLocaleString()}`;
+        }
+        
+        const availableBalanceElement = document.querySelector('.available-balance');
+        if (availableBalanceElement) {
+            availableBalanceElement.textContent = `KSh ${fallbackData.balance.toLocaleString()}`;
+        }
+        
+        const balanceElement = document.querySelector('.account-balance .balance-amount');
+        if (balanceElement) {
+            balanceElement.textContent = `KSh ${fallbackData.balance.toLocaleString()}`;
+        }
+
+        const contributionElement = document.querySelector('.contribution-amount');
+        if (contributionElement) {
+            contributionElement.textContent = `KSh ${fallbackData.contributions.toLocaleString()}`;
+        }
+
+        const loanElement = document.querySelector('.loan-amount');
+        if (loanElement) {
+            loanElement.textContent = `KSh ${fallbackData.loans.toLocaleString()}`;
+        }
+
+        const savingsElement = document.querySelector('.savings-amount');
+        if (savingsElement) {
+            savingsElement.textContent = `KSh ${fallbackData.balance.toLocaleString()}`;
         }
     }
     
     /**
      * Initialize loan summary section
      */
-    static initializeLoanSummary() {
+    static async initializeLoanSummary() {
         const loanSummary = document.getElementById('loan-summary');
         if (!loanSummary) return;
         
-        // In a real implementation, this would fetch data from the server
-        // For this demo, we'll use sample data
-        const loanData = {
-            activeLoans: [
-                {
-                    id: 'DSL-20250315-001',
-                    type: 'Development Loan',
-                    originalAmount: 500000,
-                    remainingBalance: 425000,
-                    monthlyPayment: 16667,
-                    nextPaymentDate: '2025-06-15',
-                    status: 'Current'
-                }
-            ],
-            loanHistory: [
-                {
-                    id: 'DSL-20240110-002',
-                    type: 'School Fees Loan',
-                    originalAmount: 150000,
-                    status: 'Paid',
-                    completionDate: '2025-01-10'
+        try {
+            // Fetch real loan data from WordPress AJAX
+            const response = await fetch(daystar_ajax.ajax_url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                {
-                    id: 'DSL-20230605-003',
-                    type: 'Emergency Loan',
-                    originalAmount: 50000,
-                    status: 'Paid',
-                    completionDate: '2023-12-05'
-                }
-            ],
-            eligibility: {
-                maxEligibleAmount: 1500000,
-                eligibleLoanTypes: ['Development', 'School Fees', 'Emergency', 'Special', 'Salary Advance']
+                body: new URLSearchParams({
+                    action: 'get_member_loan_data',
+                    nonce: daystar_ajax.nonce
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch loan data');
+            }
+
+            const data = await response.json();
+            
+            if (data.success) {
+                const loanData = data.data;
+                this.renderLoanData(loanData, loanSummary);
+            } else {
+                console.error('Error fetching loan data:', data.data);
+                this.showFallbackLoanData(loanSummary);
+            }
+        } catch (error) {
+            console.error('Error fetching loan data:', error);
+            this.showFallbackLoanData(loanSummary);
+        }
+    }
+    
+    /**
+     * Render loan data to the UI
+     */
+    static renderLoanData(loanData, loanSummary) {
+        // Default structure if no data
+        const defaultLoanData = {
+            activeLoans: loanData.activeLoans || [],
+            loanHistory: loanData.loanHistory || [],
+            eligibility: loanData.eligibility || {
+                maxEligibleAmount: 0,
+                eligibleLoanTypes: []
             }
         };
         
         // Update active loans section
         const activeLoansContainer = loanSummary.querySelector('.active-loans');
         if (activeLoansContainer) {
-            if (loanData.activeLoans.length > 0) {
+            if (defaultLoanData.activeLoans.length > 0) {
                 let activeLoansHtml = '';
                 
-                loanData.activeLoans.forEach(loan => {
+                defaultLoanData.activeLoans.forEach(loan => {
+                    const originalAmount = parseFloat(loan.amount || loan.originalAmount || 0);
+                    const remainingBalance = parseFloat(loan.balance || loan.remainingBalance || originalAmount);
+                    const monthlyPayment = parseFloat(loan.monthly_payment || loan.monthlyPayment || 0);
+                    const progressPercent = originalAmount > 0 ? Math.round((1 - remainingBalance / originalAmount) * 100) : 0;
+                    
                     activeLoansHtml += `
-                        <div class="loan-item card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">${loan.type} <span class="badge ${loan.status === 'Current' ? 'bg-success' : 'bg-warning'}">${loan.status}</span></h5>
+                        <div class="loan-item glass-card mb-3">
+                        <div class="card-body">
+                                <h5 class="card-title">${loan.loan_type || loan.type || 'Loan'} <span class="badge ${loan.status === 'active' || loan.status === 'Current' ? 'bg-success' : 'bg-warning'}">${loan.status || 'Active'}</span></h5>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p class="mb-1"><strong>Loan ID:</strong> ${loan.id}</p>
-                                        <p class="mb-1"><strong>Original Amount:</strong> KSh ${loan.originalAmount.toLocaleString()}</p>
-                                        <p class="mb-1"><strong>Remaining Balance:</strong> KSh ${loan.remainingBalance.toLocaleString()}</p>
+                                        <p class="mb-1"><strong>Loan ID:</strong> ${loan.id || 'N/A'}</p>
+                                        <p class="mb-1"><strong>Original Amount:</strong> KSh ${originalAmount.toLocaleString()}</p>
+                                        <p class="mb-1"><strong>Remaining Balance:</strong> KSh ${remainingBalance.toLocaleString()}</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <p class="mb-1"><strong>Monthly Payment:</strong> KSh ${loan.monthlyPayment.toLocaleString()}</p>
-                                        <p class="mb-1"><strong>Next Payment:</strong> ${new Date(loan.nextPaymentDate).toLocaleDateString()}</p>
+                                        <p class="mb-1"><strong>Monthly Payment:</strong> KSh ${monthlyPayment.toLocaleString()}</p>
+                                        <p class="mb-1"><strong>Next Payment:</strong> ${loan.next_payment_date ? new Date(loan.next_payment_date).toLocaleDateString() : 'N/A'}</p>
                                         <a href="#" class="btn btn-sm btn-primary mt-2">View Details</a>
                                     </div>
                                 </div>
                                 <div class="progress mt-3">
-                                    <div class="progress-bar" role="progressbar" style="width: ${Math.round((1 - loan.remainingBalance / loan.originalAmount) * 100)}%" 
-                                        aria-valuenow="${Math.round((1 - loan.remainingBalance / loan.originalAmount) * 100)}" aria-valuemin="0" aria-valuemax="100">
-                                        ${Math.round((1 - loan.remainingBalance / loan.originalAmount) * 100)}% Paid
+                                    <div class="progress-bar" role="progressbar" style="width: ${progressPercent}%" 
+                                        aria-valuenow="${progressPercent}" aria-valuemin="0" aria-valuemax="100">
+                                        ${progressPercent}% Paid
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +281,7 @@ class DaystarMemberDashboard {
         // Update loan history section
         const loanHistoryContainer = loanSummary.querySelector('.loan-history');
         if (loanHistoryContainer) {
-            if (loanData.loanHistory.length > 0) {
+            if (defaultLoanData.loanHistory.length > 0) {
                 let loanHistoryHtml = `
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -192,14 +297,14 @@ class DaystarMemberDashboard {
                             <tbody>
                 `;
                 
-                loanData.loanHistory.forEach(loan => {
+                defaultLoanData.loanHistory.forEach(loan => {
                     loanHistoryHtml += `
                         <tr>
-                            <td>${loan.id}</td>
-                            <td>${loan.type}</td>
-                            <td>KSh ${loan.originalAmount.toLocaleString()}</td>
-                            <td><span class="badge bg-success">${loan.status}</span></td>
-                            <td>${new Date(loan.completionDate).toLocaleDateString()}</td>
+                            <td>${loan.id || 'N/A'}</td>
+                            <td>${loan.loan_type || loan.type || 'Loan'}</td>
+                            <td>KSh ${parseFloat(loan.amount || loan.originalAmount || 0).toLocaleString()}</td>
+                            <td><span class="badge bg-success">${loan.status || 'Completed'}</span></td>
+                            <td>${loan.completion_date ? new Date(loan.completion_date).toLocaleDateString() : 'N/A'}</td>
                         </tr>
                     `;
                 });
@@ -224,17 +329,21 @@ class DaystarMemberDashboard {
         const loanEligibilityContainer = loanSummary.querySelector('.loan-eligibility');
         if (loanEligibilityContainer) {
             let eligibilityHtml = `
-                <div class="card">
+                <div class="glass-card">
                     <div class="card-body">
                         <h5 class="card-title">Loan Eligibility</h5>
-                        <p><strong>Maximum Eligible Amount:</strong> KSh ${loanData.eligibility.maxEligibleAmount.toLocaleString()}</p>
+                        <p><strong>Maximum Eligible Amount:</strong> KSh ${defaultLoanData.eligibility.maxEligibleAmount.toLocaleString()}</p>
                         <p><strong>Eligible Loan Types:</strong></p>
                         <ul>
             `;
             
-            loanData.eligibility.eligibleLoanTypes.forEach(type => {
-                eligibilityHtml += `<li>${type} Loan</li>`;
-            });
+            if (defaultLoanData.eligibility.eligibleLoanTypes.length > 0) {
+                defaultLoanData.eligibility.eligibleLoanTypes.forEach(type => {
+                    eligibilityHtml += `<li>${type} Loan</li>`;
+                });
+            } else {
+                eligibilityHtml += `<li>Contact admin for loan eligibility information</li>`;
+            }
             
             eligibilityHtml += `
                         </ul>
@@ -248,20 +357,78 @@ class DaystarMemberDashboard {
     }
     
     /**
+     * Show fallback loan data when API fails
+     */
+    static showFallbackLoanData(loanSummary) {
+        const fallbackData = {
+            activeLoans: [],
+            loanHistory: [],
+            eligibility: {
+                maxEligibleAmount: 0,
+                eligibleLoanTypes: []
+            }
+        };
+        
+        this.renderLoanData(fallbackData, loanSummary);
+    }
+    
+    /**
      * Initialize contribution chart
      */
     static initializeContributionChart() {
         const contributionChartContainer = document.getElementById('contribution-chart');
         if (!contributionChartContainer) return;
         
-        // In a real implementation, this would fetch data from the server
-        // For this demo, we'll use sample data
+        // Check if Chart.js is available
+        if (typeof Chart === 'undefined') {
+            contributionChartContainer.innerHTML = `
+                <div class="alert alert-warning">
+                    Chart visualization is not available. Please ensure Chart.js is loaded.
+                </div>
+            `;
+            return;
+        }
+        
+        // Show loading state
+        contributionChartContainer.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+        
+        // Fetch contribution data via AJAX
+        jQuery.ajax({
+            url: daystar_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'get_member_contributions_chart',
+                nonce: daystar_ajax.nonce
+            },
+            success: (response) => {
+                if (response.success) {
+                    this.renderContributionChart(response.data, contributionChartContainer);
+                } else {
+                    this.showFallbackChart(contributionChartContainer);
+                }
+            },
+            error: () => {
+                this.showFallbackChart(contributionChartContainer);
+            }
+        });
+    }
+    
+    /**
+     * Render contribution chart
+     */
+    static renderContributionChart(chartData, container) {
+        // Create canvas element for chart
+        container.innerHTML = '<canvas id="contribution-chart-canvas"></canvas>';
+        const canvas = container.querySelector('#contribution-chart-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Prepare chart data
         const contributionData = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            labels: chartData.labels || [],
             datasets: [
                 {
                     label: 'Monthly Contributions',
-                    data: [12000, 12000, 12000, 12000, 12000, 12000],
+                    data: chartData.data || [],
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
@@ -269,43 +436,46 @@ class DaystarMemberDashboard {
             ]
         };
         
-        // Check if Chart.js is available
-        if (typeof Chart !== 'undefined') {
-            // Create chart
-            const ctx = contributionChartContainer.getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: contributionData,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return 'KSh ' + value.toLocaleString();
-                                }
+        // Create chart
+        new Chart(ctx, {
+            type: 'bar',
+            data: contributionData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'KSh ' + value.toLocaleString();
                             }
                         }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return 'KSh ' + context.raw.toLocaleString();
-                                }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'KSh ' + context.raw.toLocaleString();
                             }
                         }
                     }
                 }
-            });
-        } else {
-            // Fallback if Chart.js is not available
-            contributionChartContainer.innerHTML = `
-                <div class="alert alert-warning">
-                    Chart visualization is not available. Please ensure Chart.js is loaded.
-                </div>
-            `;
-        }
+            }
+        });
+    }
+    
+    /**
+     * Show fallback chart when API fails
+     */
+    static showFallbackChart(container) {
+        const fallbackData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            data: [0, 0, 0, 0, 0, 0]
+        };
+        
+        this.renderContributionChart(fallbackData, container);
     }
     
     /**
@@ -315,42 +485,44 @@ class DaystarMemberDashboard {
         const notificationsContainer = document.getElementById('notifications');
         if (!notificationsContainer) return;
         
-        // In a real implementation, this would fetch data from the server
-        // For this demo, we'll use sample data
-        const notifications = [
-            {
-                id: 1,
-                type: 'info',
-                message: 'Your loan application has been received and is being processed.',
-                date: '2025-05-30T10:15:00',
-                read: false
-            },
-            {
-                id: 2,
-                type: 'success',
-                message: 'Your monthly contribution of KSh 12,000 has been received.',
-                date: '2025-05-15T09:30:00',
-                read: true
-            },
-            {
-                id: 3,
-                type: 'warning',
-                message: 'Your loan payment is due in 3 days.',
-                date: '2025-05-12T14:45:00',
-                read: true
-            }
-        ];
+        // Show loading state
+        notificationsContainer.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
         
-        // Update notifications container
+        // Fetch notifications data via AJAX
+        jQuery.ajax({
+            url: daystar_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'get_member_notifications',
+                nonce: daystar_ajax.nonce
+            },
+            success: (response) => {
+                if (response.success) {
+                    this.renderNotifications(response.data, notificationsContainer);
+                } else {
+                    this.showFallbackNotifications(notificationsContainer);
+                }
+            },
+            error: () => {
+                this.showFallbackNotifications(notificationsContainer);
+            }
+        });
+    }
+    
+    /**
+     * Render notifications data
+     */
+    static renderNotifications(notifications, container) {
         if (notifications.length > 0) {
             let notificationsHtml = '';
             
             notifications.forEach(notification => {
-                const date = new Date(notification.date);
+                const date = new Date(notification.created_at || notification.date);
                 const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
                 
                 let iconClass = '';
-                switch (notification.type) {
+                const notificationType = notification.type || 'info';
+                switch (notificationType) {
                     case 'info':
                         iconClass = 'bi bi-info-circle text-info';
                         break;
@@ -367,8 +539,10 @@ class DaystarMemberDashboard {
                         iconClass = 'bi bi-bell';
                 }
                 
+                const isRead = notification.is_read == '1' || notification.read === true;
+                
                 notificationsHtml += `
-                    <div class="notification-item ${notification.read ? '' : 'unread'}" data-id="${notification.id}">
+                    <div class="notification-item ${isRead ? '' : 'unread'}" data-id="${notification.id}">
                         <div class="notification-icon">
                             <i class="${iconClass}"></i>
                         </div>
@@ -376,29 +550,71 @@ class DaystarMemberDashboard {
                             <p class="notification-message">${notification.message}</p>
                             <p class="notification-date">${formattedDate}</p>
                         </div>
-                        ${notification.read ? '' : '<span class="unread-indicator"></span>'}
+                        ${isRead ? '' : '<span class="unread-indicator"></span>'}
                     </div>
                 `;
             });
             
-            notificationsContainer.innerHTML = notificationsHtml;
+            container.innerHTML = notificationsHtml;
             
             // Add event listeners to mark notifications as read
-            const unreadNotifications = notificationsContainer.querySelectorAll('.notification-item.unread');
+            const unreadNotifications = container.querySelectorAll('.notification-item.unread');
             unreadNotifications.forEach(item => {
                 item.addEventListener('click', () => {
-                    // In a real implementation, this would send a request to the server
-                    item.classList.remove('unread');
-                    item.querySelector('.unread-indicator').remove();
+                    this.markNotificationAsRead(item.dataset.id, item);
                 });
             });
         } else {
-            notificationsContainer.innerHTML = `
+            container.innerHTML = `
                 <div class="alert alert-info">
                     You have no notifications at this time.
                 </div>
             `;
         }
+    }
+    
+    /**
+     * Mark notification as read
+     */
+    static markNotificationAsRead(notificationId, element) {
+        jQuery.ajax({
+            url: daystar_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mark_notification_read',
+                notification_id: notificationId,
+                nonce: daystar_ajax.nonce
+            },
+            success: (response) => {
+                if (response.success) {
+                    element.classList.remove('unread');
+                    const indicator = element.querySelector('.unread-indicator');
+                    if (indicator) {
+                        indicator.remove();
+                    }
+                }
+            },
+            error: () => {
+                console.log('Failed to mark notification as read');
+            }
+        });
+    }
+    
+    /**
+     * Show fallback notifications when API fails
+     */
+    static showFallbackNotifications(container) {
+        const fallbackNotifications = [
+            {
+                id: 1,
+                type: 'info',
+                message: 'Welcome to your member dashboard.',
+                date: new Date().toISOString(),
+                read: false
+            }
+        ];
+        
+        this.renderNotifications(fallbackNotifications, container);
     }
     
     /**
@@ -486,7 +702,7 @@ class DaystarMemberDashboard {
             }
             
             let applicationHtml = `
-                <div class="card">
+                <div class="glass-card">
                     <div class="card-body">
                         <h5 class="card-title">Loan Application Status</h5>
                         <div class="application-details">
@@ -532,7 +748,7 @@ class DaystarMemberDashboard {
             loanApplicationStatusContainer.innerHTML = applicationHtml;
         } else {
             loanApplicationStatusContainer.innerHTML = `
-                <div class="card">
+                <div class="glass-card">
                     <div class="card-body">
                         <h5 class="card-title">Loan Application Status</h5>
                         <div class="alert alert-info">
