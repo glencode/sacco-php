@@ -66,12 +66,12 @@
                 </li>
                 
                 <li class="nav-item dropdown has-submenu">
-                    <a class="nav-link dropdown-toggle <?php echo is_page('about-us') || is_page('our-history') || is_page('management-team') || is_page('board-of-directors') || is_page('delegates') || is_page('supervisory-committee') ? 'active' : ''; ?>" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle <?php echo is_page('about') || is_page('our-history') || is_page('management-team') || is_page('board-of-directors') || is_page('delegates') || is_page('supervisory-committee') ? 'active' : ''; ?>" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         About Us
                         <i class="fas fa-chevron-down submenu-indicator"></i>
                     </a>
                     <ul class="dropdown-menu submenu" aria-labelledby="aboutDropdown">
-                        <li><a class="dropdown-item" href="<?php echo esc_url(home_url('about-us')); ?>">About Us</a></li>
+                        <li><a class="dropdown-item" href="<?php echo esc_url(home_url('about')); ?>">About Us</a></li>
                         <li><a class="dropdown-item" href="<?php echo esc_url(home_url('our-history')); ?>">Our History</a></li>
                         <li><a class="dropdown-item" href="<?php echo esc_url(home_url('management-team')); ?>">Management Team</a></li>
                         <li><a class="dropdown-item" href="<?php echo esc_url(home_url('board-of-directors')); ?>">Board of Directors</a></li>
@@ -110,15 +110,8 @@
                     </ul>
                 </li>
                 
-                <li class="nav-item dropdown has-submenu">
-                    <a class="nav-link dropdown-toggle <?php echo is_page('loan-calculator') || is_page('savings-calculator') ? 'active' : ''; ?>" href="#" id="calculatorsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Calculators
-                        <i class="fas fa-chevron-down submenu-indicator"></i>
-                    </a>
-                    <ul class="dropdown-menu submenu" aria-labelledby="calculatorsDropdown">
-                        <li><a class="dropdown-item" href="<?php echo esc_url(home_url('loan-calculator')); ?>">Loan Calculator</a></li>
-                        <li><a class="dropdown-item" href="<?php echo esc_url(home_url('savings-calculator')); ?>">Savings Calculator</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo is_page('loan-calculator') ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('loan-calculator')); ?>">Loan Calculator</a>
                 </li>
                 
                 <li class="nav-item">

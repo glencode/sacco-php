@@ -4,7 +4,15 @@
  * 
  * This file handles the integration with M-Pesa payment gateway for processing
  * contributions, loan repayments, and other financial transactions.
+ * 
+ * Note: This file is now deprecated in favor of the enhanced M-Pesa integration
+ * located in includes/integrations/enhanced-mpesa.php
  */
+
+// Don't allow direct access
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {

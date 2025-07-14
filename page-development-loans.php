@@ -605,87 +605,168 @@ get_header();
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="section">
+    <!-- Enhanced Dynamic Testimonials Section -->
+    <section class="section testimonials-section bg-light">
         <div class="container">
             <div class="text-center mb-5 fade-in">
-                <h2 class="section-title">Success Stories</h2>
-                <p class="section-subtitle">Hear from members who have benefited from our Development Loans</p>
+                <h2 class="section-title">Member Testimonials</h2>
+                <p class="section-subtitle">What our members say about our Development Loans</p>
             </div>
             
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-rating">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                        </div>
-                        <div class="testimonial-content">
-                            <p>"The Development Loan from Daystar Co-op helped me build my family home. The application process was straightforward, and the repayment terms were very manageable. I'm grateful for the opportunity to achieve my dream."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="testimonial-author-img">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial1.jpg" alt="James Kimani">
+            <?php
+            // Query testimonials from custom post type - Development Loans specific
+            $testimonials_query = new WP_Query(array(
+                'post_type' => 'testimonial',
+                'posts_per_page' => 8,
+                'post_status' => 'publish',
+                'orderby' => 'rand', // Random order for variety
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'testimonial_category',
+                        'field' => 'slug',
+                        'terms' => array('development-loans'),
+                        'operator' => 'IN'
+                    )
+                )
+            ));
+            
+            // Fallback to all testimonials if no categorized ones found
+            if (!$testimonials_query->have_posts()) {
+                $testimonials_query = new WP_Query(array(
+                    'post_type' => 'testimonial',
+                    'posts_per_page' => 8,
+                    'post_status' => 'publish',
+                    'orderby' => 'rand'
+                ));
+            }
+            
+            if ($testimonials_query->have_posts()) : ?>
+                <div class="testimonials-slider swiper">
+                    <div class="swiper-wrapper">
+                        <?php while ($testimonials_query->have_posts()) : $testimonials_query->the_post();
+                            // Get custom fields using WordPress native functions
+                            $rating = get_post_meta(get_the_ID(), '_testimonial_rating', true);
+                            $member_since = get_post_meta(get_the_ID(), '_member_since', true);
+                            $position = get_post_meta(get_the_ID(), '_position', true);
+                            $member_type = get_post_meta(get_the_ID(), '_member_type', true);
+                            
+                            // Set defaults if fields are empty
+                            $rating = $rating ? floatval($rating) : 5;
+                            $member_since = $member_since ? $member_since : '';
+                            $position = $position ? $position : '';
+                            $member_type = $member_type ? $member_type : 'Member';
+                        ?>
+                        <div class="swiper-slide">
+                            <div class="testimonial-card enhanced">
+                                <div class="testimonial-quote-icon">
+                                    <i class="fas fa-quote-right"></i>
+                                </div>
+                                <div class="testimonial-rating">
+                                    <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                        <?php if ($i <= floor($rating)) : ?>
+                                            <i class="fas fa-star" aria-hidden="true"></i>
+                                        <?php elseif ($i <= $rating) : ?>
+                                            <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                                        <?php else : ?>
+                                            <i class="far fa-star" aria-hidden="true"></i>
+                                        <?php endif; ?>
+                                    <?php endfor; ?>
+                                </div>
+                                <div class="testimonial-content">
+                                    <p>"<?php echo wp_trim_words(get_the_content(), 40, '...'); ?>"</p>
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="testimonial-author-img">
+                                        <?php if (has_post_thumbnail()) : ?>
+                                            <?php the_post_thumbnail('thumbnail', array('alt' => get_the_title(), 'class' => 'testimonial-img')); ?>
+                                        <?php else : ?>
+                                            <div class="testimonial-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="testimonial-author-info">
+                                        <h5><?php the_title(); ?></h5>
+                                        <?php if ($position) : ?>
+                                            <p class="position"><?php echo esc_html($position); ?></p>
+                                        <?php endif; ?>
+                                        <?php if ($member_type && $member_type !== 'Member') : ?>
+                                            <p class="member-type"><?php echo esc_html($member_type); ?></p>
+                                        <?php endif; ?>
+                                        <?php if ($member_since) : ?>
+                                            <p class="member-since">Member since <?php echo esc_html($member_since); ?></p>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="testimonial-author-info">
-                                <h5>James Kimani</h5>
-                                <p>Lecturer, Daystar University</p>
+                        </div>
+                        <?php endwhile; ?>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <div class="testimonials-navigation">
+                        <div class="swiper-button-prev testimonials-prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="swiper-button-next testimonials-next">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="swiper-pagination testimonials-pagination"></div>
+                </div>
+            <?php else : ?>
+                <!-- Fallback static testimonials if no dynamic content -->
+                <div class="testimonials-slider swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="testimonial-card enhanced">
+                                <div class="testimonial-quote-icon">
+                                    <i class="fas fa-quote-right"></i>
+                                </div>
+                                <div class="testimonial-rating">
+                                    <i class="fas fa-star" aria-hidden="true"></i>
+                                    <i class="fas fa-star" aria-hidden="true"></i>
+                                    <i class="fas fa-star" aria-hidden="true"></i>
+                                    <i class="fas fa-star" aria-hidden="true"></i>
+                                    <i class="fas fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="testimonial-content">
+                                    <p>"The Development Loan from Daystar SACCO enabled me to build my dream home. The process was smooth and the interest rates were very competitive compared to commercial banks."</p>
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="testimonial-author-img">
+                                        <div class="testimonial-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="testimonial-author-info">
+                                        <h5>John Kamau</h5>
+                                        <p class="position">Senior Lecturer</p>
+                                        <p class="member-since">Member since 2018</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-rating">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
+                    
+                    <!-- Navigation -->
+                    <div class="testimonials-navigation">
+                        <div class="swiper-button-prev testimonials-prev">
+                            <i class="fas fa-chevron-left"></i>
                         </div>
-                        <div class="testimonial-content">
-                            <p>"I used my Development Loan to start a small business. The competitive interest rate and flexible repayment period allowed me to grow my business without financial strain. Today, my business is thriving!"</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="testimonial-author-img">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial2.jpg" alt="Sarah Odhiambo">
-                            </div>
-                            <div class="testimonial-author-info">
-                                <h5>Sarah Odhiambo</h5>
-                                <p>Administrative Staff</p>
-                            </div>
+                        <div class="swiper-button-next testimonials-next">
+                            <i class="fas fa-chevron-right"></i>
                         </div>
                     </div>
+                    
+                    <!-- Pagination -->
+                    <div class="swiper-pagination testimonials-pagination"></div>
                 </div>
-                
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-rating">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star-half-alt" aria-hidden="true"></i>
-                        </div>
-                        <div class="testimonial-content">
-                            <p>"The Development Loan enabled me to purchase land and begin construction of rental units. The loan officers were helpful throughout the process, and I appreciate the transparent terms and conditions."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="testimonial-author-img">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial3.jpg" alt="Peter Mwangi">
-                            </div>
-                            <div class="testimonial-author-info">
-                                <h5>Peter Mwangi</h5>
-                                <p>Faculty Member</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php endif; ?>
+            
+            <?php wp_reset_postdata(); ?>
         </div>
     </section>
 

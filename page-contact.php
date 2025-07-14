@@ -24,7 +24,7 @@ get_header();
     </div>
 
     <!-- Contact Header with Creative Animation -->
-    <header class="contact-hero-header py-5 mb-5" style="margin-top: 80px;">
+    <header class="contact-hero-header py-5 mb-5">
         <style>
         .contact-hero-header {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(59, 130, 246, 0.85));

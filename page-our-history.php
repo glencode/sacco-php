@@ -21,7 +21,7 @@ get_header();
     </div>
 
     <!-- Hero Section -->
-    <header class="history-hero" style="margin-top: 80px;">
+    <header class="history-hero">
         <div class="container">
             <div class="row align-items-center min-vh-75">
                 <div class="col-lg-8 mx-auto text-center">
@@ -33,19 +33,19 @@ get_header();
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="stat-item">
-                                    <h3 class="counter" data-count="29">0</h3>
+                                    <h3 class="counter" data-count="34">0</h3>
                                     <p>Years of Service</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="stat-item">
-                                    <h3 class="counter" data-count="10000">0</h3>
-                                    <p>Members Served</p>
+                                    <h3 class="counter" data-count="2500">0</h3>
+                                    <p>Daystar Staff Served</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="stat-item">
-                                    <h3 class="counter" data-count="1000000000">0</h3>
+                                    <h3 class="counter" data-count="500000000">0</h3>
                                     <p>Assets (KSh)</p>
                                 </div>
                             </div>
@@ -81,8 +81,8 @@ get_header();
                         </div>
                         <h2 class="section-title text-center">Our Journey Through Time</h2>
                         <p class="lead text-center">
-                            From humble beginnings in 1995 to becoming a leading financial cooperative, 
-                            our story is one of resilience, innovation, and unwavering commitment to our members' prosperity.
+                            From humble beginnings in 1990 as a Housing Co-operative Society to becoming a Multi-purpose Co-operative Society in 1991, 
+                            our story is one of resilience, innovation, and unwavering commitment to improving the welfare of Daystar staff through pooled resources.
                         </p>
                         <div class="history-intro-text">
                             <?php the_content(); ?>
@@ -106,25 +106,54 @@ get_header();
                                 <!-- Foundation Era -->
                                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
                                     <div class="timeline-dot">
-                                        <i class="fas fa-seedling"></i>
+                                        <i class="fas fa-home"></i>
                                     </div>
-                                    <div class="timeline-date">1995</div>
+                                    <div class="timeline-date">1990</div>
                                     <div class="timeline-content">
                                         <div class="timeline-card">
                                             <div class="timeline-header">
-                                                <h3>Foundation & Vision</h3>
+                                                <h3>Housing Co-operative Society</h3>
                                                 <span class="timeline-badge foundation">Genesis</span>
                                             </div>
                                             <div class="timeline-body">
-                                                <p>Daystar Multipurpose Co-operative Society was born from a shared vision of 50 founding members who believed in the power of collective financial empowerment. Established within the Daystar University community, we began with a simple mission: to provide accessible financial services to our members.</p>
+                                                <p>Daystar Multi-purpose Co-operative Society Ltd started as a Housing Co-operative Society Ltd in 1990. The founding members recognized the need for collective financial empowerment within the Daystar University community, focusing initially on housing solutions for staff members.</p>
                                                 <div class="timeline-highlights">
                                                     <div class="highlight-item">
-                                                        <i class="fas fa-users"></i>
-                                                        <span>50 Founding Members</span>
+                                                        <i class="fas fa-home"></i>
+                                                        <span>Housing Focus</span>
                                                     </div>
                                                     <div class="highlight-item">
                                                         <i class="fas fa-university"></i>
-                                                        <span>Daystar University Partnership</span>
+                                                        <span>Daystar Staff Initiative</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Transformation -->
+                                <div class="timeline-item" data-aos="fade-up" data-aos-delay="150">
+                                    <div class="timeline-dot">
+                                        <i class="fas fa-seedling"></i>
+                                    </div>
+                                    <div class="timeline-date">1991</div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-card">
+                                            <div class="timeline-header">
+                                                <h3>Multi-purpose Transformation</h3>
+                                                <span class="timeline-badge transformation">Evolution</span>
+                                            </div>
+                                            <div class="timeline-body">
+                                                <p>In 1991, the society was transformed into a Multi-purpose Co-operative Society Ltd, expanding its scope to deal with Savings (Shares/Deposits) and Credit (Loans to Members). This marked the beginning of our comprehensive financial services approach.</p>
+                                                <div class="timeline-highlights">
+                                                    <div class="highlight-item">
+                                                        <i class="fas fa-coins"></i>
+                                                        <span>Savings & Credit</span>
+                                                    </div>
+                                                    <div class="highlight-item">
+                                                        <i class="fas fa-expand-arrows-alt"></i>
+                                                        <span>Multi-purpose Services</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -416,7 +445,7 @@ get_header();
                                             <i class="fas fa-quote-left"></i>
                                         </div>
                                         <blockquote class="blockquote">
-                                            <p>"When we founded Daystar Multipurpose Co-operative Society in 1995, we envisioned more than just a financial institution. We dreamed of creating a community where members support each other's growth, where financial empowerment leads to personal transformation, and where cooperative principles drive sustainable prosperity."</p>
+                                            <p>"When we started Daystar Multi-purpose Co-operative Society as a Housing Co-operative in 1990, we envisioned more than just a financial institution. We dreamed of creating a community where Daystar staff support each other's growth, where pooled resources lead to improved welfare, and where cooperative principles drive sustainable prosperity for all members."</p>
                                         </blockquote>
                                         <figcaption class="blockquote-footer mt-3">
                                             <strong>John Githongo</strong>, <cite title="Founding Chairperson">Founding Chairperson</cite>

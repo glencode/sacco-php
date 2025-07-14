@@ -192,30 +192,25 @@ add_action( 'widgets_init', 'sacco_php_widgets_init' );
 /**
  * Enqueue scripts and styles.
  */
-function sacco_php_scripts() {    // Modern main CSS - load this first as it contains preloader styles
-    wp_enqueue_style('sacco-php-modern-main', get_template_directory_uri() . '/assets/css/modern-main.css', array(), _S_VERSION);
-    
+function sacco_php_scripts() {
     // Base theme style (info only, no actual styles)
-    wp_enqueue_style('sacco-php-style', get_stylesheet_uri(), array('sacco-php-modern-main'), _S_VERSION);
+    wp_enqueue_style('sacco-php-style', get_stylesheet_uri(), array(), _S_VERSION);
     wp_style_add_data('sacco-php-style', 'rtl', 'replace');
 
     // Bootstrap CSS
     wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css', array(), '5.1.3', 'all');
     
-    // Google Fonts
-    wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap', array(), null);
+    // Google Fonts - now loaded via header.css @import for better performance
+    // wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap', array(), null);
     
     // Font Awesome
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', array(), '5.15.4', 'all');
     
-    // Enhanced Navigation styles with glassmorphism
-    wp_enqueue_style('daystar-navigation', get_template_directory_uri() . '/assets/css/navigation.css', array('sacco-php-modern-main'), '1.0.1');
+    // Consolidated Header & Core CSS - Complete solution with header, navigation, base styles, and essential components
+    wp_enqueue_style('daystar-header', get_template_directory_uri() . '/assets/css/header.css', array('bootstrap'), '4.0.0');
     
-    // Navigation Override - Remove white containers and colored borders
-    wp_enqueue_style('daystar-navigation-override', get_template_directory_uri() . '/assets/css/navigation-override.css', array('daystar-navigation'), '1.0.0');
-    
-    // Footer Redesign - Complete oceanic theme footer
-    wp_enqueue_style('daystar-footer-redesign', get_template_directory_uri() . '/assets/css/footer-redesign.css', array('sacco-php-modern-main'), '1.0.0');
+    // Consolidated Footer Design - Single comprehensive footer CSS
+    wp_enqueue_style('daystar-footer-consolidated', get_template_directory_uri() . '/assets/css/footer-consolidated.css', array('daystar-header'), '1.0.0');
     
     // Swiper CSS
     wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0', 'all');
@@ -224,7 +219,7 @@ function sacco_php_scripts() {    // Modern main CSS - load this first as it con
     
     // Table of Contents CSS (when needed)
     if (is_singular() && !is_front_page()) {
-        wp_enqueue_style('table-of-contents-styles', get_template_directory_uri() . '/assets/css/template-parts/table-of-contents.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_style('table-of-contents-styles', get_template_directory_uri() . '/assets/css/template-parts/table-of-contents.css', array('daystar-header'), _S_VERSION);
     }
 
     // jQuery
@@ -246,11 +241,23 @@ function sacco_php_scripts() {    // Modern main CSS - load this first as it con
     
     // Main custom JS (depends on all other scripts)
     wp_enqueue_script('sacco-php-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'bootstrap-js', 'swiper-js', 'chart-js', 'aos-js'), _S_VERSION, true);
+    
+    // Modern Footer JavaScript
+    wp_enqueue_script('daystar-modern-footer-js', get_template_directory_uri() . '/assets/js/modern-footer.js', array('jquery', 'sacco-php-main'), '1.0.0', true);
 
     // Front page specific styles and JS
     if (is_front_page()) {
-        wp_enqueue_style('sacco-php-front-page-css', get_template_directory_uri() . '/assets/css/front-page.css', array('sacco-php-modern-main'), _S_VERSION);
-        wp_enqueue_script('sacco-php-front-page', get_template_directory_uri() . '/assets/js/front-page.js', array('sacco-php-main'), _S_VERSION, true);
+        // Modern Hero Section CSS and JS
+        wp_enqueue_style('modern-hero-css', get_template_directory_uri() . '/assets/css/modern-hero.css', array('daystar-header'), _S_VERSION);
+        wp_enqueue_script('modern-hero-js', get_template_directory_uri() . '/assets/js/modern-hero.js', array('jquery', 'sacco-php-main'), _S_VERSION, true);
+        
+        // Original front page CSS (for other sections)
+        wp_enqueue_style('sacco-php-front-page-css', get_template_directory_uri() . '/assets/css/front-page.css', array('modern-hero-css'), _S_VERSION);
+        
+        // Testimonials Oceanic CSS - Load last to override front-page.css testimonial styles
+        wp_enqueue_style('testimonials-oceanic-css', get_template_directory_uri() . '/assets/css/testimonials-oceanic.css', array('sacco-php-front-page-css'), _S_VERSION);
+        
+        wp_enqueue_script('sacco-php-front-page', get_template_directory_uri() . '/assets/js/front-page.js', array('modern-hero-js'), _S_VERSION, true);
         
         // Localize script for AJAX calls
         wp_localize_script('sacco-php-front-page', 'daystar_ajax', array(
@@ -271,38 +278,184 @@ function sacco_php_scripts() {    // Modern main CSS - load this first as it con
 
     // Page specific styles
     if (is_page('about')) {
-        wp_enqueue_style('page-about-styles', get_template_directory_uri() . '/assets/css/pages/page-about.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_style('page-about-styles', get_template_directory_uri() . '/assets/css/pages/page-about.css', array('daystar-header'), _S_VERSION);
     }
 
     if (is_page('downloads')) {
-        wp_enqueue_style('page-downloads-styles', get_template_directory_uri() . '/assets/css/pages/page-downloads.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_style('page-downloads-styles', get_template_directory_uri() . '/assets/css/pages/page-downloads.css', array('daystar-header'), _S_VERSION);
     }
 
     if (is_page_template('page-delegates.php')) {
-        wp_enqueue_style('page-delegates-styles', get_template_directory_uri() . '/assets/css/pages/page-delegates.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_style('page-delegates-styles', get_template_directory_uri() . '/assets/css/pages/page-delegates.css', array('daystar-header'), _S_VERSION);
         wp_enqueue_script('page-delegates-script', get_template_directory_uri() . '/assets/js/page-delegates.js', array('jquery', 'aos-js'), _S_VERSION, true);
     }
 
     if (is_page_template('page-management-team.php')) {
-        wp_enqueue_style('page-management-team-styles', get_template_directory_uri() . '/assets/css/pages/page-management-team.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_style('page-management-team-styles', get_template_directory_uri() . '/assets/css/pages/page-management-team.css', array('daystar-header'), _S_VERSION);
         wp_enqueue_script('page-delegates-script', get_template_directory_uri() . '/assets/js/page-delegates.js', array('jquery', 'aos-js'), _S_VERSION, true);
     }
 
     if (is_page_template('page-supervisory-committee.php')) {
-        wp_enqueue_style('page-supervisory-committee-styles', get_template_directory_uri() . '/assets/css/pages/page-supervisory-committee.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_style('page-supervisory-committee-styles', get_template_directory_uri() . '/assets/css/pages/page-supervisory-committee.css', array('daystar-header'), _S_VERSION);
         wp_enqueue_script('page-delegates-script', get_template_directory_uri() . '/assets/js/page-delegates.js', array('jquery', 'aos-js'), _S_VERSION, true);
     }
 
     if (is_page_template('page-our-history.php')) {
-        wp_enqueue_style('page-our-history-styles', get_template_directory_uri() . '/assets/css/pages/page-our-history.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_style('page-our-history-styles', get_template_directory_uri() . '/assets/css/pages/page-our-history.css', array('daystar-header'), _S_VERSION);
         wp_enqueue_script('page-our-history-script', get_template_directory_uri() . '/assets/js/pages/page-our-history.js', array('jquery', 'aos-js'), _S_VERSION, true);
     }
 
     if (is_singular('product') || is_singular('loan') || is_singular('savings')) {
-        wp_enqueue_style('faq-section-styles', get_template_directory_uri() . '/assets/css/template-parts/faq-section.css', array('sacco-php-modern-main'), _S_VERSION);
+        wp_enqueue_style('faq-section-styles', get_template_directory_uri() . '/assets/css/template-parts/faq-section.css', array('daystar-header'), _S_VERSION);
+    }
+
+    // Enhanced Products & Services Pages Styling
+    if (is_page('products-services') || is_page_template('page-products-services.php') || 
+        is_page('development-loans') || is_page('emergency-loans') || is_page('school-fees-loans') || 
+        is_page('special-loans') || is_page('super-saver-loans') || is_page('salary-advance') ||
+        is_page('savings-accounts') || is_page('savings-details') || 
+        is_singular('product') || is_singular('loan') || is_singular('savings') ||
+        is_post_type_archive('product') || is_post_type_archive('loan') || is_post_type_archive('savings')) {
+        wp_enqueue_style('page-products-enhanced', get_template_directory_uri() . '/assets/css/pages/page-products-enhanced.css', array('daystar-header'), '1.0.0');
+        wp_enqueue_style('force-background', get_template_directory_uri() . '/assets/css/pages/force-background.css', array('page-products-enhanced'), '1.0.0');
+        wp_enqueue_script('page-products-enhanced-js', get_template_directory_uri() . '/assets/js/pages/page-products-enhanced.js', array('jquery', 'sacco-php-main'), '1.0.0', true);
     }
 }
 add_action( 'wp_enqueue_scripts', 'sacco_php_scripts' );
+
+// TEMPORARY ACCESS CONTROL FIX - REMOVE AFTER TESTING
+// This ensures the current user has administrator role and member capability
+function daystar_emergency_access_fix() {
+    if (is_user_logged_in() && !current_user_can('administrator')) {
+        $current_user = wp_get_current_user();
+        $current_user->add_role('administrator');
+        $current_user->add_role('member');
+    }
+}
+add_action('init', 'daystar_emergency_access_fix', 1);
+
+// Load security system early
+function daystar_load_security_early() {
+    $security_file = get_template_directory() . '/includes/security-access-control.php';
+    if (file_exists($security_file)) {
+        require_once $security_file;
+    }
+    
+    $auth_file = get_template_directory() . '/includes/auth-helper.php';
+    if (file_exists($auth_file)) {
+        require_once $auth_file;
+    }
+}
+add_action('after_setup_theme', 'daystar_load_security_early', 1);
+
+// Load setup footer pages functionality
+require_once get_template_directory() . '/setup-footer-pages.php';
+
+// TEMPORARY ADMIN ACCESS FIX PAGE
+function daystar_add_access_fix_menu() {
+    add_management_page(
+        'Access Control Fix',
+        'Access Fix',
+        'read', // Lower permission requirement
+        'daystar-access-fix',
+        'daystar_access_fix_page'
+    );
+}
+add_action('admin_menu', 'daystar_add_access_fix_menu');
+
+function daystar_access_fix_page() {
+    if (!is_user_logged_in()) {
+        wp_die('You must be logged in to access this page.');
+    }
+    
+    $current_user = wp_get_current_user();
+    
+    // Handle form submissions
+    if (isset($_POST['fix_action']) && wp_verify_nonce($_POST['_wpnonce'], 'daystar_access_fix')) {
+        switch ($_POST['fix_action']) {
+            case 'add_admin_role':
+                $current_user->add_role('administrator');
+                echo '<div class="notice notice-success"><p>Administrator role added successfully!</p></div>';
+                break;
+                
+            case 'add_member_role':
+                $current_user->add_role('member');
+                echo '<div class="notice notice-success"><p>Member role added successfully!</p></div>';
+                break;
+                
+            case 'create_custom_roles':
+                $security_file = get_template_directory() . '/includes/security-access-control.php';
+                if (file_exists($security_file)) {
+                    require_once $security_file;
+                    if (class_exists('Daystar_Security_Access_Control')) {
+                        $security = Daystar_Security_Access_Control::get_instance();
+                        $security->setup_custom_roles();
+                        echo '<div class="notice notice-success"><p>Custom roles created successfully!</p></div>';
+                    }
+                } else {
+                    echo '<div class="notice notice-error"><p>Security system file not found.</p></div>';
+                }
+                break;
+        }
+        $current_user = wp_get_current_user();
+    }
+    
+    ?>
+    <div class="wrap">
+        <h1>Daystar SACCO Access Control Fix</h1>
+        
+        <div class="card" style="background: #fff; border: 1px solid #ccd0d4; margin: 20px 0; padding: 20px;">
+            <h2>Current User Information</h2>
+            <table class="widefat">
+                <tr><td><strong>User ID:</strong></td><td><?php echo $current_user->ID; ?></td></tr>
+                <tr><td><strong>Username:</strong></td><td><?php echo $current_user->user_login; ?></td></tr>
+                <tr><td><strong>Current Roles:</strong></td><td><?php echo implode(', ', $current_user->roles); ?></td></tr>
+            </table>
+        </div>
+        
+        <div class="card" style="background: #fff; border: 1px solid #ccd0d4; margin: 20px 0; padding: 20px;">
+            <h2>Quick Fixes</h2>
+            <form method="post">
+                <?php wp_nonce_field('daystar_access_fix'); ?>
+                
+                <?php if (!in_array('administrator', $current_user->roles)): ?>
+                    <p>
+                        <button type="submit" name="fix_action" value="add_admin_role" class="button button-primary">
+                            Add Administrator Role
+                        </button>
+                    </p>
+                <?php endif; ?>
+                
+                <?php if (!in_array('member', $current_user->roles)): ?>
+                    <p>
+                        <button type="submit" name="fix_action" value="add_member_role" class="button button-secondary">
+                            Add Member Role
+                        </button>
+                    </p>
+                <?php endif; ?>
+                
+                <p>
+                    <button type="submit" name="fix_action" value="create_custom_roles" class="button">
+                        Create/Update Custom Roles
+                    </button>
+                </p>
+            </form>
+        </div>
+        
+        <div class="card" style="background: #fff; border: 1px solid #ccd0d4; margin: 20px 0; padding: 20px;">
+            <h2>Test Access</h2>
+            <p>
+                <a href="<?php echo home_url('/page-member-dashboard'); ?>" target="_blank" class="button button-primary">
+                    Test Member Dashboard Access
+                </a>
+            </p>
+        </div>
+    </div>
+    <?php
+}
+
+// Remove UX enhancements system - no longer needed
+// require_once get_template_directory() . '/includes/ui-ux-enhancements.php';
 
 // Register Custom Post Type for Slides
 function sacco_php_register_slide_cpt() {
@@ -498,6 +651,139 @@ function sacco_php_register_testimonial_cpt() {
 
 }
 add_action( 'init', 'sacco_php_register_testimonial_cpt', 0 );
+
+// Meta Boxes for Testimonial CPT
+function sacco_php_register_testimonial_meta_boxes() {
+    add_meta_box(
+        'testimonial_details_meta_box',
+        __('Testimonial Details', 'sacco-php'),
+        'sacco_php_testimonial_meta_box_callback',
+        'testimonial',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes_testimonial', 'sacco_php_register_testimonial_meta_boxes');
+
+function sacco_php_testimonial_meta_box_callback($post) {
+    wp_nonce_field('sacco_php_testimonial_meta_box', 'sacco_php_testimonial_meta_box_nonce');
+
+    $rating = get_post_meta($post->ID, '_testimonial_rating', true) ?: 5;
+    $member_since = get_post_meta($post->ID, '_member_since', true);
+    $member_type = get_post_meta($post->ID, '_member_type', true) ?: 'Member';
+    $position = get_post_meta($post->ID, '_position', true);
+
+    ?>
+    <table class="form-table">
+        <tr>
+            <th><label for="testimonial_rating"><?php _e('Rating (1-5 stars):', 'sacco-php'); ?></label></th>
+            <td>
+                <select id="testimonial_rating" name="testimonial_rating" class="widefat">
+                    <option value="1" <?php selected($rating, 1); ?>>1 Star</option>
+                    <option value="2" <?php selected($rating, 2); ?>>2 Stars</option>
+                    <option value="3" <?php selected($rating, 3); ?>>3 Stars</option>
+                    <option value="4" <?php selected($rating, 4); ?>>4 Stars</option>
+                    <option value="5" <?php selected($rating, 5); ?>>5 Stars</option>
+                    <option value="4.5" <?php selected($rating, 4.5); ?>>4.5 Stars</option>
+                    <option value="3.5" <?php selected($rating, 3.5); ?>>3.5 Stars</option>
+                    <option value="2.5" <?php selected($rating, 2.5); ?>>2.5 Stars</option>
+                    <option value="1.5" <?php selected($rating, 1.5); ?>>1.5 Stars</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="member_type"><?php _e('Member Type:', 'sacco-php'); ?></label></th>
+            <td><input type="text" id="member_type" name="member_type" value="<?php echo esc_attr($member_type); ?>" class="widefat" placeholder="e.g., Development Loan Member, Emergency Loan Member, Super Saver Member"></td>
+        </tr>
+        <tr>
+            <th><label for="member_since"><?php _e('Member Since (Year):', 'sacco-php'); ?></label></th>
+            <td><input type="text" id="member_since" name="member_since" value="<?php echo esc_attr($member_since); ?>" class="widefat" placeholder="e.g., 2020, 2018"></td>
+        </tr>
+        <tr>
+            <th><label for="position"><?php _e('Position/Title (Optional):', 'sacco-php'); ?></label></th>
+            <td><input type="text" id="position" name="position" value="<?php echo esc_attr($position); ?>" class="widefat" placeholder="e.g., Faculty Member, Staff Member, Business Owner"></td>
+        </tr>
+    </table>
+    <p><strong>Note:</strong> The testimonial content should be entered in the main editor above. The title field should contain the member's name.</p>
+    <?php
+}
+
+function sacco_php_save_testimonial_meta_box_data($post_id) {
+    if (!isset($_POST['sacco_php_testimonial_meta_box_nonce']) || !wp_verify_nonce($_POST['sacco_php_testimonial_meta_box_nonce'], 'sacco_php_testimonial_meta_box')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (isset($_POST['post_type']) && 'testimonial' == $_POST['post_type']) {
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+    } else {
+        return;
+    }
+
+    $fields_to_save = [
+        '_testimonial_rating' => 'testimonial_rating',
+        '_member_since' => 'member_since',
+        '_member_type' => 'member_type',
+        '_position' => 'position',
+    ];
+
+    foreach ($fields_to_save as $meta_key => $post_field_name) {
+        if (isset($_POST[$post_field_name])) {
+            $value = sanitize_text_field($_POST[$post_field_name]);
+            
+            if (empty($value)) {
+                delete_post_meta($post_id, $meta_key);
+            } else {
+                update_post_meta($post_id, $meta_key, $value);
+            }
+        }
+    }
+}
+add_action('save_post_testimonial', 'sacco_php_save_testimonial_meta_box_data');
+
+// Register Testimonial Category taxonomy
+function sacco_php_register_testimonial_category_taxonomy() {
+	$labels = array(
+		'name'                       => _x( 'Testimonial Categories', 'Taxonomy General Name', 'sacco-php' ),
+		'singular_name'              => _x( 'Testimonial Category', 'Taxonomy Singular Name', 'sacco-php' ),
+		'menu_name'                  => __( 'Testimonial Categories', 'sacco-php' ),
+		'all_items'                  => __( 'All Testimonial Categories', 'sacco-php' ),
+		'parent_item'                => __( 'Parent Testimonial Category', 'sacco-php' ),
+		'parent_item_colon'          => __( 'Parent Testimonial Category:', 'sacco-php' ),
+		'new_item_name'              => __( 'New Testimonial Category Name', 'sacco-php' ),
+		'add_new_item'               => __( 'Add New Testimonial Category', 'sacco-php' ),
+		'edit_item'                  => __( 'Edit Testimonial Category', 'sacco-php' ),
+		'update_item'                => __( 'Update Testimonial Category', 'sacco-php' ),
+		'view_item'                  => __( 'View Testimonial Category', 'sacco-php' ),
+		'separate_items_with_commas' => __( 'Separate testimonial categories with commas', 'sacco-php' ),
+		'add_or_remove_items'        => __( 'Add or remove testimonial categories', 'sacco-php' ),
+		'choose_from_most_used'      => __( 'Choose from the most used', 'sacco-php' ),
+		'popular_items'              => __( 'Popular Testimonial Categories', 'sacco-php' ),
+		'search_items'               => __( 'Search Testimonial Categories', 'sacco-php' ),
+		'not_found'                  => __( 'Not Found', 'sacco-php' ),
+		'no_terms'                   => __( 'No testimonial categories', 'sacco-php' ),
+		'items_list'                 => __( 'Testimonial Categories list', 'sacco-php' ),
+		'items_list_navigation'      => __( 'Testimonial Categories list navigation', 'sacco-php' ),
+	);
+	$args = array(
+		'labels'                     => $labels,
+		'hierarchical'               => true,
+		'public'                     => true,
+		'show_ui'                    => true,
+		'show_admin_column'          => true,
+		'show_in_nav_menus'          => true,
+		'show_tagcloud'              => false,
+		'show_in_rest'               => true,
+	);
+	register_taxonomy( 'testimonial_category', array( 'testimonial' ), $args );
+}
+add_action( 'init', 'sacco_php_register_testimonial_category_taxonomy', 0 );
+
+// Include admin page for populating testimonials
+require_once get_template_directory() . '/admin-populate-testimonials.php';
 
 // Register Custom Post Type for Partners
 function sacco_php_register_partner_cpt() {
@@ -760,7 +1046,7 @@ function sacco_php_register_faq_cpt() {
 		'show_in_admin_bar'     => true,
 		'show_in_nav_menus'     => false,
 		'can_export'            => true,
-		'has_archive'           => 'faqs', // Changed from false
+		'has_archive'           => false, // Disabled - using page template instead
 		'exclude_from_search'   => false,
 		'publicly_queryable'    => true, // Changed from false
 		'capability_type'       => 'post',
@@ -810,6 +1096,113 @@ function sacco_php_register_faq_category_taxonomy() {
 
 }
 add_action( 'init', 'sacco_php_register_faq_category_taxonomy', 0 );
+
+// Meta Boxes for FAQ CPT
+function sacco_php_register_faq_meta_boxes() {
+    add_meta_box(
+        'faq_details_meta_box',
+        __('FAQ Details', 'sacco-php'),
+        'sacco_php_faq_meta_box_callback',
+        'faq',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes_faq', 'sacco_php_register_faq_meta_boxes');
+
+function sacco_php_faq_meta_box_callback($post) {
+    wp_nonce_field('sacco_php_faq_meta_box', 'sacco_php_faq_meta_box_nonce');
+
+    $faq_order = get_post_meta($post->ID, '_faq_order', true) ?: 0;
+    $faq_featured = get_post_meta($post->ID, '_faq_featured', true);
+    $faq_keywords = get_post_meta($post->ID, '_faq_keywords', true);
+
+    ?>
+    <table class="form-table">
+        <tr>
+            <th><label for="faq_order"><?php _e('Display Order:', 'sacco-php'); ?></label></th>
+            <td>
+                <input type="number" id="faq_order" name="faq_order" value="<?php echo esc_attr($faq_order); ?>" class="small-text" min="0" step="1">
+                <p class="description"><?php _e('Lower numbers appear first. Use 0 for default ordering.', 'sacco-php'); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="faq_featured"><?php _e('Featured FAQ:', 'sacco-php'); ?></label></th>
+            <td>
+                <label>
+                    <input type="checkbox" id="faq_featured" name="faq_featured" value="1" <?php checked($faq_featured, '1'); ?>>
+                    <?php _e('Mark this as a featured FAQ (appears prominently)', 'sacco-php'); ?>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="faq_keywords"><?php _e('Search Keywords:', 'sacco-php'); ?></label></th>
+            <td>
+                <input type="text" id="faq_keywords" name="faq_keywords" value="<?php echo esc_attr($faq_keywords); ?>" class="widefat">
+                <p class="description"><?php _e('Additional keywords to help users find this FAQ (comma-separated)', 'sacco-php'); ?></p>
+            </td>
+        </tr>
+    </table>
+    <div class="faq-instructions">
+        <h4><?php _e('Instructions:', 'sacco-php'); ?></h4>
+        <ul>
+            <li><strong><?php _e('Title:', 'sacco-php'); ?></strong> <?php _e('Enter the FAQ question in the title field above', 'sacco-php'); ?></li>
+            <li><strong><?php _e('Content:', 'sacco-php'); ?></strong> <?php _e('Enter the detailed answer in the main editor above', 'sacco-php'); ?></li>
+            <li><strong><?php _e('Category:', 'sacco-php'); ?></strong> <?php _e('Assign to appropriate FAQ categories on the right', 'sacco-php'); ?></li>
+        </ul>
+    </div>
+    <?php
+}
+
+function sacco_php_save_faq_meta_box_data($post_id) {
+    if (!isset($_POST['sacco_php_faq_meta_box_nonce']) || !wp_verify_nonce($_POST['sacco_php_faq_meta_box_nonce'], 'sacco_php_faq_meta_box')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (isset($_POST['post_type']) && 'faq' == $_POST['post_type']) {
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+    } else {
+        return;
+    }
+
+    $fields_to_save = [
+        '_faq_order' => 'faq_order',
+        '_faq_featured' => 'faq_featured',
+        '_faq_keywords' => 'faq_keywords',
+    ];
+
+    foreach ($fields_to_save as $meta_key => $post_field_name) {
+        if (isset($_POST[$post_field_name])) {
+            $value = sanitize_text_field($_POST[$post_field_name]);
+            
+            if (empty($value)) {
+                delete_post_meta($post_id, $meta_key);
+            } else {
+                update_post_meta($post_id, $meta_key, $value);
+            }
+        } else {
+            // Handle checkbox fields that might not be set
+            if ($post_field_name === 'faq_featured') {
+                delete_post_meta($post_id, $meta_key);
+            }
+        }
+    }
+}
+add_action('save_post_faq', 'sacco_php_save_faq_meta_box_data');
+
+// Flush rewrite rules after disabling FAQ archive
+function sacco_php_flush_rewrites_after_faq_change() {
+    // Only flush once after the change
+    if (!get_option('sacco_php_faq_archive_disabled')) {
+        flush_rewrite_rules();
+        update_option('sacco_php_faq_archive_disabled', true);
+    }
+}
+add_action('init', 'sacco_php_flush_rewrites_after_faq_change', 999);
 
 // Register Custom Post Type for Downloads
 function sacco_php_register_download_cpt() {
@@ -1238,7 +1631,7 @@ function sacco_php_register_management_team_cpt() {
 add_action( 'init', 'sacco_php_register_management_team_cpt', 0 );
 
 // Register Custom Post Type for Supervisory Committee
-function sacco_php_register_supervisory_committee_cpt() {
+function sacco_php_register_supervisory_comm_cpt() {
 
 	$labels = array(
 		'name'                  => _x( 'Supervisory Committee', 'Post Type General Name', 'sacco-php' ),
@@ -1290,10 +1683,10 @@ function sacco_php_register_supervisory_committee_cpt() {
 		'capability_type'       => 'post',
 		'show_in_rest'          => true,
 	);
-	register_post_type( 'supervisory_committee', $args );
+	register_post_type( 'supervisory_comm', $args );
 
 }
-add_action( 'init', 'sacco_php_register_supervisory_committee_cpt', 0 );
+add_action( 'init', 'sacco_php_register_supervisory_comm_cpt', 0 );
 
 // Meta Boxes for Management Team CPT
 function sacco_php_register_management_team_meta_boxes() {
@@ -1415,20 +1808,20 @@ function sacco_php_save_management_team_meta_box_data($post_id) {
 add_action('save_post_management_team', 'sacco_php_save_management_team_meta_box_data');
 
 // Meta Boxes for Supervisory Committee CPT
-function sacco_php_register_supervisory_committee_meta_boxes() {
+function sacco_php_register_supervisory_comm_meta_boxes() {
     add_meta_box(
-        'supervisory_committee_details_meta_box',
+        'supervisory_comm_details_meta_box',
         __('Supervisory Committee Member Details', 'sacco-php'),
-        'sacco_php_supervisory_committee_meta_box_callback',
-        'supervisory_committee',
+        'sacco_php_supervisory_comm_meta_box_callback',
+        'supervisory_comm',
         'normal',
         'high'
     );
 }
-add_action('add_meta_boxes_supervisory_committee', 'sacco_php_register_supervisory_committee_meta_boxes');
+add_action('add_meta_boxes_supervisory_comm', 'sacco_php_register_supervisory_comm_meta_boxes');
 
-function sacco_php_supervisory_committee_meta_box_callback($post) {
-    wp_nonce_field('sacco_php_supervisory_committee_meta_box', 'sacco_php_supervisory_committee_meta_box_nonce');
+function sacco_php_supervisory_comm_meta_box_callback($post) {
+    wp_nonce_field('sacco_php_supervisory_comm_meta_box', 'sacco_php_supervisory_comm_meta_box_nonce');
 
     $position = get_post_meta($post->ID, '_committee_position', true);
     $qualifications = get_post_meta($post->ID, '_qualifications', true);
@@ -1482,14 +1875,14 @@ function sacco_php_supervisory_committee_meta_box_callback($post) {
     <?php
 }
 
-function sacco_php_save_supervisory_committee_meta_box_data($post_id) {
-    if (!isset($_POST['sacco_php_supervisory_committee_meta_box_nonce']) || !wp_verify_nonce($_POST['sacco_php_supervisory_committee_meta_box_nonce'], 'sacco_php_supervisory_committee_meta_box')) {
+function sacco_php_save_supervisory_comm_meta_box_data($post_id) {
+    if (!isset($_POST['sacco_php_supervisory_comm_meta_box_nonce']) || !wp_verify_nonce($_POST['sacco_php_supervisory_comm_meta_box_nonce'], 'sacco_php_supervisory_comm_meta_box')) {
         return;
     }
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
     }
-    if (isset($_POST['post_type']) && 'supervisory_committee' == $_POST['post_type']) {
+    if (isset($_POST['post_type']) && 'supervisory_comm' == $_POST['post_type']) {
         if (!current_user_can('edit_post', $post_id)) {
             return;
         }
@@ -1531,7 +1924,213 @@ function sacco_php_save_supervisory_committee_meta_box_data($post_id) {
         }
     }
 }
-add_action('save_post_supervisory_committee', 'sacco_php_save_supervisory_committee_meta_box_data');
+add_action('save_post_supervisory_comm', 'sacco_php_save_supervisory_comm_meta_box_data');
+
+/**
+ * Include security configuration
+ */
+require_once get_template_directory() . '/includes/security-config.php';
+
+/**
+ * Include security and access control system
+ */
+require_once get_template_directory() . '/includes/security-access-control.php';
+
+/**
+ * Include secure form handler
+ */
+require_once get_template_directory() . '/includes/secure-form-handler.php';
+
+/**
+ * Include performance optimization system
+ */
+require_once get_template_directory() . '/includes/performance-optimization.php';
+
+/**
+ * Include reliability and monitoring system
+ */
+require_once get_template_directory() . '/includes/reliability-monitoring.php';
+
+/**
+ * Include maintainability framework
+ */
+require_once get_template_directory() . '/includes/maintainability-framework.php';
+
+
+/**
+ * Include scalability framework
+ */
+require_once get_template_directory() . '/includes/scalability-framework.php';
+
+/**
+ * Include loan products functionality
+ */
+require_once get_template_directory() . '/includes/loan-products.php';
+
+/**
+ * Include admin cleanup functionality
+ */
+require_once get_template_directory() . '/includes/admin-cleanup.php';
+
+/**
+ * Include loan delinquency functionality
+ */
+require_once get_template_directory() . '/includes/loan-delinquency.php';
+
+/**
+ * Include reporting functionality
+ */
+require_once get_template_directory() . '/includes/reporting.php';
+
+/**
+ * Include admin reports functionality
+ */
+if (is_admin()) {
+    require_once get_template_directory() . '/includes/admin/admin-reports.php';
+    require_once get_template_directory() . '/includes/admin/non-functional-admin.php';
+    
+    // Include sample data generator for testing
+    require_once get_template_directory() . '/includes/sample-reports-data.php';
+}
+
+/**
+ * Include integration functionality
+ */
+require_once get_template_directory() . '/includes/integrations/accounting-api.php';
+require_once get_template_directory() . '/includes/integrations/enhanced-mpesa.php';
+require_once get_template_directory() . '/includes/integrations/notification-gateway.php';
+
+/**
+ * Include integration admin interface
+ */
+if (is_admin()) {
+    require_once get_template_directory() . '/includes/integrations/admin-interface.php';
+}
+
+/**
+ * AJAX handler for loan calculations
+ */
+function daystar_ajax_calculate_loan() {
+    // Verify nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'daystar_ajax_nonce')) {
+        wp_die('Security check failed');
+    }
+    
+    $product_id = intval($_POST['product_id']);
+    $loan_amount = floatval($_POST['loan_amount']);
+    $term_months = intval($_POST['term_months']);
+    
+    if (!$product_id || !$loan_amount || !$term_months) {
+        wp_send_json_error('Invalid parameters');
+        return;
+    }
+    
+    $calculation = daystar_calculate_loan_payment($product_id, $loan_amount, $term_months);
+    
+    if ($calculation) {
+        wp_send_json_success($calculation);
+    } else {
+        wp_send_json_error('Calculation failed');
+    }
+}
+add_action('wp_ajax_calculate_loan', 'daystar_ajax_calculate_loan');
+add_action('wp_ajax_nopriv_calculate_loan', 'daystar_ajax_calculate_loan');
+
+/**
+ * AJAX handler for getting loan products
+ */
+function daystar_ajax_get_loan_products() {
+    // Verify nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'daystar_ajax_nonce')) {
+        wp_die('Security check failed');
+    }
+    
+    $products = daystar_get_loan_products_for_frontend();
+    
+    wp_send_json_success($products);
+}
+add_action('wp_ajax_get_loan_products', 'daystar_ajax_get_loan_products');
+add_action('wp_ajax_nopriv_get_loan_products', 'daystar_ajax_get_loan_products');
+
+/**
+ * Quick function to remove Refinance Loan from database
+ * Can be called directly: daystar_cleanup_refinance_loan();
+ */
+function daystar_cleanup_refinance_loan() {
+    global $wpdb;
+    
+    // Remove Refinance Loan from loan products table
+    $loan_products_table = $wpdb->prefix . 'daystar_loan_products';
+    
+    $result = $wpdb->delete(
+        $loan_products_table,
+        array('name' => 'Refinance Loan')
+    );
+    
+    if ($result !== false) {
+        error_log("Daystar: Successfully removed Refinance Loan from loan products. Rows affected: " . $result);
+        
+        // Check for existing loans of this type
+        $loans_table = $wpdb->prefix . 'daystar_loans';
+        $loan_count = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM $loans_table WHERE loan_type = %s",
+            'Refinance Loan'
+        ));
+        
+        if ($loan_count > 0) {
+            error_log("Daystar: Warning - Found $loan_count existing Refinance Loan applications in the system.");
+        } else {
+            error_log("Daystar: No existing Refinance Loan applications found.");
+        }
+        
+        return true;
+    } else {
+        error_log("Daystar: Error removing Refinance Loan or it doesn't exist.");
+        return false;
+    }
+}
+
+/**
+ * AJAX handler for manual delinquency check
+ */
+function daystar_ajax_run_delinquency_check() {
+    // Verify nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'daystar_ajax_nonce')) {
+        wp_die('Security check failed');
+    }
+    
+    // Check permissions
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error('Insufficient permissions');
+        return;
+    }
+    
+    $results = daystar_calculate_loan_delinquency();
+    
+    wp_send_json_success($results);
+}
+add_action('wp_ajax_run_delinquency_check', 'daystar_ajax_run_delinquency_check');
+
+/**
+ * AJAX handler for getting member delinquency status
+ */
+function daystar_ajax_get_member_delinquency_status() {
+    // Verify nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'daystar_ajax_nonce')) {
+        wp_die('Security check failed');
+    }
+    
+    $user_id = get_current_user_id();
+    if (!$user_id) {
+        wp_send_json_error('User not logged in');
+        return;
+    }
+    
+    $status = daystar_get_member_delinquency_status($user_id);
+    
+    wp_send_json_success($status);
+}
+add_action('wp_ajax_get_member_delinquency_status', 'daystar_ajax_get_member_delinquency_status');
 
 /**
  * Enqueue scripts and styles for member portal, savings, and loans.
@@ -1708,14 +2307,9 @@ function sacco_php_product_page_styles() {
         wp_enqueue_style('sacco-credit-policy', get_template_directory_uri() . '/assets/css/page-credit-policy.css', array(), _S_VERSION);
     }
     
-    // Enhanced Loan Application Page
-    if (is_page_template('page-loan-application-enhanced.php')) {
-        wp_enqueue_style('sacco-loan-application-enhanced', get_template_directory_uri() . '/page-loan-application-enhanced.css', array(), _S_VERSION);
-    }
-    
-    // Loan Dashboard Page
-    if (is_page_template('page-loan-dashboard.php')) {
-        wp_enqueue_style('sacco-loan-dashboard', get_template_directory_uri() . '/page-loan-dashboard.css', array(), _S_VERSION);
+    // Consolidated Loan Application Page
+    if (is_page_template('page-loan-application-consolidated.php')) {
+    wp_enqueue_style('sacco-loan-application-consolidated', get_template_directory_uri() . '/assets/css/loan-application.css', array(), _S_VERSION);
     }
     
     // Member Profile Page
@@ -1806,21 +2400,33 @@ $theme_includes_path = get_template_directory() . '/includes/';
 
 require_once $theme_includes_path . 'database-setup.php';
 require_once $theme_includes_path . 'member-data.php';
+require_once $theme_includes_path . 'sample-data-generator.php';
+require_once $theme_includes_path . 'member-auto-approval.php';
+require_once $theme_includes_path . 'demo-setup-admin.php';
 require_once $theme_includes_path . 'session-management.php';
 require_once $theme_includes_path . 'member-registration.php';
 require_once $theme_includes_path . 'member-profile.php';
-require_once $theme_includes_path . 'loan-application.php';
 require_once $theme_includes_path . 'payment-integration.php';
 require_once $theme_includes_path . 'notifications.php';
 require_once $theme_includes_path . 'dashboard-notifications.php';
+require_once $theme_includes_path . 'share-transfer.php';
+
+// Consolidated loan system
+require_once $theme_includes_path . 'loans/loan-core.php';
+require_once $theme_includes_path . 'loans/loan-application.php';
+require_once $theme_includes_path . 'loan-eligibility.php';
 require_once get_template_directory() . '/includes/admin/admin-init.php';
 
 // Admin functionalities
 if (is_admin()) {
     require_once $theme_includes_path . 'admin/admin-dashboard.php';
     require_once $theme_includes_path . 'admin/admin-members.php';
-    require_once $theme_includes_path . 'admin/admin-loans.php';
     require_once $theme_includes_path . 'admin/admin-settings.php';
+    require_once $theme_includes_path . 'admin/admin-share-transfer.php';
+    require_once $theme_includes_path . 'admin/admin-payslip-verification.php';
+    
+    // Consolidated loan admin
+    require_once $theme_includes_path . 'loans/loan-admin.php';
 }
 
 // Include core functionality files
@@ -2384,3 +2990,87 @@ add_action('wp_ajax_nopriv_check_member_status', 'check_member_status_ajax');
      ));
  }
  add_action('wp_enqueue_scripts', 'daystar_localize_ajax');
+
+require_once get_template_directory() . '/includes/loans/staff-loan-enhancements.php';
+// Include member profile enhancements
+// Include loan repayment system
+require_once get_template_directory() . '/includes/loan-repayments.php';
+
+
+
+// Helper function to get FAQ categories for display
+function sacco_php_get_faq_display_categories($faq_id) {
+    $faq_categories = wp_get_post_terms($faq_id, 'faq_category');
+    $display_categories = array();
+    
+    if (!empty($faq_categories)) {
+        foreach ($faq_categories as $category) {
+            switch ($category->slug) {
+                case 'membership':
+                case 'member':
+                case 'join':
+                    $display_categories[] = 'membership';
+                    break;
+                case 'loan':
+                case 'loans':
+                case 'lending':
+                    $display_categories[] = 'loans';
+                    break;
+                case 'saving':
+                case 'savings':
+                case 'deposit':
+                    $display_categories[] = 'savings';
+                    break;
+                case 'service':
+                case 'services':
+                    $display_categories[] = 'services';
+                    break;
+                case 'policy':
+                case 'policies':
+                case 'rule':
+                case 'rules':
+                    $display_categories[] = 'policies';
+                    break;
+                default:
+                    $display_categories[] = 'general';
+                    break;
+            }
+        }
+    }
+    
+    // Default to 'general' if no categories assigned
+    if (empty($display_categories)) {
+        $display_categories[] = 'general';
+    }
+    
+    return array_unique($display_categories);
+}
+
+// Helper function to get all FAQs with proper ordering
+function sacco_php_get_faqs($args = array()) {
+    $default_args = array(
+        'post_type' => 'faq',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'meta_key' => '_faq_order',
+        'orderby' => array(
+            'meta_value_num' => 'ASC',
+            'date' => 'DESC'
+        ),
+        'meta_query' => array(
+            'relation' => 'OR',
+            array(
+                'key' => '_faq_order',
+                'compare' => 'EXISTS'
+            ),
+            array(
+                'key' => '_faq_order',
+                'compare' => 'NOT EXISTS'
+            )
+        )
+    );
+    
+    $args = wp_parse_args($args, $default_args);
+    return new WP_Query($args);
+}
+

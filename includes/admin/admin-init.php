@@ -20,6 +20,9 @@ function daystar_admin_init() {
     // Buffer output to prevent header issues
     ob_start();
     
+    // Include admin modules
+    require_once get_template_directory() . '/includes/admin/admin-delinquency.php';
+    
     // Remove default welcome panel
     remove_action('welcome_panel', 'wp_welcome_panel');
     
@@ -59,9 +62,22 @@ function daystar_welcome_panel() {
                 </ul>
             </div>
             <div class="welcome-panel-column">
-                <h3><?php _e('Statistics', 'daystar'); ?></h3>
+                <h3><?php _e('Loan Statistics', 'daystar'); ?></h3>
                 <?php 
-                // Add your statistics here
+                if (function_exists('daystar_get_delinquency_statistics')) {
+                    $stats = daystar_get_delinquency_statistics();
+                    $total_delinquent = 0;
+                    foreach ($stats as $status => $stat) {
+                        if ($status !== 'current') {
+                            $total_delinquent += $stat['loan_count'];
+                        }
+                    }
+                    echo '<p><strong>Delinquent Loans:</strong> ' . $total_delinquent . '</p>';
+                    
+                    if (isset($stats[DAYSTAR_DELINQUENCY_90_PLUS])) {
+                        echo '<p><strong>90+ Days Overdue:</strong> ' . $stats[DAYSTAR_DELINQUENCY_90_PLUS]['loan_count'] . '</p>';
+                    }
+                }
                 ?>
             </div>
             <div class="welcome-panel-column welcome-panel-last">

@@ -54,6 +54,36 @@ function daystar_add_main_admin_menu() {
         "daystar_render_admin_loans_page"
     );
     
+    // Loan Disbursement
+    add_submenu_page(
+        "daystar-admin-dashboard",
+        "Loan Disbursement",
+        "Disbursements",
+        "manage_options",
+        "daystar-admin-disbursement",
+        "daystar_admin_loan_disbursement_page"
+    );
+    
+    // Loan Recovery
+    add_submenu_page(
+        "daystar-admin-dashboard",
+        "Loan Recovery",
+        "Recovery",
+        "manage_options",
+        "daystar-admin-recovery",
+        "daystar_admin_loan_recovery_page"
+    );
+    
+    // Policy Management
+    add_submenu_page(
+        "daystar-admin-dashboard",
+        "Policy Management",
+        "Policies",
+        "manage_options",
+        "daystar-admin-policy",
+        "daystar_admin_policy_management_page"
+    );
+    
     // Payment Management (placeholder, actual page in admin-payments.php)
     add_submenu_page(
         "daystar-admin-dashboard",
@@ -269,6 +299,16 @@ function daystar_admin_display_recent_activity() {
 // Include other admin files (ensure paths are correct)
 require_once(get_template_directory() . 
 '/includes/admin/admin-members.php');
+require_once(get_template_directory() . 
+'/includes/admin/admin-loan-disbursement.php');
+require_once(get_template_directory() . 
+'/includes/admin/admin-loan-recovery.php');
+require_once(get_template_directory() . 
+'/includes/loan-recovery-utils.php');
+require_once(get_template_directory() . 
+'/includes/admin/admin-policy-management.php');
+require_once(get_template_directory() . 
+'/includes/sample-policy-content.php');
 // require_once(get_template_directory() .
 // '/includes/admin/admin-loans.php');
 // require_once(get_template_directory() .

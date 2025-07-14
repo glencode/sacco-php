@@ -264,6 +264,70 @@ function daystar_send_loan_disbursed_email($user_id, $application_details) {
 }
 
 /**
+ * Send Enhanced Loan Disbursement Email with Method Details
+ */
+function daystar_send_enhanced_loan_disbursement_email($user_id, $disbursement_data) {
+    $user = get_user_by('id', $user_id);
+    if (!$user) return false;
+    
+    $subject = 'Loan Disbursed Successfully - ' . $disbursement_data['loan_application_id'];
+    
+    $message = '<p>Dear ' . esc_html($user->first_name) . ',</p>';
+    $message .= '<p>Great news! Your approved loan has been successfully disbursed.</p>';
+    
+    $message .= '<div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0;">';
+    $message .= '<h3 style="margin-top: 0; color: #28a745;">Disbursement Details</h3>';
+    $message .= '<ul style="list-style: none; padding: 0;">';
+    $message .= '<li><strong>Application ID:</strong> ' . esc_html($disbursement_data['loan_application_id']) . '</li>';
+    $message .= '<li><strong>Loan Type:</strong> ' . esc_html($disbursement_data['loan_type']) . '</li>';
+    $message .= '<li><strong>Amount Disbursed:</strong> KES ' . number_format($disbursement_data['loan_amount'], 2) . '</li>';
+    $message .= '<li><strong>Disbursement Method:</strong> ' . esc_html(ucfirst(str_replace('_', ' ', $disbursement_data['disbursement_method']))) . '</li>';
+    $message .= '<li><strong>Reference Number:</strong> ' . esc_html($disbursement_data['disbursement_reference']) . '</li>';
+    $message .= '<li><strong>Disbursement Date:</strong> ' . date('F j, Y', strtotime($disbursement_data['disbursed_date'])) . '</li>';
+    $message .= '</ul>';
+    $message .= '</div>';
+    
+    // Add method-specific information
+    if ($disbursement_data['disbursement_method'] === 'mpesa') {
+        $message .= '<p><strong>M-Pesa Disbursement:</strong> The funds have been sent to your registered M-Pesa number. You should receive an M-Pesa confirmation message shortly.</p>';
+    } elseif ($disbursement_data['disbursement_method'] === 'bank_transfer') {
+        $message .= '<p><strong>Bank Transfer:</strong> The funds have been transferred to your registered bank account. Please allow 1-2 business days for the funds to reflect in your account.</p>';
+    } elseif ($disbursement_data['disbursement_method'] === 'cash') {
+        $message .= '<p><strong>Cash Collection:</strong> Your loan amount is ready for collection at our office. Please bring a valid ID for verification.</p>';
+    }
+    
+    $message .= '<div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #ffc107;">';
+    $message .= '<h4 style="margin-top: 0; color: #856404;">Important Repayment Information</h4>';
+    $message .= '<p>Your loan repayment schedule has been generated. Your first payment of <strong>KES ' . number_format($disbursement_data['monthly_payment'], 2) . '</strong> is due one month from the disbursement date.</p>';
+    $message .= '<p>Please ensure timely payments to maintain a good credit standing with the SACCO.</p>';
+    $message .= '</div>';
+    
+    $message .= '<p>You can view your complete loan details, repayment schedule, and make payments through your member dashboard:</p>';
+    $message .= '<p><a href="' . home_url('/member-dashboard/') . '" style="background-color: #007cba; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Access Member Dashboard</a></p>';
+    
+    $message .= '<p>If you have any questions about your loan or need assistance, please don\'t hesitate to contact us.</p>';
+    $message .= '<p>Thank you for choosing Daystar Multi-Purpose Co-op Society!</p>';
+    $message .= '<p>Best regards,<br>The Daystar Team</p>';
+    
+    return daystar_send_email($user->user_email, $subject, $message);
+}
+
+/**
+ * Send SMS notification for loan disbursement
+ */
+function daystar_send_loan_disbursement_sms($phone_number, $disbursement_data) {
+    $message = "DAYSTAR SACCO: Your loan of KES " . number_format($disbursement_data['loan_amount'], 2) . " has been disbursed successfully. ";
+    $message .= "Ref: " . $disbursement_data['disbursement_reference'] . ". ";
+    $message .= "First payment of KES " . number_format($disbursement_data['monthly_payment'], 2) . " due in 1 month. Thank you!";
+    
+    // In a real implementation, integrate with SMS gateway
+    // For now, we'll log the SMS
+    error_log("SMS to {$phone_number}: {$message}");
+    
+    return true;
+}
+
+/**
  * Send Payment Confirmation Email to Member
  */
 function daystar_send_payment_confirmation_email($user_id, $payment_details) {

@@ -1,9 +1,423 @@
 /**
- * Header Styles for Daystar Multi-Purpose Co-op Society Ltd.
- * Professional header design with consistent branding
+ * CONSOLIDATED HEADER & CORE STYLES
+ * Complete header solution + essential base styles for Daystar Multi-Purpose Co-op Society Ltd.
+ * Includes positioning, transparency, navigation, mobile responsiveness, and core theme functionality
  */
 
-/* Top bar styles removed - no top bar element exists */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap');
+
+/* CSS Variables for Oceanic Theme */
+:root {
+    /* Primary Oceanic Colors */
+    --primary-blue: #006994;
+    --primary-blue-light: rgba(0, 105, 148, 0.8);
+    --primary-blue-dark: #003366;
+    --header-transition: background-color 0.3s ease-in-out,
+                        backdrop-filter 0.3s ease-in-out,
+                        box-shadow 0.3s ease-in-out;
+    --accent-teal: #20B2AA;
+    --accent-coral: #FF7F7F;
+    --accent-seafoam: #40E0D0;
+    --deep-ocean: #003366;
+    --ocean-mist: #B0E0E6;
+    
+    /* Glassmorphism Colors */
+    --glass-white: rgba(255, 255, 255, 0.1);
+    --glass-white-strong: rgba(255, 255, 255, 0.2);
+    --glass-ocean: rgba(0, 105, 148, 0.1);
+    --glass-ocean-strong: rgba(0, 105, 148, 0.2);
+    --glass-teal: rgba(32, 178, 170, 0.1);
+    
+    /* Background Colors - Oceanic Gradients */
+    --bg-primary: linear-gradient(135deg, #006994 0%, #20B2AA 100%);
+    --bg-secondary: linear-gradient(135deg, #40E0D0 0%, #006994 100%);
+    --bg-hero: linear-gradient(135deg, rgba(0, 105, 148, 0.9) 0%, rgba(32, 178, 170, 0.8) 100%);
+    --bg-ocean-depth: linear-gradient(135deg, #003366 0%, #006994 50%, #20B2AA 100%);
+    
+    /* Legacy Variables for Compatibility */
+    --sea-blue-primary: #006994;
+    --sea-blue-secondary: #20B2AA;
+    --sea-blue-light: #40E0D0;
+    --sea-blue-dark: #004d6b;
+    --sea-blue-gradient: linear-gradient(135deg, #006994 0%, #20B2AA 50%, #40E0D0 100%);
+    --primary-color: #005A9C;
+    --secondary-color: #FFC107;
+    --text-color: #212529;
+    
+    /* Text Colors */
+    --text-primary: #1a1a1a;
+    --text-secondary: #333333;
+    --text-light: rgba(255, 255, 255, 0.9);
+    --text-white: #ffffff;
+    
+    /* Shadows */
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.15);
+    --shadow-heavy: 0 15px 35px rgba(0, 0, 0, 0.2);
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.1);
+    
+    /* Borders */
+    --border-glass: 1px solid rgba(255, 255, 255, 0.2);
+    --border-radius: 12px;
+    --border-radius-large: 20px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   RESET AND BASE STYLES
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: transparent;
+    overflow-x: hidden;
+    position: relative;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+}
+
+h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+
+h3 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+h4 {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+p {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-blue-dark);
+    text-decoration: none;
+}
+
+/* Container and Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.container-fluid {
+    padding: 0 20px;
+}
+
+/* ========================================
+   ENHANCED BUTTONS
+   ======================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: var(--transition-medium);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+    color: var(--text-white);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 105, 148, 0.3);
+    color: var(--text-white);
+}
+
+.btn-secondary {
+    background: var(--glass-white);
+    color: var(--text-primary);
+    border: var(--border-glass);
+    backdrop-filter: blur(20px);
+}
+
+.btn-secondary:hover {
+    background: var(--glass-white-strong);
+    transform: translateY(-2px);
+    color: var(--text-primary);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-white);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: var(--text-white);
+}
+
+/* ========================================
+   CRITICAL HEADER POSITIONING FIX
+   ======================================== */
+
+/* Homepage - Header overlaps content (transparent, fixed) */
+body.home .main-navigation,
+body.home .hero-navbar,
+body.home .site-header,
+body.home header.main-navigation,
+body.home nav.main-navigation {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    width: 100% !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    padding: 35px 0;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    will-change: transform, background-color, backdrop-filter;
+}
+
+/* Non-Homepage - Header with glassmorphic effect */
+body:not(.home) .main-navigation,
+body:not(.home) .hero-navbar,
+body:not(.home) .site-header,
+body:not(.home) header.main-navigation,
+body:not(.home) nav.main-navigation {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 999 !important;
+    width: 100% !important;
+    background: var(--primary-blue) !important;
+    background-color: var(--primary-blue) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: none !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+    transition: var(--header-transition) !important;
+    padding: 15px 0;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    will-change: transform, background-color, backdrop-filter;
+}
+
+/* Add scroll effect for non-home pages */
+body:not(.home) .main-navigation.scrolled,
+body:not(.home) .hero-navbar.scrolled,
+body:not(.home) .site-header.scrolled,
+body:not(.home) header.main-navigation.scrolled,
+body:not(.home) nav.main-navigation.scrolled {
+    background: var(--primary-blue) !important;
+    background-color: var(--primary-blue) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: var(--shadow-medium) !important;
+}
+
+/* ========================================
+   CONTENT SPACING & LAYOUT FIXES
+   ======================================== */
+
+/* Remove all top spacing from content areas */
+html {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Ensure content doesn't have top spacing on non-home pages */
+body:not(.home) #content,
+body:not(.home) .site-content,
+body:not(.home) .site-main,
+body:not(.home) main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Remove any body padding that might be added for fixed headers */
+body:not(.home) {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Ensure first content elements start properly on non-home pages */
+body:not(.home) .page-content,
+body:not(.home) .entry-content,
+body:not(.home) .wp-block-group:first-child,
+body:not(.home) .container:first-child,
+body:not(.home) section:first-child {
+    margin-top: 0 !important;
+    padding-top: 20px !important; /* Add some breathing room */
+}
+
+/* Remove spacing from all sections and containers */
+#content, .site-content, .site-main, main, .page-content, .entry-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    position: relative;
+    z-index: 1;
+}
+
+section, .section, .wp-block-group, .wp-block-cover {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Ensure first elements start from top */
+body > *:first-child, 
+#content > *:first-child, 
+.site-content > *:first-child,
+.page > *:first-child,
+.single > *:first-child,
+.archive > *:first-child,
+.home > *:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Remove top margins from hero sections and banners */
+.hero-section,
+.banner-section,
+.page-header,
+.entry-header,
+.archive-header,
+.page-title-section,
+.breadcrumb-section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Ensure WordPress blocks start from top */
+.wp-block-group:first-child,
+.wp-block-cover:first-child,
+.wp-block-columns:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Make all page sections start from the very top */
+.wp-block-group,
+.wp-block-cover,
+.elementor-section,
+.vc_row,
+section,
+.container-fluid,
+.full-width-section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* ========================================
+   HEADER CONTAINER & STRUCTURE
+   ======================================== */
+
+/* Container spacing and alignment */
+.main-navigation .container {
+    display: flex;
+    align-items: center;
+    /* justify-content:  */
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navbar wrapper */
+.main-navigation .navbar {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* ========================================
+   HEADER TRANSPARENCY & BACKGROUNDS
+   ======================================== */
+
 /* Hide top bar completely */
 .top-bar,
 div.top-bar,
@@ -17,159 +431,619 @@ div.top-bar,
     overflow: hidden !important;
 }
 
-/* Main Navigation Styles */
-.navbar {
-    background-color: #ffffff;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    padding: 1rem 0;
-    transition: all 0.3s ease;
+/* REMOVE BACKGROUNDS FOR HOMEPAGE ONLY */
+body.home .main-navigation,
+body.home .main-navigation .navbar,
+body.home .main-navigation .navbar-expand-lg,
+body.home .main-navigation .container,
+body.home .main-navigation .container-fluid,
+body.home .main-navigation .navbar-nav,
+body.home .main-navigation .main-menu,
+body.home .main-navigation .nav-menu,
+body.home .main-navigation .navbar-collapse,
+body.home .main-navigation #navbarMain,
+body.home .hero-navbar,
+body.home .site-header,
+body.home header.main-navigation {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
+/* CLEAN INNER ELEMENTS FOR NON-HOME PAGES BUT PRESERVE MAIN BACKGROUND */
+body:not(.home) .main-navigation .navbar,
+body:not(.home) .main-navigation .navbar-expand-lg,
+body:not(.home) .main-navigation .container,
+body:not(.home) .main-navigation .container-fluid,
+body:not(.home) .main-navigation .navbar-nav,
+body:not(.home) .main-navigation .main-menu,
+body:not(.home) .main-navigation .nav-menu,
+body:not(.home) .main-navigation .navbar-collapse,
+body:not(.home) .main-navigation #navbarMain {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Remove any pseudo-element backgrounds */
+.main-navigation::before,
+.main-navigation::after,
+.hero-navbar::before,
+.hero-navbar::after,
+header::before,
+header::after,
+.site-header::before,
+.site-header::after,
+.navbar::before,
+.navbar::after {
+    display: none !important;
+    background: transparent !important;
+}
+
+/* ========================================
+   SCROLLED STATE STYLING
+   ======================================== */
+
+/* Scrolled state - subtle background for readability */
+.main-navigation.scrolled,
+.hero-navbar.scrolled,
 .navbar.scrolled {
-    padding: 0.5rem 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+    padding: 6px 0;
+    border-bottom: none !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Logo Styles */
+/* Enhanced scrolled state for non-home pages */
+body:not(.home) .main-navigation.scrolled {
+    background: rgba(0, 105, 148, 0.98) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ========================================
+   LOGO STYLES
+   ======================================== */
+
+.site-logo,
 .navbar-brand {
     padding: 0;
-    margin-right: 2rem;
+    margin-right: 1.5rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
 }
 
+.site-logo .logo-img,
 .navbar-brand img {
     height: 60px;
     width: auto;
-    transition: height 0.3s ease;
-}
-
-.navbar.scrolled .navbar-brand img {
-    height: 50px;
-}
-
-/* Navigation Links */
-.navbar-nav .nav-link {
-    color: var(--text-color, #212529);
-    font-weight: 500;
-    padding: 0.75rem 1rem;
-    margin: 0 0.25rem;
-    border-radius: 8px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.4));
     transition: all 0.3s ease;
+    object-fit: contain;
+}
+
+.main-navigation.scrolled .site-logo .logo-img,
+.main-navigation.scrolled .navbar-brand img {
+    height: 45px;
+}
+
+/* Logo visibility on non-home pages */
+body:not(.home) .navbar-brand img,
+body:not(.home) .site-logo .logo-img {
+    height: 60px !important;
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3)) !important;
+}
+
+body:not(.home) .main-navigation.scrolled .site-logo .logo-img,
+body:not(.home) .main-navigation.scrolled .navbar-brand img {
+    height: 40px !important;
+}
+
+.site-logo:hover .logo-img,
+.navbar-brand:hover img {
+    transform: scale(1.05);
+    filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.5));
+}
+
+/* Logo visibility on non-home pages */
+body:not(.home) .navbar-brand img,
+body:not(.home) .site-logo .logo-img {
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3)) !important;
+}
+
+/* Logo hover effect */
+.navbar-brand::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.navbar-brand:hover::before {
+    left: 100%;
+}
+
+/* ========================================
+   NAVIGATION MENU STRUCTURE
+   ======================================== */
+
+/* Navigation Menu Container */
+.navbar-nav,
+.main-menu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+    justify-content: center;
+    background: transparent !important;
+}
+
+/* Member area positioning */
+.navbar-nav .nav-item:last-child {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   NAVIGATION LINKS STYLING
+   ======================================== */
+
+/* Navigation Links - CLEAN SIMPLIFIED DESIGN */
+.main-menu .nav-link,
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    padding: 12px 15px !important;
+    margin: 0 3px !important;
+    border-radius: 8px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    text-decoration: none !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4) !important;
+    background: transparent !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+}
+
+.main-menu .nav-link:hover,
+.navbar-nav .nav-link:hover {
+    color: #40E0D0 !important;
+    background: rgba(64, 224, 208, 0.1) !important;
+    transform: translateY(-1px) !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+.main-menu .nav-link.active,
+.navbar-nav .nav-link.active {
+    color: #40E0D0 !important;
+    background: rgba(64, 224, 208, 0.15) !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Ensure navigation text is visible on the solid background for non-home pages */
+body:not(.home) .main-navigation .nav-link,
+body:not(.home) .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.95) !important;
+    text-shadow: none !important;
+}
+
+body:not(.home) .main-navigation .nav-link:hover,
+body:not(.home) .navbar-nav .nav-link:hover {
+    color: #40E0D0 !important;
+    background: rgba(64, 224, 208, 0.1) !important;
+}
+
+/* REMOVE ALL NAV ITEM CONTAINERS AND BORDERS */
+.main-navigation .nav-item,
+.main-navigation .navbar-nav .nav-item,
+.main-navigation .main-menu .nav-item,
+.main-navigation .nav-link,
+.main-navigation .navbar-nav .nav-link,
+.main-navigation .main-menu .nav-link,
+.main-navigation .nav-item .nav-link {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    outline: none !important;
+}
+
+/* REMOVE PSEUDO ELEMENTS THAT MIGHT CREATE BORDERS */
+.main-navigation .nav-item::before,
+.main-navigation .nav-item::after,
+.main-navigation .nav-link::before,
+.main-navigation .nav-link::after,
+.main-navigation .navbar-nav .nav-item::before,
+.main-navigation .navbar-nav .nav-item::after,
+.main-navigation .navbar-nav .nav-link::before,
+.main-navigation .navbar-nav .nav-link::after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+/* Enhanced Hover Effects */
+.main-menu .nav-item {
     position: relative;
 }
 
-.navbar-nav .nav-link:hover {
-    color: var(--primary-color, #005A9C);
-    background-color: rgba(0, 90, 156, 0.05);
-}
-
-.navbar-nav .nav-link.active {
-    color: var(--primary-color, #005A9C);
-    background-color: rgba(0, 90, 156, 0.1);
-}
-
-.navbar-nav .nav-link.active::after {
+.main-menu .nav-item::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    transition: all 0.3s ease;
     transform: translateX(-50%);
-    width: 30px;
-    height: 3px;
-    background-color: var(--secondary-color, #FFC107);
-    border-radius: 2px;
 }
 
-/* Dropdown Menus */
+.main-menu .nav-item:hover::after {
+    width: 80%;
+}
+
+.main-menu .nav-item.active::after {
+    width: 80%;
+    background: linear-gradient(135deg, #FF6B35, #FFD700);
+}
+
+/* ========================================
+   DROPDOWN MENUS
+   ======================================== */
+
+/* Dropdown arrows always visible */
+.main-menu .submenu-indicator {
+    display: inline-block !important;
+    margin-left: 6px !important;
+    font-size: 0.8rem !important;
+    transition: transform 0.3s ease !important;
+}
+
+/* Rotate dropdown arrows on hover */
+.main-menu .dropdown:hover .submenu-indicator {
+    transform: rotate(180deg) !important;
+}
+
+/* Dropdown Menu Styles - ENHANCED WITH BETTER HOVER BEHAVIOR */
+.main-menu .dropdown,
+.navbar-nav .dropdown {
+    position: relative !important;
+}
+
+.main-menu .dropdown-menu,
 .navbar .dropdown-menu {
-    background-color: #ffffff;
-    border: none;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    border-radius: 12px;
-    padding: 1rem 0;
-    margin-top: 0.5rem;
-    min-width: 250px;
+    background: rgba(0, 0, 0, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    padding: 8px 0 !important;
+    margin-top: 2px !important; /* Reduced gap for easier navigation */
+    min-width: 200px !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-10px) !important;
+    transition: all 0.3s ease !important;
+    pointer-events: none !important;
 }
 
-.navbar .dropdown-item {
-    color: var(--text-color, #212529);
-    padding: 0.75rem 1.5rem;
-    font-weight: 400;
-    transition: all 0.3s ease;
-    border-radius: 0;
+/* Show dropdown on hover - Enhanced with better timing */
+.main-menu .dropdown:hover .dropdown-menu,
+.main-menu .nav-item:hover .dropdown-menu,
+.navbar-nav .dropdown:hover .dropdown-menu,
+.navbar-nav .nav-item:hover .dropdown-menu {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    display: block !important;
+    pointer-events: auto !important;
 }
 
-.navbar .dropdown-item:hover {
-    background-color: var(--primary-color, #005A9C);
-    color: #ffffff;
+/* Keep dropdown open when hovering over menu items */
+.main-menu .dropdown-menu:hover,
+.navbar .dropdown-menu:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    display: block !important;
+    pointer-events: auto !important;
 }
 
-.navbar .dropdown-header {
-    color: var(--primary-color, #005A9C);
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 0.5rem 1.5rem;
+/* Create invisible bridge between nav items and dropdowns */
+.main-menu .dropdown::before,
+.navbar-nav .dropdown::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 8px; /* Bridge height */
+    background: transparent;
+    z-index: 1000;
 }
 
-.navbar .dropdown-divider {
-    border-color: rgba(0, 90, 156, 0.1);
-    margin: 0.5rem 0;
+/* Enhanced hover delay for better UX on all dropdowns */
+.main-menu .dropdown,
+.navbar-nav .dropdown {
+    transition-delay: 0s !important;
 }
 
-/* Member Login/Profile Button */
-.btn-primary {
-    background-color: var(--primary-color, #005A9C);
-    border-color: var(--primary-color, #005A9C);
-    color: #ffffff;
-    font-weight: 500;
-    padding: 0.75rem 1.5rem;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 90, 156, 0.3);
+.main-menu .dropdown-menu,
+.navbar .dropdown-menu {
+    transition-delay: 0s !important;
 }
 
-.btn-primary:hover {
-    background-color: #004080;
-    border-color: #004080;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 90, 156, 0.4);
+.main-menu .dropdown:not(:hover) .dropdown-menu,
+.navbar-nav .dropdown:not(:hover) .dropdown-menu {
+    transition-delay: 0.15s !important; /* Slight delay before hiding */
 }
 
-.btn-success {
-    background: linear-gradient(135deg, #006994 0%, #20B2AA 100%);
-    border-color: #006994;
-    color: #ffffff;
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 105, 148, 0.3);
+.main-menu .dropdown-item {
+    color: #ffffff !important;
+    padding: 8px 16px !important;
+    transition: all 0.3s ease !important;
+    border-radius: 4px !important;
+    margin: 2px 8px !important;
+    font-weight: 400 !important;
+    position: relative !important;
+    border: none !important;
+    background: transparent !important;
 }
 
-.btn-success:hover {
-    background: linear-gradient(135deg, #20B2AA 0%, #40E0D0 100%);
-    border-color: #20B2AA;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(32, 178, 170, 0.4);
+.main-menu .dropdown-item:hover {
+    background: rgba(64, 224, 208, 0.2) !important;
+    color: #40E0D0 !important;
+    transform: translateX(2px) !important;
 }
 
-/* Member Dropdown Menu */
-#memberDropdown + .dropdown-menu {
-    min-width: 200px;
+/* Dropdown Headers */
+.main-menu .dropdown-header {
+    color: #FF6B35 !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 10px 20px 6px !important;
+    margin-bottom: 6px !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5) !important;
 }
 
-#memberDropdown + .dropdown-menu .dropdown-item {
-    padding: 0.75rem 1rem;
+/* Dropdown Dividers */
+.main-menu .dropdown-divider {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    margin: 10px 15px !important;
 }
 
-#memberDropdown + .dropdown-menu .dropdown-item i {
-    width: 20px;
-    text-align: center;
+/* Mega Menu Styles */
+.mega-menu .dropdown-menu {
+    min-width: 300px !important;
+    max-width: 400px !important;
 }
+
+/* ========================================
+   MEMBER BUTTONS & DROPDOWNS
+   ======================================== */
+
+/* Member button enhanced styling - Navigation specific */
+.navbar-nav .nav-item .btn,
+.main-menu .nav-item .btn {
+    border-radius: 25px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid transparent !important;
+    font-size: 0.95rem !important;
+    white-space: nowrap !important;
+    margin-left: 15px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.navbar-nav .nav-item .btn-primary,
+.main-menu .nav-item .btn-primary {
+    background: linear-gradient(135deg, #FF6B35 0%, #FFD700 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3) !important;
+}
+
+.navbar-nav .nav-item .btn-primary:hover,
+.navbar-nav .nav-item .btn-primary:focus,
+.main-menu .nav-item .btn-primary:hover,
+.main-menu .nav-item .btn-primary:focus {
+    background: linear-gradient(135deg, #FFD700 0%, #FF6B35 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.navbar-nav .nav-item .btn-success,
+.main-menu .nav-item .btn-success {
+    background: linear-gradient(135deg, #006994 0%, #20B2AA 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(0, 105, 148, 0.3) !important;
+}
+
+.navbar-nav .nav-item .btn-success:hover,
+.navbar-nav .nav-item .btn-success:focus,
+.main-menu .nav-item .btn-success:hover,
+.main-menu .nav-item .btn-success:focus {
+    background: linear-gradient(135deg, #20B2AA 0%, #40E0D0 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0, 105, 148, 0.4) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+/* Member Dropdown - Enhanced with better hover behavior */
+.member-dropdown {
+    position: relative !important;
+}
+
+.member-dropdown .dropdown-toggle {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 10px 16px !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3) !important;
+}
+
+.member-dropdown .dropdown-toggle:hover,
+.member-dropdown:hover .dropdown-toggle {
+    background: linear-gradient(135deg, #20c997 0%, #28a745 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4) !important;
+    color: #ffffff !important;
+}
+
+.member-dropdown .dropdown-toggle::after {
+    display: none !important;
+}
+
+.member-dropdown .dropdown-menu {
+    background: rgba(0, 0, 0, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    padding: 8px 0 !important;
+    margin-top: 2px !important; /* Reduced gap */
+    min-width: 220px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-10px) !important;
+    transition: all 0.3s ease !important;
+    pointer-events: none !important;
+    right: 0;
+    left: auto;
+}
+
+/* Show dropdown on hover with extended hover area */
+.member-dropdown:hover .dropdown-menu,
+.member-dropdown .dropdown-menu:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+}
+
+/* Create invisible bridge between button and menu */
+.member-dropdown::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 10px; /* Bridge height */
+    background: transparent;
+    z-index: 1000;
+}
+
+.member-dropdown .dropdown-item {
+    color: #ffffff !important;
+    padding: 8px 16px !important;
+    transition: all 0.3s ease !important;
+    border-radius: 4px !important;
+    margin: 2px 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.member-dropdown .dropdown-item:hover {
+    background: rgba(64, 224, 208, 0.2) !important;
+    color: #40E0D0 !important;
+    transform: translateX(2px) !important;
+}
+
+.member-dropdown .dropdown-item i {
+    width: 16px !important;
+    text-align: center !important;
+}
+
+/* Enhanced hover delay for better UX */
+.member-dropdown {
+    transition-delay: 0s !important;
+}
+
+.member-dropdown .dropdown-menu {
+    transition-delay: 0s !important;
+}
+
+.member-dropdown:not(:hover) .dropdown-menu {
+    transition-delay: 0.2s !important; /* Delay hiding */
+}
+
+/* ========================================
+   MOBILE NAVIGATION
+   ======================================== */
 
 /* Mobile Navigation Toggle */
-.navbar-toggler {
+.navbar-toggler,
+.menu-toggle {
     border: 2px solid #333;
     background: rgba(255, 255, 255, 0.9);
     padding: 8px 12px;
@@ -180,12 +1054,14 @@ div.top-bar,
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-toggler:focus {
+.navbar-toggler:focus,
+.menu-toggle:focus {
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
     outline: none;
 }
 
-.navbar-toggler:hover {
+.navbar-toggler:hover,
+.menu-toggle:hover {
     background: rgba(255, 255, 255, 1);
     border-color: #007bff;
     transform: scale(1.05);
@@ -243,121 +1119,544 @@ div.top-bar,
 
 /* Mobile Menu Styles */
 @media (max-width: 991.98px) {
+    .main-navigation {
+        min-height: 60px;
+        padding: 8px 0;
+    }
+    
+    .main-navigation .container {
+        padding: 0 15px;
+    }
+    
     .navbar-collapse {
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(20px);
-        border-radius: 15px;
-        margin-top: 15px;
-        padding: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: rgba(0, 0, 0, 0.95) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border-radius: 15px !important;
+        margin-top: 15px !important;
+        padding: 20px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .navbar-nav {
+        padding-top: 0;
+        border-top: none;
+        margin-top: 0;
+        flex-direction: column;
+        width: 100%;
     }
     
     .navbar-nav .nav-link {
-        padding: 12px 20px;
-        margin: 5px 0;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9) !important;
+        padding: 15px 20px !important;
+        margin: 3px 0 !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+        font-weight: 500 !important;
+        text-shadow: none !important;
+        border-left: 3px solid transparent;
     }
     
     .navbar-nav .nav-link:hover {
-        background: rgba(0, 123, 255, 0.1);
-        color: #007bff;
-        transform: translateX(10px);
+        background: rgba(64, 224, 208, 0.15) !important;
+        color: #40E0D0 !important;
+        transform: translateX(5px) !important;
+        border-left-color: #40E0D0;
     }
     
-    .member-button {
+    .navbar-nav .nav-link.active {
+        background: rgba(64, 224, 208, 0.2) !important;
+        color: #40E0D0 !important;
+        border-left-color: #40E0D0;
+    }
+    
+    .navbar-nav .nav-item:last-child {
+        margin-left: 0;
         margin-top: 15px;
-        padding: 12px 25px;
-        background: linear-gradient(135deg, #007bff, #0056b3);
-        color: white;
-        border-radius: 25px;
-        text-decoration: none;
-        font-weight: 600;
-        text-align: center;
-        display: block;
-        transition: all 0.3s ease;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    .member-button:hover {
-        background: linear-gradient(135deg, #0056b3, #004085);
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
-    }
-}
-
-/* Responsive Design */
-@media (max-width: 991.98px) {
-    .navbar-nav {
-        padding-top: 1rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-        margin-top: 1rem;
+    .nav-item .btn {
+        width: 100%;
+        margin-left: 0;
+        padding: 15px 20px;
+        font-size: 1rem;
     }
     
-    .navbar-nav .nav-link {
-        padding: 0.75rem 0;
-        margin: 0;
-        border-radius: 0;
+    .member-dropdown .dropdown-menu {
+        position: static !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        margin-top: 10px !important;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     }
     
-    .navbar-nav .nav-link.active::after {
+    .member-dropdown .dropdown-item {
+        color: rgba(255, 255, 255, 0.9) !important;
+        padding: 12px 20px !important;
+    }
+    
+    .member-dropdown .dropdown-item:hover {
+        background: rgba(64, 224, 208, 0.2) !important;
+        color: #40E0D0 !important;
+    }
+    
+    /* Mobile dropdown menus */
+    .main-menu .dropdown-menu {
+        position: static !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        margin-top: 8px !important;
+        margin-left: 20px !important;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
         display: none;
     }
     
-    .navbar .dropdown-menu {
-        box-shadow: none;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        margin-top: 0.25rem;
+    .main-menu .dropdown.show .dropdown-menu {
+        display: block !important;
     }
     
-    .btn-primary,
-    .btn-success {
-        width: 100%;
-        margin-top: 1rem;
+    .main-menu .dropdown-item {
+        color: rgba(255, 255, 255, 0.8) !important;
+        padding: 10px 16px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .main-menu .dropdown-item:hover {
+        background: rgba(64, 224, 208, 0.15) !important;
+        color: #40E0D0 !important;
+    }
+    
+    /* Override any sticky/fixed positioning on non-home pages */
+    body:not(.home) .main-navigation {
+        position: relative !important;
+        padding: 10px 0 !important;
     }
 }
 
-@media (max-width: 575.98px) {
-    .top-bar {
-        font-size: 0.75rem;
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet Responsive Design */
+@media (max-width: 768px) {
+    .main-navigation {
+        min-height: 55px;
+        padding: 6px 0;
     }
     
-    .top-bar .list-inline-item {
-        display: block;
-        margin-bottom: 0.25rem;
-    }
-    
+    .site-logo .logo-img,
     .navbar-brand img {
-        height: 50px;
+        height: 45px;
+    }
+    
+    .main-navigation.scrolled .site-logo .logo-img,
+    .main-navigation.scrolled .navbar-brand img {
+        height: 38px;
+    }
+    
+    .main-navigation .container {
+        padding: 0 12px;
+    }
+    
+    body:not(.home) .main-navigation {
+        position: relative !important;
+        padding: 8px 0 !important;
     }
 }
 
+/* Small Mobile Responsive Design */
+@media (max-width: 575.98px) {
+    .main-navigation {
+        min-height: 50px;
+        padding: 4px 0;
+    }
+    
+    .main-navigation .container {
+        padding: 0 10px;
+    }
+    
+    .site-logo,
+    .navbar-brand {
+        margin-right: 1rem;
+    }
+    
+    .site-logo .logo-img,
+    .navbar-brand img {
+        height: 40px;
+    }
+    
+    .main-navigation.scrolled .site-logo .logo-img,
+    .main-navigation.scrolled .navbar-brand img {
+        height: 35px;
+    }
+    
+    .navbar-toggler {
+        padding: 6px 10px;
+        border-width: 1px;
+    }
+    
+    .navbar-toggler-icon {
+        width: 24px;
+        height: 18px;
+    }
+    
+    .navbar-collapse {
+        margin-top: 10px !important;
+        padding: 15px !important;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 12px 15px !important;
+        font-size: 0.95rem !important;
+    }
+}
 
-/* Preloader Styles */
-#preloader {
+/* Extra Small Mobile */
+@media (max-width: 375px) {
+    .main-navigation .container {
+        padding: 0 8px;
+    }
+    
+    .site-logo .logo-img,
+    .navbar-brand img {
+        height: 35px;
+    }
+    
+    .main-navigation.scrolled .site-logo .logo-img,
+    .main-navigation.scrolled .navbar-brand img {
+        height: 30px;
+    }
+}
+
+/* ========================================
+   WORDPRESS ADMIN BAR COMPATIBILITY
+   ======================================== */
+
+/* Handle WordPress admin bar */
+body.admin-bar .main-navigation {
+    top: 32px !important;
+}
+
+@media screen and (max-width: 782px) {
+    body.admin-bar .main-navigation {
+        top: 46px !important;
+    }
+}
+
+/* ========================================
+   STICKY NAVIGATION BEHAVIOR
+   ======================================== */
+
+/* Enhanced sticky behavior for better browser support */
+.navbar.sticky-top,
+.main-navigation.sticky-top {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+}
+
+/* Override any sticky/fixed positioning on non-home pages */
+body:not(.home) .navbar.sticky-top,
+body:not(.home) .main-navigation.sticky-top {
+    position: relative !important;
+    top: auto !important;
+}
+
+/* Fallback for browsers that don't support sticky */
+@supports not (position: sticky) {
+    body.home .main-navigation {
+        position: fixed !important;
+        top: 0 !important;
+    }
+}
+
+/* Navigation Scroll Effect - Always visible */
+.main-navigation.scrolled {
+    transform: translateY(0);
+}
+
+.main-navigation.scroll-up {
+    transform: translateY(0);
+}
+
+.main-navigation.scroll-down {
+    transform: translateY(0) !important; /* Keep header always visible */
+}
+
+/* ========================================
+   ACCESSIBILITY & SPECIAL FEATURES
+   ======================================== */
+
+/* Enhanced Focus Indicators */
+.main-menu .nav-link:focus-visible,
+.main-menu .dropdown-item:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+/* Focus Styles for Accessibility */
+.btn:focus,
+.nav-link:focus,
+.dropdown-item:focus,
+.quick-action-item:focus {
+    outline: 2px solid var(--secondary-color) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2) !important;
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+    .main-navigation,
+    .main-menu .nav-link,
+    .main-menu .dropdown-menu,
+    .main-menu .dropdown-item,
+    .btn,
+    .member-dropdown .dropdown-toggle,
+    .menu-toggle {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .main-menu .nav-link:hover,
+    .main-menu .dropdown-item:hover,
+    .btn:hover,
+    .member-dropdown .dropdown-toggle:hover {
+        transform: none !important;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .main-navigation {
+        background: rgba(255, 255, 255, 1) !important;
+        border-bottom: 2px solid #000000 !important;
+    }
+    
+    .main-menu .nav-link {
+        color: #000000 !important;
+    }
+    
+    .main-menu .nav-link:hover,
+    .main-menu .nav-link.active {
+        background: #000000 !important;
+        color: #ffffff !important;
+    }
+    
+    .main-menu .dropdown-menu {
+        background: #ffffff !important;
+        border: 2px solid #000000 !important;
+    }
+    
+    .main-menu .dropdown-item {
+        color: #000000 !important;
+    }
+    
+    .main-menu .dropdown-item:hover {
+        background: #000000 !important;
+        color: #ffffff !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .main-navigation {
+        display: none !important;
+    }
+}
+
+/* ========================================
+   ANIMATIONS & EFFECTS
+   ======================================== */
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loading Animation for Navigation */
+@keyframes navLoad {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.main-navigation {
+    animation: navLoad 0.6s ease-out;
+}
+
+/* Dropdown Animation */
+@keyframes dropdownSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.main-menu .dropdown:hover .dropdown-menu {
+    animation: dropdownSlide 0.3s ease-out;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.text-glass {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.bg-glass {
+    background: var(--glass-white);
+    backdrop-filter: blur(20px);
+    border: var(--border-glass);
+}
+
+.shadow-glass {
+    box-shadow: var(--shadow-glass);
+}
+
+.border-glass {
+    border: var(--border-glass);
+}
+
+.transition-smooth {
+    transition: var(--transition-medium);
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+
+
+body.home .main-navigation *,
+body.home .main-navigation *::before,
+body.home .main-navigation *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Header Base Styles */
+.site-header {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 0.5s ease;
+    right: 0;
+    z-index: 1000;
+    transition: var(--transition-medium);
+    background: transparent;
+    padding: 1rem 0;
 }
 
-#preloader.fade-out {
-    opacity: 0;
-    pointer-events: none;
+/* Header Scroll State */
+.site-header.scrolled {
+    background: var(--primary-blue);
+    box-shadow: var(--shadow-medium);
 }
 
-#preloader .spinner-border {
-    color: var(--primary-color, #005A9C);
-    width: 3rem;
-    height: 3rem;
+/* Home Page Header */
+.home .site-header {
+    background: transparent;
+}
+
+.home .site-header.scrolled {
+    background: var(--primary-blue);
+    backdrop-filter: blur(10px);
+}
+
+/* Smooth Scroll Animation Class */
+.scroll-transition {
+    transition: background-color var(--transition-medium),
+                box-shadow var(--transition-medium);
+}
+
+/* Adjust body padding to account for fixed header */
+body {
+    padding-top: 80px; /* Adjust this value based on your header height */
+}
+
+/* Home page specific body padding */
+body.home {
+    padding-top: 0;
+}
+
+/* Sticky Header Styles */
+.navbar.sticky-top {
+    transition: var(--header-transition);
+}
+
+/* Home page navbar styles */
+body.home .navbar.sticky-top {
+    background: transparent !important;
+    backdrop-filter: none;
+}
+
+body.home .navbar.sticky-top.scrolled {
+    background: var(--primary-blue) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Non-home page navbar styles */
+body:not(.home) .navbar.sticky-top {
+    background: var(--primary-blue);
+}
+
+body:not(.home) .navbar.sticky-top.scrolled {
+    box-shadow: var(--shadow-medium);
+}
+
+/* Override Bootstrap's navbar-light on scroll */
+.navbar.sticky-top.scrolled.navbar-light {
+    background: var(--primary-blue) !important;
+}
+
+.navbar.sticky-top.scrolled.navbar-light .navbar-nav .nav-link {
+    color: var(--text-white) !important;
+}
+
+/* Ensure the sticky top works properly */
+.sticky-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+/* Header Styles */
+.site-header,
+header.main-navigation {
+    transition: var(--header-transition) !important;
+    background-color: var(--primary-blue);
+}
+
+/* Scrolled Header State */
+.site-header.scrolled,
+header.main-navigation.scrolled {
+    background-color: rgba(0, 105, 148, 0.85) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }

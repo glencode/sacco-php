@@ -1,0 +1,130 @@
+/* Force background image to show - Override all other styles */
+
+body .site-main.products-page,
+body .site-main.loan-product-page,
+#primary.products-page,
+#primary.loan-product-page,
+main.products-page,
+main.loan-product-page {
+    background: url('../../images/productsimg2.jpg') no-repeat center center fixed !important;
+    background-size: cover !important;
+    min-height: 100vh !important;
+    position: relative !important;
+}
+
+/* Remove any conflicting backgrounds and overlays */
+body .site-main.products-page::before,
+body .site-main.loan-product-page::before,
+body .site-main.products-page::after,
+body .site-main.loan-product-page::after,
+.products-page::before,
+.loan-product-page::before,
+.products-page::after,
+.loan-product-page::after {
+    display: none !important;
+}
+
+/* Ensure all sections have very light transparent backgrounds */
+.products-page .section,
+.loan-product-page .section {
+    background: rgba(0, 0, 0, 0.03) !important;
+    backdrop-filter: blur(2px) !important;
+}
+
+.products-page .section.bg-light,
+.loan-product-page .section.bg-light {
+    background: rgba(0, 0, 0, 0.03) !important;
+    backdrop-filter: blur(2px) !important;
+}
+
+/* Make all cards extremely transparent */
+.products-page .product-card,
+.products-page .feature-card,
+.products-page .service-card,
+.products-page .testimonial-card,
+.products-page .calculator-card,
+.products-page .results-card,
+.loan-product-page .product-card,
+.loan-product-page .feature-card,
+.loan-product-page .service-card,
+.loan-product-page .testimonial-card,
+.loan-product-page .calculator-card,
+.loan-product-page .results-card {
+    background: rgba(0, 0, 0, 0.05) !important;
+    backdrop-filter: blur(5px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Make comparison tables transparent */
+.products-page .product-comparison-table,
+.loan-product-page .product-comparison-table {
+    background: rgba(0, 0, 0, 0.05) !important;
+    backdrop-filter: blur(5px) !important;
+}
+
+.products-page .product-comparison-table tbody tr:nth-child(even),
+.loan-product-page .product-comparison-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.01) !important;
+}
+
+/* Make form controls transparent */
+.products-page .form-control,
+.loan-product-page .form-control {
+    background: rgba(0, 0, 0, 0.08) !important;
+    border: 2px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.products-page .form-control:focus,
+.loan-product-page .form-control:focus {
+    background: rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Make eligibility items transparent */
+.products-page .eligibility-item,
+.loan-product-page .eligibility-item,
+.products-page .summary-item,
+.loan-product-page .summary-item {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.products-page .eligibility-item:hover,
+.loan-product-page .eligibility-item:hover,
+.products-page .summary-item:hover,
+.loan-product-page .summary-item:hover {
+    background: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Make accordion items transparent */
+.products-page .accordion-item,
+.loan-product-page .accordion-item {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.products-page .accordion-button,
+.loan-product-page .accordion-button {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.products-page .accordion-body,
+.loan-product-page .accordion-body {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Test with a solid color first */
+.test-red-background {
+    background: red !important;
+    min-height: 200px !important;
+}
+
+.test-blue-background {
+    background: blue !important;
+    min-height: 200px !important;
+}
+
+/* Test with a simple image */
+.test-image-background {
+    background: url('../../images/productsimg2.jpg') no-repeat center center !important;
+    background-size: cover !important;
+    min-height: 300px !important;
+    border: 5px solid yellow !important;
+}

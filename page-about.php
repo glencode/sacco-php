@@ -13,7 +13,7 @@ get_header(); ?>
     </div>
 
     <!-- About Us Header -->
-    <header class="glass-header py-5 mb-5" style="margin-top: 80px;">
+    <header class="glass-header py-5 mb-5">
         <style>
         .glass-header .display-title {
             color: #fff !important;

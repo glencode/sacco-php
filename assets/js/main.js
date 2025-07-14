@@ -24,8 +24,58 @@
         }
     });
 
+    // Handle sticky header with smooth transition
+    function handleScroll() {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const header = document.querySelector('.site-header');
+                if (header) {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    if (scrollTop > 50) {
+                        header.classList.add('scrolled', 'scroll-transition');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                }
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }
+
+    // Scroll handler for sticky header
+    function initStickyHeader() {
+        const navbar = document.querySelector('.navbar.sticky-top');
+        if (!navbar) return;
+
+        function handleScroll() {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    if (scrollTop > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // Initialize header state on page load
+        handleScroll();
+    }
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
     // Document ready
     $(document).ready(function() {
+        initStickyHeader();
         // Initialize core functionality
         initNavbar();
         initSliders();
@@ -65,31 +115,55 @@
         if (!navbar) return;
         
         let lastScrollTop = 0;
-        const scrollThreshold = 100;
+        const scrollThreshold = 50; // Reduced threshold for faster response
         
         // Add body class for fixed navigation spacing
         document.body.classList.add('has-fixed-nav');
         
+        // Ensure sticky positioning is properly applied
+        function ensureStickyPosition() {
+            // Force sticky positioning with fallback to fixed
+            if (CSS.supports('position', 'sticky') || CSS.supports('position', '-webkit-sticky')) {
+                navbar.style.position = 'sticky';
+                navbar.style.webkitPosition = '-webkit-sticky';
+            } else {
+                navbar.style.position = 'fixed';
+            }
+            navbar.style.top = '0';
+            navbar.style.zIndex = '9999';
+            navbar.style.width = '100%';
+        }
+        
+        // Apply sticky positioning immediately
+        ensureStickyPosition();
+        
         function handleScroll() {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             
-            // Add/remove scrolled class
+            // Add/remove scrolled class for styling changes on ALL pages
             if (scrollTop > scrollThreshold) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
             }
             
-            // Hide/show navbar on scroll (optional - can be disabled for always visible nav)
-            if (scrollTop > lastScrollTop && scrollTop > scrollThreshold * 2) {
-                navbar.classList.add('scroll-down');
-                navbar.classList.remove('scroll-up');
-            } else {
-                navbar.classList.remove('scroll-down');
-                navbar.classList.add('scroll-up');
-            }
+            // Keep navbar always visible - remove hide/show behavior
+            navbar.classList.remove('scroll-down');
+            navbar.classList.add('scroll-up');
+            
+            // Ensure sticky position is maintained
+            ensureStickyPosition();
             
             lastScrollTop = scrollTop;
+        }
+        
+        // Initialize scroll state immediately for non-homepage pages
+        if (!document.body.classList.contains('home')) {
+            // For non-homepage pages, check initial scroll position
+            const initialScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (initialScrollTop > scrollThreshold) {
+                navbar.classList.add('scrolled');
+            }
         }
         
         // Throttled scroll event
@@ -102,6 +176,18 @@
                 });
                 ticking = true;
             }
+        });
+        
+        // Handle window resize to maintain sticky behavior
+        window.addEventListener('resize', function() {
+            ensureStickyPosition();
+        });
+        
+        // Handle orientation change on mobile devices
+        window.addEventListener('orientationchange', function() {
+            setTimeout(function() {
+                ensureStickyPosition();
+            }, 100);
         });
         
         // Enhanced dropdown functionality with proper hover states
@@ -258,39 +344,48 @@
             }
         }
         
-        // Testimonials slider with proper configuration
+        // Testimonials slider with single slide configuration
         if ($('.testimonials-slider').length && typeof Swiper !== 'undefined') {
             const testimonialSlides = document.querySelectorAll('.testimonials-slider .swiper-slide');
-            const enableTestimonialLoop = testimonialSlides.length > 3; // Need more slides for loop with multiple per view
+            const enableTestimonialLoop = testimonialSlides.length > 1; // Enable loop if more than 1 slide
             
             if (testimonialSlides.length > 0) {
                 new Swiper('.testimonials-slider', {
                     loop: enableTestimonialLoop,
-                    slidesPerView: 1,
+                    slidesPerView: 1, // Always show only one testimonial
                     slidesPerGroup: 1,
+                    centeredSlides: false,
                     autoplay: enableTestimonialLoop ? {
-                        delay: 4000,
+                        delay: 5000,
                         disableOnInteraction: false,
+                        pauseOnMouseEnter: true
                     } : false,
-                    spaceBetween: 30,
+                    spaceBetween: 0,
+                    speed: 800,
+                    effect: 'slide',
                     pagination: {
                         el: '.testimonials-pagination',
                         clickable: true,
+                        dynamicBullets: true,
                     },
                     navigation: {
                         nextEl: '.testimonials-next',
                         prevEl: '.testimonials-prev',
                     },
-                    breakpoints: {
-                        768: {
-                            slidesPerView: Math.min(2, testimonialSlides.length),
-                            slidesPerGroup: 1,
+                    // Remove breakpoints to ensure single slide on all devices
+                    on: {
+                        slideChange: function() {
+                            // Add fade effect to testimonial content
+                            $('.testimonial-card').removeClass('active');
+                            setTimeout(() => {
+                                $('.swiper-slide-active .testimonial-card').addClass('active');
+                            }, 100);
                         },
-                        992: {
-                            slidesPerView: Math.min(3, testimonialSlides.length),
-                            slidesPerGroup: 1,
-                        },
-                    },
+                        init: function() {
+                            // Initialize first slide as active
+                            $('.swiper-slide-active .testimonial-card').addClass('active');
+                        }
+                    }
                 });
             }
         }

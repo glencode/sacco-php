@@ -10,43 +10,290 @@
     min-height: 100vh;
 }
 
-/* Calculator Hero Section - Oceanic Theme */
+/* Calculator Hero Section - Matching site design pattern */
 .calculator-hero {
-    background: linear-gradient(135deg, #006994 0%, #20B2AA 100%);
+    background: linear-gradient(135deg, rgba(0, 68, 124, 0.95), rgba(0, 68, 124, 0.8)), 
+                url('../../images/calculator-hero-bg.jpg') center/cover;
     color: #ffffff;
-    padding: 4rem 0;
-    text-align: center;
+    padding: 0;
     position: relative;
     overflow: hidden;
-    margin-bottom: 3rem;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
 }
 
-.calculator-hero::before {
-    content: '';
+.calculator-hero .hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="calcPattern" width="50" height="50" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><rect x="20" y="20" width="10" height="10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23calcPattern)"/></svg>') repeat;
-    pointer-events: none;
+    background: linear-gradient(135deg, rgba(0, 68, 124, 0.9), rgba(0, 68, 124, 0.7));
+    z-index: 1;
 }
 
-.calculator-hero h1 {
-    font-size: 3rem;
+.calculator-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.calculator-hero .hero-title {
+    font-size: 3.5rem;
     font-weight: 700;
-    margin-bottom: 1rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-    z-index: 1;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
 }
 
-.calculator-hero p {
+.calculator-hero .hero-subtitle {
     font-size: 1.25rem;
-    margin-bottom: 0;
+    margin-bottom: 2rem;
+    opacity: 0.95;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.calculator-hero .daystar-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.calculator-hero .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.calculator-hero .breadcrumb-item a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+}
+
+.calculator-hero .breadcrumb-item.active {
+    color: #ffffff;
+}
+
+.calculator-hero .hero-stats {
+    margin-top: 3rem;
+}
+
+.calculator-hero .stat-item {
+    text-align: center;
+    padding: 1rem;
+}
+
+.calculator-hero .stat-item h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.calculator-hero .stat-item p {
+    font-size: 1rem;
+    margin: 0;
     opacity: 0.9;
+}
+
+.calculator-hero .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+.calculator-hero .scroll-arrow {
+    width: 30px;
+    height: 30px;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    transform: rotate(45deg);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) rotate(45deg);
+    }
+    40% {
+        transform: translateY(-10px) rotate(45deg);
+    }
+    60% {
+        transform: translateY(-5px) rotate(45deg);
+    }
+}
+
+/* Introduction Section */
+.calculator-intro {
+    padding: 5rem 0;
+    background: #f8f9fa;
+}
+
+.calculator-intro .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
-    z-index: 1;
+    overflow: hidden;
+}
+
+.calculator-intro .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color, #005A9C), var(--secondary-color, #FFC107));
+}
+
+.calculator-intro .icon-section {
+    margin-bottom: 2rem;
+}
+
+.calculator-intro .icon-section i {
+    font-size: 4rem;
+    color: var(--primary-color, #005A9C);
+}
+
+.calculator-intro .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color, #005A9C);
+    margin-bottom: 1.5rem;
+}
+
+.calculator-intro .lead {
+    font-size: 1.25rem;
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.calculator-intro .calculator-intro-text p {
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.calculator-intro .daystar-notice {
+    background: rgba(0, 90, 156, 0.1);
+    border: 1px solid rgba(0, 90, 156, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.calculator-intro .daystar-notice p {
+    margin: 0;
+    color: var(--primary-color, #005A9C);
+    font-weight: 500;
+}
+
+/* Calculator Section */
+.calculator-section {
+    padding: 5rem 0;
+    background: #ffffff;
+}
+
+.calculator-section .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.calculator-section .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color, #005A9C);
+    margin-bottom: 1rem;
+}
+
+.calculator-section .section-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+/* Comparison Section */
+.comparison-section {
+    padding: 5rem 0;
+    background: #f8f9fa;
+}
+
+.comparison-section .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.comparison-section .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color, #005A9C);
+    margin-bottom: 1rem;
+}
+
+.comparison-section .section-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+/* FAQ Section */
+.faq-section {
+    padding: 5rem 0;
+    background: #ffffff;
+}
+
+.faq-section .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.faq-section .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color, #005A9C);
+    margin-bottom: 1rem;
+}
+
+.faq-section .section-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
 }
 
 /* Calculator Grid */
@@ -502,8 +749,12 @@
 
 /* Responsive Design */
 @media (max-width: 991.98px) {
-    .calculator-hero h1 {
+    .calculator-hero .hero-title {
         font-size: 2.5rem;
+    }
+    
+    .calculator-hero .stat-item h3 {
+        font-size: 2rem;
     }
     
     .calculator-grid {
@@ -513,15 +764,51 @@
     .results-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
+    
+    .calculator-intro .glass-card,
+    .calculator-section .glass-card,
+    .comparison-section .glass-card,
+    .faq-section .glass-card {
+        padding: 2.5rem;
+    }
+    
+    .calculator-intro .section-title,
+    .calculator-section .section-title,
+    .comparison-section .section-title,
+    .faq-section .section-title {
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 767.98px) {
     .calculator-hero {
+        min-height: 80vh;
+    }
+    
+    .calculator-hero .hero-title {
+        font-size: 2rem;
+    }
+    
+    .calculator-hero .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .calculator-hero .stat-item h3 {
+        font-size: 1.8rem;
+    }
+    
+    .calculator-intro,
+    .calculator-section,
+    .comparison-section,
+    .faq-section {
         padding: 3rem 0;
     }
     
-    .calculator-hero h1 {
-        font-size: 2rem;
+    .calculator-intro .glass-card,
+    .calculator-section .glass-card,
+    .comparison-section .glass-card,
+    .faq-section .glass-card {
+        padding: 2rem;
     }
     
     .calculator-grid {
@@ -551,12 +838,34 @@
 }
 
 @media (max-width: 575.98px) {
-    .calculator-hero h1 {
+    .calculator-hero .hero-title {
         font-size: 1.75rem;
     }
     
-    .calculator-hero p {
-        font-size: 1.1rem;
+    .calculator-hero .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .calculator-hero .stat-item h3 {
+        font-size: 1.5rem;
+    }
+    
+    .calculator-intro .glass-card,
+    .calculator-section .glass-card,
+    .comparison-section .glass-card,
+    .faq-section .glass-card {
+        padding: 1.5rem;
+    }
+    
+    .calculator-intro .section-title,
+    .calculator-section .section-title,
+    .comparison-section .section-title,
+    .faq-section .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .calculator-intro .icon-section i {
+        font-size: 3rem;
     }
     
     .calculator-form {

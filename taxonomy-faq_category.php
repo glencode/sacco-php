@@ -28,7 +28,7 @@ $current_term = get_queried_object();
 						?>
 						<div class="breadcrumbs">
 							<a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Home', 'sacco-php'); ?></a> &gt; 
-							<a href="<?php echo esc_url(get_post_type_archive_link('faq')); ?>"><?php esc_html_e('FAQs', 'sacco-php'); ?></a> &gt; 
+							<a href="<?php echo esc_url(home_url('faqs')); ?>"><?php esc_html_e('FAQs', 'sacco-php'); ?></a> &gt; 
 							<?php echo esc_html($current_term->name); ?>
 						</div>
 						<?php
@@ -86,7 +86,7 @@ $current_term = get_queried_object();
 						<div class="no-faqs-found text-center">
 							<h3><?php esc_html_e( 'No FAQs Found', 'sacco-php' ); ?></h3>
 							<p><?php esc_html_e( 'Sorry, no frequently asked questions are available in this category. Please check back later or view all FAQs.', 'sacco-php' ); ?></p>
-							<a href="<?php echo esc_url(get_post_type_archive_link('faq')); ?>" class="btn btn-primary mt-3"><?php esc_html_e('View All FAQs', 'sacco-php'); ?></a>
+							<a href="<?php echo esc_url(home_url('faqs')); ?>" class="btn btn-primary mt-3"><?php esc_html_e('View All FAQs', 'sacco-php'); ?></a>
 						</div>
 					<?php endif; ?>
 				</div>

@@ -849,7 +849,7 @@ function daystar_render_member_edit_page($member_id) {
  */
 function daystar_get_members_by_status($status = 'active') {
     $args = array(
-        'role__in' => array('member', 'pending_member'),
+        'role__in' => array('member', 'pending_member', 'subscriber'),
         'number' => -1
     );
     
@@ -864,6 +864,11 @@ function daystar_get_members_by_status($status = 'active') {
     
     if (!empty($user_query->get_results())) {
         foreach ($user_query->get_results() as $user) {
+            // Only include users who have member numbers (SACCO members)
+            $member_number = get_user_meta($user->ID, 'member_number', true);
+            if (empty($member_number)) {
+                continue;
+            }
             // Basic user data
             $member_data = array(
                 'ID' => $user->ID,

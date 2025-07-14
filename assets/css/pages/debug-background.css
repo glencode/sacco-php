@@ -1,0 +1,41 @@
+/* Debug CSS to test background image paths */
+
+/* Test different possible paths for the background image */
+.products-page.debug-bg,
+.loan-product-page.debug-bg {
+    background: url('../../images/productsimg.jpg') no-repeat center center !important;
+    background-size: cover !important;
+    background-attachment: fixed !important;
+}
+
+/* Alternative path 1 */
+.products-page.debug-bg-alt1,
+.loan-product-page.debug-bg-alt1 {
+    background: url('../images/productsimg.jpg') no-repeat center center !important;
+    background-size: cover !important;
+    background-attachment: fixed !important;
+}
+
+/* Alternative path 2 - from theme root */
+.products-page.debug-bg-alt2,
+.loan-product-page.debug-bg-alt2 {
+    background: url('/wp-content/themes/daystar-theme4 - Copy (3) - Copynewer/assets/images/productsimg.jpg') no-repeat center center !important;
+    background-size: cover !important;
+    background-attachment: fixed !important;
+}
+
+/* Remove overlay for testing */
+.products-page.debug-bg::before,
+.loan-product-page.debug-bg::before,
+.products-page.debug-bg-alt1::before,
+.loan-product-page.debug-bg-alt1::before,
+.products-page.debug-bg-alt2::before,
+.loan-product-page.debug-bg-alt2::before {
+    display: none !important;
+}
+
+/* Test with a solid color to ensure the element is working */
+.products-page.debug-color,
+.loan-product-page.debug-color {
+    background: #ff0000 !important;
+}

@@ -5,100 +5,215 @@
  * @package daystar-coop
  */
 
+require_once get_template_directory() . '/includes/loan-products.php';
+
+// Get loan products for dynamic calculator
+$loan_products = daystar_get_loan_products_for_frontend();
+
 get_header();
+
+// Enqueue enhanced calculator styles
+wp_enqueue_style('loan-calculator-enhanced', get_template_directory_uri() . '/assets/css/pages/page-loan-calculator-enhanced.css', array(), '2.0.0');
+wp_enqueue_style('aos-css', 'https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css', array(), '2.3.4');
 ?>
 
 <main id="primary" class="site-main calculator-page">
-    <!-- Page Header -->
-    <section class="page-header bg-gradient">
+    <!-- Enhanced Hero Section -->
+    <section class="calculator-hero">
+        <!-- Floating Geometric Elements -->
+        <div class="floating-elements">
+            <div class="floating-element" style="top: 20%; left: 10%; width: 60px; height: 60px; animation-delay: 0s;"></div>
+            <div class="floating-element" style="top: 60%; right: 15%; width: 40px; height: 40px; animation-delay: 2s;"></div>
+            <div class="floating-element" style="bottom: 30%; left: 20%; width: 80px; height: 80px; animation-delay: 4s;"></div>
+            <div class="floating-element" style="top: 40%; right: 30%; width: 30px; height: 30px; animation-delay: 1s;"></div>
+        </div>
+        
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <h1 class="page-title">Loan Calculator</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="<?php echo esc_url(home_url('/')); ?>">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Loan Calculator</li>
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-10 mx-auto text-center">
+                    <span class="daystar-badge" data-aos="fade-up">🧮 Smart Financial Planning Tool</span>
+                    <h1 class="hero-title" data-aos="fade-up" data-aos-delay="200">
+                        Advanced Loan Calculator
+                    </h1>
+                    <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="400">
+                        Experience the future of financial planning with our intelligent loan calculator. 
+                        Get instant, accurate estimates with beautiful visualizations and comprehensive analysis.
+                    </p>
+                    
+                    <!-- Enhanced Breadcrumb -->
+                    <nav aria-label="breadcrumb" data-aos="fade-up" data-aos-delay="600">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item">
+                                <a href="<?php echo esc_url(home_url('/')); ?>">
+                                    <i class="fas fa-home me-1"></i>Home
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <i class="fas fa-calculator me-1"></i>Loan Calculator
+                            </li>
                         </ol>
                     </nav>
-                </div>
-                <div class="col-lg-4 text-end d-none d-lg-block">
-                    <div class="page-header-image">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/calculator-icon.svg" alt="" aria-hidden="true">
+                    
+                    <!-- Enhanced Statistics Grid -->
+                    <div class="hero-stats" data-aos="fade-up" data-aos-delay="800">
+                        <div class="stat-item">
+                            <h3><?php echo count($loan_products); ?></h3>
+                            <p>💼 Loan Products</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>8%-15%</h3>
+                            <p>📊 Interest Rates</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>60</h3>
+                            <p>📅 Max Months</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>24/7</h3>
+                            <p>🌐 Online Access</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Action Buttons -->
+                    <div class="hero-actions" data-aos="fade-up" data-aos-delay="1000">
+                        <a href="#calculator" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-calculator me-2"></i>Start Calculating
+                        </a>
+                        <a href="<?php echo esc_url(home_url('loan-application')); ?>" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-file-signature me-2"></i>Apply for Loan
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Calculator Introduction Section -->
-    <section class="section bg-light">
+    <!-- Introduction Section -->
+    <section class="calculator-intro">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <div class="section-content fade-in">
-                        <h2 class="section-title text-start">Plan Your Finances</h2>
-                        <p class="lead">Use our loan calculators to estimate your monthly payments and plan your finances effectively.</p>
-                        <p>Our easy-to-use calculators help you determine loan repayments, interest costs, and total payment amounts for all our loan products. Make informed financial decisions with accurate calculations based on Daystar Co-op's actual loan terms and interest rates.</p>
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="intro-content glass-card" data-aos="fade-up">
+                        <div class="icon-section text-center">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h2 class="section-title text-center">Smart Financial Planning</h2>
+                        <p class="lead text-center">
+                            Make informed financial decisions with our comprehensive loan calculator. 
+                            Get accurate estimates based on Daystar Co-op's actual loan terms and competitive interest rates.
+                        </p>
+                        
+                        <!-- Feature Highlights -->
+                        <div class="feature-highlights">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="feature-item">
+                                        <div class="feature-icon">⚡</div>
+                                        <h4>Instant Results</h4>
+                                        <p>Get calculations in real-time as you adjust loan parameters</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="feature-item">
+                                        <div class="feature-icon">📊</div>
+                                        <h4>Visual Analytics</h4>
+                                        <p>Beautiful charts and graphs to understand your loan breakdown</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="feature-item">
+                                        <div class="feature-icon">🎯</div>
+                                        <h4>Accurate Estimates</h4>
+                                        <p>Based on actual Daystar Co-op rates and terms</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="calculator-intro-text">
+                            <p>Our easy-to-use calculators help you determine loan repayments, interest costs, and total payment amounts for all our loan products. Whether you're planning a major purchase, need emergency funds, or looking to invest in development projects, our calculator provides the insights you need to make confident financial decisions.</p>
+                        </div>
+                        
                         <div class="daystar-notice notice-info mt-4">
                             <p><strong>Note:</strong> These calculators provide estimates based on our current rates and terms. Actual loan terms may vary based on individual circumstances and credit committee approval.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="calculator-image fade-in">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/calculator-illustration.jpg" alt="Loan Calculator" class="img-fluid rounded-lg shadow">
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Loan Type Selector Section -->
-    <section class="section">
+    <!-- Loan Calculator Section -->
+    <section id="calculator" class="calculator-section">
         <div class="container">
-            <div class="text-center mb-5 fade-in">
-                <h2 class="section-title">Choose Your Loan Type</h2>
-                <p class="section-subtitle">Select the loan product you're interested in</p>
-            </div>
-            
-            <div class="loan-types-tabs fade-in">
+            <div class="row">
+                <div class="col-12">
+                    <div class="glass-card" data-aos="fade-up">
+                        <h2 class="section-title text-center mb-5">Choose Your Loan Type</h2>
+                        <p class="section-subtitle text-center mb-5">Select the loan product you're interested in to get started</p>
+                        
+                        <div class="loan-types-tabs">
                 <ul class="nav nav-pills mb-4 justify-content-center" id="loanTypesTab" role="tablist">
+                    <?php foreach ($loan_products as $index => $product) : 
+                        $tab_id = strtolower(str_replace(' ', '-', $product['name']));
+                        $is_active = $index === 0 ? 'active' : '';
+                        $is_selected = $index === 0 ? 'true' : 'false';
+                    ?>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="development-tab" data-bs-toggle="pill" data-bs-target="#development" type="button" role="tab" aria-controls="development" aria-selected="true">Development</button>
+                        <button class="nav-link <?php echo $is_active; ?>" 
+                                id="<?php echo $tab_id; ?>-tab" 
+                                data-bs-toggle="pill" 
+                                data-bs-target="#<?php echo $tab_id; ?>" 
+                                data-product-id="<?php echo $product['id']; ?>"
+                                type="button" 
+                                role="tab" 
+                                aria-controls="<?php echo $tab_id; ?>" 
+                                aria-selected="<?php echo $is_selected; ?>">
+                            <?php echo esc_html(str_replace(' Loan', '', $product['name'])); ?>
+                        </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="school-tab" data-bs-toggle="pill" data-bs-target="#school" type="button" role="tab" aria-controls="school" aria-selected="false">School Fees</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="emergency-tab" data-bs-toggle="pill" data-bs-target="#emergency" type="button" role="tab" aria-controls="emergency" aria-selected="false">Emergency</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="special-tab" data-bs-toggle="pill" data-bs-target="#special" type="button" role="tab" aria-controls="special" aria-selected="false">Special</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="supersaver-tab" data-bs-toggle="pill" data-bs-target="#supersaver" type="button" role="tab" aria-controls="supersaver" aria-selected="false">Super Saver</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="salary-tab" data-bs-toggle="pill" data-bs-target="#salary" type="button" role="tab" aria-controls="salary" aria-selected="false">Salary Advance</button>
-                    </li>
+                    <?php endforeach; ?>
                 </ul>
                 
                 <div class="tab-content" id="loanTypesTabContent">
-                    <!-- Development Loan Calculator -->
-                    <div class="tab-pane fade show active" id="development" role="tabpanel" aria-labelledby="development-tab">
+                    <?php foreach ($loan_products as $index => $product) : 
+                        $tab_id = strtolower(str_replace(' ', '-', $product['name']));
+                        $is_active = $index === 0 ? 'show active' : '';
+                        $form_id = $tab_id . '-form';
+                        $slider_id = $tab_id . '-slider';
+                    ?>
+                    <!-- <?php echo esc_html($product['name']); ?> Calculator -->
+                    <div class="tab-pane fade <?php echo $is_active; ?>" id="<?php echo $tab_id; ?>" role="tabpanel" aria-labelledby="<?php echo $tab_id; ?>-tab">
                         <div class="row">
                             <div class="col-lg-4 mb-4">
                                 <div class="loan-info-card fade-in">
-                                    <h3>Development Loan</h3>
-                                    <p>For your long-term development projects and investments.</p>
+                                    <h3><?php echo esc_html($product['name']); ?></h3>
+                                    <p><?php echo esc_html($product['description']); ?></p>
                                     <ul class="loan-features">
-                                        <li><strong>Maximum Amount:</strong> KSh 2,000,000</li>
-                                        <li><strong>Interest Rate:</strong> 12% per annum on reducing balance</li>
-                                        <li><strong>Repayment Period:</strong> Up to 36 months</li>
+                                        <li><strong>Amount Range:</strong> KSh <?php echo number_format($product['min_amount']); ?> - KSh <?php echo number_format($product['max_amount']); ?></li>
+                                        <li><strong>Interest Rate:</strong> <?php echo $product['interest_rate']; ?>% 
+                                            <?php 
+                                            switch($product['interest_type']) {
+                                                case 'reducing_balance':
+                                                    echo 'per annum on reducing balance';
+                                                    break;
+                                                case 'monthly_reducing_balance':
+                case 'monthly_reducing':
+                case 'monthly_reducing':
+                                                    echo 'per month on reducing balance';
+                                                    break;
+                                                case 'one_off_charge':
+                                                    echo 'one-off charge';
+                                                    break;
+                                                default:
+                                                    echo 'per annum';
+                                            }
+                                            ?>
+                                        </li>
+                                        <li><strong>Repayment Period:</strong> <?php echo $product['min_term']; ?> - <?php echo $product['max_term']; ?> months</li>
                                     </ul>
                                     <div class="mt-3">
-                                        <a href="<?php echo esc_url(home_url('development-loans')); ?>" class="btn btn-outline-primary btn-sm">Learn More</a>
+                                        <a href="<?php echo esc_url(home_url('loan-application')); ?>" class="btn btn-outline-primary btn-sm">Apply Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -113,33 +228,57 @@ get_header();
                                                 </div>
                                                 
                                                 <div class="calculator-body">
-                                                    <form id="developmentLoanForm">
+                                                    <form id="<?php echo $form_id; ?>" class="loan-calculator-form" data-product-id="<?php echo $product['id']; ?>">
                                                         <div class="form-group mb-4">
-                                                            <label for="developmentAmount" class="form-label">Loan Amount (KSh)</label>
+                                                            <label for="<?php echo $tab_id; ?>Amount" class="form-label">Loan Amount (KSh)</label>
                                                             <div class="input-group">
                                                                 <span class="input-group-text">KSh</span>
-                                                                <input type="number" class="form-control" id="developmentAmount" min="10000" max="2000000" value="500000" required>
+                                                                <input type="number" 
+                                                                       class="form-control loan-amount-input" 
+                                                                       id="<?php echo $tab_id; ?>Amount" 
+                                                                       min="<?php echo $product['min_amount']; ?>" 
+                                                                       max="<?php echo $product['max_amount']; ?>" 
+                                                                       value="<?php echo min(500000, $product['max_amount']); ?>" 
+                                                                       required>
                                                             </div>
                                                             <div class="range-slider mt-2">
-                                                                <input type="range" class="form-range" id="developmentAmountSlider" min="10000" max="2000000" step="10000" value="500000">
+                                                                <input type="range" 
+                                                                       class="form-range loan-amount-slider" 
+                                                                       id="<?php echo $tab_id; ?>AmountSlider" 
+                                                                       min="<?php echo $product['min_amount']; ?>" 
+                                                                       max="<?php echo $product['max_amount']; ?>" 
+                                                                       step="<?php echo max(1000, $product['min_amount'] / 100); ?>" 
+                                                                       value="<?php echo min(500000, $product['max_amount']); ?>">
                                                                 <div class="range-labels">
-                                                                    <span>KSh 10,000</span>
-                                                                    <span>KSh 2,000,000</span>
+                                                                    <span>KSh <?php echo number_format($product['min_amount']); ?></span>
+                                                                    <span>KSh <?php echo number_format($product['max_amount']); ?></span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="form-group mb-4">
-                                                            <label for="developmentTerm" class="form-label">Loan Term (months)</label>
+                                                            <label for="<?php echo $tab_id; ?>Term" class="form-label">Loan Term (months)</label>
                                                             <div class="input-group">
-                                                                <input type="number" class="form-control" id="developmentTerm" min="1" max="36" value="24" required>
+                                                                <input type="number" 
+                                                                       class="form-control loan-term-input" 
+                                                                       id="<?php echo $tab_id; ?>Term" 
+                                                                       min="<?php echo $product['min_term']; ?>" 
+                                                                       max="<?php echo $product['max_term']; ?>" 
+                                                                       value="<?php echo min(12, $product['max_term']); ?>" 
+                                                                       required>
                                                                 <span class="input-group-text">months</span>
                                                             </div>
                                                             <div class="range-slider mt-2">
-                                                                <input type="range" class="form-range" id="developmentTermSlider" min="1" max="36" step="1" value="24">
+                                                                <input type="range" 
+                                                                       class="form-range loan-term-slider" 
+                                                                       id="<?php echo $tab_id; ?>TermSlider" 
+                                                                       min="<?php echo $product['min_term']; ?>" 
+                                                                       max="<?php echo $product['max_term']; ?>" 
+                                                                       step="1" 
+                                                                       value="<?php echo min(12, $product['max_term']); ?>">
                                                                 <div class="range-labels">
-                                                                    <span>1 month</span>
-                                                                    <span>36 months</span>
+                                                                    <span><?php echo $product['min_term']; ?> month<?php echo $product['min_term'] > 1 ? 's' : ''; ?></span>
+                                                                    <span><?php echo $product['max_term']; ?> months</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -164,36 +303,39 @@ get_header();
                                                             <div class="col-6 mb-3">
                                                                 <div class="summary-item">
                                                                     <h4>Monthly Payment</h4>
-                                                                    <div class="summary-value" id="developmentMonthlyPayment">KSh 23,433.33</div>
+                                                                    <div class="summary-value" id="<?php echo $tab_id; ?>MonthlyPayment">KSh 0.00</div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-6 mb-3">
                                                                 <div class="summary-item">
                                                                     <h4>Total Interest</h4>
-                                                                    <div class="summary-value" id="developmentTotalInterest">KSh 62,400.00</div>
+                                                                    <div class="summary-value" id="<?php echo $tab_id; ?>TotalInterest">KSh 0.00</div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-6 mb-3">
                                                                 <div class="summary-item">
                                                                     <h4>Total Payment</h4>
-                                                                    <div class="summary-value" id="developmentTotalPayment">KSh 562,400.00</div>
+                                                                    <div class="summary-value" id="<?php echo $tab_id; ?>TotalPayment">KSh 0.00</div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-6 mb-3">
                                                                 <div class="summary-item">
                                                                     <h4>Interest Rate</h4>
-                                                                    <div class="summary-value">12% p.a.</div>
+                                                                    <div class="summary-value"><?php echo $product['interest_rate']; ?>% 
+                                                                        <?php echo in_array($product['interest_type'], ['monthly_reducing_balance', 'monthly_reducing']) ? 'p.m.' : 'p.a.'; ?>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     
                                                     <div class="chart-container mt-3">
-                                                        <canvas id="developmentLoanChart"></canvas>
+                                                        <canvas id="<?php echo $tab_id; ?>LoanChart"></canvas>
                                                     </div>
                                                     
                                                     <div class="results-actions mt-3">
-                                                        <button class="btn btn-outline-primary btn-sm" id="developmentAmortizationBtn">
+                                                        <button class="btn btn-outline-primary btn-sm amortization-btn" 
+                                                                data-target="<?php echo $tab_id; ?>AmortizationContainer">
                                                             <i class="fas fa-table me-1" aria-hidden="true"></i> View Schedule
                                                         </button>
                                                         <a href="<?php echo esc_url(home_url('loan-application')); ?>" class="btn btn-primary btn-sm ms-2">
@@ -205,15 +347,17 @@ get_header();
                                         </div>
                                     </div>
                                     
-                                    <div class="amortization-table-container mt-4 fade-in" id="developmentAmortizationContainer" style="display: none;">
+                                    <div class="amortization-table-container mt-4 fade-in" id="<?php echo $tab_id; ?>AmortizationContainer" style="display: none;">
                                         <div class="card">
                                             <div class="card-header d-flex justify-content-between align-items-center">
                                                 <h3 class="mb-0">Amortization Schedule</h3>
-                                                <button type="button" class="btn-close" id="closeDevAmortizationBtn" aria-label="Close"></button>
+                                                <button type="button" class="btn-close close-amortization-btn" 
+                                                        data-target="<?php echo $tab_id; ?>AmortizationContainer" 
+                                                        aria-label="Close"></button>
                                             </div>
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-striped table-hover" id="developmentAmortizationTable">
+                                                    <table class="table table-striped table-hover amortization-table" id="<?php echo $tab_id; ?>AmortizationTable">
                                                         <thead>
                                                             <tr>
                                                                 <th>Month</th>
@@ -235,236 +379,7 @@ get_header();
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- School Fees Loan Calculator -->
-                    <div class="tab-pane fade" id="school" role="tabpanel" aria-labelledby="school-tab">
-                        <div class="row">
-                            <div class="col-lg-4 mb-4">
-                                <div class="loan-info-card fade-in">
-                                    <h3>School Fees Loan</h3>
-                                    <p>Invest in education with our affordable school fees financing.</p>
-                                    <ul class="loan-features">
-                                        <li><strong>Interest Rate:</strong> 12% per annum on reducing balance</li>
-                                        <li><strong>Repayment Period:</strong> Up to 12 months</li>
-                                        <li><strong>Requirements:</strong> Fee structure or admission letter</li>
-                                    </ul>
-                                    <div class="mt-3">
-                                        <a href="<?php echo esc_url(home_url('school-fees-loans')); ?>" class="btn btn-outline-primary btn-sm">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-lg-8">
-                                <div class="calculator-container">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-4">
-                                            <div class="calculator-card fade-in">
-                                                <div class="calculator-header">
-                                                    <h3>Calculate Your Loan</h3>
-                                                </div>
-                                                
-                                                <div class="calculator-body">
-                                                    <form id="schoolFeesLoanForm">
-                                                        <div class="form-group mb-4">
-                                                            <label for="schoolFeesAmount" class="form-label">Loan Amount (KSh)</label>
-                                                            <div class="input-group">
-                                                                <span class="input-group-text">KSh</span>
-                                                                <input type="number" class="form-control" id="schoolFeesAmount" min="10000" max="500000" value="100000" required>
-                                                            </div>
-                                                            <div class="range-slider mt-2">
-                                                                <input type="range" class="form-range" id="schoolFeesAmountSlider" min="10000" max="500000" step="5000" value="100000">
-                                                                <div class="range-labels">
-                                                                    <span>KSh 10,000</span>
-                                                                    <span>KSh 500,000</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="form-group mb-4">
-                                                            <label for="schoolFeesTerm" class="form-label">Loan Term (months)</label>
-                                                            <div class="input-group">
-                                                                <input type="number" class="form-control" id="schoolFeesTerm" min="1" max="12" value="12" required>
-                                                                <span class="input-group-text">months</span>
-                                                            </div>
-                                                            <div class="range-slider mt-2">
-                                                                <input type="range" class="form-range" id="schoolFeesTermSlider" min="1" max="12" step="1" value="12">
-                                                                <div class="range-labels">
-                                                                    <span>1 month</span>
-                                                                    <span>12 months</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="form-group">
-                                                            <button type="submit" class="btn btn-primary w-100">Calculate</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-md-6">
-                                            <div class="results-card fade-in">
-                                                <div class="results-header">
-                                                    <h3>Loan Summary</h3>
-                                                </div>
-                                                
-                                                <div class="results-body">
-                                                    <div class="results-summary">
-                                                        <div class="row">
-                                                            <div class="col-6 mb-3">
-                                                                <div class="summary-item">
-                                                                    <h4>Monthly Payment</h4>
-                                                                    <div class="summary-value" id="schoolFeesMonthlyPayment">KSh 8,884.88</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6 mb-3">
-                                                                <div class="summary-item">
-                                                                    <h4>Total Interest</h4>
-                                                                    <div class="summary-value" id="schoolFeesTotalInterest">KSh 6,618.56</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6 mb-3">
-                                                                <div class="summary-item">
-                                                                    <h4>Total Payment</h4>
-                                                                    <div class="summary-value" id="schoolFeesTotalPayment">KSh 106,618.56</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6 mb-3">
-                                                                <div class="summary-item">
-                                                                    <h4>Interest Rate</h4>
-                                                                    <div class="summary-value">12% p.a.</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="chart-container mt-3">
-                                                        <canvas id="schoolFeesLoanChart"></canvas>
-                                                    </div>
-                                                    
-                                                    <div class="results-actions mt-3">
-                                                        <button class="btn btn-outline-primary btn-sm" id="schoolFeesAmortizationBtn">
-                                                            <i class="fas fa-table me-1" aria-hidden="true"></i> View Schedule
-                                                        </button>
-                                                        <a href="<?php echo esc_url(home_url('loan-application')); ?>" class="btn btn-primary btn-sm ms-2">
-                                                            <i class="fas fa-file-signature me-1" aria-hidden="true"></i> Apply Now
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="amortization-table-container mt-4 fade-in" id="schoolFeesAmortizationContainer" style="display: none;">
-                                        <!-- School Fees Amortization Table (similar structure to Development Loan) -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Emergency Loan Calculator -->
-                    <div class="tab-pane fade" id="emergency" role="tabpanel" aria-labelledby="emergency-tab">
-                        <div class="row">
-                            <div class="col-lg-4 mb-4">
-                                <div class="loan-info-card fade-in">
-                                    <h3>Emergency Loan</h3>
-                                    <p>Quick financial assistance for unexpected situations.</p>
-                                    <ul class="loan-features">
-                                        <li><strong>Maximum Amount:</strong> KSh 100,000</li>
-                                        <li><strong>Repayment Period:</strong> Up to 12 months</li>
-                                        <li><strong>Eligible Emergencies:</strong> Hospitalization, funeral expenses, court fines, etc.</li>
-                                    </ul>
-                                    <div class="mt-3">
-                                        <a href="<?php echo esc_url(home_url('emergency-loans')); ?>" class="btn btn-outline-primary btn-sm">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-lg-8">
-                                <div class="calculator-container">
-                                    <!-- Emergency Loan Calculator (similar structure to Development Loan) -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Special Loan Calculator -->
-                    <div class="tab-pane fade" id="special" role="tabpanel" aria-labelledby="special-tab">
-                        <div class="row">
-                            <div class="col-lg-4 mb-4">
-                                <div class="loan-info-card fade-in">
-                                    <h3>Special Loan</h3>
-                                    <p>Character-based loans without payslip consideration.</p>
-                                    <ul class="loan-features">
-                                        <li><strong>Maximum Amount:</strong> KSh 200,000</li>
-                                        <li><strong>Interest Rate:</strong> 5% per month on reducing balance</li>
-                                        <li><strong>Repayment Period:</strong> 4-6 months (based on amount)</li>
-                                    </ul>
-                                    <div class="mt-3">
-                                        <a href="<?php echo esc_url(home_url('special-loans')); ?>" class="btn btn-outline-primary btn-sm">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-lg-8">
-                                <div class="calculator-container">
-                                    <!-- Special Loan Calculator (similar structure to Development Loan) -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Super Saver Loan Calculator -->
-                    <div class="tab-pane fade" id="supersaver" role="tabpanel" aria-labelledby="supersaver-tab">
-                        <div class="row">
-                            <div class="col-lg-4 mb-4">
-                                <div class="loan-info-card fade-in">
-                                    <h3>Super Saver Loan</h3>
-                                    <p>Premium loans for our high-deposit members.</p>
-                                    <ul class="loan-features">
-                                        <li><strong>Maximum Amount:</strong> KSh 3,000,000</li>
-                                        <li><strong>Repayment Period:</strong> Up to 48 months</li>
-                                        <li><strong>Eligibility:</strong> Deposits of more than KSh 1,000,000</li>
-                                    </ul>
-                                    <div class="mt-3">
-                                        <a href="<?php echo esc_url(home_url('super-saver-loans')); ?>" class="btn btn-outline-primary btn-sm">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-lg-8">
-                                <div class="calculator-container">
-                                    <!-- Super Saver Loan Calculator (similar structure to Development Loan) -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Salary Advance Calculator -->
-                    <div class="tab-pane fade" id="salary" role="tabpanel" aria-labelledby="salary-tab">
-                        <div class="row">
-                            <div class="col-lg-4 mb-4">
-                                <div class="loan-info-card fade-in">
-                                    <h3>Salary Advance</h3>
-                                    <p>Short-term financial assistance for immediate needs.</p>
-                                    <ul class="loan-features">
-                                        <li><strong>Repayment Period:</strong> Maximum 3 months</li>
-                                        <li><strong>Interest Fee:</strong> 10% one-off charge for first month (members)</li>
-                                        <li><strong>Non-members:</strong> 12.5% for one month</li>
-                                    </ul>
-                                    <div class="mt-3">
-                                        <a href="<?php echo esc_url(home_url('salary-advance')); ?>" class="btn btn-outline-primary btn-sm">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-lg-8">
-                                <div class="calculator-container">
-                                    <!-- Salary Advance Calculator (similar structure to Development Loan) -->
-                                </div>
-                            </div>
+                    <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -473,88 +388,93 @@ get_header();
     </section>
 
     <!-- Loan Comparison Section -->
-    <section class="section bg-light">
+    <section class="comparison-section">
         <div class="container">
-            <div class="text-center mb-5 fade-in">
-                <h2 class="section-title">Loan Comparison</h2>
-                <p class="section-subtitle">Compare our different loan products to find the best fit for your needs</p>
-            </div>
-            
-            <div class="table-responsive fade-in">
+            <div class="row">
+                <div class="col-12">
+                    <div class="glass-card" data-aos="fade-up">
+                        <h2 class="section-title text-center mb-5">Loan Comparison</h2>
+                        <p class="section-subtitle text-center mb-5">Compare our different loan products to find the best fit for your needs</p>
+                        
+                        <div class="table-responsive">
                 <table class="table loan-comparison-table">
                     <thead>
                         <tr>
                             <th>Loan Type</th>
-                            <th>Maximum Amount</th>
+                            <th>Amount Range</th>
                             <th>Interest Rate</th>
                             <th>Repayment Period</th>
                             <th>Key Requirements</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach ($loan_products as $product) : ?>
                         <tr>
-                            <th>Development Loan</th>
-                            <td>KSh 2,000,000</td>
-                            <td>12% p.a. reducing balance</td>
-                            <td>Up to 36 months</td>
-                            <td>Pay slip, no outstanding development loan</td>
+                            <th><?php echo esc_html($product['name']); ?></th>
+                            <td>KSh <?php echo number_format($product['min_amount']); ?> - KSh <?php echo number_format($product['max_amount']); ?></td>
+                            <td>
+                                <?php echo $product['interest_rate']; ?>% 
+                                <?php 
+                                switch($product['interest_type']) {
+                                    case 'reducing_balance':
+                                        echo 'p.a. reducing balance';
+                                        break;
+                                    case 'monthly_reducing_balance':
+                                        echo 'per month reducing balance';
+                                        break;
+                                    case 'one_off_charge':
+                                        echo 'one-off charge';
+                                        break;
+                                    default:
+                                        echo 'p.a.';
+                                }
+                                ?>
+                            </td>
+                            <td><?php echo $product['min_term']; ?> - <?php echo $product['max_term']; ?> months</td>
+                            <td>
+                                <?php 
+                                $requirements = array();
+                                if (isset($product['eligibility_rules']['requires_payslip']) && $product['eligibility_rules']['requires_payslip']) {
+                                    $requirements[] = 'Payslip required';
+                                }
+                                if (isset($product['eligibility_rules']['requires_guarantors']) && $product['eligibility_rules']['requires_guarantors']) {
+                                    $requirements[] = 'Guarantors required';
+                                }
+                                if (isset($product['eligibility_rules']['min_membership_months'])) {
+                                    $requirements[] = $product['eligibility_rules']['min_membership_months'] . ' months membership';
+                                }
+                                if (isset($product['eligibility_rules']['min_share_capital'])) {
+                                    $requirements[] = 'KSh ' . number_format($product['eligibility_rules']['min_share_capital']) . ' share capital';
+                                }
+                                echo esc_html(implode(', ', array_slice($requirements, 0, 3)));
+                                if (count($requirements) > 3) echo '...';
+                                ?>
+                            </td>
                         </tr>
-                        <tr>
-                            <th>School Fees Loan</th>
-                            <td>Varies</td>
-                            <td>12% p.a. reducing balance</td>
-                            <td>Up to 12 months</td>
-                            <td>Fee structure/admission letter, no outstanding school fees loan</td>
-                        </tr>
-                        <tr>
-                            <th>Emergency Loan</th>
-                            <td>KSh 100,000</td>
-                            <td>12% p.a. reducing balance</td>
-                            <td>Up to 12 months</td>
-                            <td>Documentary evidence of emergency, no outstanding emergency loan</td>
-                        </tr>
-                        <tr>
-                            <th>Special Loan</th>
-                            <td>KSh 200,000</td>
-                            <td>5% per month reducing balance</td>
-                            <td>4-6 months (based on amount)</td>
-                            <td>Postdated cheques, good credit history</td>
-                        </tr>
-                        <tr>
-                            <th>Super Saver Loan</th>
-                            <td>KSh 3,000,000</td>
-                            <td>12% p.a. reducing balance</td>
-                            <td>Up to 48 months</td>
-                            <td>Deposits of more than KSh 1,000,000</td>
-                        </tr>
-                        <tr>
-                            <th>Salary Advance</th>
-                            <td>Varies</td>
-                            <td>10% one-off (members)<br>12.5% one-off (non-members)</td>
-                            <td>Up to 3 months</td>
-                            <td>Proof of capacity to repay</td>
-                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
             
-            <div class="daystar-notice notice-info mt-4 fade-in">
-                <p><strong>Note:</strong> All loans require a minimum membership period of 6 months with consistent contributions of not less than KSh 12,000 (KSh 2,000 × 6 months) and minimum share capital of KSh 5,000 (250 shares worth KSh 200 each).</p>
+            <div class="daystar-notice notice-info mt-4">
+                            <p><strong>Note:</strong> All loans require a minimum membership period of 6 months with consistent contributions of not less than KSh 12,000 (KSh 2,000 × 6 months) and minimum share capital of KSh 5,000 (250 shares worth KSh 200 each).</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- FAQ Section -->
-    <section class="section">
+    <section class="faq-section">
         <div class="container">
-            <div class="text-center mb-5 fade-in">
-                <h2 class="section-title">Frequently Asked Questions</h2>
-                <p class="section-subtitle">Common questions about our loan calculators</p>
-            </div>
-            
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="accordion fade-in" id="calculatorFAQ">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="glass-card" data-aos="fade-up">
+                        <h2 class="section-title text-center mb-5">Frequently Asked Questions</h2>
+                        <p class="section-subtitle text-center mb-5">Common questions about our loan calculators</p>
+                        
+                        <div class="accordion" id="calculatorFAQ">
                         <div class="accordion-item">
                             <h3 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -633,6 +553,7 @@ get_header();
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -640,17 +561,23 @@ get_header();
     </section>
 
     <!-- CTA Section -->
-    <section class="cta-section">
+    <section class="cta-section py-5 bg-primary text-white">
         <div class="container">
-            <div class="cta-content fade-in">
-                <div class="row align-items-center">
-                    <div class="col-lg-8 mb-4 mb-lg-0">
-                        <h2 class="cta-title">Ready to Apply for a Loan?</h2>
-                        <p class="cta-subtitle">Take the first step toward achieving your financial goals today.</p>
-                    </div>
-                    <div class="col-lg-4 text-lg-end">
-                        <a href="<?php echo esc_url(home_url('loan-application')); ?>" class="btn btn-gradient btn-lg">Apply Now</a>
-                        <a href="<?php echo esc_url(home_url('contact-us')); ?>" class="btn btn-outline-light btn-lg ms-2">Contact Us</a>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="cta-content" data-aos="fade-up">
+                        <div class="text-center">
+                            <h2 class="cta-title mb-4">Ready to Apply for a Loan?</h2>
+                            <p class="cta-subtitle mb-4">Take the first step toward achieving your financial goals today.</p>
+                            <div class="cta-buttons">
+                                <a href="<?php echo esc_url(home_url('loan-application')); ?>" class="btn btn-light btn-lg me-3">
+                                    <i class="fas fa-file-signature me-2"></i>Apply Now
+                                </a>
+                                <a href="<?php echo esc_url(home_url('contact-us')); ?>" class="btn btn-outline-light btn-lg">
+                                    <i class="fas fa-phone me-2"></i>Contact Us
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -658,66 +585,95 @@ get_header();
     </section>
 </main>
 
-<!-- Loan Calculator Script -->
+<!-- Enhanced Loan Calculator Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<!-- Wait for Chart.js to load before initializing -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Development Loan Calculator
-    initLoanCalculator(
-        'development',
-        'developmentAmount',
-        'developmentAmountSlider',
-        'developmentTerm',
-        'developmentTermSlider',
-        'developmentLoanForm',
-        'developmentMonthlyPayment',
-        'developmentTotalInterest',
-        'developmentTotalPayment',
-        'developmentLoanChart',
-        'developmentAmortizationBtn',
-        'developmentAmortizationContainer',
-        'closeDevAmortizationBtn',
-        'developmentAmortizationTable',
-        0.12 // 12% annual interest rate
-    );
+// Ensure Chart.js is loaded
+function waitForChart(callback) {
+    if (typeof Chart !== 'undefined') {
+        callback();
+    } else {
+        setTimeout(() => waitForChart(callback), 100);
+    }
+}
+
+// Initialize when Chart.js is ready
+waitForChart(function() {
+    console.log('Chart.js is ready, initializing calculator...');
     
-    // School Fees Loan Calculator
-    initLoanCalculator(
-        'schoolFees',
-        'schoolFeesAmount',
-        'schoolFeesAmountSlider',
-        'schoolFeesTerm',
-        'schoolFeesTermSlider',
-        'schoolFeesLoanForm',
-        'schoolFeesMonthlyPayment',
-        'schoolFeesTotalInterest',
-        'schoolFeesTotalPayment',
-        'schoolFeesLoanChart',
-        'schoolFeesAmortizationBtn',
-        'schoolFeesAmortizationContainer',
-        'closeSchoolFeesAmortizationBtn',
-        'schoolFeesAmortizationTable',
-        0.12 // 12% annual interest rate
-    );
+    // Initialize AOS (Animate On Scroll)
+    AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 100
+    });
+
+    // Pass loan products data to JavaScript
+    const loanProducts = <?php echo json_encode($loan_products); ?>;
+
+    // Enhanced smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Add scroll effect to navbar
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        }
+    });
+
+    // Enhanced calculator functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded, Chart.js available:', typeof Chart !== 'undefined');
+        initializeCalculators();
+    });
     
-    // Function to initialize loan calculators
-    function initLoanCalculator(
-        prefix,
-        amountId,
-        amountSliderId,
-        termId,
-        termSliderId,
-        formId,
-        monthlyPaymentId,
-        totalInterestId,
-        totalPaymentId,
-        chartId,
-        amortizationBtnId,
-        amortizationContainerId,
-        closeAmortizationBtnId,
-        amortizationTableId,
-        annualInterestRate
-    ) {
+    function initializeCalculators() {
+        // Wait for all elements to be rendered
+        setTimeout(function() {
+            // Initialize all loan calculators dynamically
+            loanProducts.forEach(function(product, index) {
+                // Match the PHP logic exactly: strtolower(str_replace(' ', '-', $product['name']))
+                let tabId = product.name.toLowerCase().replace(/\s+/g, '-');
+                
+                initDynamicLoanCalculator(product, tabId, index === 0);
+            });
+        }, 1000); // Wait 1 second for all elements to be ready
+    }
+    
+    // Function to initialize dynamic loan calculators
+    function initDynamicLoanCalculator(product, tabId, isFirst) {
+        const amountId = tabId + 'Amount';
+        const amountSliderId = tabId + 'AmountSlider';
+        const termId = tabId + 'Term';
+        const termSliderId = tabId + 'TermSlider';
+        const formId = tabId + '-form';
+        const monthlyPaymentId = tabId + 'MonthlyPayment';
+        const totalInterestId = tabId + 'TotalInterest';
+        const totalPaymentId = tabId + 'TotalPayment';
+        const chartId = tabId + 'LoanChart';
+        const amortizationContainerId = tabId + 'AmortizationContainer';
+        const amortizationTableId = tabId + 'AmortizationTable';
+        
         const loanAmount = document.getElementById(amountId);
         const loanAmountSlider = document.getElementById(amountSliderId);
         const loanTerm = document.getElementById(termId);
@@ -726,15 +682,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const monthlyPaymentEl = document.getElementById(monthlyPaymentId);
         const totalInterestEl = document.getElementById(totalInterestId);
         const totalPaymentEl = document.getElementById(totalPaymentId);
-        const amortizationBtn = document.getElementById(amortizationBtnId);
         const amortizationContainer = document.getElementById(amortizationContainerId);
-        const closeAmortizationBtn = document.getElementById(closeAmortizationBtnId);
         const amortizationTable = document.getElementById(amortizationTableId);
         
         let loanChart;
         
-        // Skip if elements don't exist
-        if (!loanAmount || !loanTerm || !loanForm) return;
+        // Skip if critical elements don't exist
+        if (!loanAmount || !loanTerm || !loanForm) {
+            // Try alternative selectors
+            const altLoanAmount = document.querySelector(`#${tabId} .loan-amount-input`);
+            const altLoanTerm = document.querySelector(`#${tabId} .loan-term-input`);
+            const altLoanForm = document.querySelector(`#${tabId} .loan-calculator-form`);
+            
+            if (!altLoanAmount || !altLoanTerm || !altLoanForm) {
+                return;
+            }
+            
+            // Use alternative elements
+            loanAmount = altLoanAmount;
+            loanTerm = altLoanTerm;
+            loanForm = altLoanForm;
+        }
         
         // Sync input fields with sliders
         if (loanAmount && loanAmountSlider) {
@@ -769,39 +737,93 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // View amortization schedule
-        if (amortizationBtn && amortizationContainer) {
-            amortizationBtn.addEventListener('click', function() {
-                amortizationContainer.style.display = 'block';
-                generateAmortizationTable();
-            });
-        }
-        
-        // Close amortization schedule
-        if (closeAmortizationBtn && amortizationContainer) {
-            closeAmortizationBtn.addEventListener('click', function() {
-                amortizationContainer.style.display = 'none';
-            });
-        }
-        
         // Calculate loan function
         function calculateLoan() {
-            if (!loanAmount || !loanTerm || !monthlyPaymentEl || !totalInterestEl || !totalPaymentEl) return;
+            if (!loanAmount || !loanTerm || !monthlyPaymentEl || !totalInterestEl || !totalPaymentEl) {
+                return;
+            }
             
             // Get values from form
             const principal = parseFloat(loanAmount.value);
             const months = parseInt(loanTerm.value);
             
-            // Calculate for reducing balance
-            const monthlyRate = annualInterestRate / 12;
-            const monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
-            const totalPayment = monthlyPayment * months;
-            const totalInterest = totalPayment - principal;
+            if (isNaN(principal) || isNaN(months) || principal <= 0 || months <= 0) {
+                return;
+            }
             
-            // Update results
-            monthlyPaymentEl.textContent = 'KSh ' + formatNumber(monthlyPayment.toFixed(2));
-            totalInterestEl.textContent = 'KSh ' + formatNumber(totalInterest.toFixed(2));
-            totalPaymentEl.textContent = 'KSh ' + formatNumber(totalPayment.toFixed(2));
+            let monthlyPayment, totalPayment, totalInterest;
+            
+            // Calculate based on product interest type
+            switch (product.interest_type) {
+                case 'reducing_balance':
+                    const monthlyRate = (product.interest_rate / 100) / 12;
+                    if (monthlyRate > 0) {
+                        monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+                        totalPayment = monthlyPayment * months;
+                        totalInterest = totalPayment - principal;
+                    } else {
+                        monthlyPayment = principal / months;
+                        totalPayment = principal;
+                        totalInterest = 0;
+                    }
+                    break;
+                    
+                case 'monthly_reducing_balance':
+                case 'monthly_reducing':
+                    // For Special Loans - 5% per month
+                    const monthlyRate2 = product.interest_rate / 100;
+                    let balance = principal;
+                    totalInterest = 0;
+                    
+                    for (let i = 1; i <= months; i++) {
+                        const interestPayment = balance * monthlyRate2;
+                        const principalPayment = principal / months;
+                        balance -= principalPayment;
+                        totalInterest += interestPayment;
+                    }
+                    
+                    monthlyPayment = (principal / months) + (totalInterest / months);
+                    totalPayment = principal + totalInterest;
+                    break;
+                    
+                case 'one_off_charge':
+                    // For Salary Advance - one-off percentage charge
+                    let chargeRate = 10; // Default for members
+                    if (product.charges) {
+                        for (const charge of product.charges) {
+                            if (charge.condition === 'member') {
+                                chargeRate = charge.value;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    const oneOffCharge = principal * (chargeRate / 100);
+                    monthlyPayment = (principal + oneOffCharge) / months;
+                    totalInterest = oneOffCharge;
+                    totalPayment = principal + oneOffCharge;
+                    break;
+                    
+                default:
+                    // Flat rate calculation
+                    totalInterest = principal * (product.interest_rate / 100) * (months / 12);
+                    monthlyPayment = (principal + totalInterest) / months;
+                    totalPayment = principal + totalInterest;
+            }
+            
+            // Update results with smart text scaling
+            if (monthlyPaymentEl) {
+                monthlyPaymentEl.textContent = 'KSh ' + formatNumber(monthlyPayment.toFixed(2));
+                applySmartTextScaling(monthlyPaymentEl);
+            }
+            if (totalInterestEl) {
+                totalInterestEl.textContent = 'KSh ' + formatNumber(totalInterest.toFixed(2));
+                applySmartTextScaling(totalInterestEl);
+            }
+            if (totalPaymentEl) {
+                totalPaymentEl.textContent = 'KSh ' + formatNumber(totalPayment.toFixed(2));
+                applySmartTextScaling(totalPaymentEl);
+            }
             
             // Update chart
             updateChart(principal, totalInterest);
@@ -812,25 +834,60 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!amortizationTable || !loanAmount || !loanTerm) return;
             
             // Clear existing table
-            amortizationTable.innerHTML = '';
+            const tbody = amortizationTable.querySelector('tbody');
+            if (tbody) {
+                tbody.innerHTML = '';
+            }
             
             // Get values from form
             const principal = parseFloat(loanAmount.value);
             const months = parseInt(loanTerm.value);
-            
-            const monthlyRate = annualInterestRate / 12;
             let balance = principal;
-            let totalInterest = 0;
             
-            // Calculate for reducing balance
-            const monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
-            
+            // Generate schedule based on product type
             for (let i = 1; i <= months; i++) {
-                const interestPayment = balance * monthlyRate;
-                const principalPayment = monthlyPayment - interestPayment;
+                let monthlyPayment, principalPayment, interestPayment;
+                
+                switch (product.interest_type) {
+                    case 'reducing_balance':
+                        const monthlyRate = (product.interest_rate / 100) / 12;
+                        monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+                        interestPayment = balance * monthlyRate;
+                        principalPayment = monthlyPayment - interestPayment;
+                        break;
+                        
+                    case 'monthly_reducing_balance':
+                    case 'monthly_reducing':
+                        const monthlyRate2 = product.interest_rate / 100;
+                        principalPayment = principal / months;
+                        interestPayment = balance * monthlyRate2;
+                        monthlyPayment = principalPayment + interestPayment;
+                        break;
+                        
+                    case 'one_off_charge':
+                        let chargeRate = 10;
+                        if (product.charges) {
+                            for (const charge of product.charges) {
+                                if (charge.condition === 'member') {
+                                    chargeRate = charge.value;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        principalPayment = principal / months;
+                        interestPayment = (i === 1) ? principal * (chargeRate / 100) : 0;
+                        monthlyPayment = principalPayment + interestPayment;
+                        break;
+                        
+                    default:
+                        const totalInterest = principal * (product.interest_rate / 100) * (months / 12);
+                        monthlyPayment = (principal + totalInterest) / months;
+                        principalPayment = principal / months;
+                        interestPayment = totalInterest / months;
+                }
                 
                 balance -= principalPayment;
-                totalInterest += interestPayment;
                 
                 // Add row to table
                 const row = document.createElement('tr');
@@ -841,61 +898,257 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>KSh ${formatNumber(interestPayment.toFixed(2))}</td>
                     <td>KSh ${formatNumber(Math.max(0, balance).toFixed(2))}</td>
                 `;
-                amortizationTable.appendChild(row);
+                
+                if (tbody) {
+                    tbody.appendChild(row);
+                } else {
+                    amortizationTable.appendChild(row);
+                }
             }
         }
         
         // Update chart
         function updateChart(principal, totalInterest) {
             const ctx = document.getElementById(chartId);
-            if (!ctx) return;
+            if (!ctx) {
+                return;
+            }
             
             // Destroy existing chart if it exists
             if (loanChart) {
                 loanChart.destroy();
             }
             
-            // Create new chart
-            loanChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Principal', 'Interest'],
-                    datasets: [{
-                        data: [principal, totalInterest],
-                        backgroundColor: ['#00447c', '#f7b731'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    return label + ': KSh ' + formatNumber(value.toFixed(2));
+            // Ensure Chart.js is loaded
+            if (typeof Chart === 'undefined') {
+                return;
+            }
+            
+            try {
+                // Create new chart
+                loanChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Principal Amount', 'Total Interest'],
+                        datasets: [{
+                            data: [principal, totalInterest],
+                            backgroundColor: [
+                                'rgba(0, 105, 148, 0.8)',
+                                'rgba(255, 127, 127, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(0, 105, 148, 1)',
+                                'rgba(255, 127, 127, 1)'
+                            ],
+                            borderWidth: 2,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    usePointStyle: true,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return label + ': KSh ' + formatNumber(value.toFixed(2)) + ' (' + percentage + '%)';
+                                    }
                                 }
                             }
+                        },
+                        animation: {
+                            animateRotate: true,
+                            duration: 1000
                         }
                     }
-                }
-            });
+                });
+            } catch (error) {
+                // Chart creation failed silently
+            }
         }
         
         // Initial calculation
-        calculateLoan();
+        if (isFirst) {
+            // Wait a bit for elements to be ready
+            setTimeout(calculateLoan, 500);
+        }
+        
+        // Also trigger calculation when tab becomes active
+        const tabButton = document.querySelector(`#${tabId}-tab`);
+        if (tabButton) {
+            tabButton.addEventListener('shown.bs.tab', function() {
+                setTimeout(calculateLoan, 100);
+            });
+        }
+    }
+    
+    // Global event handlers for amortization buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('amortization-btn')) {
+            const targetId = e.target.getAttribute('data-target');
+            const container = document.getElementById(targetId);
+            if (container) {
+                container.style.display = 'block';
+                
+                // Find the corresponding table and generate schedule
+                const tableId = targetId.replace('Container', 'Table');
+                const table = document.getElementById(tableId);
+                if (table) {
+                    // Find the product for this table
+                    const tabId = targetId.replace('AmortizationContainer', '');
+                    const product = loanProducts.find(p => {
+                        const pTabId = p.name.toLowerCase().replace(/\s+/g, '-').replace('loan', '').trim();
+                        return (pTabId.endsWith('-') ? pTabId.slice(0, -1) : pTabId) === tabId;
+                    });
+                    
+                    if (product) {
+                        generateAmortizationTableForProduct(product, tabId, table);
+                    }
+                }
+            }
+        }
+        
+        if (e.target.classList.contains('close-amortization-btn')) {
+            const targetId = e.target.getAttribute('data-target');
+            const container = document.getElementById(targetId);
+            if (container) {
+                container.style.display = 'none';
+            }
+        }
+    });
+    
+    // Helper function to generate amortization table for a specific product
+    function generateAmortizationTableForProduct(product, tabId, table) {
+        const amountInput = document.getElementById(tabId + 'Amount');
+        const termInput = document.getElementById(tabId + 'Term');
+        
+        if (!amountInput || !termInput) return;
+        
+        const principal = parseFloat(amountInput.value);
+        const months = parseInt(termInput.value);
+        let balance = principal;
+        
+        // Clear existing table
+        const tbody = table.querySelector('tbody');
+        if (tbody) {
+            tbody.innerHTML = '';
+        }
+        
+        // Generate schedule based on product type
+        for (let i = 1; i <= months; i++) {
+            let monthlyPayment, principalPayment, interestPayment;
+            
+            switch (product.interest_type) {
+                case 'reducing_balance':
+                    const monthlyRate = (product.interest_rate / 100) / 12;
+                    monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+                    interestPayment = balance * monthlyRate;
+                    principalPayment = monthlyPayment - interestPayment;
+                    break;
+                    
+                case 'monthly_reducing_balance':
+                case 'monthly_reducing':
+                    const monthlyRate2 = product.interest_rate / 100;
+                    principalPayment = principal / months;
+                    interestPayment = balance * monthlyRate2;
+                    monthlyPayment = principalPayment + interestPayment;
+                    break;
+                    
+                case 'one_off_charge':
+                    let chargeRate = 10;
+                    if (product.charges) {
+                        for (const charge of product.charges) {
+                            if (charge.condition === 'member') {
+                                chargeRate = charge.value;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    principalPayment = principal / months;
+                    interestPayment = (i === 1) ? principal * (chargeRate / 100) : 0;
+                    monthlyPayment = principalPayment + interestPayment;
+                    break;
+                    
+                default:
+                    const totalInterest = principal * (product.interest_rate / 100) * (months / 12);
+                    monthlyPayment = (principal + totalInterest) / months;
+                    principalPayment = principal / months;
+                    interestPayment = totalInterest / months;
+            }
+            
+            balance -= principalPayment;
+            
+            // Add row to table
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${i}</td>
+                <td>KSh ${formatNumber(monthlyPayment.toFixed(2))}</td>
+                <td>KSh ${formatNumber(principalPayment.toFixed(2))}</td>
+                <td>KSh ${formatNumber(interestPayment.toFixed(2))}</td>
+                <td>KSh ${formatNumber(Math.max(0, balance).toFixed(2))}</td>
+            `;
+            
+            if (tbody) {
+                tbody.appendChild(row);
+            } else {
+                table.appendChild(row);
+            }
+        }
     }
     
     // Format number with commas
     function formatNumber(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-});
+    
+    // Smart text scaling function
+    function applySmartTextScaling(element) {
+        if (!element) return;
+        
+        // Remove existing text length classes
+        element.classList.remove('text-short', 'text-medium', 'text-long', 'text-very-long');
+        
+        const text = element.textContent || element.innerText;
+        const textLength = text.length;
+        
+        // Apply classes based on text length
+        if (textLength <= 10) {
+            element.classList.add('text-short');
+        } else if (textLength <= 15) {
+            element.classList.add('text-medium');
+        } else if (textLength <= 20) {
+            element.classList.add('text-long');
+        } else {
+            element.classList.add('text-very-long');
+        }
+    }
+    
+    // Apply smart scaling to all existing summary values on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const summaryValues = document.querySelectorAll('.summary-value');
+            summaryValues.forEach(function(element) {
+                applySmartTextScaling(element);
+            });
+        }, 1500);
+    });
+    
+}); // End waitForChart
 </script>
 
 <?php

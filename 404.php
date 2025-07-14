@@ -41,7 +41,7 @@ get_header();
 								echo '<ul class="list-unstyled d-flex flex-wrap justify-content-center">';
 								echo '<li class="mx-2"><a href="' . esc_url(home_url('/')) . '">' . esc_html__('Homepage', 'sacco-php') . '</a></li>';
 								echo '<li class="mx-2"><a href="' . esc_url(home_url('/contact/')) . '">' . esc_html__('Contact Us', 'sacco-php') . '</a></li>';
-								echo '<li class="mx-2"><a href="' . esc_url(home_url('/faqs/')) . '">' . esc_html__('FAQs', 'sacco-php') . '</a></li>';
+								echo '<li class="mx-2"><a href="' . esc_url(home_url('faqs')) . '">' . esc_html__('FAQs', 'sacco-php') . '</a></li>';
 								echo '</ul>';
 							}
 							?>

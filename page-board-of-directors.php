@@ -21,7 +21,7 @@ get_header();
     </div>
 
     <!-- Board of Directors Header -->
-    <header class="glass-header py-5 mb-5" style="margin-top: 80px;">
+    <header class="glass-header py-5 mb-5">
         <style>
         .glass-header .display-title {
             color: #fff !important;
@@ -623,7 +623,7 @@ get_header();
                         <span class="icon-circle bg-danger text-white"><i class="fas fa-search"></i></span>
                         <span class="tab-label">Supervisory Committee</span>
                     </a>
-                    <a href="/about-us" class="quick-link-tab">
+                    <a href="/about" class="quick-link-tab">
                         <span class="icon-circle bg-secondary text-white"><i class="fas fa-info-circle"></i></span>
                         <span class="tab-label">About Us</span>
                     </a>
