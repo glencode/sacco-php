@@ -323,6 +323,47 @@
     border-color: rgba(255, 255, 255, 0.8);
 }
 
+/* Enhanced Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.scroll-arrow {
+    width: 30px;
+    height: 30px;
+    border-right: 2px solid rgba(255, 255, 255, 0.8);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+    transform: rotate(45deg);
+    animation: bounceArrow 2s infinite;
+    margin: 0 auto 10px;
+}
+
+.scroll-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+@keyframes bounceArrow {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) rotate(45deg);
+    }
+    40% {
+        transform: translateY(-10px) rotate(45deg);
+    }
+    60% {
+        transform: translateY(-5px) rotate(45deg);
+    }
+}
+
 /* Enhanced Introduction Section */
 .calculator-intro {
     padding: var(--space-3xl) 0;
@@ -962,7 +1003,7 @@
 
 .summary-item {
     text-align: center;
-    padding: var(--space-sm) var(--space-xs);
+    padding: var(--space-md);
     background: var(--glass-white);
     backdrop-filter: blur(20px);
     border-radius: 15px;
@@ -970,7 +1011,7 @@
     transition: all 0.3s var(--ease-ocean);
     position: relative;
     overflow: hidden;
-    min-height: 90px;
+    min-height: 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1012,124 +1053,15 @@
 
 .summary-value {
     font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: 1.4rem;
+    font-weight: 800;
     background: var(--gradient-ocean);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin: 0;
-    line-height: 1.2;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    max-width: 100%;
-    display: block;
-    text-align: center;
-    white-space: normal;
-    padding: 0.1em;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.01em;
-    transform: scale(1);
-    transition: transform 0.2s ease;
-}
-
-/* Smart scaling for different text lengths */
-.summary-value:has-text-length-long {
-    font-size: 0.85rem;
-    letter-spacing: -0.02em;
-}
-
-/* JavaScript will add these classes based on text length */
-.summary-value.text-short {
-    font-size: 1.1rem;
-    font-weight: 800;
-}
-
-.summary-value.text-medium {
-    font-size: 1rem;
-    font-weight: 700;
-}
-
-.summary-value.text-long {
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
     line-height: 1.1;
-}
-
-.summary-value.text-very-long {
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    line-height: 1.0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .summary-value {
-        font-size: 0.9rem;
-    }
-    
-    .summary-value.text-short {
-        font-size: 1rem;
-    }
-    
-    .summary-value.text-medium {
-        font-size: 0.9rem;
-    }
-    
-    .summary-value.text-long {
-        font-size: 0.8rem;
-    }
-    
-    .summary-value.text-very-long {
-        font-size: 0.75rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .summary-value {
-        font-size: 0.85rem;
-    }
-    
-    .summary-value.text-short {
-        font-size: 0.95rem;
-    }
-    
-    .summary-value.text-medium {
-        font-size: 0.85rem;
-    }
-    
-    .summary-value.text-long {
-        font-size: 0.75rem;
-    }
-    
-    .summary-value.text-very-long {
-        font-size: 0.7rem;
-    }
-}
-
-/* Large screens - allow slightly bigger text */
-@media (min-width: 1200px) {
-    .summary-value {
-        font-size: 1.1rem;
-    }
-    
-    .summary-value.text-short {
-        font-size: 1.3rem;
-    }
-    
-    .summary-value.text-medium {
-        font-size: 1.1rem;
-    }
-    
-    .summary-value.text-long {
-        font-size: 1rem;
-    }
-    
-    .summary-value.text-very-long {
-        font-size: 0.9rem;
-    }
+    word-break: break-word;
 }
 
 /* Enhanced Chart Container */
@@ -1914,28 +1846,33 @@
         padding: 4px;
     }
     
-    .loan-types-tabs .nav-pills {
-        padding: 6px;
-        gap: 6px;
+    .cta-title {
+        font-size: clamp(1.8rem, 6vw, 2.2rem);
     }
     
-    .loan-types-tabs .nav-link {
-        padding: 10px 12px;
-        font-size: 0.8rem;
-        min-width: 100px;
+    .cta-subtitle {
+        font-size: 1rem;
     }
     
-    .amortization-table thead th,
-    .amortization-table tbody td {
-        padding: var(--space-xs);
-        font-size: 0.8rem;
+    .btn-light,
+    .btn-outline-light {
+        padding: 10px 20px;
+        font-size: 0.95rem;
     }
     
-    .loan-comparison-table thead th,
-    .loan-comparison-table tbody th,
-    .loan-comparison-table tbody td {
-        padding: var(--space-xs);
-        font-size: 0.8rem;
+    /* Hide some table columns on very small screens */
+    .loan-comparison-table th:nth-child(4),
+    .loan-comparison-table td:nth-child(4),
+    .loan-comparison-table th:nth-child(5),
+    .loan-comparison-table td:nth-child(5) {
+        display: none;
+    }
+    
+    .amortization-table th:nth-child(4),
+    .amortization-table td:nth-child(4),
+    .amortization-table th:nth-child(5),
+    .amortization-table td:nth-child(5) {
+        display: none;
     }
 }
 
@@ -2048,6 +1985,29 @@
     text-decoration: none !important;
 }
 
+/* Custom Scrollbar for Calculator Sections */
+.calculator-section::-webkit-scrollbar,
+.amortization-table-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.calculator-section::-webkit-scrollbar-track,
+.amortization-table-container::-webkit-scrollbar-track {
+    background: var(--glass-ocean);
+    border-radius: 4px;
+}
+
+.calculator-section::-webkit-scrollbar-thumb,
+.amortization-table-container::-webkit-scrollbar-thumb {
+    background: var(--gradient-ocean);
+    border-radius: 4px;
+}
+
+.calculator-section::-webkit-scrollbar-thumb:hover,
+.amortization-table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--ocean-deep);
+}
+
 /* Text Wrapping and Readability Improvements */
 .loan-info-card,
 .calculator-card,
@@ -2115,6 +2075,21 @@
 
 /* Utility Classes */
 .text-ocean {
+    color: var(--ocean-primary);
+}
+
+.text-coral {
+    color: var(--coral-accent);
+}
+
+.text-gold {
+    color: var(--gold-accent);
+}
+
+.bg-glass-ocean {
+    background: var(--glass-ocean);
+    backdrop-filter: blur(20px);
+}
 
 .bg-glass-white {
     background: var(--glass-white);
